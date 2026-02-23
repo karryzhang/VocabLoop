@@ -3388,7 +3388,7 @@ new Vue({
             }
             const wordList = this.readingWordObjs
                 .map(w => `${w.word} (${w.zh})`).join(', ');
-            const prompt = `You are an English tutor. Write a short, engaging English story (150–200 words) that naturally uses ALL of the following vocabulary words at least once. The story should be coherent, vivid, and suitable for intermediate learners. Return only the story text — no title, no commentary.\n\nVocabulary: ${wordList}`;
+            const prompt = `You are a creative writing tutor crafting a short story to help an intermediate English learner remember new vocabulary.\n\nRequirements:\n- Length: 180–220 words.\n- Weave ALL of the vocabulary words below naturally into the story — they should feel essential, not forced.\n- Literary quality: give the story a clear arc (setup → tension → resolution), a vivid scene, and at least one moment of emotion or surprise that makes it memorable.\n- Vocabulary level: keep all OTHER words at roughly the same difficulty as the given list — don't simplify to beginner level, but avoid obscure words the learner hasn't seen.\n- Tone: warm, imaginative, slightly literary — think short-story rather than textbook exercise.\n- Return only the story text. No title, no commentary, no word list.\n\nVocabulary: ${wordList}`;
 
             this.readingLoading = true;
             this.readingArticle = '';
@@ -3398,14 +3398,14 @@ new Vue({
             const timeoutId  = setTimeout(() => controller.abort(), 18000);
             try {
                 const res = await fetch(
-                    `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
+                    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
                     {
                         method:  'POST',
                         headers: { 'Content-Type': 'application/json' },
                         signal:  controller.signal,
                         body: JSON.stringify({
                             contents: [{ parts: [{ text: prompt }] }],
-                            generationConfig: { maxOutputTokens: 1500, temperature: 0.9 }
+                            generationConfig: { maxOutputTokens: 800, temperature: 0.9, thinkingConfig: { thinkingBudget: 0 } }
                         })
                     }
                 );
