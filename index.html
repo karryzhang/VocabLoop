@@ -3044,7 +3044,7 @@ new Vue({
         },
 
         // ── Card interaction ──────────────────────────────────────────────
-        onCardClick() { if (!this.flipped) this.flipCard(); },
+        onCardClick() { if (!this.flipped) this.flipCard(); else this.playAudio(this.cur.word); },
         flipCard()    { this.flipped = !this.flipped; },
 
         // ── SRS answer ────────────────────────────────────────────────────
