@@ -1201,6 +1201,62 @@
             background: var(--blue); color: #fff; font-size: 0.9rem; font-weight: 600;
         }
         .reading-key-save:hover { opacity: 0.88; }
+        .reading-key-area .reading-key-row {
+            display: flex; gap: 8px; align-items: center; width: 100%; max-width: 340px;
+        }
+        .reading-key-paste {
+            flex-shrink: 0; padding: 9px 12px; border-radius: 8px;
+            border: 1.5px solid var(--border); background: var(--card);
+            color: var(--text); cursor: pointer; font-size: 1rem; line-height: 1;
+        }
+        .reading-key-paste:hover { border-color: var(--blue); }
+        .reading-key-steps { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 340px; }
+        .reading-key-step {
+            display: flex; align-items: center; gap: 9px;
+            font-size: 0.83rem; color: var(--muted); margin: 0;
+        }
+        .reading-key-num {
+            width: 20px; height: 20px; border-radius: 50%; background: var(--blue); color: #fff;
+            font-size: 0.72rem; font-weight: 700; display: flex; align-items: center;
+            justify-content: center; flex-shrink: 0;
+        }
+        .reading-key-cta {
+            display: inline-block; padding: 8px 16px; margin-left: 29px;
+            background: var(--blue); color: #fff; border-radius: 9px;
+            text-decoration: none; font-size: 0.85rem; font-weight: 600;
+        }
+        .reading-key-cta:hover { opacity: 0.88; }
+        /* History */
+        .reading-hist-btn {
+            background: none; border: none; cursor: pointer;
+            color: var(--muted); font-size: 0.8rem; padding: 4px 9px;
+            border-radius: 6px; white-space: nowrap;
+        }
+        .reading-hist-btn:hover  { background: var(--surface); color: var(--text); }
+        .reading-hist-btn.active { color: var(--blue); }
+        .reading-hist-empty {
+            text-align: center; color: var(--muted); font-size: 0.88rem; padding: 48px 0;
+        }
+        .reading-hist-item {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 14px 16px; cursor: pointer;
+            transition: border-color 0.15s;
+        }
+        .reading-hist-item:hover { border-color: var(--blue); }
+        .reading-hist-meta {
+            display: flex; align-items: center; gap: 7px; margin-bottom: 7px;
+        }
+        .reading-hist-date   { font-size: 0.77rem; color: var(--muted); }
+        .reading-hist-deck   {
+            font-size: 0.7rem; background: var(--blue); color: #fff;
+            padding: 1px 7px; border-radius: 20px; font-weight: 700;
+        }
+        .reading-hist-wcount { font-size: 0.77rem; color: var(--muted); margin-left: auto; }
+        .reading-hist-preview {
+            font-size: 0.85rem; color: var(--text); line-height: 1.55;
+            overflow: hidden; display: -webkit-box;
+            -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+        }
         .reading-error {
             display: flex; flex-direction: column; align-items: center;
             gap: 8px; padding: 40px 0; text-align: center;
@@ -1848,18 +1904,52 @@
     <div v-if="readingOpen" class="reading-overlay">
         <div class="reading-hd">
             <span class="reading-hd-title">📖 {{ui.readingTitle}}</span>
-            <button class="reading-close" @click="closeReading">✕</button>
+            <div style="display:flex;gap:6px;align-items:center">
+                <button v-if="geminiKey" class="reading-hist-btn"
+                        :class="{active: readingHistoryOpen}"
+                        @click="readingHistoryOpen = !readingHistoryOpen">
+                    📋 {{ui.readingHistory}}
+                </button>
+                <button class="reading-close" @click="closeReading">✕</button>
+            </div>
         </div>
         <div class="reading-body">
             <!-- Key input (no key saved yet) -->
             <div v-if="!geminiKey" class="reading-key-area">
                 <div class="reading-key-info">🔑 {{ui.readingKeyInfo}}</div>
-                <a class="reading-key-link" href="https://aistudio.google.com/app/apikey" target="_blank">{{ui.readingKeyLink}}</a>
-                <input class="reading-key-input" v-model="geminiKeyInput"
-                       :placeholder="ui.readingKeyPh"
-                       @keyup.enter="saveGeminiKey" />
-                <button class="reading-key-save" @click="saveGeminiKey">{{ui.readingKeySave}}</button>
+                <div class="reading-key-steps">
+                    <p class="reading-key-step">
+                        <span class="reading-key-num">1</span>{{ui.readingKeyStep1}}
+                    </p>
+                    <a class="reading-key-cta" href="https://aistudio.google.com/app/apikey" target="_blank">{{ui.readingKeyLink}}</a>
+                    <p class="reading-key-step">
+                        <span class="reading-key-num">2</span>{{ui.readingKeyStep2}}
+                    </p>
+                </div>
+                <div class="reading-key-row">
+                    <input class="reading-key-input" v-model="geminiKeyInput"
+                           :placeholder="ui.readingKeyPh"
+                           @keyup.enter="saveGeminiKey" />
+                    <button class="reading-key-paste" @click="pasteApiKey" :title="ui.readingPaste">📋</button>
+                    <button class="reading-key-save" @click="saveGeminiKey">{{ui.readingKeySave}}</button>
+                </div>
             </div>
+
+            <!-- History list -->
+            <template v-else-if="readingHistoryOpen">
+                <div v-if="readingHistory.length === 0" class="reading-hist-empty">
+                    {{ui.readingHistoryEmpty}}
+                </div>
+                <div v-for="entry in readingHistory" :key="entry.id"
+                     class="reading-hist-item" @click="openHistoryItem(entry)">
+                    <div class="reading-hist-meta">
+                        <span class="reading-hist-date">{{entry.date}}</span>
+                        <span class="reading-hist-deck">{{entry.deckId}}</span>
+                        <span class="reading-hist-wcount">{{entry.words.length}} {{LANG==='zh'?'词':'words'}}</span>
+                    </div>
+                    <div class="reading-hist-preview">{{entry.text.slice(0,100)}}…</div>
+                </div>
+            </template>
 
             <!-- Loading -->
             <div v-else-if="readingLoading" class="reading-loading">
@@ -2052,7 +2142,12 @@ const STRINGS = {
     readingErrNet:   '网络连接失败，请检查网络后重试',
     readingErrTime:  '请求超时，请重试',
     readingRegen:    '重新生成',
-    readingWordList: '本篇涵盖词汇：',
+    readingWordList:     '本篇涵盖词汇：',
+    readingHistory:      '历史',
+    readingHistoryEmpty: '暂无历史文章',
+    readingPaste:        '粘贴',
+    readingKeyStep1:     '前往 Google AI Studio 获取免费 Key',
+    readingKeyStep2:     '复制 Key，粘贴到下方输入框',
     pwaAndroidDesc: '添加到主屏幕，随时随地刷词', pwaAndroidInstall: '安装', pwaAndroidDismiss: '关闭',
     pwaIOSTitle: '添加 VocabLoop 到主屏幕', pwaIOSDesc: '像 App 一样随时打开，无需浏览器',
     pwaIOSStep1: '点击底部工具栏的 <em>分享</em> 按钮',
@@ -2166,7 +2261,12 @@ const STRINGS = {
     readingErrNet:   'Network error — please check your connection',
     readingErrTime:  'Request timed out — please retry',
     readingRegen:    'Regenerate',
-    readingWordList: 'Words covered:',
+    readingWordList:     'Words covered:',
+    readingHistory:      'History',
+    readingHistoryEmpty: 'No stories yet',
+    readingPaste:        'Paste',
+    readingKeyStep1:     'Go to Google AI Studio to get a free key',
+    readingKeyStep2:     'Copy the key and paste it below',
     pwaAndroidDesc: 'Add to home screen for quick access', pwaAndroidInstall: 'Install', pwaAndroidDismiss: 'Dismiss',
     pwaIOSTitle: 'Add VocabLoop to Home Screen', pwaIOSDesc: 'Open it like an app — no browser needed',
     pwaIOSStep1: 'Tap the <em>Share</em> button in the toolbar',
@@ -2459,8 +2559,10 @@ new Vue({
             readingLoading:  false,
             readingError:    '',
             readingWordObjs: [],
-            geminiKey:       localStorage.getItem('gemini_key') || '',
-            geminiKeyInput:  '',
+            geminiKey:           localStorage.getItem('gemini_key') || '',
+            geminiKeyInput:      '',
+            readingHistory:      JSON.parse(localStorage.getItem('reading_history') || '[]'),
+            readingHistoryOpen:  false,
             // ── Undo ────────────────────────────────────────────────────
             undoSnap:  null,   // pre-answer snapshot
             showUndo:  false,  // undo button visibility
@@ -3345,12 +3447,23 @@ new Vue({
 
         // ── Reading overlay ─────────────────────────────────────────
         openReading() {
-            this.readingError   = '';
-            this.readingArticle = '';
-            this.readingOpen    = true;
+            this.readingHistoryOpen = false;
+            this.readingError       = '';
+            this.readingOpen        = true;
             if (this.geminiKey) {
-                this.readingLoading = true;
-                this.generateReading();
+                // Serve cached article for today + current deck without re-generating
+                const tdy    = today();
+                const cached = this.readingHistory.find(
+                    e => e.date === tdy && e.deckId === this.currentDeck.id);
+                if (cached) {
+                    this.readingWordObjs = cached.words.map(
+                        w => this.allWords.find(aw => aw.word === w.word) || w);
+                    this.readingArticle  = cached.text;
+                } else {
+                    this.readingArticle = '';
+                    this.readingLoading = true;
+                    this.generateReading();
+                }
             }
         },
         saveGeminiKey() {
@@ -3363,10 +3476,37 @@ new Vue({
             this.generateReading();
         },
         closeReading() {
-            this.readingOpen    = false;
-            this.readingArticle = '';
-            this.readingError   = '';
-            this.readingLoading = false;
+            this.readingOpen        = false;
+            this.readingArticle     = '';
+            this.readingError       = '';
+            this.readingLoading     = false;
+            this.readingHistoryOpen = false;
+        },
+        openHistoryItem(entry) {
+            this.readingWordObjs    = entry.words.map(
+                w => this.allWords.find(aw => aw.word === w.word) || w);
+            this.readingArticle     = entry.text;
+            this.readingHistoryOpen = false;
+            this.readingError       = '';
+        },
+        saveReadingHistory(text) {
+            const entry = {
+                id:     Date.now(),
+                date:   today(),
+                deckId: this.currentDeck.id,
+                words:  this.readingWordObjs.map(w => ({ word: w.word, zh: w.zh })),
+                text,
+            };
+            this.readingHistory.unshift(entry);
+            if (this.readingHistory.length > 30)
+                this.readingHistory = this.readingHistory.slice(0, 30);
+            localStorage.setItem('reading_history', JSON.stringify(this.readingHistory));
+        },
+        async pasteApiKey() {
+            try {
+                const text = await navigator.clipboard.readText();
+                if (text) this.geminiKeyInput = text.trim();
+            } catch (_) { /* clipboard permission denied — user pastes manually */ }
         },
         // Tap on a highlighted vocab word → show its Chinese meaning as a toast
         onVocabHlClick(e) {
@@ -3422,6 +3562,7 @@ new Vue({
                 const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
                 if (!text) throw { _type: 'generic' };
                 this.readingArticle = text.trim();
+                this.saveReadingHistory(text.trim());
             } catch (e) {
                 clearTimeout(timeoutId);
                 if (e.name === 'AbortError') {
