@@ -1384,11 +1384,9 @@
                 <button class="btn-hd" :class="{active: practiceMode}"
                         @click="practiceMode ? exitPractice() : startPractice()"
                         :title="ui.practiceBtn">✏️</button>
-                <!-- 隐藏：延展阅读功能待测试
                 <button class="btn-hd" :class="{active: readingOpen}"
                         @click="readingOpen ? closeReading() : openReading()"
                         :title="ui.readingBtn">📖</button>
-                -->
                 <button class="btn-hd danger" @click="confirmReset">{{ui.resetBtn}}</button>
             </div>
         </div>
@@ -1656,9 +1654,7 @@
         </div>
         <button class="btn-more" @click="loadMore">{{ui.doneContinue}}</button>
         <button class="btn-practice" @click="startPractice">✏️ {{ui.practiceBtn}}</button>
-        <!-- 隐藏：延展阅读功能待测试
         <button class="btn-reading" @click="openReading">📖 {{ui.readingBtn}}</button>
-        -->
     </div>
 
     <!-- Main -->
@@ -3402,14 +3398,14 @@ new Vue({
             const timeoutId  = setTimeout(() => controller.abort(), 18000);
             try {
                 const res = await fetch(
-                    `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
+                    `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
                     {
                         method:  'POST',
                         headers: { 'Content-Type': 'application/json' },
                         signal:  controller.signal,
                         body: JSON.stringify({
                             contents: [{ parts: [{ text: prompt }] }],
-                            generationConfig: { maxOutputTokens: 600, temperature: 0.9 }
+                            generationConfig: { maxOutputTokens: 1500, temperature: 0.9 }
                         })
                     }
                 );
