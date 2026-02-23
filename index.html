@@ -1,0 +1,3721 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+
+    <!-- ── SEO ─────────────────────────────────────────────────────── -->
+    <title>VocabLoop – 智能英语单词记忆 | 间隔重复闪卡 · PET / 口语 / 加密</title>
+    <meta name="description" content="VocabLoop 是基于间隔重复算法的英语词汇学习 PWA，涵盖 PET 考试词汇、日常口语短语、网络缩写和加密金融术语。支持离线使用、真人发音、学习进度追踪。">
+    <meta name="keywords" content="英语单词,间隔重复,闪卡,PET词汇,英语学习,口语短语,vocabulary,flashcard,spaced repetition,英语背单词">
+    <meta name="author" content="VocabLoop">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://karryzhang.github.io/codingdad/english/flashcard.html">
+
+    <!-- ── PWA / Home Screen ────────────────────────────────────────── -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a3a5c">
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="VocabLoop">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+
+    <!-- ── Open Graph (Facebook / WeChat / Slack 等预览) ─────────────── -->
+    <meta property="og:type"        content="website">
+    <meta property="og:site_name"   content="VocabLoop">
+    <meta property="og:url"         content="https://karryzhang.github.io/codingdad/english/flashcard.html">
+    <meta property="og:title"       content="VocabLoop – 智能英语单词记忆">
+    <meta property="og:description" content="基于间隔重复算法的英语词汇 PWA，PET 考试 · 日常口语 · 加密金融词汇，支持离线与真人发音。">
+    <meta property="og:image"       content="https://karryzhang.github.io/codingdad/english/icons/icon-512.png">
+    <meta property="og:image:width"  content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:image:alt"   content="VocabLoop 图标 – 蓝色背景白色 V 字母与循环箭头">
+    <meta property="og:locale"      content="zh_CN">
+
+    <!-- ── Twitter / X Card ────────────────────────────────────────── -->
+    <meta name="twitter:card"        content="summary">
+    <meta name="twitter:title"       content="VocabLoop – 智能英语单词记忆">
+    <meta name="twitter:description" content="间隔重复闪卡 PWA，PET 考试 · 日常口语 · 加密词汇，随时随地背单词。">
+    <meta name="twitter:image"       content="https://karryzhang.github.io/codingdad/english/icons/icon-512.png">
+
+    <!-- ── JSON-LD 结构化数据 ─────────────────────────────────────────── -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "VocabLoop",
+      "url": "https://karryzhang.github.io/codingdad/english/flashcard.html",
+      "description": "基于间隔重复算法的英语词汇学习 PWA，涵盖 PET 考试词汇、日常口语短语和加密金融术语，支持离线使用与真人发音。",
+      "applicationCategory": "EducationApplication",
+      "operatingSystem": "Web, iOS, Android",
+      "inLanguage": ["zh-CN", "en"],
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "image": "https://karryzhang.github.io/codingdad/english/icons/icon-512.png",
+      "featureList": ["间隔重复算法", "PET词汇", "日常口语短语", "网络缩写", "加密金融词汇", "离线PWA", "真人发音"]
+    }
+    </script>
+
+    <!-- ── 性能预连接 ─────────────────────────────────────────────────── -->
+    <link rel="preconnect" href="https://api.dictionaryapi.dev">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #f0f4f9;
+            --surface: #fff;
+            --border: #e2e8f0;
+            --text: #1e2533;
+            --muted: #7a8299;
+            --blue: #3b82f6;
+            --green: #22c55e;
+            --amber: #f59e0b;
+            --red: #ef4444;
+            --purple: #8b5cf6;
+            --card-back: #1a3a5c;
+            --r: 16px;
+        }
+
+        html, body { height: 100%; touch-action: manipulation; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC',
+                         'Microsoft YaHei', 'Segoe UI', Roboto, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            /* home indicator / gesture bar on iPhone X+ and Android */
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        /* ── Safe-area padding (iOS notch / Android cutout / home indicator) ── */
+        /* env() falls back to 0 on desktop, so this is safe everywhere        */
+        .hd {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            /* top padding absorbs status-bar height on both iOS & Android */
+            padding: calc(10px + env(safe-area-inset-top)) 14px 0;
+            display: flex;
+            flex-direction: column;
+        }
+        /* Row 1: title + action buttons — never wraps */
+        .hd-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding-bottom: 8px;
+        }
+        .hd-title {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--blue);
+            white-space: nowrap;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        /* Row 2: stats chips — always one line, scrollable */
+        .chips {
+            display: flex;
+            gap: 5px;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            padding-bottom: 10px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .chips::-webkit-scrollbar { display: none; }
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 3px 9px;
+            border-radius: 99px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .chip-new    { background: #dbeafe; color: #1d4ed8; }
+        .chip-learn  { background: #fef3c7; color: #92400e; }
+        .chip-review { background: #d1fae5; color: #065f46; }
+        .chip-master { background: #ede9fe; color: #5b21b6; }
+        .chip-streak { background: #ffe4e6; color: #be123c; }
+        .chip-daily  { background: #fff7ed; color: #c2410c; }
+        .level-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+        .hd-btns { display: flex; gap: 6px; align-items: center; }
+        .btn-hd {
+            background: none;
+            border: 1px solid var(--border);
+            padding: 3px 9px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.78rem;
+            color: var(--muted);
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .btn-hd:hover { border-color: var(--blue); color: var(--blue); }
+        .btn-hd.active { border-color: var(--blue); background: var(--blue); color: #fff; }
+        .btn-hd.danger:hover { border-color: var(--red); color: var(--red); }
+
+        /* ── Deck selector bar ───────────────── */
+        .deck-bar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 6px 14px;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+        }
+        .deck-btn {
+            background: none;
+            border: 1.5px solid var(--border);
+            padding: 5px 14px;
+            border-radius: 99px;
+            cursor: pointer;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--muted);
+            white-space: nowrap;
+            transition: all 0.15s;
+            flex-shrink: 0;
+        }
+        .deck-btn:hover { border-color: var(--blue); color: var(--blue); }
+        .deck-btn.active { border-color: var(--blue); color: var(--blue); background: #eff6ff; }
+
+        /* ── Loading ─────────────────────────── */
+        .loading-scr {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            color: var(--muted);
+        }
+        .spinner {
+            width: 36px; height: 36px;
+            border: 3px solid var(--border);
+            border-top-color: var(--blue);
+            border-radius: 50%;
+            animation: spin 0.75s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── Done screen ─────────────────────── */
+        .done-scr {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 32px 20px;
+            gap: 14px;
+        }
+        .done-emoji  { font-size: 5rem; line-height: 1; }
+        .done-title  { font-size: 1.9rem; font-weight: 800; }
+        .done-stats  {
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 6px 0;
+        }
+        .done-stat       { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+        .done-stat-val   { font-size: 2.2rem; font-weight: 800; color: var(--blue); }
+        .done-stat-label { font-size: 0.78rem; color: var(--muted); }
+        .done-level      { font-size: 1rem; color: var(--purple); font-weight: 700; }
+        .btn-more {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: #fff;
+            border: none;
+            padding: 14px 36px;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 8px;
+            box-shadow: 0 4px 16px rgba(59,130,246,0.35);
+            transition: box-shadow 0.15s, transform 0.1s;
+        }
+        .btn-more:hover  { box-shadow: 0 6px 22px rgba(59,130,246,0.45); transform: translateY(-1px); }
+        .btn-more:active { transform: scale(0.97); box-shadow: none; }
+
+        /* ── Card area ───────────────────────── */
+        .card-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 14px 14px 18px;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* ── List view ───────────────────────── */
+        .wl-wrap { width: 100%; overflow-y: auto; flex: 1; }
+        .wl-section { margin-bottom: 20px; }
+        .wl-section-title {
+            font-size: .69rem; font-weight: 700; color: var(--muted);
+            text-transform: uppercase; letter-spacing: .08em;
+            padding: 0 2px 7px; border-bottom: 1px solid var(--border);
+        }
+        .wl-row {
+            padding: 9px 6px; border-radius: 8px; cursor: pointer;
+            transition: background .12s;
+            border-bottom: 1px solid var(--border);
+        }
+        .wl-row:last-child { border-bottom: none; }
+        .wl-row:hover { background: rgba(59,130,246,.06); }
+        .wl-row.open {
+            background: var(--surface); border-bottom-color: transparent;
+            margin-bottom: 3px; box-shadow: 0 1px 4px rgba(0,0,0,.07);
+        }
+        .wl-row-head { display: flex; align-items: center; gap: 9px; }
+        .wl-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+        .wl-dot-new    { background: #22c55e; }
+        .wl-dot-learn  { background: #f97316; }
+        .wl-dot-review { background: #3b82f6; }
+        .wl-word { font-weight: 700; color: var(--text); flex-shrink: 0; min-width: 76px; font-size: .9rem; }
+        .wl-zh-short { flex: 1; color: var(--muted); font-size: .82rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .wl-chevron { color: #c0c8d8; font-size: .78rem; flex-shrink: 0; transition: transform .2s; line-height: 1; }
+        .wl-row.open .wl-chevron { transform: rotate(90deg); color: var(--blue); }
+        .wl-detail {
+            margin-top: 8px; padding: 9px 10px; border-radius: 7px;
+            background: #f0f4f9;
+            display: flex; flex-wrap: wrap; align-items: center; gap: 5px 10px;
+        }
+        .wl-ipa { font-family: 'SF Mono', Menlo, monospace; color: var(--muted); font-size: .78rem; }
+        .wl-pos-badge {
+            background: #dbeafe; border-radius: 4px;
+            padding: 1px 7px; font-size: .7rem; color: #1d4ed8; font-weight: 600;
+        }
+        .wl-zh-full { color: var(--text); font-size: .88rem; width: 100%; margin-top: 2px; font-weight: 500; }
+        .wl-example-text { color: var(--muted); font-size: .76rem; font-style: italic; width: 100%; margin-top: 4px; }
+
+        /* progress */
+        .prog-row {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .prog-track {
+            flex: 1; height: 10px;
+            background: var(--border);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+        .prog-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--green), var(--blue));
+            border-radius: 99px;
+            transition: width 0.5s cubic-bezier(.4,0,.2,1);
+        }
+        .prog-text {
+            font-size: 0.76rem;
+            color: var(--muted);
+            min-width: 46px;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        /* card wrapper */
+        .card-wrap {
+            width: 100%;
+            perspective: 1400px;
+            margin-bottom: 20px;
+        }
+        .card-wrap.shaking  { animation: do-shake  0.45s ease; }
+        .card-wrap.bouncing { animation: do-bounce 0.35s ease; }
+
+        @keyframes do-shake {
+            0%,100% { transform: translateX(0); }
+            15%     { transform: translateX(-8px); }
+            30%     { transform: translateX(8px); }
+            50%     { transform: translateX(-5px); }
+            70%     { transform: translateX(5px); }
+            85%     { transform: translateX(-2px); }
+        }
+        @keyframes do-bounce {
+            0%,100% { transform: scale(1); }
+            40%     { transform: scale(1.045); }
+            70%     { transform: scale(0.985); }
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            transform-style: preserve-3d;
+            transition: transform 0.5s cubic-bezier(.4,0,.2,1);
+            cursor: pointer;
+            outline: none;
+        }
+        .card.flipped { transform: rotateY(180deg); }
+        .card:focus-visible {
+            outline: 2px solid var(--blue);
+            outline-offset: 4px;
+            border-radius: var(--r);
+        }
+
+        .face {
+            position: absolute; inset: 0;
+            backface-visibility: hidden;
+            border-radius: var(--r);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 22px 20px 20px;
+            box-shadow: 0 12px 40px rgba(30,64,175,0.13), 0 2px 8px rgba(0,0,0,0.07);
+        }
+        .face.front {
+            background: linear-gradient(160deg, #ffffff 0%, #f0f5ff 100%);
+            border: 1px solid rgba(59,130,246,0.10);
+        }
+        .face.back  {
+            background: linear-gradient(148deg, #1e4480 0%, #0c1f3d 100%);
+            color: #fff;
+            transform: rotateY(180deg);
+        }
+
+        /* front face elements */
+        .pos-tag {
+            position: absolute; top: 12px; right: 12px;
+            background: #eef2fb; color: var(--blue);
+            font-size: 0.66rem; font-weight: 700;
+            text-transform: uppercase;
+            padding: 2px 8px; border-radius: 99px;
+        }
+        .front-word {
+            font-size: 2.6rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-align: center;
+            line-height: 1.1;
+            color: #1a2540;
+        }
+        .front-ipa {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-top: 6px;
+            letter-spacing: 0.03em;
+            min-height: 1.3em;
+        }
+        .front-ipa.fetching {
+            color: #ccd;
+            animation: blink 1.4s ease-in-out infinite;
+        }
+        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .audio-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: none;
+            border: 1.5px solid var(--border);
+            border-radius: 99px;
+            padding: 6px 18px;
+            margin-top: 12px;
+            cursor: pointer;
+            font-size: 0.84rem;
+            color: var(--muted);
+            transition: border-color 0.15s, color 0.15s, background 0.15s;
+            min-height: 36px;
+        }
+        .audio-btn:hover { border-color: var(--blue); color: var(--blue); }
+        .audio-btn.playing {
+            border-color: var(--green);
+            color: var(--green);
+            background: #f0fdf4;
+        }
+        .front-hint {
+            position: absolute; bottom: 13px;
+            font-size: 0.72rem; color: #c0c8d8;
+        }
+
+        /* back face elements */
+        .stage-tag {
+            position: absolute; top: 12px; left: 12px;
+            font-size: 0.66rem; font-weight: 700;
+            padding: 2px 8px; border-radius: 99px;
+        }
+        .st-new     { background: rgba(59,130,246,.25);  color: #93c5fd; }
+        .st-learning{ background: rgba(245,158,11,.25);  color: #fcd34d; }
+        .st-young   { background: rgba(34,197,94,.25);   color: #86efac; }
+        .st-mature  { background: rgba(139,92,246,.25);  color: #c4b5fd; }
+        .st-relearn { background: rgba(239,68,68,.25);   color: #fca5a5; }
+
+        .back-fullform {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,.55);
+            text-align: center;
+            margin-bottom: 4px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            padding: 0 12px;
+        }
+        .back-word {
+            font-size: 1.0rem;
+            font-weight: 700;
+            color: rgba(255,255,255,.6);
+            text-align: center;
+            letter-spacing: 0.04em;
+            margin-bottom: 4px;
+            padding: 0 12px;
+        }
+        .back-zh {
+            font-size: 2.1rem;
+            font-weight: 800;
+            text-align: center;
+            line-height: 1.2;
+        }
+        .back-pos {
+            display: inline-block;
+            background: rgba(255,255,255,.15);
+            border-radius: 99px;
+            padding: 2px 10px;
+            font-size: 0.74rem;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+        .back-example {
+            font-size: 0.79rem;
+            color: rgba(255,255,255,.72);
+            font-style: italic;
+            text-align: center;
+            margin-top: 8px;
+            padding: 0 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.5;
+        }
+        .back-example-src {
+            font-size: 0.62rem;
+            color: rgba(255,255,255,.3);
+            text-align: center;
+            margin-top: 3px;
+            font-style: normal;
+        }
+        .back-footer {
+            position: absolute; bottom: 12px;
+            font-size: 0.76rem;
+            color: rgba(255,255,255,.4);
+            letter-spacing: 0.01em;
+        }
+
+        /* controls */
+        .controls {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .2s;
+        }
+        .controls.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .cb {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px 6px;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: 700;
+            gap: 4px;
+            transition: transform 0.12s, box-shadow 0.12s;
+            min-height: 64px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+        .cb:hover  { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.10); }
+        .cb:active { transform: scale(0.93); box-shadow: none; }
+        .cb-again { background: #fee2e2; color: #b91c1c; }
+        .cb-hard  { background: #fef9c3; color: #854d0e; }
+        .cb-good  { background: #dcfce7; color: #14532d; }
+        .cb-easy  { background: #ede9fe; color: #4c1d95; }
+        .cb-label    { font-size: 0.9rem; }
+        .cb-interval { font-size: 0.68rem; opacity: 0.7; }
+
+        .controls-wrap {
+            position: relative;
+            width: 100%;
+            height: 88px;       /* fixed: cb 64px + padding 12px×2 — never changes */
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .key-hint {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.76rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .2s;
+        }
+        .key-hint.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* toast */
+        .toast-anchor {
+            position: fixed;
+            /* Push well below header + deck-bar on all devices (incl. iPhone safe-area) */
+            top: calc(170px + env(safe-area-inset-top, 0px));
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 300;
+            pointer-events: none;
+        }
+        .toast {
+            padding: 8px 22px;
+            border-radius: 99px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: #fff;
+            white-space: nowrap;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .t-good  { background: var(--green); }
+        .t-bad   { background: var(--red); }
+        .t-bonus { background: var(--purple); }
+
+        .toast-enter-active, .toast-leave-active { transition: opacity .25s, transform .25s; }
+        .toast-enter    { opacity: 0; transform: translateY(-8px); }
+        .toast-leave-to { opacity: 0; transform: translateY(-8px); }
+
+
+        /* footer */
+        .ft {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 8px 16px;
+            text-align: center;
+        }
+        .ft-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+        .ft-row strong { color: var(--text); }
+        .xp-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .xp-label {
+            font-size: 0.68rem;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+        .xp-track {
+            flex: 1;
+            height: 8px;
+            background: var(--border);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+        .xp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--purple), var(--blue));
+            border-radius: 99px;
+            transition: width 0.6s cubic-bezier(.4,0,.2,1);
+        }
+        .xp-next {
+            font-size: 0.68rem;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        /* ── Force-refresh button ────────────────────────── */
+        #upd-zone {
+            padding: 16px 0 max(22px, env(safe-area-inset-bottom));
+            text-align: center;
+        }
+        .brand-tagline {
+            margin-top: 10px;
+            font-size: 0.64rem;
+            color: var(--muted);
+            opacity: 0.45;
+            letter-spacing: 0.04em;
+        }
+        #upd-btn {
+            background: transparent;
+            border: 1.5px solid var(--border);
+            border-radius: 99px;
+            padding: 5px 14px 5px 10px;
+            font-size: 0.72rem;
+            color: var(--muted);
+            cursor: pointer;
+            opacity: 0.35;
+            transition: opacity 0.25s, border-color 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+        #upd-btn:hover  { opacity: 1; border-color: var(--blue); color: var(--blue); }
+        #upd-btn:active { opacity: 1; }
+        .upd-ring { font-size: 0.9rem; display: inline-block; }
+        #upd-btn.upd-go .upd-ring  { animation: updSpin 0.55s linear infinite; }
+        #upd-btn.upd-blast         { animation: updBlast 0.4s ease-in forwards; pointer-events: none; }
+        @keyframes updSpin  { to { transform: rotate(360deg); } }
+        @keyframes updBlast {
+            0%   { opacity: 1; transform: scale(1)    translateY(0); }
+            55%  { opacity: 1; transform: scale(1.18) translateY(-10px); }
+            100% { opacity: 0; transform: scale(0.15) translateY(-60px); }
+        }
+
+        /* ── Small mobile (≤ 390px) ──────────────────────── */
+        @media (max-width: 390px) {
+            .hd         { padding: calc(6px + env(safe-area-inset-top)) 10px 0; }
+            .hd-top     { padding-bottom: 6px; }
+            .hd-title   { font-size: 0.9rem; }
+            .chip       { font-size: 0.68rem; padding: 2px 6px; }
+            .level-badge{ font-size: 0.7rem; }
+            .btn-hd     { padding: 2px 7px; font-size: 0.72rem; }
+            .deck-btn   { font-size: 0.75rem; padding: 4px 10px; }
+            .card       { height: 292px; }
+            .front-word { font-size: 2.1rem; }
+            .back-zh    { font-size: 1.75rem; }
+            .cb         { min-height: 56px; padding: 10px 4px; border-radius: 14px; }
+            .cb-label   { font-size: 0.8rem; }
+            .cb-interval{ font-size: 0.62rem; }
+            .controls   { gap: 7px; }
+            .controls-wrap { height: 76px; }   /* 56px + 10px×2 */
+            .card-area  { padding: 10px 10px 14px; }
+            .back-example{ font-size: 0.74rem; }
+            .done-stat-val { font-size: 1.8rem; }
+        }
+
+        /* ── Regular mobile (391–599px) ──────────────────── */
+        @media (min-width: 391px) and (max-width: 599px) {
+            .card { height: 308px; }
+        }
+
+        /* ── Tablet / iPad (≥ 600px) ─────────────────────── */
+        @media (min-width: 600px) {
+            .card-area  { max-width: 680px; }
+            .card       { height: 350px; }
+            .front-word { font-size: 3rem; }
+            .back-zh    { font-size: 2.4rem; }
+            .back-example { font-size: 0.85rem; }
+            .cb         { padding: 14px 10px; min-height: 72px; border-radius: 18px; }
+            .cb-label   { font-size: 0.95rem; }
+            .cb-interval{ font-size: 0.72rem; }
+            .controls   { gap: 14px; }
+            .controls-wrap { height: 100px; }  /* 72px + 14px×2 */
+            .prog-track { height: 12px; }
+            .xp-track   { height: 10px; }
+            .done-stat-val { font-size: 2.5rem; }
+            .done-title { font-size: 2.1rem; }
+            .btn-more   { padding: 16px 48px; font-size: 1rem; }
+        }
+
+        /* ── iPad Pro / Desktop (≥ 900px) ────────────────── */
+        @media (min-width: 900px) {
+            .card-area  { max-width: 720px; }
+            .card       { height: 360px; }
+            .front-word { font-size: 3.2rem; }
+            .back-zh    { font-size: 2.5rem; }
+        }
+
+        /* ── Add-to-Home-Screen prompts ───────────────────────────────── */
+
+        /* Android install banner (bottom bar) */
+        #pwa-android {
+            display: none;
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            z-index: 9999;
+            padding: 12px 16px max(12px, env(safe-area-inset-bottom));
+            background: #fff;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.14);
+            border-radius: 16px 16px 0 0;
+            align-items: center;
+            gap: 12px;
+            animation: slideUp 0.35s ease;
+        }
+        #pwa-android.show { display: flex; }
+        #pwa-android .pwa-icon {
+            width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
+        }
+        #pwa-android .pwa-text { flex: 1; }
+        #pwa-android .pwa-text strong { display: block; font-size: 0.97rem; color: #1e2533; }
+        #pwa-android .pwa-text span   { font-size: 0.8rem; color: #64748b; }
+        #pwa-install-btn {
+            padding: 9px 18px;
+            background: linear-gradient(135deg,#2563EB,#6D28D9);
+            color: #fff; border: none; border-radius: 20px;
+            font-size: 0.9rem; font-weight: 600; cursor: pointer;
+            white-space: nowrap;
+        }
+        #pwa-dismiss-android {
+            background: none; border: none; font-size: 1.3rem; cursor: pointer;
+            color: #94a3b8; padding: 4px 6px; flex-shrink: 0;
+        }
+
+        /* iOS guide overlay (full-screen) */
+        #pwa-ios {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            align-items: flex-end;
+            justify-content: center;
+        }
+        #pwa-ios.show { display: flex; animation: fadeInBg 0.3s ease; }
+
+        #pwa-ios-card {
+            background: #fff;
+            border-radius: 24px 24px 0 0;
+            padding: 24px 24px max(24px, env(safe-area-inset-bottom));
+            width: 100%; max-width: 480px;
+            animation: slideUp 0.38s cubic-bezier(0.34,1.3,0.64,1);
+        }
+        #pwa-ios-card .pwa-header {
+            display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+        }
+        #pwa-ios-card .pwa-header img {
+            width: 56px; height: 56px; border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+        }
+        #pwa-ios-card .pwa-header-text h3 {
+            font-size: 1.1rem; font-weight: 700; color: #1e2533;
+        }
+        #pwa-ios-card .pwa-header-text p {
+            font-size: 0.82rem; color: #64748b; margin-top: 2px;
+        }
+        #pwa-ios-card .pwa-steps {
+            background: #f8faff; border-radius: 16px;
+            padding: 16px 18px; margin-bottom: 18px;
+        }
+        #pwa-ios-card .pwa-step {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 0;
+        }
+        #pwa-ios-card .pwa-step + .pwa-step {
+            border-top: 1px solid #e9eef6;
+        }
+        #pwa-ios-card .step-num {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: linear-gradient(135deg,#2563EB,#6D28D9);
+            color: #fff; font-size: 0.82rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        #pwa-ios-card .step-text { font-size: 0.9rem; color: #2d3748; line-height: 1.4; }
+        #pwa-ios-card .step-text em { font-style: normal; font-weight: 600; color: #2563EB; }
+        #pwa-ios-card .step-icon {
+            margin-left: auto; font-size: 1.3rem; flex-shrink: 0;
+        }
+        #pwa-dismiss-ios {
+            width: 100%;
+            padding: 13px;
+            background: #f1f5f9; border: none; border-radius: 14px;
+            color: #475569; font-size: 0.95rem; font-weight: 600;
+            cursor: pointer;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+        @keyframes fadeInBg {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        /* ── Practice Mode ───────────────────────────────────────────────── */
+        .prac-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 14px 14px 18px;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+            gap: 14px;
+        }
+
+        /* Progress bar row */
+        .prac-progress {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+        .prac-prog-track {
+            flex: 1; height: 10px;
+            background: var(--border);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+        .prac-prog-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--purple), var(--blue));
+            border-radius: 99px;
+            transition: width 0.4s ease;
+        }
+        .prac-prog-text { font-size: 0.76rem; color: var(--muted); min-width: 40px; text-align: right; white-space: nowrap; }
+        .prac-score     { font-size: 0.76rem; font-weight: 700; color: var(--purple); min-width: 36px; text-align: right; white-space: nowrap; }
+
+        /* Question card */
+        .prac-card {
+            width: 100%;
+            background: var(--surface);
+            border-radius: var(--r);
+            padding: 26px 20px 22px;
+            box-shadow: 0 12px 40px rgba(30,64,175,0.13), 0 2px 8px rgba(0,0,0,0.07);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid var(--border);
+            text-align: center;
+            min-height: 160px;
+        }
+        .prac-type-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--muted);
+            opacity: 0.75;
+        }
+        .prac-word {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #1a2540;
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+        }
+        .prac-zh       { font-size: 1.4rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+        .prac-ipa      { font-size: 0.9rem; color: var(--muted); }
+        .prac-example  { font-size: 0.8rem; color: var(--muted); font-style: italic; max-width: 92%; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .prac-hint     { font-size: 0.84rem; color: var(--muted); }
+        .prac-partial  { font-family: 'SF Mono', Menlo, monospace; font-size: 1.1rem; color: var(--blue); letter-spacing: 3px; font-weight: 700; }
+        .prac-audio-prompt { margin: 6px 0; }
+        .prac-zh-hint  { font-size: 1rem; color: var(--muted); font-weight: 600; }
+
+        /* True/False pair display */
+        .prac-tf-pair  { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .prac-tf-eq    { font-size: 1.4rem; color: var(--muted); font-weight: 300; line-height: 1; }
+
+        /* Multiple-choice options */
+        .prac-options  { width: 100%; display: flex; flex-direction: column; gap: 10px; }
+        .prac-opt {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1.5px solid var(--border);
+            background: var(--surface);
+            font-size: 0.94rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            text-align: left;
+            transition: border-color 0.15s, background 0.15s, transform 0.1s;
+            line-height: 1.35;
+        }
+        .prac-opt:hover:not(:disabled) { border-color: var(--blue); background: #eff6ff; }
+        .prac-opt:active:not(:disabled) { transform: scale(0.98); }
+        .prac-opt:disabled { cursor: default; }
+        .prac-opt:focus, .prac-opt:focus-visible { outline: none; box-shadow: none; border-color: var(--border); background: var(--surface); }
+        .prac-opt { display: flex; justify-content: space-between; align-items: center; -webkit-tap-highlight-color: transparent; }
+        .prac-opt.correct  { border-color: var(--green) !important; background: #f0fdf4 !important; color: #14532d !important; animation: prac-pop 0.32s ease; }
+        .prac-opt.wrong    { border-color: var(--red)   !important; background: #fef2f2 !important; color: #b91c1c !important; animation: prac-shake 0.32s ease; }
+        .prac-opt-icon { font-size: 1rem; font-weight: 800; flex-shrink: 0; margin-left: 8px; }
+
+        /* True/False buttons */
+        .prac-tf-btns { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .prac-tf-btn {
+            padding: 16px 10px;
+            border-radius: 14px;
+            border: 1.5px solid var(--border);
+            background: var(--surface);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .prac-tf-true  { color: #14532d; }
+        .prac-tf-false { color: #b91c1c; }
+        .prac-tf-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.10); }
+        .prac-tf-btn:active:not(:disabled){ transform: scale(0.97); }
+        .prac-tf-btn:disabled { cursor: default; transform: none; box-shadow: none; }
+        .prac-tf-btn:focus, .prac-tf-btn:focus-visible { outline: none; box-shadow: none; border-color: var(--border); background: var(--surface); }
+        .prac-tf-btn { display: flex; align-items: center; justify-content: center; gap: 8px; -webkit-tap-highlight-color: transparent; }
+        .prac-tf-btn.correct { border-color: var(--green) !important; background: #f0fdf4 !important; color: #14532d !important; animation: prac-pop 0.32s ease; }
+        .prac-tf-btn.wrong   { border-color: var(--red)   !important; background: #fef2f2 !important; color: #b91c1c !important; animation: prac-shake 0.32s ease; }
+        /* On touch-only devices, suppress sticky :hover after tap */
+        @media (hover: none) {
+            .prac-opt:hover:not(:disabled)    { border-color: var(--border); background: var(--surface); }
+            .prac-tf-btn:hover:not(:disabled) { border-color: var(--border); background: var(--surface); transform: none; box-shadow: none; }
+        }
+
+        /* Spelling */
+        .prac-spell-wrap {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: stretch;
+        }
+        .prac-spell-input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1.5px solid var(--border);
+            font-size: 1.1rem;
+            font-weight: 600;
+            outline: none;
+            transition: border-color 0.15s;
+            text-align: center;
+            letter-spacing: 0.05em;
+            font-family: inherit;
+        }
+        .prac-spell-input:focus  { border-color: var(--blue); }
+        .prac-spell-input.correct{ border-color: var(--green); background: #f0fdf4; }
+        .prac-spell-input.wrong  { border-color: var(--red);   background: #fef2f2; }
+        .prac-spell-input:disabled { cursor: default; }
+        .prac-submit-btn {
+            padding: 12px;
+            background: linear-gradient(135deg, var(--blue), #1d4ed8);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.94rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.15s, transform 0.1s;
+        }
+        .prac-submit-btn:active { opacity: 0.85; transform: scale(0.97); }
+        .prac-correct-ans { font-size: 0.86rem; color: var(--muted); text-align: center; }
+        .prac-correct-ans strong { color: var(--green); }
+
+        /* Card slide transition */
+        .prac-q-enter-active { transition: opacity 0.22s ease, transform 0.22s ease; }
+        .prac-q-leave-active { transition: opacity 0.15s ease, transform 0.15s ease; }
+        .prac-q-enter        { opacity: 0; transform: translateX(28px); }
+        .prac-q-leave-to     { opacity: 0; transform: translateX(-20px); }
+
+        /* Correct/wrong micro-animations */
+        @keyframes prac-pop {
+            0%   { transform: scale(1); }
+            45%  { transform: scale(1.04); }
+            100% { transform: scale(1); }
+        }
+        @keyframes prac-shake {
+            0%, 100% { transform: translateX(0); }
+            25%       { transform: translateX(-5px); }
+            75%       { transform: translateX(5px); }
+        }
+
+        /* Practice done screen */
+        .prac-done {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 16px;
+            padding: 24px 20px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .prac-wrong-section {
+            width: 100%; text-align: left;
+            border-top: 1px solid var(--border); padding-top: 18px; margin-top: 4px;
+        }
+        .prac-wrong-title {
+            font-size: 0.78rem; font-weight: 700; color: var(--muted);
+            text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 12px;
+        }
+        .prac-wrong-item {
+            display: flex; flex-direction: column; gap: 3px;
+            padding: 10px 0; border-bottom: 1px solid var(--border);
+        }
+        .prac-wrong-item:last-child { border-bottom: none; }
+        .prac-wrong-row1 { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+        .prac-wrong-en   { font-size: 1rem; font-weight: 700; color: var(--text); }
+        .prac-wrong-pos  {
+            font-size: 0.72rem; color: var(--muted); background: var(--surface);
+            border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px;
+        }
+        .prac-wrong-ipa  { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+        .prac-wrong-zh   { font-size: 0.88rem; color: var(--muted); line-height: 1.45; }
+        .prac-done-emoji { font-size: 5rem; line-height: 1; }
+        .prac-done-title { font-size: 1.8rem; font-weight: 800; }
+        .prac-done-score { font-size: 1.1rem; color: var(--muted); font-weight: 600; }
+        .prac-done-bar-wrap { width: 100%; max-width: 280px; background: var(--border); border-radius: 99px; height: 14px; overflow: hidden; }
+        .prac-done-bar-fill  { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--green), var(--blue)); transition: width 0.9s cubic-bezier(.4,0,.2,1); }
+        /* ── Matching question ─────────────────────────────────────────── */
+        .prac-match-wrap { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .prac-match-col  { display: flex; flex-direction: column; gap: 8px; }
+        .prac-match-item {
+            width: 100%; min-height: 48px; padding: 10px 8px;
+            border-radius: 10px; border: 1.5px solid var(--border);
+            background: var(--surface); color: var(--text);
+            font-size: 0.85rem; font-weight: 600; cursor: pointer;
+            text-align: center; line-height: 1.3;
+            transition: border-color 0.15s, background 0.15s, opacity 0.35s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .prac-match-item:hover:not(:disabled)  { border-color: var(--blue); background: #eff6ff; }
+        .prac-match-item:focus, .prac-match-item:focus-visible { outline: none; box-shadow: none; }
+        .prac-match-item.sel  { border-color: var(--blue); background: #dbeafe; color: var(--blue); }
+        .prac-match-item.elim { opacity: 0.22; cursor: default; border-color: var(--green); background: #f0fdf4; pointer-events: none; }
+        .prac-match-item.shake { animation: prac-shake 0.35s ease; border-color: var(--red) !important; background: #fef2f2 !important; }
+
+        /* Practice start button (done screen + header) */
+        .btn-practice {
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 14px;
+            font-size: 0.92rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(139,92,246,0.35);
+            transition: box-shadow 0.15s, transform 0.1s;
+        }
+        .btn-practice:hover  { box-shadow: 0 6px 22px rgba(139,92,246,0.45); transform: translateY(-1px); }
+        .btn-practice:active { transform: scale(0.97); box-shadow: none; }
+
+        /* ── Reading overlay ───────────────────────────────────────── */
+        .reading-overlay {
+            position: fixed; inset: 0; z-index: 200;
+            background: var(--bg);
+            display: flex; flex-direction: column;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            animation: rdSlideUp 0.28s cubic-bezier(.32,.72,0,1);
+        }
+        @keyframes rdSlideUp {
+            from { transform: translateY(60px); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+        .reading-hd {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 18px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+        }
+        .reading-hd-title { font-size: 1rem; font-weight: 700; }
+        .reading-close {
+            background: none; border: none; font-size: 1.35rem;
+            cursor: pointer; color: var(--muted); padding: 4px 8px; line-height: 1;
+        }
+        .reading-body {
+            flex: 1; overflow-y: auto; padding: 20px 18px 28px;
+            -webkit-overflow-scrolling: touch;
+            display: flex; flex-direction: column; gap: 18px;
+        }
+        .reading-key-box {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 14px; padding: 18px 16px;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .reading-key-info { font-size: 0.88rem; color: var(--muted); line-height: 1.5; }
+        .reading-key-link { color: var(--blue); text-decoration: none; font-size: 0.85rem; }
+        .reading-key-row { display: flex; gap: 8px; }
+        .reading-key-input {
+            flex: 1; padding: 11px 14px; border: 1.5px solid var(--border);
+            border-radius: 10px; font-size: 0.88rem; outline: none;
+            font-family: 'SF Mono', monospace; background: var(--bg); color: var(--text);
+            letter-spacing: 0.02em;
+        }
+        .reading-key-input:focus { border-color: var(--blue); }
+        .reading-key-save {
+            padding: 11px 16px; background: var(--blue); color: #fff;
+            border: none; border-radius: 10px; font-weight: 700;
+            cursor: pointer; white-space: nowrap; font-size: 0.9rem;
+        }
+        .reading-loading {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 10px; padding: 48px 0; text-align: center;
+        }
+        .reading-spinner {
+            width: 28px; height: 28px; border: 3px solid var(--border);
+            border-top-color: var(--blue); border-radius: 50%;
+            animation: spin 0.7s linear infinite; margin-bottom: 4px;
+        }
+        .reading-loading-main { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+        .reading-loading-sub  { font-size: 0.82rem; color: var(--muted); }
+        .reading-key-area {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 12px; padding: 32px 16px; text-align: center;
+        }
+        .reading-key-info { font-size: 0.92rem; color: var(--text); font-weight: 600; }
+        .reading-key-link { font-size: 0.82rem; color: var(--blue); text-decoration: none; }
+        .reading-key-link:hover { text-decoration: underline; }
+        .reading-key-input {
+            width: 100%; max-width: 320px; padding: 9px 12px;
+            border: 1.5px solid var(--border); border-radius: 8px;
+            background: var(--card); color: var(--text);
+            font-size: 0.85rem; outline: none; box-sizing: border-box;
+        }
+        .reading-key-input:focus { border-color: var(--blue); }
+        .reading-key-save {
+            padding: 9px 22px; border-radius: 8px; border: none; cursor: pointer;
+            background: var(--blue); color: #fff; font-size: 0.9rem; font-weight: 600;
+        }
+        .reading-key-save:hover { opacity: 0.88; }
+        .reading-error {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 8px; padding: 40px 0; text-align: center;
+        }
+        .reading-error-icon { font-size: 2.2rem; line-height: 1; }
+        .reading-error-msg  { font-size: 0.9rem; color: var(--red); line-height: 1.5; max-width: 280px; }
+        .reading-article {
+            font-size: 1rem; line-height: 1.95; color: var(--text); white-space: pre-wrap;
+        }
+        .vocab-hl {
+            font-weight: 800;
+            color: var(--blue);
+            font-style: normal;
+            cursor: pointer;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            text-underline-offset: 3px;
+        }
+        .reading-word-list {
+            padding-top: 16px; border-top: 1px solid var(--border);
+            font-size: 0.82rem; color: var(--muted); line-height: 1.9;
+        }
+        .reading-word-list strong { color: var(--text); }
+        .reading-regen {
+            width: 100%; padding: 13px; border: 1.5px solid var(--blue);
+            color: var(--blue); background: none; border-radius: 12px;
+            font-weight: 700; cursor: pointer; font-size: 0.9rem;
+        }
+        .btn-reading {
+            width: 100%; padding: 14px;
+            background: linear-gradient(135deg, #059669, #047857);
+            color: #fff; border: none; border-radius: 14px;
+            font-size: 0.95rem; font-weight: 700; cursor: pointer; margin-top: 4px;
+            box-shadow: 0 4px 16px rgba(5,150,105,0.3);
+            transition: box-shadow 0.15s, transform 0.1s;
+        }
+        .btn-reading:hover  { box-shadow: 0 6px 22px rgba(5,150,105,0.4); transform: translateY(-1px); }
+        .btn-reading:active { transform: scale(0.97); box-shadow: none; }
+
+        /* ── Responsive adjustments for practice ─────────────── */
+        @media (max-width: 390px) {
+            .prac-area     { padding: 10px 10px 14px; gap: 10px; }
+            .prac-word     { font-size: 1.9rem; }
+            .prac-zh       { font-size: 1.2rem; }
+            .prac-opt      { font-size: 0.85rem; padding: 11px 12px; }
+            .prac-tf-btn   { font-size: 0.9rem; padding: 13px 8px; }
+            .prac-card     { padding: 20px 14px 16px; gap: 8px; }
+        }
+        /* ── Undo button (floats briefly after each SRS answer) ────────────── */
+        .undo-btn {
+            position: fixed;
+            bottom: calc(72px + env(safe-area-inset-bottom));
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 250;
+            background: rgba(120,130,150,0.28);
+            color: rgba(255,255,255,0.55);
+            border: 1px solid rgba(255,255,255,0.10);
+            padding: 6px 16px;
+            border-radius: 99px;
+            font-size: 0.78rem;
+            font-weight: 400;
+            cursor: pointer;
+            white-space: nowrap;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            box-shadow: none;
+            pointer-events: auto;
+        }
+        .undo-btn:hover  { background: rgba(120,130,150,0.45); color: rgba(255,255,255,0.8); }
+        .undo-btn:active { transform: translateX(-50%) scale(0.96); }
+
+        /* ── Practice exit button (in progress row) ─────────────────────── */
+        .prac-exit-btn {
+            background: none; border: none; cursor: pointer;
+            color: var(--muted); font-size: 1.1rem; padding: 2px 4px;
+            line-height: 1; flex-shrink: 0; border-radius: 6px;
+            transition: color 0.15s;
+        }
+        .prac-exit-btn:hover { color: var(--red); }
+
+        /* ── Clickable chips ─────────────────────────────────────────────── */
+        .chip-btn {
+            cursor: pointer;
+            border: none;
+            transition: filter 0.15s, transform 0.1s;
+        }
+        .chip-btn:hover  { filter: brightness(0.93); }
+        .chip-btn:active { transform: scale(0.95); }
+        /* Number pop when chip value changes (no out-in: old disappears instantly, new pops) */
+        .chip-num-enter-active { animation: chipPop 0.38s ease-out; }
+        .chip-num-leave-active { display: none; }
+        @keyframes chipPop {
+            0%   { transform: scale(0.7); opacity: 0; }
+            60%  { transform: scale(1.4); opacity: 1; }
+            100% { transform: scale(1);   opacity: 1; }
+        }
+
+        /* ── Word list modal ─────────────────────────────────────────────── */
+        .wl-overlay {
+            position: fixed; inset: 0; z-index: 500;
+            background: rgba(0,0,0,0.45);
+            display: flex; align-items: flex-end;
+            -webkit-backdrop-filter: blur(2px);
+            backdrop-filter: blur(2px);
+        }
+        .wl-sheet {
+            width: 100%; max-height: 82vh;
+            background: var(--bg);
+            border-radius: 20px 20px 0 0;
+            display: flex; flex-direction: column;
+            box-shadow: 0 -4px 32px rgba(0,0,0,0.18);
+            overflow: hidden;
+        }
+        .wl-header {
+            display: flex; align-items: center; gap: 10px;
+            padding: 16px 18px 12px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .wl-title {
+            flex: 1; font-size: 1.05rem; font-weight: 700; color: var(--text);
+        }
+        .wl-count {
+            font-size: 0.82rem; color: var(--muted); font-weight: 600;
+        }
+        .wl-close {
+            background: none; border: none; cursor: pointer;
+            color: var(--muted); font-size: 1.25rem; padding: 2px 6px;
+            line-height: 1; border-radius: 8px; transition: color 0.15s;
+        }
+        .wl-close:hover { color: var(--text); }
+        .wl-list {
+            overflow-y: auto; flex: 1;
+            padding: 8px 0 env(safe-area-inset-bottom, 12px);
+        }
+        .wl-empty {
+            text-align: center; color: var(--muted);
+            padding: 40px 20px; font-size: 0.95rem;
+        }
+        .wl-item {
+            display: flex; align-items: baseline; gap: 10px;
+            padding: 10px 18px;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.12s;
+        }
+        .wl-item:last-child { border-bottom: none; }
+        .wl-item:hover { background: var(--surface); }
+        .wl-en   { font-weight: 700; font-size: 1rem; color: var(--text); min-width: 0; }
+        .wl-pos  { font-size: 0.72rem; color: var(--muted); flex-shrink: 0; }
+        .wl-zh   { font-size: 0.88rem; color: var(--blue); flex: 1; min-width: 0; }
+        .wl-stage-badge {
+            font-size: 0.68rem; font-weight: 700; padding: 2px 7px;
+            border-radius: 99px; flex-shrink: 0; white-space: nowrap;
+        }
+        .wl-badge-new     { background: #dbeafe; color: #1d4ed8; }
+        .wl-badge-learning{ background: #fef3c7; color: #92400e; }
+        .wl-badge-relearn { background: #fee2e2; color: #991b1b; }
+        .wl-badge-young   { background: #d1fae5; color: #065f46; }
+        .wl-badge-mature  { background: #bbf7d0; color: #14532d; }
+        .wl-badge-mastered{ background: #ede9fe; color: #5b21b6; }
+
+    </style>
+</head>
+<body>
+<div id="app">
+
+    <!-- Header -->
+    <div class="hd">
+        <!-- Row 1: title + action buttons -->
+        <div class="hd-top">
+            <div class="hd-title">{{currentDeck.icon}} {{currentDeck.name}}</div>
+            <div class="hd-btns">
+                <button class="btn-hd" :class="{active: autoPlay}" @click="autoPlay = !autoPlay"
+                        :title="autoPlay ? ui.autoPlayOn : ui.autoPlayOff">🔊</button>
+                <button class="btn-hd" :class="{active: viewMode === 'list'}"
+                        @click="viewMode = viewMode === 'card' ? 'list' : 'card'"
+                        :title="viewMode === 'card' ? ui.viewList : ui.viewCard">
+                    {{ viewMode === 'card' ? '☰' : '⊟' }}
+                </button>
+                <button class="btn-hd" :class="{active: practiceMode}"
+                        @click="practiceMode ? exitPractice() : startPractice()"
+                        :title="ui.practiceBtn">✏️</button>
+                <button class="btn-hd" :class="{active: readingOpen}"
+                        @click="readingOpen ? closeReading() : openReading()"
+                        :title="ui.readingBtn">📖</button>
+                <button class="btn-hd danger" @click="confirmReset">{{ui.resetBtn}}</button>
+            </div>
+        </div>
+        <!-- Row 2: stats chips (horizontal scroll, always one line) -->
+        <div class="chips">
+            <button class="chip chip-new chip-btn"   @click="showWordList('new')"
+                    :title="ui.wlNew">🆕 <transition name="chip-num"><span :key="qs.newCount">{{qs.newCount}}</span></transition></button>
+            <button class="chip chip-learn chip-btn" @click="showWordList('learn')"
+                    :title="ui.wlLearn">📖 <transition name="chip-num"><span :key="qs.learnCount">{{qs.learnCount}}</span></transition></button>
+            <button class="chip chip-review chip-btn" @click="showWordList('review')"
+                    :title="ui.wlReview">🔁 <transition name="chip-num"><span :key="qs.reviewCount">{{qs.reviewCount}}</span></transition></button>
+            <button class="chip chip-master chip-btn" @click="showWordList('mastered')"
+                    :title="ui.wlMastered">🏆 <transition name="chip-num"><span :key="masteredCount">{{masteredCount}}</span></transition></button>
+            <span class="chip chip-streak" v-if="streak >= 3">🔥 {{streak}}</span>
+            <span class="chip chip-daily"  v-if="dailyStreak >= 2">📅 {{dailyStreak}}{{ui.dayUnit}}</span>
+        </div>
+    </div>
+
+    <!-- Deck Selector -->
+    <div class="deck-bar">
+        <button v-for="d in decks" :key="d.id"
+                class="deck-btn"
+                :class="{active: d.id === currentDeck.id}"
+                @click="switchDeck(d)">
+            {{d.icon}} {{d.name}}
+        </button>
+    </div>
+
+    <!-- Loading -->
+    <div v-if="loading" class="loading-scr">
+        <div class="spinner"></div>
+        <p>{{ui.loading}}</p>
+    </div>
+
+    <!-- ── Practice Mode ─────────────────────────────────────────────── -->
+    <div v-else-if="practiceMode" class="prac-area">
+
+        <!-- Practice done screen -->
+        <div v-if="practiceDone" class="prac-done">
+            <div class="prac-done-emoji">
+                {{practiceScore / practiceQueue.length >= 1 ? '🏆' : practiceScore / practiceQueue.length >= 0.8 ? '🎉' : practiceScore / practiceQueue.length >= 0.5 ? '👍' : '💪'}}
+            </div>
+            <div class="prac-done-title">{{ui.practiceDoneTitle}}</div>
+            <div class="prac-done-score">{{ui.practiceDoneScore(practiceScore, practiceQueue.length)}}</div>
+            <div class="prac-done-bar-wrap">
+                <div class="prac-done-bar-fill" :style="{width: (practiceScore / practiceQueue.length * 100) + '%'}"></div>
+            </div>
+
+            <!-- Wrong words list -->
+            <div v-if="practiceWrongWords.length > 0" class="prac-wrong-section">
+                <div class="prac-wrong-title">{{ui.practiceWrongTitle}} · {{practiceWrongWords.length}}</div>
+                <div v-for="w in practiceWrongWords" :key="w.word" class="prac-wrong-item">
+                    <div class="prac-wrong-row1">
+                        <span class="prac-wrong-en">{{w.word}}</span>
+                        <span class="prac-wrong-pos" v-if="w.pos">{{w.pos}}</span>
+                        <span class="prac-wrong-ipa" v-if="dictCache[w.word] && dictCache[w.word].ipa">/{{dictCache[w.word].ipa}}/</span>
+                    </div>
+                    <div class="prac-wrong-zh">{{w.zh}}</div>
+                </div>
+            </div>
+
+            <button class="btn-more" @click="exitPractice">{{ui.practiceDoneBack}}</button>
+        </div>
+
+        <!-- Question screen -->
+        <template v-else-if="practiceCurrent">
+
+            <!-- Progress bar (outside transition so it stays stable) -->
+            <div class="prac-progress">
+                <button class="prac-exit-btn" @click="exitPractice" :title="ui.practiceExitBtn">✕</button>
+                <div class="prac-prog-track">
+                    <div class="prac-prog-fill" :style="{width: (practiceIndex / practiceQueue.length * 100) + '%'}"></div>
+                </div>
+                <div class="prac-prog-text">{{practiceIndex + 1}} / {{practiceQueue.length}}</div>
+                <div class="prac-score">{{practiceScore}} ⭐</div>
+            </div>
+
+            <!-- Animated question body -->
+            <transition name="prac-q" mode="out-in">
+            <div :key="practiceIndex" style="width:100%;display:flex;flex-direction:column;gap:14px;align-items:center;">
+
+            <!-- Question card -->
+            <div class="prac-card">
+                <!-- mc-word-to-zh: show English word, pick Chinese -->
+                <template v-if="practiceCurrent.type === 'mc-word-to-zh'">
+                    <div class="prac-type-label">{{ui.practiceMCWordToZh}}</div>
+                    <div class="prac-word">{{practiceCurrent.word.word}}</div>
+                    <div class="prac-ipa" v-if="dictCache[practiceCurrent.word.word] && dictCache[practiceCurrent.word.word].ipa">
+                        /{{dictCache[practiceCurrent.word.word].ipa}}/
+                    </div>
+                </template>
+
+                <!-- mc-zh-to-word: show Chinese meaning, pick English word -->
+                <template v-else-if="practiceCurrent.type === 'mc-zh-to-word'">
+                    <div class="prac-type-label">{{ui.practiceMCZhToWord}}</div>
+                    <div class="prac-zh">{{practiceCurrent.word.zh}}</div>
+                </template>
+
+                <!-- mc-audio-to-word: play audio + show Chinese hint, pick English word -->
+                <template v-else-if="practiceCurrent.type === 'mc-audio-to-word'">
+                    <div class="prac-type-label">{{ui.practiceMCAudioToWord}}</div>
+                    <div class="prac-audio-prompt">
+                        <button class="audio-btn" :class="{playing: audioPlaying}"
+                                @click="playAudio(practiceCurrent.word.word)">
+                            🔊 {{audioPlaying ? ui.audioPlaying : ui.practicePlayAgain}}
+                        </button>
+                    </div>
+                    <div class="prac-zh-hint">{{practiceCurrent.word.zh}}</div>
+                </template>
+
+                <!-- spelling: show Chinese + example + partial hint, type full word -->
+                <template v-else-if="practiceCurrent.type === 'spelling'">
+                    <div class="prac-type-label">{{ui.practiceSpelling}}</div>
+                    <div class="prac-zh">{{practiceCurrent.word.zh}}</div>
+                    <div class="prac-example" v-if="practiceCurrent.word.ex">"{{practiceCurrent.word.ex}}"</div>
+                    <div class="prac-hint">{{ui.practiceHint}}<span class="prac-partial">{{practiceCurrent.partial}}</span></div>
+                </template>
+
+                <!-- truefalse: show word = zh pairing, judge correct/wrong -->
+                <template v-else-if="practiceCurrent.type === 'truefalse'">
+                    <div class="prac-type-label">{{ui.practiceTrueFalse}}</div>
+                    <div class="prac-tf-pair">
+                        <div class="prac-word" style="font-size:1.9rem;">{{practiceCurrent.word.word}}</div>
+                        <div class="prac-tf-eq">=</div>
+                        <div class="prac-zh">{{practiceCurrent.displayZh}}</div>
+                    </div>
+                </template>
+
+                <!-- matching: type label only in card; grid rendered below -->
+                <template v-else-if="practiceCurrent.type === 'matching'">
+                    <div class="prac-type-label">{{ui.practiceMatching}}</div>
+                    <div style="font-size:0.82rem;color:var(--muted);">
+                        {{matchElim.length}} / {{practiceCurrent.pairs.length}} ✓
+                    </div>
+                </template>
+            </div>
+
+            <!-- Matching grid (outside card, full-width) -->
+            <div v-if="practiceCurrent.type === 'matching'" class="prac-match-wrap">
+                <div class="prac-match-col">
+                    <button v-for="item in practiceCurrent.leftItems" :key="item.key"
+                            class="prac-match-item"
+                            :class="{
+                                sel:   matchSelLeft === item.key,
+                                elim:  matchElim.includes(item.key),
+                                shake: matchShakeKeys.includes(item.key),
+                            }"
+                            @click="selectMatchLeft(item.key)">
+                        {{item.label}}
+                    </button>
+                </div>
+                <div class="prac-match-col">
+                    <button v-for="item in practiceCurrent.rightItems" :key="item.key"
+                            class="prac-match-item"
+                            :class="{
+                                elim:  matchElim.includes(item.key),
+                                shake: matchShakeKeys.includes(item.key),
+                            }"
+                            :style="matchSelLeft && !matchElim.includes(item.key) ? 'border-color:var(--blue);background:#eff6ff' : ''"
+                            @click="selectMatchRight(item.key)">
+                        {{item.label}}
+                    </button>
+                </div>
+            </div>
+
+            <!-- MC options (shared by mc-word-to-zh, mc-zh-to-word, mc-audio-to-word) -->
+            <div v-if="practiceCurrent.type !== 'spelling' && practiceCurrent.type !== 'truefalse' && practiceCurrent.type !== 'matching'"
+                 class="prac-options">
+                <button v-for="opt in practiceCurrent.options" :key="opt.value"
+                        class="prac-opt"
+                        :class="{
+                            correct: practiceAnswered && opt.value === practiceCurrent.correct,
+                            wrong:   practiceAnswered && practiceSelected === opt.value && opt.value !== practiceCurrent.correct,
+                        }"
+                        :disabled="practiceAnswered"
+                        @click="submitPracticeAnswer(opt.value)">
+                    <span>{{opt.label}}</span>
+                    <span v-if="practiceAnswered && opt.value === practiceCurrent.correct" class="prac-opt-icon" style="color:var(--green)">✓</span>
+                    <span v-else-if="practiceAnswered && practiceSelected === opt.value" class="prac-opt-icon" style="color:var(--red)">✗</span>
+                </button>
+            </div>
+
+            <!-- True/False buttons -->
+            <div v-else-if="practiceCurrent.type === 'truefalse'" class="prac-tf-btns">
+                <button class="prac-tf-btn prac-tf-true"
+                        :class="{
+                            correct: practiceAnswered && practiceCurrent.correct === 'true',
+                            wrong:   practiceAnswered && practiceSelected === 'true' && practiceCurrent.correct !== 'true',
+                        }"
+                        :disabled="practiceAnswered"
+                        @click="submitPracticeAnswer('true')">
+                    <span>{{ui.practiceTrueBtn}}</span>
+                    <span v-if="practiceAnswered && practiceCurrent.correct === 'true'" class="prac-opt-icon" style="color:var(--green)">✓</span>
+                    <span v-else-if="practiceAnswered && practiceSelected === 'true'" class="prac-opt-icon" style="color:var(--red)">✗</span>
+                </button>
+                <button class="prac-tf-btn prac-tf-false"
+                        :class="{
+                            correct: practiceAnswered && practiceCurrent.correct === 'false',
+                            wrong:   practiceAnswered && practiceSelected === 'false' && practiceCurrent.correct !== 'false',
+                        }"
+                        :disabled="practiceAnswered"
+                        @click="submitPracticeAnswer('false')">
+                    <span>{{ui.practiceFalseBtn}}</span>
+                    <span v-if="practiceAnswered && practiceCurrent.correct === 'false'" class="prac-opt-icon" style="color:var(--green)">✓</span>
+                    <span v-else-if="practiceAnswered && practiceSelected === 'false'" class="prac-opt-icon" style="color:var(--red)">✗</span>
+                </button>
+            </div>
+
+            <!-- Spelling input -->
+            <div v-else-if="practiceCurrent.type === 'spelling'" class="prac-spell-wrap">
+                <input ref="spellInput"
+                       v-model="practiceInput"
+                       class="prac-spell-input"
+                       :class="{correct: practiceResult === 'correct', wrong: practiceResult === 'wrong'}"
+                       :placeholder="ui.practiceInputPh"
+                       :disabled="practiceAnswered"
+                       @keydown.enter.prevent="!practiceAnswered && submitPracticeAnswer(practiceInput)" />
+                <button v-if="!practiceAnswered"
+                        class="prac-submit-btn"
+                        @click="submitPracticeAnswer(practiceInput)">{{ui.practiceSubmit}}</button>
+                <div v-if="practiceAnswered && practiceResult === 'wrong'" class="prac-correct-ans">
+                    {{ui.practiceCorrectAns}}<strong>{{practiceCurrent.correct}}</strong>
+                </div>
+            </div>
+
+            </div><!-- /prac-q key -->
+            </transition>
+
+        </template>
+    </div>
+
+    <!-- Session Done -->
+    <div v-else-if="sessionDone" class="done-scr">
+        <div class="done-emoji">🎉</div>
+        <div class="done-title">{{ui.doneTitle}}</div>
+        <div class="done-stats">
+            <div class="done-stat">
+                <div class="done-stat-val">{{todayLearnedCount}}</div>
+                <div class="done-stat-label">{{ui.doneTodayLearned}}</div>
+            </div>
+            <div class="done-stat">
+                <div class="done-stat-val">{{sessionCorrect}}</div>
+                <div class="done-stat-label">{{ui.doneSessionCorrect}}</div>
+            </div>
+            <div class="done-stat">
+                <div class="done-stat-val">{{masteredCount}}</div>
+                <div class="done-stat-label">{{ui.doneMastered}}</div>
+            </div>
+            <div class="done-stat">
+                <div class="done-stat-val">{{dailyStreak}}</div>
+                <div class="done-stat-label">{{ui.doneDailyStreak}}</div>
+            </div>
+            <div class="done-stat">
+                <div class="done-stat-val">{{totalReviewed}}</div>
+                <div class="done-stat-label">{{ui.doneTotalReviewed}}</div>
+            </div>
+            <div class="done-stat">
+                <div class="done-stat-val">{{points}}</div>
+                <div class="done-stat-label">{{ui.donePoints}}</div>
+            </div>
+        </div>
+        <div class="done-level">{{levelInfo.icon}} {{levelInfo.name}} · {{levelInfo.desc}}</div>
+        <div v-if="achievements.length > 0" style="font-size:0.82rem;color:var(--muted);">
+            {{ui.achLabel}}：<span v-for="id in achievements" :key="id">{{achIcon(id)}}</span>
+        </div>
+        <button class="btn-more" @click="loadMore">{{ui.doneContinue}}</button>
+        <button class="btn-practice" @click="startPractice">✏️ {{ui.practiceBtn}}</button>
+        <button class="btn-reading" @click="openReading">📖 {{ui.readingBtn}}</button>
+    </div>
+
+    <!-- Main -->
+    <main v-else class="card-area">
+
+        <!-- List view -->
+        <template v-if="viewMode === 'list'">
+            <div class="wl-wrap">
+                <div class="wl-section" v-if="listLearnItems.length">
+                    <div class="wl-section-title">{{ui.listToLearn}} · {{listLearnItems.length}}</div>
+                    <div class="wl-row" :class="{open: expandedWords[w.word]}"
+                         v-for="w in listLearnItems" :key="'l-'+w.word"
+                         @click="toggleListWord(w.word)">
+                        <div class="wl-row-head">
+                            <span class="wl-dot" :class="wlDotClass(w.word)"></span>
+                            <span class="wl-word">{{w.word}}</span>
+                            <span class="wl-zh-short">{{w.zh}}</span>
+                            <span class="wl-chevron">›</span>
+                        </div>
+                        <div class="wl-detail" v-if="expandedWords[w.word]">
+                            <span class="wl-ipa" v-if="dictCache[w.word] && dictCache[w.word].ipa">/{{dictCache[w.word].ipa}}/</span>
+                            <span class="wl-pos-badge" v-if="w.pos">{{posZh(w.pos)}}</span>
+                            <span class="wl-zh-full">{{w.zh}}</span>
+                            <span class="wl-example-text" v-if="dictCache[w.word] && dictCache[w.word].example">"{{dictCache[w.word].example}}"</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="wl-section" v-if="listReviewItems.length">
+                    <div class="wl-section-title">{{ui.listToReview}} · {{listReviewItems.length}}</div>
+                    <div class="wl-row" :class="{open: expandedWords[w.word]}"
+                         v-for="w in listReviewItems" :key="'r-'+w.word"
+                         @click="toggleListWord(w.word)">
+                        <div class="wl-row-head">
+                            <span class="wl-dot" :class="wlDotClass(w.word)"></span>
+                            <span class="wl-word">{{w.word}}</span>
+                            <span class="wl-zh-short">{{w.zh}}</span>
+                            <span class="wl-chevron">›</span>
+                        </div>
+                        <div class="wl-detail" v-if="expandedWords[w.word]">
+                            <span class="wl-ipa" v-if="dictCache[w.word] && dictCache[w.word].ipa">/{{dictCache[w.word].ipa}}/</span>
+                            <span class="wl-pos-badge" v-if="w.pos">{{posZh(w.pos)}}</span>
+                            <span class="wl-zh-full">{{w.zh}}</span>
+                            <span class="wl-example-text" v-if="dictCache[w.word] && dictCache[w.word].example">"{{dictCache[w.word].example}}"</span>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="!listLearnItems.length && !listReviewItems.length"
+                     style="text-align:center;color:var(--muted);padding:40px 0;font-size:.9rem;">
+                    {{ui.doneTitle}}
+                </div>
+            </div>
+        </template>
+
+        <!-- Card view -->
+        <template v-else>
+        <!-- Progress -->
+        <div class="prog-row">
+            <div class="prog-track">
+                <div class="prog-fill" :style="{width: sessionPct + '%'}"></div>
+            </div>
+            <div class="prog-text">{{queue.length}} {{ui.remaining}}</div>
+        </div>
+
+        <!-- Card -->
+        <div class="card-wrap" :class="{shaking, bouncing}">
+            <div class="card" :class="{flipped}"
+                 @click="onCardClick"
+                 tabindex="0"
+                 ref="card">
+
+                <!-- Front -->
+                <div class="face front">
+                    <div class="pos-tag" v-if="curDict && curDict.pos">
+                        {{posZh(curDict.pos)}}
+                    </div>
+                    <div class="front-word">{{cur.word}}</div>
+                    <div class="front-ipa"
+                         :class="{fetching: cur.word && !(cur.word in dictCache)}">
+                        {{curDict && curDict.ipa ? curDict.ipa : (cur.word && !(cur.word in dictCache) ? '···' : '')}}
+                    </div>
+                    <button class="audio-btn" :class="{playing: audioPlaying}"
+                            @click.stop="playAudio(cur.word)">
+                        <span>🔊</span> <span>{{audioPlaying ? ui.audioPlaying : ui.audioPlay}}</span>
+                    </button>
+                    <div class="front-hint">{{ui.flipHint}}</div>
+                </div>
+
+                <!-- Back -->
+                <div class="face back">
+                    <div class="stage-tag" :class="'st-' + curStage">
+                        {{stageLabel[curStage]}}
+                    </div>
+                    <div class="back-fullform" v-if="curZhParts.full">{{curZhParts.full}}</div>
+                    <div class="back-word">{{cur.word}}</div>
+                    <div class="back-zh">{{curZhParts.zh}}</div>
+                    <div class="back-pos" v-if="curDict && curDict.pos">
+                        {{posZh(curDict.pos)}}
+                    </div>
+                    <div class="back-example" v-if="curExample">
+                        "{{curExample.text}}"
+                    </div>
+                    <div class="back-footer">
+                        {{cur.word}}
+                        <span v-if="curDict && curDict.ipa"> · {{curDict.ipa}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons (after flip) -->
+        <div class="controls-wrap">
+            <div class="controls" :class="{visible: flipped}">
+                <button class="cb cb-again" @click="answer('again')" :disabled="!flipped">
+                    <span class="cb-label">{{ui.btnAgain}}</span>
+                    <span class="cb-interval">{{iv('again')}}</span>
+                </button>
+                <button class="cb cb-hard" @click="answer('hard')" :disabled="!flipped">
+                    <span class="cb-label">{{ui.btnHard}}</span>
+                    <span class="cb-interval">{{iv('hard')}}</span>
+                </button>
+                <button class="cb cb-good" @click="answer('good')" :disabled="!flipped">
+                    <span class="cb-label">{{ui.btnGood}}</span>
+                    <span class="cb-interval">{{iv('good')}}</span>
+                </button>
+                <button class="cb cb-easy" @click="answer('easy')" :disabled="!flipped">
+                    <span class="cb-label">{{ui.btnEasy}}</span>
+                    <span class="cb-interval">{{iv('easy')}}</span>
+                </button>
+            </div>
+            <div class="key-hint" :class="{visible: !flipped}" v-html="ui.keyHint"></div>
+        </div>
+        </template><!-- end card view -->
+    </main>
+
+    <!-- Footer -->
+    <div v-if="!loading && !sessionDone && !practiceMode" class="ft">
+        <div class="ft-row">
+            <span>{{ui.ftPoints}} <strong>{{points}}</strong></span>
+            <span>{{ui.ftStreak}} <strong>{{streak}}</strong></span>
+            <span>{{ui.ftMastered}} <strong>{{masteredCount}}</strong> / {{allWords.length}}</span>
+            <span>{{ui.ftTotalReviewed}} <strong>{{totalReviewed}}</strong></span>
+        </div>
+        <div class="xp-row">
+            <span class="xp-label">{{levelInfo.icon}} {{levelInfo.name}}</span>
+            <div class="xp-track">
+                <div class="xp-fill" :style="{width: levelProgress + '%'}"></div>
+            </div>
+            <span class="xp-next" v-if="nextLevelInfo">{{nextLevelInfo.icon}} {{nextLevelInfo.name}}</span>
+            <span class="xp-next" v-else>{{ui.ftMaxLevel}}</span>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-anchor">
+        <transition name="toast">
+            <div v-if="toast" class="toast" :class="'t-' + toast.type">{{toast.msg}}</div>
+        </transition>
+    </div>
+
+    <!-- Undo last answer button (visible for 4s after each SRS answer) -->
+    <transition name="toast">
+        <button v-if="showUndo && !practiceMode" class="undo-btn" @click="undoAnswer">{{ui.undoBtn}}</button>
+    </transition>
+
+    <!-- ── Word list modal (bottom sheet) ──────────────────────────── -->
+    <transition name="toast">
+        <div v-if="wordListModal" class="wl-overlay" @click.self="closeWordList">
+            <div class="wl-sheet">
+                <div class="wl-header">
+                    <div class="wl-title">{{wordListModal.title}}</div>
+                    <div class="wl-count">{{wordListModal.words.length}}</div>
+                    <button class="wl-close" @click="closeWordList">✕</button>
+                </div>
+                <div class="wl-list">
+                    <div v-if="wordListModal.words.length === 0" class="wl-empty">{{ui.wlEmpty}}</div>
+                    <div v-for="w in wordListModal.words" :key="w.word" class="wl-item">
+                        <span class="wl-en">{{w.word}}</span>
+                        <span class="wl-pos" v-if="w.pos">{{w.pos}}</span>
+                        <span class="wl-zh">{{w.zh}}</span>
+                        <span class="wl-stage-badge"
+                              :class="'wl-badge-' + (state[w.word] ? state[w.word].stage : 'new')">
+                            {{ui.stages[state[w.word] ? state[w.word].stage : 'new']}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </transition>
+
+    <!-- ── Reading overlay ─────────────────────────────────────────── -->
+    <div v-if="readingOpen" class="reading-overlay">
+        <div class="reading-hd">
+            <span class="reading-hd-title">📖 {{ui.readingTitle}}</span>
+            <button class="reading-close" @click="closeReading">✕</button>
+        </div>
+        <div class="reading-body">
+            <!-- Key input (no key saved yet) -->
+            <div v-if="!geminiKey" class="reading-key-area">
+                <div class="reading-key-info">🔑 {{ui.readingKeyInfo}}</div>
+                <a class="reading-key-link" href="https://aistudio.google.com/app/apikey" target="_blank">{{ui.readingKeyLink}}</a>
+                <input class="reading-key-input" v-model="geminiKeyInput"
+                       :placeholder="ui.readingKeyPh"
+                       @keyup.enter="saveGeminiKey" />
+                <button class="reading-key-save" @click="saveGeminiKey">{{ui.readingKeySave}}</button>
+            </div>
+
+            <!-- Loading -->
+            <div v-else-if="readingLoading" class="reading-loading">
+                <div class="reading-spinner"></div>
+                <span class="reading-loading-main">{{ui.readingLoading}}</span>
+                <span class="reading-loading-sub">✨ {{readingWordObjs.length > 0 ? readingWordObjs.length + (LANG === 'zh' ? ' 个词汇' : ' words') : ''}}</span>
+            </div>
+
+            <!-- Error -->
+            <div v-else-if="readingError" class="reading-error">
+                <div class="reading-error-icon">⚠️</div>
+                <div class="reading-error-msg">{{readingError}}</div>
+                <button class="reading-regen" @click="generateReading">🔄 {{ui.readingRegen}}</button>
+            </div>
+
+            <!-- Article -->
+            <template v-else-if="readingArticle">
+                <div class="reading-article" v-html="highlightedArticle" @click="onVocabHlClick"></div>
+                <div class="reading-word-list">
+                    <span style="font-weight:600;color:var(--text)">{{ui.readingWordList}}</span>
+                    <span v-for="(w, i) in readingWordObjs" :key="w.word">
+                        <strong style="color:var(--blue)">{{w.word}}</strong><span style="color:var(--muted)"> {{w.zh}}</span><span v-if="i < readingWordObjs.length - 1"> · </span>
+                    </span>
+                </div>
+                <button class="reading-regen" @click="generateReading">🔄 {{ui.readingRegen}}</button>
+            </template>
+        </div>
+    </div>
+
+</div>
+
+<!-- ── Force-refresh zone ──────────────────────────────────────────────── -->
+<div id="upd-zone">
+    <button id="upd-btn">
+        <span class="upd-ring">↻</span>
+        <span class="upd-txt"></span>
+    </button>
+    <p class="brand-tagline">VocabLoop · Your memory, on a perfect loop.</p>
+</div>
+
+<!-- ── Android PWA install banner ─────────────────────────────────────── -->
+<div id="pwa-android">
+    <img class="pwa-icon" src="icons/apple-touch-icon.png" alt="VocabLoop">
+    <div class="pwa-text">
+        <strong>VocabLoop</strong>
+        <span id="pwa-android-desc"></span>
+    </div>
+    <button id="pwa-install-btn"></button>
+    <button id="pwa-dismiss-android" aria-label="dismiss">✕</button>
+</div>
+
+<!-- ── iOS "Add to Home Screen" guide ────────────────────────────────── -->
+<div id="pwa-ios">
+    <div id="pwa-ios-card">
+        <div class="pwa-header">
+            <img src="icons/apple-touch-icon.png" alt="VocabLoop icon">
+            <div class="pwa-header-text">
+                <h3 id="pwa-ios-title"></h3>
+                <p id="pwa-ios-desc"></p>
+            </div>
+        </div>
+        <div class="pwa-steps">
+            <div class="pwa-step">
+                <div class="step-num">1</div>
+                <div class="step-text" id="pwa-step1"></div>
+                <div class="step-icon">⬆️</div>
+            </div>
+            <div class="pwa-step">
+                <div class="step-num">2</div>
+                <div class="step-text" id="pwa-step2"></div>
+                <div class="step-icon">📲</div>
+            </div>
+            <div class="pwa-step">
+                <div class="step-num">3</div>
+                <div class="step-text" id="pwa-step3"></div>
+                <div class="step-icon">✅</div>
+            </div>
+        </div>
+        <button id="pwa-dismiss-ios"></button>
+    </div>
+</div>
+
+<script>
+// ── Internationalisation ────────────────────────────────────────────────────
+const LANG = /^zh/i.test(navigator.language) ? 'zh' : 'en';
+const STRINGS = {
+  zh: {
+    deckPET: 'PET 词汇', deckCrypto: 'Crypto 词汇', deckDaily: '日常口语',
+    autoPlayOn:  '自动朗读：开（点击关闭）', autoPlayOff: '自动朗读：关（点击开启）',
+    listToLearn: '今日新学', listToReview: '今日复习',
+    viewList: '切换到列表', viewCard: '切换到卡片',
+    exportBtn: '导出进度', resetBtn: '重置', dayUnit: '天',
+    loading: '正在加载词汇...',
+    doneTitle: '今日任务完成！',
+    doneTodayLearned: '今日新学', doneSessionCorrect: '本次答对',
+    doneMastered: '已掌握', doneDailyStreak: '📅 连续天数',
+    doneTotalReviewed: '累计答题', donePoints: '积分',
+    doneContinue: '继续学习更多', achLabel: '成就',
+    audioPlaying: '播放中…', audioPlay: '发音',
+    flipHint: '点击翻转 · 按空格键',
+    btnAgain: '忘了', btnHard: '模糊', btnGood: '记住了', btnEasy: '很熟',
+    keyHint: '空格翻转 &nbsp;·&nbsp; 翻转后：← 忘了 &nbsp; ↓ 模糊 &nbsp; → 记住 &nbsp; ↑ 很熟',
+    ftPoints: '积分', ftStreak: '连击', ftMastered: '掌握',
+    ftTotalReviewed: '总复习', ftMaxLevel: '👑 满级', remaining: '剩余',
+    now: '现在', min: ' 分钟', day: ' 天',
+    graduated:  '🎓 初步掌握！',
+    mastered:   (n) => `🏆 已掌握 ${n} 个单词！`,
+    reviewToday: (n) => `🔄 再刷一遍今日 ${n} 个词！`,
+    noMoreWords:  '所有词汇都学完了！\n请明天继续复习到期的单词。',
+    loadError:    (msg, file) => `加载词汇失败：${msg}\n请确保文件 ${file} 存在。`,
+    confirmReset: (name) => `确定重置【${name}】的学习进度吗？\n词典缓存会保留。`,
+    achievementUnlocked: (icon, name) => `${icon} 成就解锁：${name}`,
+    againMsgs: ['没关系，再来！💪', '继续加油！🔄', '复习一次！📖', '不怕，慢慢来！🌱'],
+    goodMsgs:  ['✓ 很好！', '👍 记住了！', '💪 不错！', '✨ 棒！', '🎯 准确！', '👏 继续！', '💡 清晰！', '🌟 很棒！'],
+    easyMsgs:  ['太棒了！🌟', '完美！⭐', '出色！🚀', '厉害！💎', '超强！⚡', '满分！🎯'],
+    streakToasts: {
+      3:  { msg: '👍 连击 3！',            type: 'good' },
+      5:  { msg: '🔥 连击 5！',            type: 'bonus' },
+      7:  { msg: '⚡ 连击 7！燃起来！',    type: 'bonus' },
+      10: { msg: '🔥 连击 10！超厉害！',   type: 'bonus' },
+      15: { msg: '💎 连击 15！无敌！',     type: 'bonus' },
+      20: { msg: '👑 连击 20！传奇！',     type: 'bonus' },
+      30: { msg: '🌟 连击 30！封神！',     type: 'bonus' },
+      50: { msg: '🚀 连击 50！无人能及！', type: 'bonus' },
+    },
+    stages: { new: '新词', learning: '学习中', young: '熟悉', mature: '已掌握', relearn: '重学', mastered: '完全掌握' },
+    levels: [
+      { min:    0, icon: '🌱', name: '初学者', desc: '继续加油！' },
+      { min:   50, icon: '📘', name: '入门者', desc: '进步神速！' },
+      { min:  150, icon: '⭐', name: '进阶者', desc: '词汇量不错！' },
+      { min:  350, icon: '🎯', name: '熟练者', desc: '相当厉害！' },
+      { min:  600, icon: '🏆', name: '精通者', desc: '词汇达人！' },
+      { min: 1000, icon: '👑', name: '宗师',   desc: '登峰造极！' },
+    ],
+    achievements: [
+      { id: 'first_answer',  icon: '🎯', name: '第一步',    desc: '完成第一次答题' },
+      { id: 'streak_5',      icon: '🔥', name: '连击 5',    desc: '单次连击达到 5' },
+      { id: 'streak_20',     icon: '⚡', name: '连击 20',   desc: '单次连击达到 20' },
+      { id: 'daily_3',       icon: '📅', name: '三日连续',  desc: '连续学习 3 天' },
+      { id: 'daily_7',       icon: '🗓️', name: '坚持一周',  desc: '连续学习 7 天' },
+      { id: 'daily_30',      icon: '🏅', name: '月度达人',  desc: '连续学习 30 天' },
+      { id: 'master_1',      icon: '⭐', name: '初掌',      desc: '掌握第 1 个单词' },
+      { id: 'master_10',     icon: '🌟', name: '十词达人',  desc: '掌握 10 个单词' },
+      { id: 'master_100',    icon: '💯', name: '百词大师',  desc: '掌握 100 个单词' },
+      { id: 'reviewed_100',  icon: '📖', name: '百次答题',  desc: '累计答题 100 次' },
+      { id: 'reviewed_500',  icon: '📚', name: '五百勤练',  desc: '累计答题 500 次' },
+    ],
+    // ── Practice Mode ──────────────────────────────────────────────────────
+    practiceBtn:           '练习',
+    practiceNoWords:       '还没有学过任何单词，先去学习一些吧',
+    practiceMCWordToZh:    '选出正确的中文意思',
+    practiceMCZhToWord:    '选出对应的英文单词',
+    practiceMCAudioToWord: '听发音，选出对应单词',
+    practiceSpelling:      '根据提示补全拼写',
+    practiceTrueFalse:     '判断搭配是否正确',
+    practiceHint:          '提示：',
+    practiceInputPh:       '输入完整单词…',
+    practiceSubmit:        '确认',
+    practiceNext:          '下一题 →',
+    practiceTrueBtn:       '✓ 正确',
+    practiceFalseBtn:      '✗ 错误',
+    practiceMatching:      '连一连 · 选中左边再点右边配对',
+    practiceCorrect:       '✓ 正确！',
+    practiceWrong:         '✗ 错误',
+    practiceCorrectAns:    '正确答案：',
+    practiceDoneTitle:     '练习完成！',
+    practiceDoneScore:     (c, t) => `答对 ${c} / ${t} 题`,
+    practiceDoneBack:      '返回',
+    practiceWrongTitle:    '需要加强的词汇',
+    practicePlayAgain:     '再听一遍',
+    practiceExitBtn:       '退出练习',
+    undoBtn:               '↩ 撤销',
+    wlNew:     '🆕 未学单词',
+    wlLearn:   '📖 学习中（学习 + 早期复习）',
+    wlReview:  '🔁 深度记忆（间隔 ≥ 21 天）',
+    wlMastered:'🏆 已完全掌握',
+    wlEmpty:   '暂无单词',
+    wlClose:   '关闭',
+    readingBtn:      '延伸阅读',
+    readingTitle:    '今日词汇文章',
+    readingClose:    '关闭',
+    readingKeyInfo:  '需要免费的 Gemini API Key 来生成文章',
+    readingKeyLink:  '点此免费获取 →',
+    readingKeyPh:    '粘贴你的 Gemini API Key',
+    readingKeySave:  '保存并生成',
+    readingLoading:  'AI 正在写作中…',
+    readingError:    '生成失败，请重试',
+    readingErr429:   '请求太频繁，请稍等1分钟后再试 🕐',
+    readingErrKey:   'API Key 无效或权限不足',
+    readingErrNet:   '网络连接失败，请检查网络后重试',
+    readingErrTime:  '请求超时，请重试',
+    readingRegen:    '重新生成',
+    readingWordList: '本篇涵盖词汇：',
+    pwaAndroidDesc: '添加到主屏幕，随时随地刷词', pwaAndroidInstall: '安装', pwaAndroidDismiss: '关闭',
+    pwaIOSTitle: '添加 VocabLoop 到主屏幕', pwaIOSDesc: '像 App 一样随时打开，无需浏览器',
+    pwaIOSStep1: '点击底部工具栏的 <em>分享</em> 按钮',
+    pwaIOSStep2: '向下滑动，选择 <em>「添加到主屏幕」</em>',
+    pwaIOSStep3: '点击右上角 <em>「添加」</em>，大功告成！',
+    pwaIOSDismiss: '我知道了',
+  },
+  en: {
+    deckPET: 'PET Vocab', deckCrypto: 'Crypto', deckDaily: 'Daily English',
+    autoPlayOn:  'Auto-read: ON (tap to disable)', autoPlayOff: 'Auto-read: OFF (tap to enable)',
+    listToLearn: 'To Learn', listToReview: 'To Review',
+    viewList: 'Switch to list', viewCard: 'Switch to cards',
+    exportBtn: 'Export progress', resetBtn: 'Reset', dayUnit: 'd',
+    loading: 'Loading vocabulary…',
+    doneTitle: 'Session complete!',
+    doneTodayLearned: 'New today', doneSessionCorrect: 'Correct',
+    doneMastered: 'Mastered', doneDailyStreak: '📅 Day streak',
+    doneTotalReviewed: 'Reviews', donePoints: 'Points',
+    doneContinue: 'Study more', achLabel: 'Badges',
+    audioPlaying: 'Playing…', audioPlay: 'Pronounce',
+    flipHint: 'Tap to flip · Space',
+    btnAgain: 'Again', btnHard: 'Hard', btnGood: 'Good', btnEasy: 'Easy',
+    keyHint: 'Space: flip &nbsp;·&nbsp; After flip: ← Again &nbsp; ↓ Hard &nbsp; → Good &nbsp; ↑ Easy',
+    ftPoints: 'Points', ftStreak: 'Streak', ftMastered: 'Mastered',
+    ftTotalReviewed: 'Reviews', ftMaxLevel: '👑 Max level', remaining: 'left',
+    now: 'now', min: ' min', day: 'd',
+    graduated:  '🎓 Graduated!',
+    mastered:   (n) => `🏆 Mastered ${n} word${n === 1 ? '' : 's'}!`,
+    reviewToday: (n) => `🔄 Re-reviewing today's ${n} words!`,
+    noMoreWords:  "All words done!\nCome back tomorrow for due cards.",
+    loadError:    (msg, file) => `Failed to load: ${msg}\nMake sure ${file} exists.`,
+    confirmReset: (name) => `Reset progress for "${name}"?\n(Dictionary cache is kept.)`,
+    achievementUnlocked: (icon, name) => `${icon} Achievement: ${name}`,
+    againMsgs: ["No worries, try again! 💪", "Keep going! 🔄", "Review time! 📖", "Slow and steady! 🌱"],
+    goodMsgs:  ['✓ Got it!', '👍 Nailed it!', '💪 Nice!', '✨ Great!', '🎯 Spot on!', '👏 Keep it up!', '💡 Clear!', '🌟 Excellent!'],
+    easyMsgs:  ['Awesome! 🌟', 'Perfect! ⭐', 'Outstanding! 🚀', 'Superb! 💎', 'Blazing! ⚡', 'Flawless! 🎯'],
+    streakToasts: {
+      3:  { msg: '👍 3-streak!',          type: 'good' },
+      5:  { msg: '🔥 5-streak!',          type: 'bonus' },
+      7:  { msg: '⚡ 7-streak! On fire!', type: 'bonus' },
+      10: { msg: '🔥 10-streak! Amazing!',type: 'bonus' },
+      15: { msg: '💎 15-streak! Insane!', type: 'bonus' },
+      20: { msg: '👑 20-streak! Legend!', type: 'bonus' },
+      30: { msg: '🌟 30-streak! Godlike!',type: 'bonus' },
+      50: { msg: '🚀 50-streak! Unreal!', type: 'bonus' },
+    },
+    stages: { new: 'New', learning: 'Learning', young: 'Young', mature: 'Seasoned', relearn: 'Relearn', mastered: 'Mastered ✓' },
+    levels: [
+      { min:    0, icon: '🌱', name: 'Beginner',   desc: 'Keep it up!' },
+      { min:   50, icon: '📘', name: 'Novice',     desc: 'Great progress!' },
+      { min:  150, icon: '⭐', name: 'Learner',    desc: 'Nice vocabulary!' },
+      { min:  350, icon: '🎯', name: 'Proficient', desc: 'Impressive!' },
+      { min:  600, icon: '🏆', name: 'Advanced',   desc: 'Vocabulary pro!' },
+      { min: 1000, icon: '👑', name: 'Expert',     desc: 'The pinnacle!' },
+    ],
+    achievements: [
+      { id: 'first_answer',  icon: '🎯', name: 'First Step',    desc: 'Complete your first review' },
+      { id: 'streak_5',      icon: '🔥', name: 'Streak ×5',     desc: 'Hit a 5-card streak' },
+      { id: 'streak_20',     icon: '⚡', name: 'Streak ×20',    desc: 'Hit a 20-card streak' },
+      { id: 'daily_3',       icon: '📅', name: '3-Day Run',     desc: 'Study 3 days in a row' },
+      { id: 'daily_7',       icon: '🗓️', name: 'Full Week',     desc: 'Study 7 days in a row' },
+      { id: 'daily_30',      icon: '🏅', name: 'Monthly Pro',   desc: 'Study 30 days in a row' },
+      { id: 'master_1',      icon: '⭐', name: 'First Word',    desc: 'Master your first word' },
+      { id: 'master_10',     icon: '🌟', name: 'Ten Words',     desc: 'Master 10 words' },
+      { id: 'master_100',    icon: '💯', name: 'Century',       desc: 'Master 100 words' },
+      { id: 'reviewed_100',  icon: '📖', name: '100 Reviews',   desc: 'Complete 100 reviews' },
+      { id: 'reviewed_500',  icon: '📚', name: '500 Reviews',   desc: 'Complete 500 reviews' },
+    ],
+    // ── Practice Mode ──────────────────────────────────────────────────────
+    practiceBtn:           'Practice',
+    practiceNoWords:       'No words studied yet — learn some first!',
+    practiceMCWordToZh:    'Select the correct meaning',
+    practiceMCZhToWord:    'Select the correct English word',
+    practiceMCAudioToWord: 'Listen and pick the word',
+    practiceSpelling:      'Complete the spelling',
+    practiceTrueFalse:     'True or False?',
+    practiceHint:          'Hint: ',
+    practiceInputPh:       'Type the complete word…',
+    practiceSubmit:        'Submit',
+    practiceNext:          'Next →',
+    practiceTrueBtn:       '✓ True',
+    practiceFalseBtn:      '✗ False',
+    practiceMatching:      'Match · tap left then right to pair',
+    practiceCorrect:       '✓ Correct!',
+    practiceWrong:         '✗ Wrong',
+    practiceCorrectAns:    'Correct: ',
+    practiceDoneTitle:     'Practice Complete!',
+    practiceDoneScore:     (c, t) => `${c} / ${t} correct`,
+    practiceDoneBack:      'Back',
+    practiceWrongTitle:    'Words to reinforce',
+    practicePlayAgain:     'Play again',
+    practiceExitBtn:       'Exit Practice',
+    undoBtn:               '↩ Undo',
+    wlNew:     '🆕 Not Yet Learned',
+    wlLearn:   '📖 Learning (active + early review)',
+    wlReview:  '🔁 Deep Memory (interval ≥ 21 days)',
+    wlMastered:'🏆 Fully Mastered',
+    wlEmpty:   'No words here',
+    wlClose:   'Close',
+    readingBtn:      'Story',
+    readingTitle:    "Today's Vocab Story",
+    readingClose:    'Close',
+    readingKeyInfo:  'A free Gemini API Key is needed to generate the story',
+    readingKeyLink:  'Get your free key →',
+    readingKeyPh:    'Paste your Gemini API Key',
+    readingKeySave:  'Save & Generate',
+    readingLoading:  'AI is writing…',
+    readingError:    'Generation failed, please retry',
+    readingErr429:   'Too many requests — please wait a minute and try again 🕐',
+    readingErrKey:   'API key invalid or unauthorised',
+    readingErrNet:   'Network error — please check your connection',
+    readingErrTime:  'Request timed out — please retry',
+    readingRegen:    'Regenerate',
+    readingWordList: 'Words covered:',
+    pwaAndroidDesc: 'Add to home screen for quick access', pwaAndroidInstall: 'Install', pwaAndroidDismiss: 'Dismiss',
+    pwaIOSTitle: 'Add VocabLoop to Home Screen', pwaIOSDesc: 'Open it like an app — no browser needed',
+    pwaIOSStep1: 'Tap the <em>Share</em> button in the toolbar',
+    pwaIOSStep2: 'Scroll down and tap <em>"Add to Home Screen"</em>',
+    pwaIOSStep3: 'Tap <em>"Add"</em> in the top-right corner',
+    pwaIOSDismiss: 'Got it',
+  },
+};
+const UI = STRINGS[LANG];
+
+// ── Constants ──────────────────────────────────────────────────────────────
+const DECKS = [
+    { id: 'pet',    icon: '📚', name: UI.deckPET,    file: 'data/pet-words-1000.json' },
+    { id: 'crypto', icon: '₿',  name: UI.deckCrypto, file: 'data/crypto-words-1000.json' },
+    { id: 'daily',  icon: '💬', name: UI.deckDaily,  file: 'data/daily-words-1000.json' },
+];
+const DECK_PREF_KEY = 'preferred_deck';
+const DICT_KEY      = 'shared_dict_v1';
+const MAX_NEW_DAY   = 20;
+const LEARN_STEPS   = [1, 10];   // minutes
+const GRAD_INT      = 1;         // days
+const EASY_INT      = 4;         // days
+const MAX_INTERVAL  = 180;       // days — cap review interval; beyond this auto-master
+const SESSION_MINS  = 20;        // re-add to session if ≤ this many minutes
+const DICT_API      = 'https://api.dictionaryapi.dev/api/v2/entries/en/';
+const PREFETCH_N    = 5;         // prefetch ahead N words
+
+// Guard against concurrent duplicate fetches (outside Vue, not reactive)
+const _fetching = new Set();
+
+function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+function ts()    { return Date.now(); }
+function today() {
+    const d = new Date();
+    return d.getFullYear() + '-' +
+           String(d.getMonth() + 1).padStart(2, '0') + '-' +
+           String(d.getDate()).padStart(2, '0');
+}
+function fmtMs(ms) {
+    if (ms <= 0) return UI.now;
+    const m = Math.round(ms / 60000);
+    if (m < 60) return m + UI.min;
+    const d = Math.round(ms / 86400000);
+    return d + UI.day;
+}
+
+const POS_ZH = {
+    noun: '名词', verb: '动词', adjective: '形容词',
+    adverb: '副词', pronoun: '代词', preposition: '介词',
+    conjunction: '连词', interjection: '感叹词', exclamation: '感叹词',
+    article: '冠词', determiner: '限定词', number: '数词',
+    abbreviation: '缩写',
+};
+
+const LEVELS         = UI.levels;
+const GLOBAL_KEY     = 'srs_global_v1';
+const ACHIEVEMENTS   = UI.achievements;
+const AGAIN_MSGS     = UI.againMsgs;
+const GOOD_MSGS      = UI.goodMsgs;
+const EASY_MSGS      = UI.easyMsgs;
+const STREAK_TOASTS  = UI.streakToasts;
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+// ── Feedback sounds (Web Audio API, no external files) ────────────────────────
+function playFeedbackSound(type) {
+    try {
+        const ctx  = new (window.AudioContext || window.webkitAudioContext)();
+        const osc  = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        const t = ctx.currentTime;
+        if (type === 'correct') {
+            // Soft two-note ascending chime ♪
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(880, t);
+            osc.frequency.setValueAtTime(1320, t + 0.07);
+            gain.gain.setValueAtTime(0.10, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+            osc.start(t); osc.stop(t + 0.28);
+        } else {
+            // Soft low descending tone ♩
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(320, t);
+            osc.frequency.exponentialRampToValueAtTime(160, t + 0.18);
+            gain.gain.setValueAtTime(0.10, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+            osc.start(t); osc.stop(t + 0.22);
+        }
+        osc.onended = () => ctx.close();
+    } catch (_) { /* AudioContext unavailable (e.g. server-side) */ }
+}
+
+// ── Practice Mode utilities ───────────────────────────────────────────────────
+const MAX_PRACTICE = 20;
+
+/** Return up to n random words from pool that are not target */
+function getDistractors(target, pool, n) {
+    return shuffle(pool.filter(w => w.word !== target.word)).slice(0, n);
+}
+
+/**
+ * Build a partial-word hint: keep first letter, blank ~38% of the rest.
+ * e.g. "abundant" → "a_und_nt"
+ */
+function makePartialWord(word) {
+    const n = word.length;
+    if (n <= 2) return word[0] + '_';
+    const blankCount = Math.max(1, Math.round((n - 1) * 0.38));
+    const positions  = shuffle([...Array(n - 1).keys()].map(i => i + 1));
+    const blanks     = new Set(positions.slice(0, blankCount));
+    return [...word].map((l, i) => blanks.has(i) ? '_' : l).join('');
+}
+
+/** Normalise Chinese: take the last part after " / " separator */
+function shortZh(zh) { return (zh || '').split(' / ').pop().trim(); }
+
+/**
+ * Q_GENERATORS — data-driven question type registry.
+ * Each entry: (word, pool, dictCache) → question object | null
+ * Add future types here; the template handles each by its `type` key.
+ */
+const Q_GENERATORS = {
+
+    'mc-word-to-zh': function(word, pool) {
+        const dist = getDistractors(word, pool, 3);
+        if (dist.length < 3) return null;
+        return {
+            type:    'mc-word-to-zh',
+            word,
+            correct: word.word,
+            options: shuffle([word, ...dist]).map(w => ({ label: shortZh(w.zh), value: w.word })),
+        };
+    },
+
+    'mc-zh-to-word': function(word, pool) {
+        const dist = getDistractors(word, pool, 3);
+        if (dist.length < 3) return null;
+        return {
+            type:    'mc-zh-to-word',
+            word,
+            correct: word.word,
+            options: shuffle([word, ...dist]).map(w => ({ label: w.word, value: w.word })),
+        };
+    },
+
+    'mc-audio-to-word': function(word, pool, cache) {
+        const entry = cache && cache[word.word];
+        if (!entry || !entry.audio) return null;
+        const dist = getDistractors(word, pool, 3);
+        if (dist.length < 3) return null;
+        return {
+            type:    'mc-audio-to-word',
+            word,
+            correct: word.word,
+            options: shuffle([word, ...dist]).map(w => ({ label: w.word, value: w.word })),
+        };
+    },
+
+    'spelling': function(word) {
+        return {
+            type:    'spelling',
+            word,
+            correct: word.word.toLowerCase(),
+            partial: makePartialWord(word.word),
+        };
+    },
+
+    'truefalse': function(word, pool) {
+        const isTrue = Math.random() > 0.5;
+        let displayZh;
+        if (isTrue) {
+            displayZh = shortZh(word.zh);
+        } else {
+            const dist = getDistractors(word, pool, 1);
+            if (!dist.length) return null;
+            displayZh = shortZh(dist[0].zh);
+        }
+        return {
+            type:      'truefalse',
+            word,
+            correct:   isTrue ? 'true' : 'false',
+            displayZh,
+        };
+    },
+
+    'matching': function(word, pool) {
+        const dist = getDistractors(word, pool, 5);
+        if (dist.length < 5) return null;
+        const pairs = shuffle([word, ...dist]);
+        return {
+            type:       'matching',
+            word,
+            correct:    'done',
+            pairs,
+            leftItems:  pairs.map(w => ({ label: w.word, key: w.word })),
+            rightItems: shuffle(pairs.map(w => ({ label: shortZh(w.zh), key: w.word }))),
+        };
+    },
+};
+
+/**
+ * Build a practice session from todayWords.
+ * Uses allWords as the distractor pool to ensure enough options even for small today-sets.
+ * Generates 1–2 question types per word, shuffles all questions, caps at MAX_PRACTICE.
+ */
+function buildPracticeSession(todayWords, allWords, dictCache) {
+    if (todayWords.length < 2) return [];
+    const pool       = allWords.length >= 8 ? allWords : todayWords;
+    const singleTypes = Object.keys(Q_GENERATORS).filter(t => t !== 'matching');
+    const questions  = [];
+
+    for (const w of todayWords) {
+        const quota  = todayWords.length > 5 ? 2 : 1;
+        const picked = shuffle([...singleTypes]).slice(0, quota);
+        for (const t of picked) {
+            const q = Q_GENERATORS[t](w, pool, dictCache);
+            if (q) questions.push(q);
+        }
+    }
+    // Add one matching round if the pool is large enough (needs 5 distractors)
+    if (pool.length >= 6) {
+        const anchor = shuffle([...todayWords])[0];
+        const mq = Q_GENERATORS['matching'](anchor, pool, dictCache);
+        if (mq) questions.push(mq);
+    }
+    return shuffle(questions).slice(0, MAX_PRACTICE);
+}
+
+// ── Vue instance ────────────────────────────────────────────────────────────
+new Vue({
+    el: '#app',
+    data() {
+        return {
+            decks:        DECKS,
+            currentDeck:  DECKS[0],
+            loading:      true,
+            allWords:     [],
+            state:        {},
+            queue:        [],
+            sessionQueue: [],  // full set of words introduced this session (for list view)
+            sessionTotal: 0,
+            flipped:      false,
+            shaking:      false,
+            bouncing:     false,
+            toast:        null,
+            toastTmr:     null,
+            points:       0,
+            streak:       0,
+            viewMode:      'card',
+            expandedWords: {},
+            autoPlay:      true,
+            audioPlaying:  false,
+            dictCache:     {},  // word → {ipa, audio, pos, definition, example} | null
+            // ── Global gamification ──────────────────────────────────────
+            dailyStreak:      0,
+            lastStudyDate:    '',
+            totalReviewed:    0,
+            achievements:     [],
+            // ── Session ───────────────────────────────────────────────────
+            extraNewAllowed:  0,  // cumulative extra new cards from loadMore
+            sessionCorrect:   0,  // all correct answers this session (incl. learning)
+            stageLabel:  Object.assign({}, UI.stages),
+            ui:          UI,      // exposes all i18n strings to the template
+            // ── Practice Mode ──────────────────────────────────────────────
+            practiceMode:     false,
+            practiceQueue:    [],
+            practiceIndex:    0,
+            practiceScore:    0,
+            practiceAnswered: false,
+            practiceSelected: null,
+            practiceInput:    '',
+            practiceResult:   null,   // 'correct' | 'wrong'
+            practiceDone:     false,
+            practiceWrongWords: [],   // word objects answered incorrectly
+            // ── Matching question state ───────────────────────────────
+            matchSelLeft:  null,      // key of selected left item
+            matchElim:     [],        // keys of matched pairs
+            matchShakeKeys:[],        // keys currently shaking (wrong match)
+            // ── Reading overlay ──────────────────────────────────────
+            readingOpen:     false,
+            readingArticle:  '',
+            readingLoading:  false,
+            readingError:    '',
+            readingWordObjs: [],
+            geminiKey:       localStorage.getItem('gemini_key') || '',
+            geminiKeyInput:  '',
+            // ── Undo ────────────────────────────────────────────────────
+            undoSnap:  null,   // pre-answer snapshot
+            showUndo:  false,  // undo button visibility
+            wordListModal: null, // { stageGroup, title, words } — word list bottom sheet
+        };
+    },
+
+    computed: {
+        storageKey() { return 'srs_' + this.currentDeck.id + '_v1'; },
+        curZhParts() {
+            const zh = this.cur.zh || '';
+            const idx = zh.indexOf(' / ');
+            if (idx !== -1) {
+                return { full: zh.slice(0, idx), zh: zh.slice(idx + 3) };
+            }
+            return { full: '', zh };
+        },
+        // Example: prefer API result, fall back to JSON ex field
+        curExample() {
+            if (this.curDict && this.curDict.example) return { text: this.curDict.example, src: 'dict' };
+            if (this.cur.ex) return { text: this.cur.ex, src: 'json' };
+            return null;
+        },
+        levelProgress() {
+            const mc  = this.masteredCount;
+            const lv  = this.levelInfo;
+            const idx = LEVELS.indexOf(lv);
+            const nxt = LEVELS[idx + 1];
+            if (!nxt) return 100;
+            const base = (mc - lv.min) / (nxt.min - lv.min) * 100;
+            // First level only: add a small review-based boost so day-1 users
+            // see immediate progress (caps at 12% so mastery always feels bigger)
+            const reviewBoost = idx === 0 ? Math.min(12, this.totalReviewed * 0.5) : 0;
+            return Math.min(100, Math.max(0, Math.round(base + reviewBoost)));
+        },
+        nextLevelInfo() {
+            const idx = LEVELS.indexOf(this.levelInfo);
+            return LEVELS[idx + 1] || null;
+        },
+        todayLearnedCount() {
+            const tdy = today();
+            return Object.values(this.state).filter(s => s && s.firstSeen === tdy).length;
+        },
+        sessionDone() { return !this.loading && this.queue.length === 0; },
+        cur()  { return this.queue[0] || { word: '', zh: '', pos: '' }; },
+        curStage() {
+            const s = this.state[this.cur.word];
+            return s ? (s.stage || 'new') : 'new';
+        },
+        curDict() {
+            if (!this.cur.word) return undefined;
+            const v = this.dictCache[this.cur.word];
+            return v !== undefined ? v : undefined;
+        },
+        sessionPct() {
+            if (!this.sessionTotal) return 100;
+            return Math.round((1 - this.queue.length / this.sessionTotal) * 100);
+        },
+        listLearnItems() {
+            return this.sessionQueue.filter(w => {
+                const s = this.state[w.word];
+                return !s || s.stage === 'new' || s.stage === 'learning' || s.stage === 'relearn';
+            });
+        },
+        listReviewItems() {
+            return this.sessionQueue.filter(w => {
+                const s = this.state[w.word];
+                return s && (s.stage === 'young' || s.stage === 'mature');
+            });
+        },
+        masteredCount() {
+            // Iterate allWords (not Object.values(state)) to ensure stable Vue 2 dep tracking.
+            // state also contains _milestone_* keys which are not word objects.
+            let n = 0;
+            for (const w of this.allWords) {
+                const s = this.state[w.word];
+                if (s && s.stage === 'mastered') n++;
+            }
+            return n;
+        },
+        levelInfo() {
+            const n = this.masteredCount;
+            let lv = LEVELS[0];
+            for (const l of LEVELS) { if (n >= l.min) lv = l; }
+            return lv;
+        },
+        qs() {
+            // Count ALL words in deck by stage (not just today's queue)
+            // learning/relearn/young → "in learning" (learning phase + early review, 1min–21d)
+            // mature                → "in review"   (well-established, interval > 21d)
+            let newCount = 0, learnCount = 0, reviewCount = 0;
+            for (const w of this.allWords) {
+                const s = this.state[w.word];
+                if (!s || s.stage === 'new')                                         newCount++;
+                else if (s.stage === 'learning' || s.stage === 'relearn' || s.stage === 'young') learnCount++;
+                else if (s.stage === 'mature')                                       reviewCount++;
+                // mastered counted by masteredCount
+            }
+            return { newCount, learnCount, reviewCount };
+        },
+        practiceCurrent() {
+            return this.practiceQueue[this.practiceIndex] || null;
+        },
+        highlightedArticle() {
+            if (!this.readingArticle) return '';
+            // Escape HTML first
+            let html = this.readingArticle
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            // Sort words longest-first to avoid partial replacements
+            const words = [...this.readingWordObjs].sort((a, b) => b.word.length - a.word.length);
+            for (const w of words) {
+                const esc = w.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                html = html.replace(new RegExp(`\\b(${esc})\\b`, 'gi'),
+                    `<strong class="vocab-hl" data-word="${w.word}">$1</strong>`);
+            }
+            return html;
+        },
+    },
+
+    watch: {
+        // When a new card appears: fetch its dict data and prefetch ahead
+        'cur.word'(newWord) {
+            if (!newWord) return;
+            this.fetchDict(newWord);
+            this.prefetchAhead();
+            if (this.autoPlay) {
+                setTimeout(() => this.playAudio(newWord), 520);
+            }
+        },
+    },
+
+    methods: {
+        // ── Interval display ──────────────────────────────────────────────
+        iv(level) {
+            const wordId = this.cur.word;
+            const s      = this.state[wordId];
+            const stage  = s ? (s.stage || 'new') : 'new';
+            const step   = s ? (s.learningStep || 0) : 0;
+            const intv   = s ? (s.interval || 0) : 0;
+            const ef     = s ? (s.ef || 2.5) : 2.5;
+
+            if (stage === 'new' || stage === 'learning') {
+                if (level === 'again') return fmtMs(LEARN_STEPS[0] * 60000);
+                if (level === 'hard')  return fmtMs(LEARN_STEPS[Math.max(0, step - 1)] * 60000);
+                if (level === 'good') {
+                    if (step >= LEARN_STEPS.length - 1) return GRAD_INT + UI.day;
+                    return fmtMs(LEARN_STEPS[step + 1] * 60000);
+                }
+                if (level === 'easy') return '✓';
+            }
+            if (stage === 'relearn') {
+                if (level === 'again') return fmtMs(10 * 60000);
+                if (level === 'easy')  return '✓';
+                return Math.max(1, Math.round(intv * 0.5)) + UI.day;
+            }
+            if (level === 'again') return fmtMs(10 * 60000);
+            if (level === 'hard')  { const d = Math.round(intv * 1.2); return d >= MAX_INTERVAL ? '✓' : d + UI.day; }
+            if (level === 'good')  { const d = Math.round(intv * ef);  return d >= MAX_INTERVAL ? '✓' : d + UI.day; }
+            if (level === 'easy')  return '✓';
+            return '—';
+        },
+
+        posZh(pos) {
+            if (!pos) return '';
+            if (LANG === 'zh') return POS_ZH[pos.toLowerCase()] || pos;
+            // English: capitalise first letter of full API words, pass abbreviations through
+            return pos.length > 4 ? pos.charAt(0).toUpperCase() + pos.slice(1) : pos;
+        },
+        achIcon(id) {
+            const a = ACHIEVEMENTS.find(x => x.id === id);
+            return a ? a.icon : '';
+        },
+        wlDotClass(word) {
+            const s = this.state[word];
+            if (!s || s.stage === 'new') return 'wl-dot-new';
+            if (s.stage === 'learning' || s.stage === 'relearn') return 'wl-dot-learn';
+            return 'wl-dot-review';
+        },
+        toggleListWord(word) {
+            if (this.expandedWords[word]) {
+                this.$delete(this.expandedWords, word);
+            } else {
+                this.$set(this.expandedWords, word, true);
+                this.fetchDict(word);
+                if (this.autoPlay) this.playAudio(word);
+            }
+        },
+
+        // ── Dictionary API ────────────────────────────────────────────────
+        async fetchDict(word) {
+            if (!word) return;
+            if (word in this.dictCache) return;
+            // Multi-word phrases aren't supported by the dictionary API
+            if (word.includes(' ')) {
+                this.$set(this.dictCache, word, null);
+                return;
+            }
+            if (_fetching.has(word)) return;
+            _fetching.add(word);
+            try {
+                const res = await fetch(DICT_API + encodeURIComponent(word));
+                if (!res.ok) {
+                    this.$set(this.dictCache, word, null);
+                } else {
+                    const data = await res.json();
+                    const entry = data[0] || {};
+                    const phonetics = entry.phonetics || [];
+
+                    const ipaObj  = phonetics.find(p => p.text && p.text.includes('/'));
+                    const ipa     = (ipaObj && ipaObj.text) || entry.phonetic || '';
+                    const audioObj = phonetics.find(p => p.audio && p.audio !== '');
+                    const audio    = (audioObj && audioObj.audio) || '';
+
+                    let pos = '', definition = '', example = '';
+                    for (const m of (entry.meanings || [])) {
+                        if (!pos) pos = m.partOfSpeech || '';
+                        for (const def of (m.definitions || [])) {
+                            if (!definition) definition = def.definition || '';
+                            if (!example && def.example) {
+                                example = def.example;
+                                break;
+                            }
+                        }
+                        if (example) break;
+                    }
+
+                    this.$set(this.dictCache, word, { ipa, audio, pos, definition, example });
+                    this.saveDictCache();
+                }
+            } catch (e) {
+                this.$set(this.dictCache, word, null);
+            } finally {
+                _fetching.delete(word);
+            }
+        },
+
+        prefetchAhead() {
+            this.queue.slice(0, PREFETCH_N).forEach(w => this.fetchDict(w.word));
+        },
+
+        // ── Audio ─────────────────────────────────────────────────────────
+        playAudio(word) {
+            if (!word) return;
+            const d = this.dictCache[word];
+
+            if (d && d.audio) {
+                const audio = new Audio(d.audio);
+                this.audioPlaying = true;
+                audio.play()
+                    .then(() => {
+                        audio.addEventListener('ended', () => { this.audioPlaying = false; });
+                    })
+                    .catch(() => {
+                        this.audioPlaying = false;
+                        this.tts(word);
+                    });
+            } else {
+                this.tts(word);
+            }
+        },
+
+        tts(word) {
+            if (!('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(word);
+            u.lang  = 'en-US';
+            u.rate  = 0.85;
+            this.audioPlaying = true;
+            u.onend = () => { this.audioPlaying = false; };
+            u.onerror = () => { this.audioPlaying = false; };
+            window.speechSynthesis.speak(u);
+        },
+
+        // ── Load JSON ─────────────────────────────────────────────────────
+        async loadWords() {
+            this.loading = true;
+            try {
+                const res = await fetch(this.currentDeck.file);
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+                this.allWords = data.map(w => ({
+                    word: w.word,
+                    zh:   w.zh || w.word,
+                    pos:  w.pos || '',
+                    ipa:  w.ipa || '',
+                    ex:   w.ex  || '',
+                }));
+                // Pre-seed dictCache from embedded word data (single batch update)
+                const additions = {};
+                for (const w of this.allWords) {
+                    if (!(w.word in this.dictCache) && (w.ipa || w.pos || w.ex)) {
+                        additions[w.word] = {
+                            ipa:        w.ipa,
+                            audio:      '',
+                            pos:        w.pos,
+                            definition: w.zh,
+                            example:    w.ex,
+                        };
+                    }
+                }
+                if (Object.keys(additions).length) {
+                    this.dictCache = Object.assign({}, this.dictCache, additions);
+                }
+                this.buildQueue();
+            } catch (e) {
+                alert(UI.loadError(e.message, this.currentDeck.file));
+            }
+            this.loading = false;
+        },
+
+        // ── Build today's queue ───────────────────────────────────────────
+        buildQueue(extraNew = 0) {
+            const tdy   = today();
+            const state = this.state;
+            // Count non-mastered words first-seen today (mastered words don't use up "new" slots)
+            let newToday = 0;
+            for (const w of this.allWords) {
+                const s = state[w.word];
+                if (s && s.firstSeen === tdy && s.stage !== 'mastered') newToday++;
+            }
+            const slots = Math.max(0, MAX_NEW_DAY - newToday + extraNew);
+
+            const reviews  = [];
+            const learning = [];
+            const newCards = [];
+
+            for (const w of this.allWords) {
+                const s = state[w.word];
+                if (!s) {
+                    if (newCards.length < slots) newCards.push(w);
+                } else if (s.stage === 'mastered') {
+                    /* never queue mastered words */
+                } else if (s.stage === 'learning' || s.stage === 'relearn') {
+                    if ((s.next || 0) <= ts()) learning.push(w);
+                } else if (s.stage === 'young' || s.stage === 'mature') {
+                    if ((s.next || 0) <= ts()) reviews.push(w);
+                }
+            }
+
+            // Interleave new cards into reviews (1 new per 4 reviews)
+            // so users see fresh content throughout instead of all new cards at the end
+            const shuffledRev = shuffle(reviews);
+            const shuffledNew = shuffle(newCards);
+            const interleaved = [];
+            let ri = 0, ni = 0;
+            while (ri < shuffledRev.length || ni < shuffledNew.length) {
+                for (let i = 0; i < 4 && ri < shuffledRev.length; i++) interleaved.push(shuffledRev[ri++]);
+                if (ni < shuffledNew.length) interleaved.push(shuffledNew[ni++]);
+            }
+            const q = [...learning, ...interleaved];
+            this.queue        = q;
+            this.sessionTotal = q.length || 1;
+            // Maintain sessionQueue: reset on fresh build (extraNew=0), extend on loadMore
+            if (extraNew === 0) {
+                this.sessionQueue = [...q];
+            } else {
+                const seen = new Set(this.sessionQueue.map(w => w.word));
+                this.sessionQueue = [...this.sessionQueue, ...q.filter(w => !seen.has(w.word))];
+            }
+            this.prefetchAhead();
+        },
+
+        // ── Deck switching ────────────────────────────────────────────────
+        switchDeck(deck) {
+            if (deck.id === this.currentDeck.id) return;
+            if (this.practiceMode) this.exitPractice();
+            this.saveState();
+            this.currentDeck = deck;
+            try { localStorage.setItem(DECK_PREF_KEY, deck.id); } catch (e) {}
+            this.state           = {};
+            this.points          = 0;
+            this.streak          = 0;
+            this.queue           = [];
+            this.flipped         = false;
+            this.extraNewAllowed = 0;
+            this.sessionCorrect  = 0;
+            this.loadSaved();
+            this.loadWords();
+        },
+
+        // ── Card interaction ──────────────────────────────────────────────
+        onCardClick() { if (!this.flipped) this.flipCard(); },
+        flipCard()    { this.flipped = !this.flipped; },
+
+        // ── SRS answer ────────────────────────────────────────────────────
+        answer(level) {
+            if (!this.flipped) return;
+
+            this.totalReviewed++;
+            this.updateDailyStreak();
+
+            const wordId = this.cur.word;
+            const tdy    = today();
+            let s = this.state[wordId] || {
+                stage: 'new', interval: 0, ef: 2.5,
+                reps: 0, learningStep: 0, next: 0, firstSeen: tdy,
+            };
+            if (!s.firstSeen) s.firstSeen = tdy;
+
+            // Save pre-answer snapshot for undo (totalReviewed already incremented above)
+            const _undoPrev = {
+                wordId,
+                prevState:      this.state[wordId] ? { ...this.state[wordId] } : null,
+                points:         this.points,
+                streak:         this.streak,
+                totalReviewed:  this.totalReviewed - 1,
+                sessionCorrect: this.sessionCorrect,
+            };
+
+            let nextMs;
+            let reinsert     = false;
+            let newGraduated = false;   // new/learning → young/mature
+
+            if (s.stage === 'new' || s.stage === 'learning') {
+                if (level === 'again') {
+                    s.learningStep = 0;
+                    nextMs   = LEARN_STEPS[0] * 60000;
+                    s.stage  = 'learning';
+                    reinsert = true;
+                    this.streak = 0;
+                } else if (level === 'hard') {
+                    const step = Math.max(0, (s.learningStep || 0) - 1);
+                    s.learningStep = step;
+                    nextMs   = LEARN_STEPS[step] * 60000;
+                    s.stage  = 'learning';
+                    reinsert = nextMs <= SESSION_MINS * 60000;
+                    this.points += 5; this.sessionCorrect++;
+                } else if (level === 'good') {
+                    const step = s.learningStep || 0;
+                    if (step >= LEARN_STEPS.length - 1) {
+                        s.stage    = 'young';
+                        s.interval = GRAD_INT;
+                        s.reps     = 1;
+                        nextMs     = GRAD_INT * 86400000;
+                        this.points += 15; this.sessionCorrect++;
+                        newGraduated = true;
+                    } else {
+                        s.learningStep = step + 1;
+                        nextMs   = LEARN_STEPS[s.learningStep] * 60000;
+                        s.stage  = 'learning';
+                        reinsert = nextMs <= SESSION_MINS * 60000;
+                        this.points += 5; this.sessionCorrect++;
+                    }
+                } else { // easy — fully mastered, never show again
+                    s.stage    = 'mastered';
+                    s.interval = 9999;
+                    s.reps     = 1;
+                    nextMs     = 9999 * 86400000;
+                    this.points += 20; this.sessionCorrect++;
+                    newGraduated = true;
+                }
+
+            } else if (s.stage === 'relearn') {
+                if (level === 'again') {
+                    nextMs   = 10 * 60000;
+                    reinsert = true;
+                    this.streak = 0;
+                } else if (level === 'easy') {
+                    s.stage    = 'mastered';
+                    s.interval = 9999;
+                    nextMs     = 9999 * 86400000;
+                } else {
+                    s.interval = Math.max(1, Math.round(s.interval * 0.5));
+                    s.stage    = s.interval >= 21 ? 'mature' : 'young';
+                    nextMs     = s.interval * 86400000;
+                }
+
+            } else {
+                // young / mature
+                if (level === 'again') {
+                    s.stage  = 'relearn';
+                    s.reps   = 0;
+                    nextMs   = 10 * 60000;
+                    reinsert = true;
+                    this.streak = 0;
+                } else {
+                    if (level === 'easy') {
+                        s.stage    = 'mastered';
+                        s.interval = 9999;
+                        s.reps     = (s.reps || 0) + 1;
+                        nextMs     = 9999 * 86400000;
+                        this.points += 30;
+                        this.streak += 1;
+                        this.sessionCorrect++;
+                    } else {
+                        const ef = s.ef || 2.5;
+                        if (level === 'hard') {
+                            s.ef       = Math.max(1.3, ef - 0.15);
+                            s.interval = Math.max(1, Math.round(s.interval * 1.2));
+                        } else {
+                            s.interval = Math.max(1, Math.round(s.interval * ef));
+                        }
+                        s.reps = (s.reps || 0) + 1;
+                        // Cap interval — words known this well are effectively mastered
+                        if (s.interval >= MAX_INTERVAL) {
+                            s.stage    = 'mastered';
+                            s.interval = 9999;
+                            nextMs     = 9999 * 86400000;
+                        } else {
+                            s.stage = s.interval >= 21 ? 'mature' : 'young';
+                            nextMs  = s.interval * 86400000;
+                        }
+
+                        const pts = level === 'hard' ? 10 : 20;
+                        this.points += pts;
+                        this.streak += 1;
+                        this.sessionCorrect++;
+                    }
+                }
+            }
+
+            s.next = ts() + nextMs;
+            this.$set(this.state, wordId, { ...s });
+            this.flipped = false;
+            this.saveState();
+            this.checkAchievements();
+            this.saveGlobal();    // always persist totalReviewed + streak
+
+            // Show undo button for 4 seconds
+            this.undoSnap = _undoPrev;
+            this.showUndo = true;
+            clearTimeout(this._undoTimer);
+            this._undoTimer = setTimeout(() => { this.showUndo = false; }, 4000);
+
+            // Feedback
+            const ps = this.streak;
+            if (level === 'again') {
+                this.doShake();
+                this.showToast(pick(AGAIN_MSGS), 'bad');
+            } else {
+                this.doBounce();
+                const streakToast = STREAK_TOASTS[ps];
+                if (streakToast) {
+                    this.showToast(streakToast.msg, streakToast.type);
+                    if (newGraduated) {
+                        setTimeout(() => this.showToast(UI.graduated, 'bonus'), 2500);
+                    }
+                } else if (newGraduated) {
+                    this.showToast(UI.graduated, 'bonus');
+                } else if (level === 'easy') {
+                    this.showToast(pick(EASY_MSGS), 'bonus');
+                } else {
+                    this.showToast(pick(GOOD_MSGS), 'good');
+                }
+            }
+
+            // Milestone
+            const mc = this.masteredCount;
+            if (mc > 0 && mc % 50 === 0 && s.stage === 'mastered') {
+                const mKey = '_milestone_' + mc;
+                if (!this.state[mKey]) {
+                    this.$set(this.state, mKey, 1);
+                    setTimeout(() => this.showToast(UI.mastered(mc), 'bonus'), 800);
+                }
+            }
+
+            // Queue management
+            if (reinsert) {
+                const card = this.queue.shift();
+                this.queue.push(card);
+            } else {
+                this.queue.shift();
+            }
+        },
+
+        // ── Animations ───────────────────────────────────────────────────
+        doShake() {
+            this.shaking = false;
+            this.$nextTick(() => { this.shaking = true; });
+            setTimeout(() => { this.shaking = false; }, 500);
+        },
+        doBounce() {
+            this.bouncing = false;
+            this.$nextTick(() => { this.bouncing = true; });
+            setTimeout(() => { this.bouncing = false; }, 400);
+        },
+        showToast(msg, type = 'good') {
+            clearTimeout(this.toastTmr);
+            this.toast = null;
+            this.$nextTick(() => {
+                this.toast = { msg, type };
+                this.toastTmr = setTimeout(() => { this.toast = null; }, 2400);
+            });
+        },
+
+        // ── Persistence ──────────────────────────────────────────────────
+        loadSaved() {
+            try {
+                const raw = localStorage.getItem(this.storageKey);
+                if (raw) {
+                    const d        = JSON.parse(raw);
+                    this.state     = d.state    || {};
+                    this.points    = d.points   || 0;
+                    this.streak    = d.streak   || 0;
+                    this.autoPlay  = d.autoPlay !== undefined ? d.autoPlay : true;
+                    // Migrate: promote any young/mature cards with giant intervals to mastered
+                    for (const s of Object.values(this.state)) {
+                        if (s && (s.stage === 'young' || s.stage === 'mature') && (s.interval || 0) >= MAX_INTERVAL) {
+                            s.stage    = 'mastered';
+                            s.interval = 9999;
+                            s.next     = Date.now() + 9999 * 86400000;
+                        }
+                    }
+                }
+            } catch (e) { /* ignore */ }
+        },
+        saveState() {
+            const payload = JSON.stringify({
+                state:    this.state,
+                points:   this.points,
+                streak:   this.streak,
+                autoPlay: this.autoPlay,
+            });
+            try {
+                localStorage.setItem(this.storageKey, payload);
+            } catch (e) {
+                // Quota exceeded: evict dict cache first, then retry
+                try {
+                    localStorage.removeItem(DICT_KEY);
+                    this.dictCache = {};
+                    localStorage.setItem(this.storageKey, payload);
+                } catch (e2) { /* storage unavailable (e.g. private mode) — give up */ }
+            }
+        },
+        loadDictCache() {
+            try {
+                const raw = localStorage.getItem(DICT_KEY);
+                if (raw) this.dictCache = JSON.parse(raw);
+            } catch (e) { /* ignore */ }
+        },
+        saveDictCache() {
+            try {
+                localStorage.setItem(DICT_KEY, JSON.stringify(this.dictCache));
+            } catch (e) {
+                localStorage.removeItem(DICT_KEY);
+            }
+        },
+        confirmReset() {
+            if (confirm(UI.confirmReset(this.currentDeck.name))) {
+                localStorage.removeItem(this.storageKey);
+                this.state  = {};
+                this.points = 0;
+                this.streak = 0;
+                this.buildQueue();
+            }
+        },
+        loadMore() {
+            this.extraNewAllowed += MAX_NEW_DAY;
+            this.sessionCorrect   = 0;
+            this.buildQueue(this.extraNewAllowed);
+            if (this.queue.length === 0) {
+                // No new/due cards left — re-review today's words
+                this.loadTodayReview();
+            }
+        },
+        loadTodayReview() {
+            const tdy = today();
+            const todayWords = this.allWords.filter(w => {
+                const s = this.state[w.word];
+                return s && s.firstSeen === tdy;
+            });
+            if (todayWords.length === 0) {
+                alert(UI.noMoreWords);
+                return;
+            }
+            this.sessionCorrect  = 0;
+            this.queue           = shuffle([...todayWords]);
+            this.sessionTotal    = this.queue.length;
+            const seenTR = new Set(this.sessionQueue.map(w => w.word));
+            this.sessionQueue = [...this.sessionQueue, ...this.queue.filter(w => !seenTR.has(w.word))];
+            this.prefetchAhead();
+            this.showToast(UI.reviewToday(todayWords.length), 'good');
+        },
+
+        // ── Global state (daily streak, achievements) ─────────────────────
+        loadGlobal() {
+            try {
+                const raw = localStorage.getItem(GLOBAL_KEY);
+                if (raw) {
+                    const d = JSON.parse(raw);
+                    this.dailyStreak   = d.dailyStreak   || 0;
+                    this.lastStudyDate = d.lastStudyDate  || '';
+                    this.totalReviewed = d.totalReviewed  || 0;
+                    this.achievements  = d.achievements   || [];
+                }
+            } catch (e) { /* ignore */ }
+        },
+        saveGlobal() {
+            try {
+                localStorage.setItem(GLOBAL_KEY, JSON.stringify({
+                    dailyStreak:   this.dailyStreak,
+                    lastStudyDate: this.lastStudyDate,
+                    totalReviewed: this.totalReviewed,
+                    achievements:  this.achievements,
+                }));
+            } catch (e) { /* storage unavailable — give up */ }
+        },
+        updateDailyStreak() {
+            const tdy = today();
+            if (this.lastStudyDate === tdy) return;
+            const d = new Date();
+            d.setDate(d.getDate() - 1);
+            const yesterday = d.getFullYear() + '-' +
+                String(d.getMonth() + 1).padStart(2, '0') + '-' +
+                String(d.getDate()).padStart(2, '0');
+            if (this.lastStudyDate === yesterday) {
+                this.dailyStreak += 1;
+            } else {
+                this.dailyStreak = 1;
+            }
+            this.lastStudyDate = tdy;
+            // saveGlobal() will be called by answer() after this
+        },
+        checkAchievements() {
+            const earned = [];
+            const check = (id, cond) => {
+                if (cond && !this.achievements.includes(id)) {
+                    this.achievements.push(id);
+                    earned.push(id);
+                }
+            };
+            check('first_answer',  this.totalReviewed >= 1);
+            check('streak_5',      this.streak >= 5);
+            check('streak_20',     this.streak >= 20);
+            check('daily_3',       this.dailyStreak >= 3);
+            check('daily_7',       this.dailyStreak >= 7);
+            check('daily_30',      this.dailyStreak >= 30);
+            check('master_1',      this.masteredCount >= 1);
+            check('master_10',     this.masteredCount >= 10);
+            check('master_100',    this.masteredCount >= 100);
+            check('reviewed_100',  this.totalReviewed >= 100);
+            check('reviewed_500',  this.totalReviewed >= 500);
+            if (earned.length > 0) {
+                // saveGlobal() called by answer() — no extra write needed here
+                const a = ACHIEVEMENTS.find(x => x.id === earned[earned.length - 1]);
+                if (a) {
+                    setTimeout(() => this.showToast(UI.achievementUnlocked(a.icon, a.name), 'bonus'), 1200);
+                }
+            }
+        },
+        exportProgress() {
+            const allState = {};
+            for (const deck of DECKS) {
+                try {
+                    const raw = localStorage.getItem('srs_' + deck.id + '_v1');
+                    if (raw) allState[deck.id] = JSON.parse(raw);
+                } catch (e) {}
+            }
+            const data = {
+                exportDate:   new Date().toISOString(),
+                global:       {
+                    dailyStreak:   this.dailyStreak,
+                    lastStudyDate: this.lastStudyDate,
+                    totalReviewed: this.totalReviewed,
+                    achievements:  this.achievements,
+                },
+                decks: allState,
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url  = URL.createObjectURL(blob);
+            const a    = document.createElement('a');
+            a.href     = url;
+            a.download = 'flashcard-progress-' + today() + '.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        },
+
+        // ── Practice Mode ─────────────────────────────────────────────────
+        /** Return today's learned words; fallback to recently reviewed if too few */
+        getTodayPracticeWords() {
+            const tdy = today();
+            // Today's words first (prioritised in practice session)
+            const todayWords = this.allWords.filter(w => {
+                const s = this.state[w.word];
+                return s && s.firstSeen === tdy && s.stage !== 'mastered';
+            });
+            // All other seen words as supplementary pool
+            const otherWords = shuffle(
+                this.allWords.filter(w => {
+                    const s = this.state[w.word];
+                    return s && s.firstSeen !== tdy && s.stage !== 'mastered';
+                })
+            );
+            // Combine: today's words + enough others to reach at least 8 total
+            const needed = Math.max(0, 8 - todayWords.length);
+            return [...todayWords, ...otherWords.slice(0, needed)];
+        },
+
+        startPractice() {
+            clearTimeout(this._practiceTimer);
+            const words = this.getTodayPracticeWords();
+            if (words.length < 2) {
+                this.showToast(this.ui.practiceNoWords, 'bad');
+                return;
+            }
+            // Exclude mastered words from the distractor pool so they never appear as options
+            const practicePool = this.allWords.filter(w => {
+                const s = this.state[w.word];
+                return !s || s.stage !== 'mastered';
+            });
+            const qs = buildPracticeSession(words, practicePool, this.dictCache);
+            if (qs.length === 0) {
+                this.showToast(this.ui.practiceNoWords, 'bad');
+                return;
+            }
+            this.practiceQueue    = qs;
+            this.practiceIndex    = 0;
+            this.practiceScore    = 0;
+            this.practiceAnswered = false;
+            this.practiceSelected = null;
+            this.practiceInput    = '';
+            this.practiceResult     = null;
+            this.practiceDone       = false;
+            this.practiceWrongWords = [];
+            this.practiceMode       = true;
+            this._afterPracticeQuestion();
+        },
+
+        exitPractice() {
+            clearTimeout(this._practiceTimer);
+            // Show a score summary toast when exiting a started (non-done) session
+            if (!this.practiceDone) {
+                const answered = this.practiceAnswered
+                    ? this.practiceIndex + 1
+                    : this.practiceIndex;
+                if (answered > 0) {
+                    this.showToast(this.ui.practiceDoneScore(this.practiceScore, answered), 'good');
+                }
+            }
+            this.practiceMode = false;
+        },
+
+        // Undo the most recent SRS answer
+        undoAnswer() {
+            if (!this.undoSnap) return;
+            clearTimeout(this._undoTimer);
+            const snap = this.undoSnap;
+            // Restore SRS word state
+            if (snap.prevState) {
+                this.$set(this.state, snap.wordId, snap.prevState);
+            } else {
+                this.$delete(this.state, snap.wordId);
+            }
+            // Restore counters
+            this.points         = snap.points;
+            this.streak         = snap.streak;
+            this.totalReviewed  = snap.totalReviewed;
+            this.sessionCorrect = snap.sessionCorrect;
+            // Put card back at front of queue
+            const card = this.allWords.find(w => w.word === snap.wordId);
+            if (card) {
+                const idx = this.queue.indexOf(card);
+                if (idx !== -1) this.queue.splice(idx, 1);
+                this.queue.unshift(card);
+            }
+            this.flipped  = false;
+            this.showUndo = false;
+            this.undoSnap = null;
+            this.saveState();
+            this.saveGlobal();
+        },
+
+        // ── Word list modal ──────────────────────────────────────────
+        showWordList(stageGroup) {
+            const STAGE_GROUPS = {
+                new:      s => !s || s.stage === 'new',
+                learn:    s => s && (s.stage === 'learning' || s.stage === 'relearn' || s.stage === 'young'),
+                review:   s => s && s.stage === 'mature',
+                mastered: s => s && s.stage === 'mastered',
+            };
+            const filter = STAGE_GROUPS[stageGroup];
+            const words = this.allWords.filter(w => filter(this.state[w.word]));
+            const titles = {
+                new:      this.ui.wlNew,
+                learn:    this.ui.wlLearn,
+                review:   this.ui.wlReview,
+                mastered: this.ui.wlMastered,
+            };
+            this.wordListModal = { stageGroup, title: titles[stageGroup], words };
+        },
+        closeWordList() { this.wordListModal = null; },
+
+        // ── Reading overlay ─────────────────────────────────────────
+        openReading() {
+            this.readingError   = '';
+            this.readingArticle = '';
+            this.readingOpen    = true;
+            if (this.geminiKey) {
+                this.readingLoading = true;
+                this.generateReading();
+            }
+        },
+        saveGeminiKey() {
+            const k = this.geminiKeyInput.trim();
+            if (!k) return;
+            this.geminiKey = k;
+            localStorage.setItem('gemini_key', k);
+            this.geminiKeyInput = '';
+            this.readingLoading = true;
+            this.generateReading();
+        },
+        closeReading() {
+            this.readingOpen    = false;
+            this.readingArticle = '';
+            this.readingError   = '';
+            this.readingLoading = false;
+        },
+        // Tap on a highlighted vocab word → show its Chinese meaning as a toast
+        onVocabHlClick(e) {
+            const word = e.target.dataset && e.target.dataset.word;
+            if (!word) return;
+            const wobj = this.readingWordObjs.find(w =>
+                w.word.toLowerCase() === word.toLowerCase());
+            if (wobj) this.showToast(`${wobj.word}：${wobj.zh}`, 'good');
+        },
+        async generateReading() {
+            const GEMINI_KEY = this.geminiKey;
+            const tdy = today();
+            this.readingWordObjs = this.allWords.filter(w => {
+                const s = this.state[w.word];
+                return s && s.firstSeen === tdy;
+            });
+            if (this.readingWordObjs.length === 0) {
+                this.readingWordObjs = this.getTodayPracticeWords();
+            }
+            const wordList = this.readingWordObjs
+                .map(w => `${w.word} (${w.zh})`).join(', ');
+            const prompt = `You are an English tutor. Write a short, engaging English story (150–200 words) that naturally uses ALL of the following vocabulary words at least once. The story should be coherent, vivid, and suitable for intermediate learners. Return only the story text — no title, no commentary.\n\nVocabulary: ${wordList}`;
+
+            this.readingLoading = true;
+            this.readingArticle = '';
+            this.readingError   = '';
+
+            const controller = new AbortController();
+            const timeoutId  = setTimeout(() => controller.abort(), 18000);
+            try {
+                const res = await fetch(
+                    `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
+                    {
+                        method:  'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        signal:  controller.signal,
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: prompt }] }],
+                            generationConfig: { maxOutputTokens: 600, temperature: 0.9 }
+                        })
+                    }
+                );
+                clearTimeout(timeoutId);
+                if (!res.ok) {
+                    const status = res.status;
+                    let apiMsg = '';
+                    try { const e = await res.json(); apiMsg = e.error?.message || ''; } catch (_) {}
+                    if (status === 429) throw { _type: 'rate_limit' };
+                    if (status === 403) throw { _type: 'key_error', msg: apiMsg };
+                    throw { _type: 'generic', msg: `HTTP ${status}${apiMsg ? ': ' + apiMsg : ''}` };
+                }
+                const data = await res.json();
+                const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+                if (!text) throw { _type: 'generic' };
+                this.readingArticle = text.trim();
+            } catch (e) {
+                clearTimeout(timeoutId);
+                if (e.name === 'AbortError') {
+                    this.readingError = this.ui.readingErrTime;
+                } else if (e._type === 'rate_limit') {
+                    this.readingError = this.ui.readingErr429;
+                } else if (e._type === 'key_error') {
+                    this.readingError = this.ui.readingErrKey + (e.msg ? '\n' + e.msg : '');
+                } else if (e instanceof TypeError || !navigator.onLine) {
+                    this.readingError = this.ui.readingErrNet;
+                } else {
+                    this.readingError = (e.msg || this.ui.readingError);
+                }
+            } finally {
+                this.readingLoading = false;
+            }
+        },
+
+        selectMatchLeft(key) {
+            if (this.matchElim.includes(key)) return;
+            this.matchSelLeft = (this.matchSelLeft === key) ? null : key;
+        },
+        selectMatchRight(key) {
+            if (!this.matchSelLeft || this.matchElim.includes(key)) return;
+            if (this.matchSelLeft === key) {
+                // Correct pair
+                this.matchElim = [...this.matchElim, key];
+                this.matchSelLeft = null;
+                playFeedbackSound('correct');
+                if (this.matchElim.length === this.practiceCurrent.pairs.length) {
+                    // All matched — count as correct, auto-advance
+                    this.practiceScore++;
+                    this.practiceAnswered = true;
+                    clearTimeout(this._practiceTimer);
+                    this._practiceTimer = setTimeout(() => this.nextPracticeQuestion(), 1200);
+                }
+            } else {
+                // Wrong pair — shake both, track wrong word
+                const leftKey = this.matchSelLeft;
+                this.matchShakeKeys = [leftKey, key];
+                setTimeout(() => { this.matchShakeKeys = []; }, 400);
+                const wobj = this.practiceCurrent.pairs.find(p => p.word === leftKey);
+                if (wobj && !this.practiceWrongWords.some(w => w.word === wobj.word)) {
+                    this.practiceWrongWords.push(wobj);
+                }
+                this.matchSelLeft = null;
+                playFeedbackSound('wrong');
+            }
+        },
+        submitPracticeAnswer(val) {
+            if (this.practiceAnswered || !this.practiceCurrent) return;
+            const norm      = s => s.toLowerCase().trim();
+            const isCorrect = norm(String(val)) === norm(this.practiceCurrent.correct);
+            this.practiceSelected = String(val);
+            this.practiceResult   = isCorrect ? 'correct' : 'wrong';
+            this.practiceAnswered = true;
+            if (isCorrect) {
+                this.practiceScore++;
+                if (this.autoPlay) {
+                    setTimeout(() => this.playAudio(this.practiceCurrent.word.word), 300);
+                }
+                playFeedbackSound('correct');
+            } else {
+                // Deduplicate — same word may appear in multiple question types
+                const wobj = this.practiceCurrent.word;
+                if (!this.practiceWrongWords.some(w => w.word === wobj.word)) {
+                    this.practiceWrongWords.push(wobj);
+                }
+                playFeedbackSound('wrong');
+            }
+            // Auto-advance: faster when correct (1.4s), longer when wrong (2.6s) to read correct answer
+            clearTimeout(this._practiceTimer);
+            this._practiceTimer = setTimeout(() => this.nextPracticeQuestion(), isCorrect ? 1400 : 2600);
+        },
+
+        nextPracticeQuestion() {
+            clearTimeout(this._practiceTimer);
+            const next = this.practiceIndex + 1;
+            if (next >= this.practiceQueue.length) {
+                this.practiceDone = true;
+                return;
+            }
+            this.practiceIndex    = next;
+            this.practiceAnswered = false;
+            this.practiceSelected = null;
+            this.practiceInput    = '';
+            this.practiceResult   = null;
+            this.matchSelLeft     = null;
+            this.matchElim        = [];
+            this.matchShakeKeys   = [];
+            this._afterPracticeQuestion();
+        },
+
+        /** Side-effects after a new practice question is shown */
+        _afterPracticeQuestion() {
+            const q = this.practiceCurrent;
+            if (!q) return;
+            this.$nextTick(() => {
+                if (q.type === 'mc-audio-to-word') {
+                    this.playAudio(q.word.word);
+                } else if (q.type === 'spelling' && this.$refs.spellInput) {
+                    this.$refs.spellInput.focus();
+                }
+            });
+        },
+
+        // ── Keyboard ─────────────────────────────────────────────────────
+        onKey(e) {
+            if (this.sessionDone || this.loading) return;
+            const tag = document.activeElement && document.activeElement.tagName;
+            if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'BUTTON') return;
+
+            if (e.code === 'Space') {
+                e.preventDefault();
+                this.flipCard();
+                return;
+            }
+            if (e.code === 'KeyP') {
+                this.playAudio(this.cur.word);
+                return;
+            }
+            const arrowMap = {
+                ArrowLeft: 'again', ArrowDown: 'hard',
+                ArrowRight: 'good', ArrowUp:   'easy',
+            };
+            if (arrowMap[e.code]) {
+                e.preventDefault();
+                if (this.flipped) this.answer(arrowMap[e.code]);
+                else              this.flipCard();
+            }
+        },
+    },
+
+    created() {
+        // Restore preferred deck before loading state
+        const savedDeckId = localStorage.getItem(DECK_PREF_KEY);
+        if (savedDeckId) {
+            const found = DECKS.find(d => d.id === savedDeckId);
+            if (found) this.currentDeck = found;
+        }
+        this.loadSaved();
+        this.loadGlobal();
+        this.loadDictCache();
+        this.loadWords();
+    },
+    mounted() {
+        window.addEventListener('keydown', this.onKey);
+        // Save when user switches tabs / goes to background on mobile
+        this._onVisibility = () => {
+            if (document.hidden) {
+                this.saveState();
+                this.saveGlobal();
+            }
+        };
+        document.addEventListener('visibilitychange', this._onVisibility);
+    },
+    beforeDestroy() {
+        window.removeEventListener('keydown', this.onKey);
+        document.removeEventListener('visibilitychange', this._onVisibility);
+    },
+});
+</script>
+
+<!-- ── PWA Install Prompts ──────────────────────────────────────────────── -->
+<script>
+(function () {
+    // Populate i18n text (UI is defined in the main script block above)
+    document.getElementById('pwa-android-desc').textContent = UI.pwaAndroidDesc;
+    document.getElementById('pwa-install-btn').textContent  = UI.pwaAndroidInstall;
+    document.getElementById('pwa-ios-title').textContent    = UI.pwaIOSTitle;
+    document.getElementById('pwa-ios-desc').textContent     = UI.pwaIOSDesc;
+    document.getElementById('pwa-step1').innerHTML          = UI.pwaIOSStep1;
+    document.getElementById('pwa-step2').innerHTML          = UI.pwaIOSStep2;
+    document.getElementById('pwa-step3').innerHTML          = UI.pwaIOSStep3;
+    document.getElementById('pwa-dismiss-ios').textContent  = UI.pwaIOSDismiss;
+
+    const SHOWN_KEY = 'pwa_prompt_shown_v1';
+
+    // ── Helper: is this already running as a standalone PWA? ──────────────
+    function isStandalone() {
+        return window.matchMedia('(display-mode: standalone)').matches
+            || window.navigator.standalone === true;   // iOS
+    }
+
+    if (isStandalone()) return;   // already installed → skip everything
+
+    // ── Detect platform ───────────────────────────────────────────────────
+    const ua  = navigator.userAgent;
+    const isIOS     = /iphone|ipad|ipod/i.test(ua);
+    const isSafari  = /safari/i.test(ua) && !/chrome|crios|fxios/i.test(ua);
+    const isAndroid = /android/i.test(ua);
+
+    // ── iOS: show guide after a 2 s delay on first visit ─────────────────
+    if (isIOS && isSafari && !localStorage.getItem(SHOWN_KEY)) {
+        const overlay  = document.getElementById('pwa-ios');
+        const dismissBtn = document.getElementById('pwa-dismiss-ios');
+
+        setTimeout(function () {
+            overlay.classList.add('show');
+        }, 2000);
+
+        dismissBtn.addEventListener('click', function () {
+            overlay.classList.remove('show');
+            localStorage.setItem(SHOWN_KEY, '1');
+        });
+
+        // Also dismiss on backdrop tap
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) {
+                overlay.classList.remove('show');
+                localStorage.setItem(SHOWN_KEY, '1');
+            }
+        });
+        return;
+    }
+
+    // ── Android / Chrome: capture beforeinstallprompt ─────────────────────
+    let deferredPrompt = null;
+    const banner     = document.getElementById('pwa-android');
+    const installBtn = document.getElementById('pwa-install-btn');
+    const dismissBtn = document.getElementById('pwa-dismiss-android');
+
+    window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        deferredPrompt = e;
+
+        if (localStorage.getItem(SHOWN_KEY)) return;   // dismissed before
+
+        setTimeout(function () {
+            banner.classList.add('show');
+        }, 2500);
+    });
+
+    installBtn.addEventListener('click', async function () {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        banner.classList.remove('show');
+        localStorage.setItem(SHOWN_KEY, '1');
+    });
+
+    dismissBtn.addEventListener('click', function () {
+        banner.classList.remove('show');
+        localStorage.setItem(SHOWN_KEY, '1');
+    });
+
+    // Hide banner once installed
+    window.addEventListener('appinstalled', function () {
+        banner.classList.remove('show');
+    });
+})();
+</script>
+
+<!-- ── Force-refresh interaction ────────────────────────────────────────── -->
+<script>
+(function () {
+    const zh   = document.documentElement.lang === 'zh';
+    const btn  = document.getElementById('upd-btn');
+    const ring = btn.querySelector('.upd-ring');
+    const txt  = btn.querySelector('.upd-txt');
+
+    txt.textContent = zh ? '检查更新' : 'Check for updates';
+
+    const steps = zh
+        ? ['正在检查…', '3', '2', '1', '🚀 起飞！']
+        : ['Checking…',  '3', '2', '1', '🚀 Launch!'];
+
+    let busy = false;
+    btn.addEventListener('click', function () {
+        if (busy) return;
+        busy = true;
+        btn.classList.add('upd-go');
+        txt.textContent = steps[0];
+
+        let i = 0;
+        const tick = setInterval(function () {
+            i++;
+            if (i < steps.length - 1) {
+                txt.textContent = steps[i];
+            } else {
+                clearInterval(tick);
+                ring.style.animation = 'none';
+                ring.textContent = '🚀';
+                txt.textContent = steps[steps.length - 1];
+                btn.classList.remove('upd-go');
+                btn.classList.add('upd-blast');
+                setTimeout(function () {
+                    window.location.reload(true);
+                }, 420);
+            }
+        }, 520);
+    });
+})();
+</script>
+</body>
+</html>
