@@ -2,6 +2,8 @@
 
 基于**间隔重复（SRS）算法**的英语词汇 PWA，支持离线使用与真人发音。
 
+**[立即体验 →](https://karryzhang.github.io/VocabLoop/)**
+
 ## 功能
 
 - 🃏 卡片翻转式 SRS 学习（SM-2 改良算法）
