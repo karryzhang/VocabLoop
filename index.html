@@ -1384,9 +1384,11 @@
                 <button class="btn-hd" :class="{active: practiceMode}"
                         @click="practiceMode ? exitPractice() : startPractice()"
                         :title="ui.practiceBtn">✏️</button>
+                <!-- 隐藏：延展阅读功能待测试
                 <button class="btn-hd" :class="{active: readingOpen}"
                         @click="readingOpen ? closeReading() : openReading()"
                         :title="ui.readingBtn">📖</button>
+                -->
                 <button class="btn-hd danger" @click="confirmReset">{{ui.resetBtn}}</button>
             </div>
         </div>
@@ -1654,7 +1656,9 @@
         </div>
         <button class="btn-more" @click="loadMore">{{ui.doneContinue}}</button>
         <button class="btn-practice" @click="startPractice">✏️ {{ui.practiceBtn}}</button>
+        <!-- 隐藏：延展阅读功能待测试
         <button class="btn-reading" @click="openReading">📖 {{ui.readingBtn}}</button>
+        -->
     </div>
 
     <!-- Main -->
