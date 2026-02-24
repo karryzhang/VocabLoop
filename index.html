@@ -33,6 +33,7 @@
     <meta property="og:image"       content="https://karryzhang.github.io/VocabLoop/icons/icon-512.png">
     <meta property="og:image:width"  content="512">
     <meta property="og:image:height" content="512">
+    <meta property="og:image:type"   content="image/png">
     <meta property="og:image:alt"   content="VocabLoop 图标 – 蓝色背景白色 V 字母与循环箭头">
     <meta property="og:locale"      content="zh_CN">
 
@@ -3456,40 +3457,50 @@ new Vue({
 
         // ── Share ─────────────────────────────────────────────────────────
         shareApp() {
-            const text = LANG === 'zh'
-                ? `📚 VocabLoop — 间隔重复英语词汇 PWA\nPET / 日常口语 / Crypto 三大词库，科学记单词\n→ https://karryzhang.github.io/VocabLoop/`
-                : `📚 VocabLoop — Spaced Repetition Vocabulary PWA\nPET / Daily English / Crypto — science-backed word learning\n→ https://karryzhang.github.io/VocabLoop/`;
-            this._doShare(text);
+            this._doShare({
+                title: 'VocabLoop',
+                text: LANG === 'zh'
+                    ? '📚 VocabLoop — 间隔重复英语词汇 PWA\nPET / 日常口语 / Crypto 三大词库，科学记单词'
+                    : '📚 VocabLoop — Spaced Repetition Vocabulary PWA\nPET / Daily English / Crypto — science-backed word learning',
+                url: 'https://karryzhang.github.io/VocabLoop/',
+            });
         },
         shareSession() {
             const url = 'https://karryzhang.github.io/VocabLoop/';
             const streakLine = this.dailyStreak >= 2
                 ? (LANG === 'zh' ? `🔥 ${this.dailyStreak} 天连续学习\n` : `🔥 ${this.dailyStreak}-day streak\n`)
                 : '';
-            const text = LANG === 'zh'
-                ? `🎉 VocabLoop 今日学习完成！\n📖 新学：${this.todayLearnedCount} | ✅ 答对：${this.sessionCorrect} | 🏆 已掌握：${this.masteredCount}\n${streakLine}→ ${url}`
-                : `🎉 VocabLoop session complete!\n📖 New: ${this.todayLearnedCount} | ✅ Correct: ${this.sessionCorrect} | 🏆 Mastered: ${this.masteredCount}\n${streakLine}→ ${url}`;
-            this._doShare(text);
+            this._doShare({
+                title: LANG === 'zh' ? 'VocabLoop 今日学习完成！' : 'VocabLoop session complete!',
+                text: LANG === 'zh'
+                    ? `🎉 今日学习完成！\n📖 新学：${this.todayLearnedCount} | ✅ 答对：${this.sessionCorrect} | 🏆 已掌握：${this.masteredCount}\n${streakLine}`
+                    : `🎉 Session complete!\n📖 New: ${this.todayLearnedCount} | ✅ Correct: ${this.sessionCorrect} | 🏆 Mastered: ${this.masteredCount}\n${streakLine}`,
+                url,
+            });
         },
         sharePractice() {
             const url = 'https://karryzhang.github.io/VocabLoop/';
             const pct = this.practiceQueue.length > 0
-                ? Math.round(this.practiceScore / this.practiceQueue.length * 100)
-                : 0;
-            const text = LANG === 'zh'
-                ? `✏️ VocabLoop 练习结束！\n得分：${this.practiceScore}/${this.practiceQueue.length}（${pct}%）\n→ ${url}`
-                : `✏️ VocabLoop practice done!\nScore: ${this.practiceScore}/${this.practiceQueue.length} (${pct}%)\n→ ${url}`;
-            this._doShare(text);
+                ? Math.round(this.practiceScore / this.practiceQueue.length * 100) : 0;
+            this._doShare({
+                title: LANG === 'zh' ? 'VocabLoop 练习结束！' : 'VocabLoop practice done!',
+                text: LANG === 'zh'
+                    ? `✏️ 练习结束！得分：${this.practiceScore}/${this.practiceQueue.length}（${pct}%）`
+                    : `✏️ Practice done! Score: ${this.practiceScore}/${this.practiceQueue.length} (${pct}%)`,
+                url,
+            });
         },
-        async _doShare(text) {
+        async _doShare({ title, text, url }) {
             if (navigator.share) {
-                try { await navigator.share({ text }); return; } catch (e) { if (e.name === 'AbortError') return; }
+                try { await navigator.share({ title, text, url }); return; }
+                catch (e) { if (e.name === 'AbortError') return; }
             }
+            const fullText = `${text}\n→ ${url}`;
             try {
-                await navigator.clipboard.writeText(text);
+                await navigator.clipboard.writeText(fullText);
                 this.showToast(UI.shareCopied, 'good');
             } catch (e) {
-                prompt(UI.shareCopyFallback, text);
+                prompt(UI.shareCopyFallback, fullText);
             }
         },
 
