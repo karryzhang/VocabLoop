@@ -575,8 +575,22 @@
             margin-top: 8px;
             padding: 0 8px;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
-            line-clamp: 3;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.5;
+        }
+        .back-example2 {
+            font-size: 0.73rem;
+            color: rgba(255,255,255,.48);
+            font-style: italic;
+            text-align: center;
+            margin-top: 5px;
+            padding: 0 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
             line-height: 1.5;
@@ -587,6 +601,14 @@
             text-align: center;
             margin-top: 3px;
             font-style: normal;
+        }
+        .back-note {
+            font-size: 0.64rem;
+            color: rgba(255,255,255,.4);
+            text-align: center;
+            margin-top: 2px;
+            padding: 0 12px;
+            line-height: 1.4;
         }
         /* English definition below Chinese meaning — reinforces monolingual comprehension */
         .back-def {
@@ -2013,6 +2035,10 @@
                     <div class="back-example" v-if="curExample">
                         "{{curExample.text}}"
                     </div>
+                    <div class="back-example2" v-if="curExample2">
+                        "{{curExample2}}"
+                    </div>
+                    <div class="back-note" v-if="curNote">{{curNote}}</div>
                     <div class="back-footer">
                         {{cur.word}}
                         <span v-if="curDict && curDict.ipa"> · {{curDict.ipa}}</span>
@@ -2493,8 +2519,8 @@ const UI = STRINGS[LANG];
 // ── Constants ──────────────────────────────────────────────────────────────
 const DECKS = [
     { id: 'pet',    icon: '📚', name: UI.deckPET,    file: 'data/pet-words-1000.json' },
-    { id: 'crypto', icon: '₿',  name: UI.deckCrypto, file: 'data/crypto-words-1000.json' },
     { id: 'daily',  icon: '💬', name: UI.deckDaily,  file: 'data/daily-words-1000.json' },
+    { id: 'crypto', icon: '₿',  name: UI.deckCrypto, file: 'data/crypto-words-1000.json' },
 ];
 const DECK_PREF_KEY = 'preferred_deck';
 const DICT_KEY      = 'shared_dict_v1';
@@ -2796,7 +2822,17 @@ new Vue({
         // Example: prefer API result, fall back to JSON ex field
         curExample() {
             if (this.curDict && this.curDict.example) return { text: this.curDict.example, src: 'dict' };
-            if (this.cur.ex) return { text: this.cur.ex, src: 'json' };
+            if (this.cur && this.cur.ex) return { text: this.cur.ex, src: 'json' };
+            return null;
+        },
+        // Second example (inflected form) — from JSON ex2 field
+        curExample2() {
+            if (this.cur && this.cur.ex2) return this.cur.ex2;
+            return null;
+        },
+        // Abbreviation/acronym note (e.g. "short for Decentralized Finance")
+        curNote() {
+            if (this.cur && this.cur.note) return this.cur.note;
             return null;
         },
         levelProgress() {
@@ -3083,17 +3119,20 @@ new Vue({
                     pos:  w.pos || '',
                     ipa:  w.ipa || '',
                     ex:   w.ex  || '',
+                    ex2:  w.ex2 || '',
+                    note: w.note || '',
                 }));
                 // Pre-seed dictCache from embedded word data (single batch update)
                 const additions = {};
                 for (const w of this.allWords) {
-                    if (!(w.word in this.dictCache) && (w.ipa || w.pos || w.ex)) {
+                    if (!(w.word in this.dictCache) && (w.ipa || w.pos || w.ex || w.ex2)) {
                         additions[w.word] = {
                             ipa:        w.ipa,
                             audio:      '',
                             pos:        w.pos,
                             definition: w.zh,
                             example:    w.ex,
+                            example2:   w.ex2,
                         };
                     }
                 }
