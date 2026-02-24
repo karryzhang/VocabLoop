@@ -1545,6 +1545,79 @@
             100% { transform: scale(1);   opacity: 1; }
         }
 
+        /* ── Onboarding overlay ─────────────────────────────────────────── */
+        .ob-overlay {
+            position: fixed; inset: 0; z-index: 400;
+            background: var(--bg);
+            display: flex; flex-direction: column;
+            padding-top: env(safe-area-inset-top);
+            animation: rdSlideUp 0.32s cubic-bezier(.32,.72,0,1);
+        }
+        .ob-hd {
+            display: flex; align-items: center; justify-content: flex-end;
+            padding: 10px 16px; flex-shrink: 0;
+        }
+        .ob-skip {
+            background: none; border: none; font-size: 0.8rem; font-weight: 600;
+            color: var(--muted); cursor: pointer; padding: 6px 10px;
+            border-radius: 8px; transition: color 0.15s;
+        }
+        .ob-skip:hover { color: var(--text); }
+        .ob-body {
+            flex: 1; overflow-y: auto; padding: 0 20px 20px;
+            -webkit-overflow-scrolling: touch;
+            display: flex; flex-direction: column; gap: 28px;
+        }
+        .ob-hero {
+            display: flex; flex-direction: column; align-items: center;
+            text-align: center; gap: 8px; padding: 16px 0 8px;
+        }
+        .ob-logo    { font-size: 3.6rem; line-height: 1; }
+        .ob-brand   { font-size: 2rem; font-weight: 900; color: var(--text); letter-spacing: -0.02em; }
+        .ob-tagline { font-size: 0.85rem; color: var(--muted); }
+        .ob-section { display: flex; flex-direction: column; gap: 12px; }
+        .ob-section-title {
+            font-size: 1rem; font-weight: 800; color: var(--text);
+            padding-bottom: 6px; border-bottom: 2px solid var(--border);
+        }
+        .ob-section-body { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+        .ob-decks { display: flex; flex-direction: column; gap: 10px; }
+        .ob-deck {
+            display: flex; align-items: flex-start; gap: 14px;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 14px; padding: 14px 16px;
+        }
+        .ob-deck-icon { font-size: 1.6rem; line-height: 1; flex-shrink: 0; margin-top: 2px; }
+        .ob-deck-name { font-size: 0.95rem; font-weight: 700; color: var(--text); }
+        .ob-deck-desc { font-size: 0.8rem; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+        .ob-steps { display: flex; flex-direction: column; gap: 12px; }
+        .ob-step  {
+            display: flex; align-items: flex-start; gap: 12px;
+            font-size: 0.88rem; color: var(--muted); line-height: 1.55;
+        }
+        .ob-step-num {
+            width: 22px; height: 22px; border-radius: 50%;
+            background: var(--blue); color: #fff;
+            font-size: 0.75rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .ob-footer {
+            flex-shrink: 0;
+            padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+            border-top: 1px solid var(--border); background: var(--bg);
+        }
+        .ob-cta {
+            width: 100%; padding: 16px;
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            color: #fff; border: none; border-radius: 16px;
+            font-size: 1.05rem; font-weight: 800; cursor: pointer;
+            box-shadow: 0 4px 20px rgba(139,92,246,0.38);
+            transition: transform 0.1s, box-shadow 0.15s;
+        }
+        .ob-cta:hover  { transform: translateY(-1px); box-shadow: 0 6px 26px rgba(139,92,246,0.48); }
+        .ob-cta:active { transform: scale(0.98); box-shadow: none; }
+
         /* ── Word list modal ─────────────────────────────────────────────── */
         .wl-overlay {
             position: fixed; inset: 0; z-index: 500;
@@ -2257,6 +2330,86 @@
         </div>
     </div>
 
+    <!-- ── Onboarding overlay (new user) ───────────────────────────── -->
+    <div v-if="showOnboarding" class="ob-overlay">
+        <!-- Header -->
+        <div class="ob-hd">
+            <span></span>
+            <button class="ob-skip" @click="dismissOnboarding">{{ui.obSkip}} ✕</button>
+        </div>
+
+        <!-- Scrollable body -->
+        <div class="ob-body">
+
+            <!-- Hero -->
+            <div class="ob-hero">
+                <div class="ob-logo">📖</div>
+                <div class="ob-brand">VocabLoop</div>
+                <div class="ob-tagline">{{ui.obTagline}}</div>
+            </div>
+
+            <!-- SRS -->
+            <div class="ob-section">
+                <div class="ob-section-title">{{ui.obSrsTitle}}</div>
+                <div class="ob-section-body">{{ui.obSrsDesc}}</div>
+            </div>
+
+            <!-- Decks -->
+            <div class="ob-section">
+                <div class="ob-section-title">{{ui.obDecksTitle}}</div>
+                <div class="ob-decks">
+                    <div class="ob-deck">
+                        <span class="ob-deck-icon">📚</span>
+                        <div>
+                            <div class="ob-deck-name">{{ui.deckPET}}</div>
+                            <div class="ob-deck-desc">{{ui.obDeckPetDesc}}</div>
+                        </div>
+                    </div>
+                    <div class="ob-deck">
+                        <span class="ob-deck-icon">💬</span>
+                        <div>
+                            <div class="ob-deck-name">{{ui.deckDaily}}</div>
+                            <div class="ob-deck-desc">{{ui.obDeckDailyDesc}}</div>
+                        </div>
+                    </div>
+                    <div class="ob-deck">
+                        <span class="ob-deck-icon">₿</span>
+                        <div>
+                            <div class="ob-deck-name">{{ui.deckCrypto}}</div>
+                            <div class="ob-deck-desc">{{ui.obDeckCryptoDesc}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How to use -->
+            <div class="ob-section">
+                <div class="ob-section-title">{{ui.obHowTitle}}</div>
+                <div class="ob-steps">
+                    <div class="ob-step">
+                        <span class="ob-step-num">1</span>
+                        <span>{{ui.obStep1}}</span>
+                    </div>
+                    <div class="ob-step">
+                        <span class="ob-step-num">2</span>
+                        <span>{{ui.obStep2}}</span>
+                    </div>
+                    <div class="ob-step">
+                        <span class="ob-step-num">3</span>
+                        <span>{{ui.obStep3}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="height:80px"></div>
+        </div>
+
+        <!-- Fixed CTA footer -->
+        <div class="ob-footer">
+            <button class="ob-cta" @click="dismissOnboarding">{{ui.obCta}}</button>
+        </div>
+    </div>
+
 </div>
 
 <!-- ── Force-refresh zone ──────────────────────────────────────────────── -->
@@ -2407,6 +2560,19 @@ const STRINGS = {
     shareHint:             '把你的学习成果分享给朋友',
     shareCopied:           '已复制，去分享吧！',
     shareCopyFallback:     '复制以下内容分享：',
+    obTagline:       '间隔重复英语词汇 · 科学记忆',
+    obSrsTitle:      '🧠 科学记忆原理',
+    obSrsDesc:       '基于间隔重复算法（SRS）——刚学的词频繁出现，记熟的词逐渐拉长间隔。系统在最该复习的时刻推送单词，用最少时间记最多词。',
+    obDecksTitle:    '📚 三大词库',
+    obDeckPetDesc:   '剑桥 PET 考试核心词汇，夯实英语基础',
+    obDeckDailyDesc: '职场口语 · 网络缩写 · 日常高频短语',
+    obDeckCryptoDesc:'区块链 · DeFi · Web3 专业术语',
+    obHowTitle:      '🃏 如何使用',
+    obStep1:         '看到单词，回忆含义，点击卡片翻开',
+    obStep2:         '按记忆程度评分：忘了 / 模糊 / 记住了 / 很熟',
+    obStep3:         '每天坚持，系统安排最优复习时间',
+    obCta:           '开始学习 →',
+    obSkip:          '跳过',
     practicePlayAgain:     '再听一遍',
     practiceExitBtn:       '退出练习',
     undoBtn:               '↩ 撤销',
@@ -2536,6 +2702,19 @@ const STRINGS = {
     shareHint:             'Show friends your progress',
     shareCopied:           'Copied — go share!',
     shareCopyFallback:     'Copy to share:',
+    obTagline:       'Spaced Repetition Vocabulary · Science-backed',
+    obSrsTitle:      '🧠 Science of Memory',
+    obSrsDesc:       'Built on Spaced Repetition (SRS) — new words appear often, mastered words at longer intervals. The system shows each word at the perfect moment, so you retain more with less effort.',
+    obDecksTitle:    '📚 Three Vocabulary Decks',
+    obDeckPetDesc:   'Cambridge PET exam core vocabulary',
+    obDeckDailyDesc: 'Business phrases · Internet slang · Daily expressions',
+    obDeckCryptoDesc:'Blockchain · DeFi · Web3 terminology',
+    obHowTitle:      '🃏 How to Use',
+    obStep1:         'See a word, recall its meaning, tap to flip',
+    obStep2:         'Rate yourself: Again / Hard / Good / Easy',
+    obStep3:         'Study daily — the system schedules optimal reviews',
+    obCta:           'Start Learning →',
+    obSkip:          'Skip',
     practicePlayAgain:     'Play again',
     practiceExitBtn:       'Exit Practice',
     undoBtn:               '↩ Undo',
@@ -2865,6 +3044,7 @@ new Vue({
             undoSnap:  null,   // pre-answer snapshot
             showUndo:  false,  // undo button visibility
             wordListModal: null, // { stageGroup, title, words } — word list bottom sheet
+            showOnboarding: false,
         };
     },
 
@@ -3215,6 +3395,10 @@ new Vue({
                 alert(UI.loadError(e.message, this.currentDeck.file));
             }
             this.loading = false;
+            // Show onboarding for first-time users
+            if (!localStorage.getItem('onboarding_seen')) {
+                this.showOnboarding = true;
+            }
         },
 
         // ── Build today's queue ───────────────────────────────────────────
@@ -3490,6 +3674,12 @@ new Vue({
                 this.toast = { msg, type };
                 this.toastTmr = setTimeout(() => { this.toast = null; }, 2400);
             });
+        },
+
+        // ── Onboarding ───────────────────────────────────────────────────
+        dismissOnboarding() {
+            this.showOnboarding = false;
+            try { localStorage.setItem('onboarding_seen', '1'); } catch (e) {}
         },
 
         // ── Share ─────────────────────────────────────────────────────────
