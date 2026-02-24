@@ -300,6 +300,20 @@
         }
         .done-action-tertiary .done-action-arrow { color: var(--muted); opacity: 1; }
         .done-action-tertiary:hover { border-color: var(--blue); }
+        .done-action-share {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: #fff;
+            box-shadow: 0 4px 18px rgba(59,130,246,0.32);
+        }
+        .done-action-share:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(59,130,246,0.42); }
+        .btn-share-prac {
+            display: block; width: 100%; margin: 8px 0 0;
+            padding: 13px; border-radius: 12px;
+            border: 1.5px solid var(--blue); color: var(--blue); background: transparent;
+            font-size: 0.95rem; font-weight: 600; cursor: pointer;
+            transition: background 0.15s;
+        }
+        .btn-share-prac:hover { background: rgba(59,130,246,0.08); }
         /* Keep btn-more for practice back button */
         .btn-more {
             background: linear-gradient(135deg, #3b82f6, #1d4ed8);
@@ -1614,6 +1628,7 @@
                 <button class="btn-hd" :class="{active: readingOpen}"
                         @click="readingOpen ? closeReading() : openReading()"
                         :title="ui.readingBtn">📖</button>
+                <button class="btn-hd" @click="shareApp" :title="ui.shareBtn">📤</button>
                 <button class="btn-hd danger" @click="confirmReset">{{ui.resetBtn}}</button>
             </div>
         </div>
@@ -1675,6 +1690,7 @@
                 </div>
             </div>
 
+            <button class="btn-share-prac" @click="sharePractice">📤 {{ui.shareBtn}}</button>
             <button class="btn-more" @click="exitPractice">{{ui.practiceDoneBack}}</button>
         </div>
 
@@ -1922,6 +1938,15 @@
                 <div class="done-action-text">
                     <span class="done-action-title">{{ui.doneContinue}}</span>
                     <span class="done-action-hint">{{ui.doneContinueHint}}</span>
+                </div>
+                <span class="done-action-arrow">›</span>
+            </button>
+            <!-- Share -->
+            <button class="done-action done-action-share" @click="shareSession">
+                <span class="done-action-icon">📤</span>
+                <div class="done-action-text">
+                    <span class="done-action-title">{{ui.shareBtn}}</span>
+                    <span class="done-action-hint">{{ui.shareHint}}</span>
                 </div>
                 <span class="done-action-arrow">›</span>
             </button>
@@ -2352,6 +2377,10 @@ const STRINGS = {
     practiceDoneScore:     (c, t) => `答对 ${c} / ${t} 题`,
     practiceDoneBack:      '返回',
     practiceWrongTitle:    '需要加强的词汇',
+    shareBtn:              '分享给朋友',
+    shareHint:             '把你的学习成果分享给朋友',
+    shareCopied:           '已复制，去分享吧！',
+    shareCopyFallback:     '复制以下内容分享：',
     practicePlayAgain:     '再听一遍',
     practiceExitBtn:       '退出练习',
     undoBtn:               '↩ 撤销',
@@ -2477,6 +2506,10 @@ const STRINGS = {
     practiceDoneScore:     (c, t) => `${c} / ${t} correct`,
     practiceDoneBack:      'Back',
     practiceWrongTitle:    'Words to reinforce',
+    shareBtn:              'Share',
+    shareHint:             'Show friends your progress',
+    shareCopied:           'Copied — go share!',
+    shareCopyFallback:     'Copy to share:',
     practicePlayAgain:     'Play again',
     practiceExitBtn:       'Exit Practice',
     undoBtn:               '↩ Undo',
@@ -3419,6 +3452,45 @@ new Vue({
                 this.toast = { msg, type };
                 this.toastTmr = setTimeout(() => { this.toast = null; }, 2400);
             });
+        },
+
+        // ── Share ─────────────────────────────────────────────────────────
+        shareApp() {
+            const text = LANG === 'zh'
+                ? `📚 VocabLoop — 间隔重复英语词汇 PWA\nPET / 日常口语 / Crypto 三大词库，科学记单词\n→ https://karryzhang.github.io/vocabloop/`
+                : `📚 VocabLoop — Spaced Repetition Vocabulary PWA\nPET / Daily English / Crypto — science-backed word learning\n→ https://karryzhang.github.io/vocabloop/`;
+            this._doShare(text);
+        },
+        shareSession() {
+            const url = 'https://karryzhang.github.io/vocabloop/';
+            const streakLine = this.dailyStreak >= 2
+                ? (LANG === 'zh' ? `🔥 ${this.dailyStreak} 天连续学习\n` : `🔥 ${this.dailyStreak}-day streak\n`)
+                : '';
+            const text = LANG === 'zh'
+                ? `🎉 VocabLoop 今日学习完成！\n📖 新学：${this.todayLearnedCount} | ✅ 答对：${this.sessionCorrect} | 🏆 已掌握：${this.masteredCount}\n${streakLine}→ ${url}`
+                : `🎉 VocabLoop session complete!\n📖 New: ${this.todayLearnedCount} | ✅ Correct: ${this.sessionCorrect} | 🏆 Mastered: ${this.masteredCount}\n${streakLine}→ ${url}`;
+            this._doShare(text);
+        },
+        sharePractice() {
+            const url = 'https://karryzhang.github.io/vocabloop/';
+            const pct = this.practiceQueue.length > 0
+                ? Math.round(this.practiceScore / this.practiceQueue.length * 100)
+                : 0;
+            const text = LANG === 'zh'
+                ? `✏️ VocabLoop 练习结束！\n得分：${this.practiceScore}/${this.practiceQueue.length}（${pct}%）\n→ ${url}`
+                : `✏️ VocabLoop practice done!\nScore: ${this.practiceScore}/${this.practiceQueue.length} (${pct}%)\n→ ${url}`;
+            this._doShare(text);
+        },
+        async _doShare(text) {
+            if (navigator.share) {
+                try { await navigator.share({ text }); return; } catch (e) { if (e.name === 'AbortError') return; }
+            }
+            try {
+                await navigator.clipboard.writeText(text);
+                this.showToast(UI.shareCopied, 'good');
+            } catch (e) {
+                prompt(UI.shareCopyFallback, text);
+            }
         },
 
         // ── Persistence ──────────────────────────────────────────────────
