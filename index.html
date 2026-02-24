@@ -3575,14 +3575,10 @@ new Vue({
                 this.showOnboarding = true;
             } else {
                 const lastVisit = localStorage.getItem('last_visit_date');
-                if (lastVisit !== todayStr) {
-                    const firstVisit = localStorage.getItem('first_visit_date') || todayStr;
-                    const dayCount = Math.floor((new Date(todayStr) - new Date(firstVisit)) / 86400000) + 1;
-                    if (dayCount >= 2) {
-                        this.dailyWelcomeDay = dayCount;
-                        this.dailyWelcomeQuote = DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)];
-                        this.showDailyWelcome = true;
-                    }
+                if (lastVisit !== todayStr && this.dailyStreak >= 2) {
+                    this.dailyWelcomeDay = this.dailyStreak;
+                    this.dailyWelcomeQuote = DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)];
+                    this.showDailyWelcome = true;
                 }
             }
             try { localStorage.setItem('last_visit_date', todayStr); } catch(e) {}
@@ -3871,11 +3867,7 @@ new Vue({
 
         // ── Daily welcome ─────────────────────────────────────────────────
         openDailyWelcome() {
-            if (!this.dailyWelcomeDay) {
-                const todayStr = new Date().toDateString();
-                const firstVisit = localStorage.getItem('first_visit_date') || todayStr;
-                this.dailyWelcomeDay = Math.floor((new Date(todayStr) - new Date(firstVisit)) / 86400000) + 1;
-            }
+            this.dailyWelcomeDay = this.dailyStreak;
             this.dailyWelcomeQuote = DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)];
             this.showDailyWelcome = true;
         },
