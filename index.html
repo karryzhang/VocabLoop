@@ -4295,13 +4295,30 @@ new Vue({
         async generateReading() {
             const GEMINI_KEY = this.geminiKey;
             const tdy = today();
-            this.readingWordObjs = this.allWords.filter(w => {
+            const MAX_READING_WORDS = 20;
+            // Priority 1: words first seen today (newly entered learning)
+            const newToday = this.allWords.filter(w => {
                 const s = this.state[w.word];
                 return s && s.firstSeen === tdy;
             });
-            if (this.readingWordObjs.length === 0) {
-                this.readingWordObjs = this.getTodayPracticeWords();
-            }
+            // Priority 2: Young stage (interval established but still fresh)
+            const youngWords = this.allWords.filter(w => {
+                const s = this.state[w.word];
+                return s && s.stage === 'young' && s.firstSeen !== tdy;
+            }).sort((a, b) => (this.state[a.word].interval || 0) - (this.state[b.word].interval || 0));
+            // Priority 3: Learning stage
+            const learningWords = this.allWords.filter(w => {
+                const s = this.state[w.word];
+                return s && s.stage === 'learning' && s.firstSeen !== tdy;
+            });
+            let selected = [...newToday];
+            if (selected.length < MAX_READING_WORDS)
+                selected = [...selected, ...youngWords].slice(0, MAX_READING_WORDS);
+            if (selected.length < MAX_READING_WORDS)
+                selected = [...selected, ...learningWords].slice(0, MAX_READING_WORDS);
+            if (selected.length === 0)
+                selected = this.getTodayPracticeWords().slice(0, MAX_READING_WORDS);
+            this.readingWordObjs = selected.slice(0, MAX_READING_WORDS);
             const wordList = this.readingWordObjs
                 .map(w => `${w.word} (${w.zh})`).join(', ');
             const prompt = `You are a creative writing tutor crafting a short story to help an intermediate English learner remember new vocabulary.\n\nRequirements:\n- Length: 180–220 words.\n- Weave ALL of the vocabulary words below naturally into the story — they should feel essential, not forced.\n- Literary quality: give the story a clear arc (setup → tension → resolution), a vivid scene, and at least one moment of emotion or surprise that makes it memorable.\n- Vocabulary level: keep all OTHER words at roughly the same difficulty as the given list — don't simplify to beginner level, but avoid obscure words the learner hasn't seen.\n- Tone: warm, imaginative, slightly literary — think short-story rather than textbook exercise.\n- Return only the story text. No title, no commentary, no word list.\n\nVocabulary: ${wordList}`;
