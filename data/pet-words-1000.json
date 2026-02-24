@@ -7942,5 +7942,2389 @@
     "ipa": "",
     "ex": "Please give constructive feedback.",
     "ex2": "Constructively framed criticism helped the writer significantly improve the manuscript."
+  },
+  {
+    "word": "absent",
+    "zh": "缺席的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She was absent from school yesterday.",
+    "ex2": "Several members were absent from the meeting due to illness."
+  },
+  {
+    "word": "abroad",
+    "zh": "在国外",
+    "pos": "adv.",
+    "ipa": "",
+    "ex": "She studied abroad for one year.",
+    "ex2": "Have you ever lived abroad for an extended period?"
+  },
+  {
+    "word": "accident",
+    "zh": "事故",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "There was a car accident on the main road.",
+    "ex2": "Accidents at the factory dropped after new safety rules were introduced."
+  },
+  {
+    "word": "accurate",
+    "zh": "准确的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "Please give an accurate description.",
+    "ex2": "The weather forecast was not very accurate this morning."
+  },
+  {
+    "word": "ache",
+    "zh": "疼痛",
+    "pos": "n./v.",
+    "ipa": "",
+    "ex": "I have an ache in my back today.",
+    "ex2": "Her feet ached after walking around the city all day."
+  },
+  {
+    "word": "admire",
+    "zh": "钦佩",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "I admire her dedication to teaching.",
+    "ex2": "He admired the way she handled such a difficult situation calmly."
+  },
+  {
+    "word": "adopt",
+    "zh": "采用",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "The school will adopt a new teaching method.",
+    "ex2": "Several companies have adopted flexible working hours to attract new staff."
+  },
+  {
+    "word": "adventure",
+    "zh": "冒险",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Camping in the mountains was a real adventure.",
+    "ex2": "She loves reading books about travel and adventure in distant lands."
+  },
+  {
+    "word": "affect",
+    "zh": "影响",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Stress can affect your health badly.",
+    "ex2": "The flooding affected thousands of homes across the region."
+  },
+  {
+    "word": "agent",
+    "zh": "代理人",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She spoke to a travel agent about her trip.",
+    "ex2": "The estate agent showed them several properties before they made a decision."
+  },
+  {
+    "word": "alarm",
+    "zh": "警报",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The fire alarm went off during class.",
+    "ex2": "She set her alarm for six o'clock to avoid being late for work."
+  },
+  {
+    "word": "allergic",
+    "zh": "过敏的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She is allergic to cats and dogs.",
+    "ex2": "Are you allergic to any foods that we should know about?"
+  },
+  {
+    "word": "anniversary",
+    "zh": "周年纪念日",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Tomorrow is our tenth wedding anniversary.",
+    "ex2": "The company celebrated its fiftieth anniversary with a dinner for all employees."
+  },
+  {
+    "word": "apart",
+    "zh": "分开",
+    "pos": "adv.",
+    "ipa": "",
+    "ex": "The two towns are twenty miles apart.",
+    "ex2": "Living apart from her family was the hardest part of working overseas."
+  },
+  {
+    "word": "appointment",
+    "zh": "预约",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "I have a doctor's appointment at noon.",
+    "ex2": "She made an appointment to see the bank manager about her loan application."
+  },
+  {
+    "word": "approve",
+    "zh": "批准",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "The manager approved the new plan.",
+    "ex2": "The council approved the planning application after a lengthy debate."
+  },
+  {
+    "word": "awful",
+    "zh": "糟糕的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "The weather was awful all week.",
+    "ex2": "She felt awful about forgetting her best friend's birthday."
+  },
+  {
+    "word": "blind",
+    "zh": "失明的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "He has been blind since birth.",
+    "ex2": "New technology is helping blind people read and navigate more independently."
+  },
+  {
+    "word": "block",
+    "zh": "阻挡",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "A fallen tree blocked the road.",
+    "ex2": "The new building has blocked the view of the river from several apartments."
+  },
+  {
+    "word": "boil",
+    "zh": "沸腾",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Boil the water before drinking it.",
+    "ex2": "She boiled the vegetables for too long and they lost all their flavour."
+  },
+  {
+    "word": "bother",
+    "zh": "打扰",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Sorry to bother you at this time.",
+    "ex2": "Don't bother calling — I will be back in ten minutes anyway."
+  },
+  {
+    "word": "break down",
+    "zh": "（机器）出故障",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "The car broke down on the motorway.",
+    "ex2": "The photocopier breaks down at least twice a week in our office."
+  },
+  {
+    "word": "bring up",
+    "zh": "提出；养育",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She brought up an important point.",
+    "ex2": "He was brought up by his grandparents after his parents moved abroad."
+  },
+  {
+    "word": "burn",
+    "zh": "燃烧",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Be careful — the pan is burning!",
+    "ex2": "She burned the toast while she was talking on the phone."
+  },
+  {
+    "word": "calm",
+    "zh": "平静的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "Try to stay calm and take a deep breath.",
+    "ex2": "The sea was completely calm on the morning of their sailing trip."
+  },
+  {
+    "word": "campsite",
+    "zh": "露营地",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "We stayed at a lovely campsite by the lake.",
+    "ex2": "The campsite had excellent facilities including showers and a small shop."
+  },
+  {
+    "word": "carry out",
+    "zh": "执行，进行",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "They need to carry out more tests.",
+    "ex2": "The investigation was carried out by an independent team over several months."
+  },
+  {
+    "word": "cash",
+    "zh": "现金",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Do you prefer to pay by cash?",
+    "ex2": "She always carries cash in case the card machine is not working."
+  },
+  {
+    "word": "catch up",
+    "zh": "赶上；叙旧",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "I need to catch up on my homework.",
+    "ex2": "Let's meet for coffee and catch up — it's been ages since we last spoke."
+  },
+  {
+    "word": "cause",
+    "zh": "原因；导致",
+    "pos": "n./v.",
+    "ipa": "",
+    "ex": "What was the cause of the delay?",
+    "ex2": "The heavy rain caused serious flooding in the town centre overnight."
+  },
+  {
+    "word": "ceiling",
+    "zh": "天花板",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The ceiling in this room is very high.",
+    "ex2": "Water was dripping through the ceiling after the pipe burst upstairs."
+  },
+  {
+    "word": "century",
+    "zh": "世纪",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "This building is two centuries old.",
+    "ex2": "Scientists predict that temperatures will rise sharply over the coming century."
+  },
+  {
+    "word": "cheerful",
+    "zh": "开朗的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She is always cheerful and positive.",
+    "ex2": "A cheerful greeting from the receptionist put visitors at ease immediately."
+  },
+  {
+    "word": "chest",
+    "zh": "胸部",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "He felt a sharp pain in his chest.",
+    "ex2": "The doctor listened to his chest carefully before making a diagnosis."
+  },
+  {
+    "word": "childhood",
+    "zh": "童年",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She had a very happy childhood.",
+    "ex2": "Memories of her childhood in the countryside stayed with her throughout her life."
+  },
+  {
+    "word": "chilly",
+    "zh": "寒冷的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "It is chilly outside — take a jacket.",
+    "ex2": "The evening was chilly, so they decided to sit indoors instead of in the garden."
+  },
+  {
+    "word": "cinema",
+    "zh": "电影院",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Shall we go to the cinema tonight?",
+    "ex2": "The local cinema has been showing foreign films every Thursday evening."
+  },
+  {
+    "word": "clue",
+    "zh": "线索",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The police found an important clue.",
+    "ex2": "She didn't have a clue about what to buy him for his birthday."
+  },
+  {
+    "word": "coast",
+    "zh": "海岸",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "We drove along the beautiful coast.",
+    "ex2": "Many people choose to retire to the coast because of the fresh air and scenery."
+  },
+  {
+    "word": "colleague",
+    "zh": "同事",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "My colleague helped me with the task.",
+    "ex2": "She went out for lunch with a few colleagues from the marketing team."
+  },
+  {
+    "word": "competition",
+    "zh": "比赛",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She entered a singing competition.",
+    "ex2": "Over three hundred students took part in the national writing competition this year."
+  },
+  {
+    "word": "complaint",
+    "zh": "投诉",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She made a complaint about the food.",
+    "ex2": "The hotel received several complaints about the noise from the construction nearby."
+  },
+  {
+    "word": "concern",
+    "zh": "担忧；涉及",
+    "pos": "n./v.",
+    "ipa": "",
+    "ex": "There is growing concern about pollution.",
+    "ex2": "She was concerned about her son's lack of sleep during exam week."
+  },
+  {
+    "word": "congratulate",
+    "zh": "祝贺",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "I want to congratulate you on your results.",
+    "ex2": "Her colleagues congratulated her warmly when she was promoted to director."
+  },
+  {
+    "word": "convenient",
+    "zh": "方便的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "The station is very convenient for us.",
+    "ex2": "Online banking is incredibly convenient for managing everyday payments."
+  },
+  {
+    "word": "cope",
+    "zh": "应对",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "She found it hard to cope with stress.",
+    "ex2": "Parents often struggle to cope when children go back to school after the holidays."
+  },
+  {
+    "word": "countryside",
+    "zh": "乡村",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "We enjoyed a walk in the countryside.",
+    "ex2": "More and more families are choosing to move to the countryside to escape city life."
+  },
+  {
+    "word": "crowd",
+    "zh": "人群",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A large crowd gathered in the square.",
+    "ex2": "She was nervous performing in front of such a large crowd for the first time."
+  },
+  {
+    "word": "cruel",
+    "zh": "残酷的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "It is cruel to leave animals outside in winter.",
+    "ex2": "People were shocked by the cruel treatment of animals at the facility."
+  },
+  {
+    "word": "cut down",
+    "zh": "削减；减少",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "You should cut down on sugar.",
+    "ex2": "The company cut down on travel expenses by holding more meetings online."
+  },
+  {
+    "word": "deaf",
+    "zh": "聋的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She is deaf in her left ear.",
+    "ex2": "New hearing devices are helping deaf people communicate more effectively."
+  },
+  {
+    "word": "deal with",
+    "zh": "处理；应对",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She knows how to deal with difficult customers.",
+    "ex2": "The manager dealt with the complaint professionally and quickly."
+  },
+  {
+    "word": "delicious",
+    "zh": "美味的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "This soup is absolutely delicious.",
+    "ex2": "She made a delicious homemade pasta that everyone at the table enjoyed."
+  },
+  {
+    "word": "deny",
+    "zh": "否认",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "He denied taking the money.",
+    "ex2": "The company denied responsibility for the environmental damage."
+  },
+  {
+    "word": "desert",
+    "zh": "沙漠",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The Sahara is the world's largest desert.",
+    "ex2": "Temperatures in the desert can drop sharply after the sun goes down."
+  },
+  {
+    "word": "dull",
+    "zh": "无聊的；阴暗的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "The lesson was rather dull today.",
+    "ex2": "It was a dull, grey morning with little chance of any sunshine."
+  },
+  {
+    "word": "earn",
+    "zh": "赚取",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "She earns a good salary at that company.",
+    "ex2": "He earned extra money by tutoring students at the weekend."
+  },
+  {
+    "word": "emergency",
+    "zh": "紧急情况",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Call 999 in case of an emergency.",
+    "ex2": "Emergency services arrived at the scene within minutes of the accident."
+  },
+  {
+    "word": "enjoy",
+    "zh": "享受",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Do you enjoy cooking at home?",
+    "ex2": "She really enjoyed the evening despite having had a long day at work."
+  },
+  {
+    "word": "enormous",
+    "zh": "巨大的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "There was an enormous crowd at the match.",
+    "ex2": "The company made an enormous profit in the final quarter of the year."
+  },
+  {
+    "word": "envelope",
+    "zh": "信封",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Put the letter in an envelope.",
+    "ex2": "She sealed the envelope and dropped it in the postbox on her way to work."
+  },
+  {
+    "word": "equal",
+    "zh": "平等的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "Everyone deserves equal opportunities.",
+    "ex2": "The prize money was divided equally among all five members of the winning team."
+  },
+  {
+    "word": "escape",
+    "zh": "逃跑",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "The dog escaped through the fence.",
+    "ex2": "She needed a holiday to escape the pressures of everyday working life."
+  },
+  {
+    "word": "excursion",
+    "zh": "短途旅行",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "We went on a day excursion to the coast.",
+    "ex2": "The school organised an excursion to the science museum for all Year 9 students."
+  },
+  {
+    "word": "exhausted",
+    "zh": "精疲力竭的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She was exhausted after the long hike.",
+    "ex2": "He was completely exhausted after working overtime for the third week in a row."
+  },
+  {
+    "word": "expect",
+    "zh": "期待",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "I expect the parcel to arrive tomorrow.",
+    "ex2": "She did not expect to be chosen for the award at the ceremony."
+  },
+  {
+    "word": "fail",
+    "zh": "失败；不及格",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Don't be afraid to fail and try again.",
+    "ex2": "He failed his driving test twice before finally passing on his third attempt."
+  },
+  {
+    "word": "fair",
+    "zh": "公平的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "It is not fair to blame her alone.",
+    "ex2": "The competition was judged fairly, with no prior knowledge of the candidates."
+  },
+  {
+    "word": "fall out",
+    "zh": "闹翻；掉落",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "They fell out over a small misunderstanding.",
+    "ex2": "She fell out with her flatmate and decided to find somewhere new to live."
+  },
+  {
+    "word": "familiar",
+    "zh": "熟悉的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "That song sounds familiar to me.",
+    "ex2": "She felt comfortable in the new office because the work was familiar to her."
+  },
+  {
+    "word": "fancy",
+    "zh": "想要；花哨的",
+    "pos": "v./adj.",
+    "ipa": "",
+    "ex": "Do you fancy going for a walk?",
+    "ex2": "She wore a very fancy dress to the wedding reception."
+  },
+  {
+    "word": "fasten",
+    "zh": "系紧；扣上",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Please fasten your seat belt now.",
+    "ex2": "She fastened her coat before stepping out into the cold winter air."
+  },
+  {
+    "word": "fault",
+    "zh": "错误；过错",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The accident was not his fault.",
+    "ex2": "She admitted it was her fault for not double-checking the figures."
+  },
+  {
+    "word": "fence",
+    "zh": "栅栏",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The dog jumped over the fence.",
+    "ex2": "They put up a new fence around the garden to keep the foxes out."
+  },
+  {
+    "word": "fetch",
+    "zh": "去取来",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Could you fetch me a glass of water?",
+    "ex2": "She fetched the children from school every day at three o'clock."
+  },
+  {
+    "word": "figure out",
+    "zh": "想明白；弄清楚",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "I cannot figure out how to open this.",
+    "ex2": "It took her a while to figure out the new computer system at work."
+  },
+  {
+    "word": "fit",
+    "zh": "健康的；合适的",
+    "pos": "adj./v.",
+    "ipa": "",
+    "ex": "Regular swimming keeps her fit.",
+    "ex2": "Does this jacket fit you properly at the shoulders?"
+  },
+  {
+    "word": "fix",
+    "zh": "修理；固定",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Can you fix the broken chair leg?",
+    "ex2": "The plumber fixed the leaking pipe in less than an hour."
+  },
+  {
+    "word": "flat",
+    "zh": "公寓；平的",
+    "pos": "n./adj.",
+    "ipa": "",
+    "ex": "She rents a flat in the city centre.",
+    "ex2": "The countryside was completely flat as far as the eye could see."
+  },
+  {
+    "word": "flood",
+    "zh": "洪水",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Heavy rain caused a serious flood.",
+    "ex2": "Hundreds of homes were damaged in the floods that followed the unusually heavy rainfall."
+  },
+  {
+    "word": "forest",
+    "zh": "森林",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The children love walking in the forest.",
+    "ex2": "Large areas of tropical forest are being cut down every year."
+  },
+  {
+    "word": "fragile",
+    "zh": "易碎的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "Please handle this box — it is fragile.",
+    "ex2": "The fragile glass ornaments were carefully wrapped before being packed for delivery."
+  },
+  {
+    "word": "freeze",
+    "zh": "结冰；冻结",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "The pond froze overnight in January.",
+    "ex2": "She froze the leftover soup in small containers for later in the week."
+  },
+  {
+    "word": "frightened",
+    "zh": "感到害怕的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "The child was frightened by the storm.",
+    "ex2": "She was frightened when she heard footsteps outside the door late at night."
+  },
+  {
+    "word": "gain",
+    "zh": "获得；增加",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "She gained a lot of confidence this year.",
+    "ex2": "He gained valuable experience working at the international organisation."
+  },
+  {
+    "word": "get along",
+    "zh": "相处融洽",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Do you get along with your roommate?",
+    "ex2": "She gets along well with all her colleagues, which makes the office a pleasant place."
+  },
+  {
+    "word": "give up",
+    "zh": "放弃",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Never give up on your dreams.",
+    "ex2": "He gave up smoking after his doctor warned him about the health risks."
+  },
+  {
+    "word": "glance",
+    "zh": "瞥视",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "She glanced at her watch nervously.",
+    "ex2": "At first glance, the two photos looked identical, but there were subtle differences."
+  },
+  {
+    "word": "goal",
+    "zh": "目标；进球",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She set a goal to run five kilometres.",
+    "ex2": "The player scored two goals in the final match to win the championship."
+  },
+  {
+    "word": "grade",
+    "zh": "成绩；等级",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She got a top grade on the essay.",
+    "ex2": "His grades improved significantly after he started studying with a tutor."
+  },
+  {
+    "word": "greet",
+    "zh": "问候；迎接",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "She greeted the guests warmly at the door.",
+    "ex2": "The children greeted their grandparents with hugs when they arrived."
+  },
+  {
+    "word": "groceries",
+    "zh": "食品杂货",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "I need to buy some groceries today.",
+    "ex2": "She ordered her groceries online and had them delivered to her door."
+  },
+  {
+    "word": "hang on",
+    "zh": "稍等；坚持",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Hang on a moment — I'll be right there.",
+    "ex2": "She told him to hang on while she finished writing the email."
+  },
+  {
+    "word": "harmful",
+    "zh": "有害的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "Too much sun can be harmful to your skin.",
+    "ex2": "The report highlighted how some everyday chemicals can be harmful to children."
+  },
+  {
+    "word": "harvest",
+    "zh": "收获；丰收",
+    "pos": "n./v.",
+    "ipa": "",
+    "ex": "The harvest this year was very good.",
+    "ex2": "Farmers harvested the crops earlier than usual due to the warm summer weather."
+  },
+  {
+    "word": "headline",
+    "zh": "头条新闻",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The story made the front-page headline.",
+    "ex2": "She scrolled through the morning headlines before leaving for work."
+  },
+  {
+    "word": "hire",
+    "zh": "雇用；租用",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "They plan to hire three new staff.",
+    "ex2": "She hired a car for the week so she could explore the countryside independently."
+  },
+  {
+    "word": "host",
+    "zh": "主持人；主人",
+    "pos": "n./v.",
+    "ipa": "",
+    "ex": "The host welcomed everyone warmly.",
+    "ex2": "She hosted a dinner party for all her close friends to celebrate her new job."
+  },
+  {
+    "word": "housework",
+    "zh": "家务",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "They share the housework between them.",
+    "ex2": "He spent the whole Saturday morning doing housework before going out."
+  },
+  {
+    "word": "hurry",
+    "zh": "赶快",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "Hurry up or we will miss the bus.",
+    "ex2": "She was in such a hurry that she forgot to bring her phone with her."
+  },
+  {
+    "word": "ideal",
+    "zh": "理想的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "This location is ideal for a café.",
+    "ex2": "The new flat was ideal for a young couple starting out in the city."
+  },
+  {
+    "word": "immediately",
+    "zh": "立刻",
+    "pos": "adv.",
+    "ipa": "",
+    "ex": "Please call me immediately if there is a problem.",
+    "ex2": "She responded immediately to the urgent message from her manager."
+  },
+  {
+    "word": "indeed",
+    "zh": "确实；真正地",
+    "pos": "adv.",
+    "ipa": "",
+    "ex": "It is indeed a beautiful painting.",
+    "ex2": "The results were indeed better than anyone had predicted before the study began."
+  },
+  {
+    "word": "injure",
+    "zh": "使受伤",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "He injured his knee during the match.",
+    "ex2": "Three people were injured when the scaffolding collapsed at the building site."
+  },
+  {
+    "word": "insist",
+    "zh": "坚持；坚决主张",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "She insisted on paying for dinner.",
+    "ex2": "He insisted that all team members attend the briefing in person."
+  },
+  {
+    "word": "instead of",
+    "zh": "代替",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "She had tea instead of coffee.",
+    "ex2": "Why not walk to work instead of driving, to save money and get some exercise?"
+  },
+  {
+    "word": "intend",
+    "zh": "打算",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "I intend to apply for a new job soon.",
+    "ex2": "She intended to finish the report by Friday but needed more time."
+  },
+  {
+    "word": "key",
+    "zh": "关键的；钥匙",
+    "pos": "adj./n.",
+    "ipa": "",
+    "ex": "Diet is a key factor in staying healthy.",
+    "ex2": "She lost her house key and had to call a locksmith to get back inside."
+  },
+  {
+    "word": "lack",
+    "zh": "缺乏",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "She lacks confidence in new situations.",
+    "ex2": "A lack of funding was the main reason the project was delayed by six months."
+  },
+  {
+    "word": "lane",
+    "zh": "小道；车道",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Keep in the left lane on the motorway.",
+    "ex2": "New cycle lanes were painted along the main roads to improve safety for cyclists."
+  },
+  {
+    "word": "lend",
+    "zh": "借出",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Could you lend me five pounds?",
+    "ex2": "She lent her flat to a friend for the whole summer while she was travelling."
+  },
+  {
+    "word": "look after",
+    "zh": "照顾",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She looks after her younger sister.",
+    "ex2": "He looked after the family dog while his parents were on holiday."
+  },
+  {
+    "word": "look forward to",
+    "zh": "期待",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "I look forward to seeing you soon.",
+    "ex2": "She was looking forward to starting her new job at the end of the month."
+  },
+  {
+    "word": "loose",
+    "zh": "松的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "The screw was loose and fell out.",
+    "ex2": "She wore loose, comfortable clothes during the long flight across the ocean."
+  },
+  {
+    "word": "luggage",
+    "zh": "行李",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Please label your luggage clearly.",
+    "ex2": "Her luggage was lost during the flight, so she had to buy new clothes on arrival."
+  },
+  {
+    "word": "maximum",
+    "zh": "最大值；最大的",
+    "pos": "n./adj.",
+    "ipa": "",
+    "ex": "The maximum speed here is fifty kilometres.",
+    "ex2": "She spent the maximum amount of time allowed on each section of the exam."
+  },
+  {
+    "word": "mention",
+    "zh": "提到",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Did she mention when she would arrive?",
+    "ex2": "He forgot to mention the most important point during the presentation."
+  },
+  {
+    "word": "mild",
+    "zh": "温和的；轻度的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "The weather today is mild and sunny.",
+    "ex2": "She had a mild cold that lasted only a few days and was not too serious."
+  },
+  {
+    "word": "minimum",
+    "zh": "最小值；最低限度",
+    "pos": "n./adj.",
+    "ipa": "",
+    "ex": "What is the minimum age to drive here?",
+    "ex2": "Employees must work a minimum of thirty-five hours per week under the contract."
+  },
+  {
+    "word": "mix up",
+    "zh": "混淆；弄乱",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "I always mix up their names.",
+    "ex2": "She mixed up the dates and arrived at the airport a day too early."
+  },
+  {
+    "word": "mood",
+    "zh": "情绪；心情",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She is in a great mood today.",
+    "ex2": "Music can quickly lift your mood when you are feeling down."
+  },
+  {
+    "word": "motivate",
+    "zh": "激励",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "A good teacher can motivate students.",
+    "ex2": "She was motivated by the success of her older sister to work harder at school."
+  },
+  {
+    "word": "mud",
+    "zh": "泥土",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The dog got mud all over the carpet.",
+    "ex2": "After the heavy rain, the path was covered in thick mud and difficult to walk along."
+  },
+  {
+    "word": "narrow",
+    "zh": "狭窄的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "The alley was too narrow for a car.",
+    "ex2": "She navigated carefully along the narrow mountain path during the hike."
+  },
+  {
+    "word": "neat",
+    "zh": "整洁的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She keeps her desk very neat.",
+    "ex2": "The children were asked to keep their bedrooms neat and tidy at all times."
+  },
+  {
+    "word": "neighbour",
+    "zh": "邻居",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Our neighbour is very kind and helpful.",
+    "ex2": "She introduced herself to her new neighbours as soon as she moved in."
+  },
+  {
+    "word": "normal",
+    "zh": "正常的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "It is normal to feel nervous at first.",
+    "ex2": "She returned to her normal routine after recovering from the operation."
+  },
+  {
+    "word": "novel",
+    "zh": "小说",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She read the novel in two days.",
+    "ex2": "The novel was shortlisted for one of the country's most prestigious literary prizes."
+  },
+  {
+    "word": "occur",
+    "zh": "发生",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "When did the accident occur?",
+    "ex2": "Errors are most likely to occur when people are working under pressure or fatigue."
+  },
+  {
+    "word": "ordinary",
+    "zh": "普通的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "It was just an ordinary day at work.",
+    "ex2": "The story of an ordinary woman who achieved extraordinary things inspired many readers."
+  },
+  {
+    "word": "owe",
+    "zh": "欠（债）",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "I owe him twenty pounds for lunch.",
+    "ex2": "She felt she owed a great deal to the teachers who supported her early in her career."
+  },
+  {
+    "word": "own",
+    "zh": "自己的；拥有",
+    "pos": "adj./v.",
+    "ipa": "",
+    "ex": "She runs her own small business.",
+    "ex2": "He had always dreamed of owning a house with a garden."
+  },
+  {
+    "word": "pain",
+    "zh": "疼痛",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She felt a sharp pain in her ankle.",
+    "ex2": "He took some medicine to help with the pain after the long walk."
+  },
+  {
+    "word": "pale",
+    "zh": "苍白的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She looked pale after hearing the news.",
+    "ex2": "His face turned pale when he realised he had forgotten his passport."
+  },
+  {
+    "word": "passenger",
+    "zh": "乘客",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "All passengers must show their tickets.",
+    "ex2": "Passengers were asked to remain seated until the aircraft came to a complete stop."
+  },
+  {
+    "word": "path",
+    "zh": "小路；途径",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Follow the path through the woods.",
+    "ex2": "She chose a career path that allowed her to combine travel with work."
+  },
+  {
+    "word": "pause",
+    "zh": "暂停",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "She paused before answering the question.",
+    "ex2": "There was a long pause in the conversation before he finally spoke his mind."
+  },
+  {
+    "word": "peaceful",
+    "zh": "宁静的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "The garden is a peaceful place to sit.",
+    "ex2": "They spent a peaceful weekend in the countryside, away from the noise of the city."
+  },
+  {
+    "word": "perform",
+    "zh": "表演；执行",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "The students performed a short play.",
+    "ex2": "She performs best when she is given time to prepare properly in advance."
+  },
+  {
+    "word": "pilot",
+    "zh": "飞行员",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The pilot announced we would land early.",
+    "ex2": "She trained for three years before qualifying as a commercial pilot."
+  },
+  {
+    "word": "plain",
+    "zh": "朴素的；清楚的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She wore a plain white shirt to work.",
+    "ex2": "His instructions were plain and easy to follow, even for someone new to the job."
+  },
+  {
+    "word": "pleasant",
+    "zh": "令人愉快的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "It was a pleasant afternoon by the river.",
+    "ex2": "The new manager had a pleasant manner that quickly put the team at ease."
+  },
+  {
+    "word": "plenty",
+    "zh": "充足",
+    "pos": "n./det.",
+    "ipa": "",
+    "ex": "There is plenty of food for everyone.",
+    "ex2": "She had plenty of time to prepare for the exam, but she left it to the last minute."
+  },
+  {
+    "word": "polite",
+    "zh": "礼貌的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "It is important to be polite to everyone.",
+    "ex2": "She was always polite to customers, even when they were rude or difficult."
+  },
+  {
+    "word": "portion",
+    "zh": "部分；一份",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She ate only a small portion of the meal.",
+    "ex2": "A significant portion of the budget was spent on marketing and promotion."
+  },
+  {
+    "word": "pour",
+    "zh": "倒；倾盆大雨",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "She poured herself a cup of tea.",
+    "ex2": "It was pouring with rain by the time they arrived at the venue."
+  },
+  {
+    "word": "pretend",
+    "zh": "假装",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "The children pretended to be superheroes.",
+    "ex2": "She pretended to be fine, but everyone could see that she was struggling."
+  },
+  {
+    "word": "prize",
+    "zh": "奖品；奖项",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She won first prize in the competition.",
+    "ex2": "The prizes were announced at the end of the ceremony in front of a large audience."
+  },
+  {
+    "word": "promise",
+    "zh": "承诺",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "She promised to call me this evening.",
+    "ex2": "He broke his promise and did not show up to help with the move."
+  },
+  {
+    "word": "proof",
+    "zh": "证明；证据",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Do you have proof of your identity?",
+    "ex2": "The scientist presented clear proof that the new treatment was effective."
+  },
+  {
+    "word": "proper",
+    "zh": "正确的；合适的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "Make sure you eat a proper meal.",
+    "ex2": "She was taught the proper way to hold a pen during handwriting lessons as a child."
+  },
+  {
+    "word": "pump",
+    "zh": "抽水机；泵",
+    "pos": "n./v.",
+    "ipa": "",
+    "ex": "She needs to pump up her bicycle tyres.",
+    "ex2": "The village was flooded and pumps were used to remove the water from the streets."
+  },
+  {
+    "word": "put off",
+    "zh": "推迟；使失去兴趣",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Don't put off what you can do today.",
+    "ex2": "The meeting was put off until next week because several members could not attend."
+  },
+  {
+    "word": "reach",
+    "zh": "到达；联系到",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "She reached the top of the mountain.",
+    "ex2": "You can reach us by phone or email if you have any further questions."
+  },
+  {
+    "word": "receipt",
+    "zh": "收据",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Keep your receipt in case you need to return it.",
+    "ex2": "She asked for a receipt after paying for the repairs to her car."
+  },
+  {
+    "word": "recipe",
+    "zh": "食谱",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She found a great recipe for pasta.",
+    "ex2": "Her grandmother's recipe for chocolate cake has been passed down through the family."
+  },
+  {
+    "word": "recognise",
+    "zh": "认出；承认",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "I recognised his voice immediately.",
+    "ex2": "She was recognised by the awards panel for her outstanding contribution to science."
+  },
+  {
+    "word": "regret",
+    "zh": "后悔；遗憾",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "She regrets not studying harder at school.",
+    "ex2": "He had no regrets about leaving his job to travel the world for a year."
+  },
+  {
+    "word": "remind",
+    "zh": "提醒",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Please remind me to call him tomorrow.",
+    "ex2": "She set a reminder on her phone so she would not forget the dentist appointment."
+  },
+  {
+    "word": "repair",
+    "zh": "修理",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "The bike needs to be repaired soon.",
+    "ex2": "The repairs to the bridge took longer than expected and caused significant disruption."
+  },
+  {
+    "word": "replace",
+    "zh": "替换",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "She needs to replace her old laptop.",
+    "ex2": "Many manual jobs have been replaced by automated machines in recent years."
+  },
+  {
+    "word": "represent",
+    "zh": "代表",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "She represents the company at events.",
+    "ex2": "He was selected to represent his country at the international youth conference."
+  },
+  {
+    "word": "respect",
+    "zh": "尊重",
+    "pos": "n./v.",
+    "ipa": "",
+    "ex": "Show respect for other people's opinions.",
+    "ex2": "She is respected by her colleagues for her honesty and strong work ethic."
+  },
+  {
+    "word": "rob",
+    "zh": "抢劫",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "The bank was robbed in the afternoon.",
+    "ex2": "He was robbed of his wallet while walking through the busy market."
+  },
+  {
+    "word": "rough",
+    "zh": "粗糙的；大约的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "The sea was rough during the crossing.",
+    "ex2": "Can you give me a rough idea of how much the work will cost?"
+  },
+  {
+    "word": "round trip",
+    "zh": "往返旅行",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A round trip ticket costs less.",
+    "ex2": "She booked a round trip flight to Tokyo and planned to stay for two weeks."
+  },
+  {
+    "word": "rude",
+    "zh": "粗鲁的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "It is rude to interrupt people talking.",
+    "ex2": "The customer was very rude to the waiter, which made everyone uncomfortable."
+  },
+  {
+    "word": "rule out",
+    "zh": "排除",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Do not rule out the possibility of change.",
+    "ex2": "Doctors have ruled out any serious illness after all the test results came back clear."
+  },
+  {
+    "word": "rush",
+    "zh": "急忙；冲",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "She had to rush to catch the train.",
+    "ex2": "There is no need to rush — we have plenty of time before the meeting starts."
+  },
+  {
+    "word": "safe",
+    "zh": "安全的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "This is a safe area to walk at night.",
+    "ex2": "Children need to be taught how to stay safe when using the internet."
+  },
+  {
+    "word": "salary",
+    "zh": "薪水",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She earns a competitive salary.",
+    "ex2": "The company offered a higher salary to attract the best candidates for the position."
+  },
+  {
+    "word": "scared",
+    "zh": "害怕的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She was scared of the dark as a child.",
+    "ex2": "He was scared to speak in public but gradually became more confident with practice."
+  },
+  {
+    "word": "scenery",
+    "zh": "风景",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The scenery in the mountains is breathtaking.",
+    "ex2": "She was amazed by the spectacular scenery on the drive through the national park."
+  },
+  {
+    "word": "secretary",
+    "zh": "秘书",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The secretary answered the phone call.",
+    "ex2": "She worked as a secretary for the director before being promoted to project manager."
+  },
+  {
+    "word": "senior",
+    "zh": "高级的；年长者",
+    "pos": "adj./n.",
+    "ipa": "",
+    "ex": "She has a senior position at the firm.",
+    "ex2": "Senior staff were asked to mentor new employees joining the company this month."
+  },
+  {
+    "word": "set up",
+    "zh": "建立；安排",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She wants to set up her own café.",
+    "ex2": "The engineers set up the equipment quickly before the conference started."
+  },
+  {
+    "word": "sharp",
+    "zh": "锋利的；鲜明的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "Be careful — that knife is sharp.",
+    "ex2": "There was a sharp rise in temperatures over the weekend across the whole country."
+  },
+  {
+    "word": "shelter",
+    "zh": "庇护所；避难",
+    "pos": "n./v.",
+    "ipa": "",
+    "ex": "They took shelter from the rain.",
+    "ex2": "The charity provides shelter and food for people without homes."
+  },
+  {
+    "word": "shy",
+    "zh": "害羞的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She was too shy to ask for help.",
+    "ex2": "He was very shy at first but gradually opened up as he got to know the group."
+  },
+  {
+    "word": "sign up",
+    "zh": "报名；注册",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "You can sign up for the course online.",
+    "ex2": "Hundreds of volunteers signed up to help with the annual city clean-up event."
+  },
+  {
+    "word": "skilled",
+    "zh": "有技能的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She is a highly skilled craftsperson.",
+    "ex2": "The company is looking for skilled engineers to join its research and development team."
+  },
+  {
+    "word": "slight",
+    "zh": "轻微的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "There was a slight delay at the border.",
+    "ex2": "She noticed a slight improvement in his mood over the course of the week."
+  },
+  {
+    "word": "soil",
+    "zh": "土壤",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The soil here is ideal for growing vegetables.",
+    "ex2": "Farmers need to test the soil regularly to ensure it has the right nutrients for crops."
+  },
+  {
+    "word": "sort out",
+    "zh": "解决；整理",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "I need to sort out my finances.",
+    "ex2": "She sorted out the misunderstanding with the supplier in a single phone call."
+  },
+  {
+    "word": "spare",
+    "zh": "多余的；空闲的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "Do you have a spare pen I can borrow?",
+    "ex2": "She spent her spare time learning to play the guitar at weekends."
+  },
+  {
+    "word": "spend",
+    "zh": "花费；度过",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "She spends an hour reading each evening.",
+    "ex2": "They spent the whole afternoon exploring the old town and its narrow streets."
+  },
+  {
+    "word": "spill",
+    "zh": "溢出；打翻",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "He spilled coffee on his keyboard.",
+    "ex2": "She accidentally spilled red wine on the white tablecloth at the dinner party."
+  },
+  {
+    "word": "spot",
+    "zh": "发现；地点",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "She spotted a mistake in the document.",
+    "ex2": "They found a perfect spot for a picnic near the river."
+  },
+  {
+    "word": "staff",
+    "zh": "员工",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The staff here are very helpful.",
+    "ex2": "New staff members receive a thorough induction on their first day at the company."
+  },
+  {
+    "word": "stare",
+    "zh": "盯着看",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "It is rude to stare at people.",
+    "ex2": "She stared at the painting for several minutes without saying a word."
+  },
+  {
+    "word": "statue",
+    "zh": "雕像",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "There is a large statue in the square.",
+    "ex2": "Tourists gather to photograph the famous statue at the entrance to the old city."
+  },
+  {
+    "word": "step",
+    "zh": "步骤；一步",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The first step is to make a plan.",
+    "ex2": "She took it one step at a time and eventually completed the difficult project."
+  },
+  {
+    "word": "stick to",
+    "zh": "坚持；遵守",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Try to stick to your budget this month.",
+    "ex2": "If you stick to the schedule, you will finish the project well ahead of the deadline."
+  },
+  {
+    "word": "stomach",
+    "zh": "胃；肚子",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "I have a pain in my stomach today.",
+    "ex2": "She had butterflies in her stomach before walking onto the stage for her solo."
+  },
+  {
+    "word": "stranger",
+    "zh": "陌生人",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Do not accept gifts from strangers.",
+    "ex2": "He was a stranger in the city, so he used a map to find his way around."
+  },
+  {
+    "word": "strict",
+    "zh": "严格的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "The teacher was very strict but fair.",
+    "ex2": "Strict safety regulations were introduced following the accident at the construction site."
+  },
+  {
+    "word": "struggle",
+    "zh": "努力奋斗；挣扎",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "She struggled to understand the instructions.",
+    "ex2": "Many students struggle with time management during their first year at university."
+  },
+  {
+    "word": "suitable",
+    "zh": "合适的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "This book is suitable for beginners.",
+    "ex2": "The committee searched for a suitable venue to host the annual awards ceremony."
+  },
+  {
+    "word": "surprised",
+    "zh": "惊讶的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She was surprised to win first prize.",
+    "ex2": "He was pleasantly surprised by how quickly he adapted to his new role."
+  },
+  {
+    "word": "sweet",
+    "zh": "甜的；可爱的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "This dessert is very sweet.",
+    "ex2": "She sent a sweet handwritten note to thank her friend for the birthday gift."
+  },
+  {
+    "word": "switch off",
+    "zh": "关闭（电器）",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Switch off the lights when you leave.",
+    "ex2": "She found it difficult to switch off from work even during the weekend."
+  },
+  {
+    "word": "symbol",
+    "zh": "象征；符号",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The dove is a symbol of peace.",
+    "ex2": "The national flag became a powerful symbol of unity during the difficult period."
+  },
+  {
+    "word": "tail",
+    "zh": "尾巴",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The dog wagged its tail happily.",
+    "ex2": "The cat curled its tail around its body as it settled down to sleep."
+  },
+  {
+    "word": "temperature",
+    "zh": "温度",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The temperature dropped to zero last night.",
+    "ex2": "Temperatures are expected to rise significantly over the coming weekend."
+  },
+  {
+    "word": "tense",
+    "zh": "紧张的；时态",
+    "pos": "adj./n.",
+    "ipa": "",
+    "ex": "The atmosphere in the room was very tense.",
+    "ex2": "She found it hard to sleep because she felt so tense about the interview the next morning."
+  },
+  {
+    "word": "text",
+    "zh": "发短信；文字",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "She texted him to say she would be late.",
+    "ex2": "Students were asked to read the text carefully before answering the questions."
+  },
+  {
+    "word": "tidy",
+    "zh": "整洁的；整理",
+    "pos": "adj./v.",
+    "ipa": "",
+    "ex": "Please keep your workspace tidy.",
+    "ex2": "She spent an hour tidying the kitchen before her guests arrived."
+  },
+  {
+    "word": "tight",
+    "zh": "紧的；紧张的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "These shoes are a bit too tight.",
+    "ex2": "The team was working to a very tight deadline and had to stay late every evening."
+  },
+  {
+    "word": "tip",
+    "zh": "小费；提示；倒",
+    "pos": "n./v.",
+    "ipa": "",
+    "ex": "She left a generous tip for the waiter.",
+    "ex2": "He tipped the entire contents of the bag onto the table to find his keys."
+  },
+  {
+    "word": "tired",
+    "zh": "疲倦的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She was too tired to cook dinner.",
+    "ex2": "He was tired of the same daily routine and decided to look for a new challenge."
+  },
+  {
+    "word": "track",
+    "zh": "跑道；跟踪",
+    "pos": "n./v.",
+    "ipa": "",
+    "ex": "She broke the track record this season.",
+    "ex2": "The app allows you to track your daily steps and exercise goals."
+  },
+  {
+    "word": "traditional",
+    "zh": "传统的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "They served traditional local dishes.",
+    "ex2": "Traditional crafts are being revived by younger generations interested in their heritage."
+  },
+  {
+    "word": "treat",
+    "zh": "对待；招待；奖赏",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "She treated her team to a nice lunch.",
+    "ex2": "You should treat everyone with kindness and respect, regardless of their background."
+  },
+  {
+    "word": "trend",
+    "zh": "趋势；潮流",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "There is a growing trend for home cooking.",
+    "ex2": "Social media has accelerated trends in fashion, with styles changing faster than ever."
+  },
+  {
+    "word": "trouble",
+    "zh": "麻烦；困难",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She had trouble understanding the manual.",
+    "ex2": "He got into trouble at school for not handing in his homework on time."
+  },
+  {
+    "word": "turn down",
+    "zh": "拒绝；调低",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She turned down the job offer.",
+    "ex2": "Could you turn down the music a little? It is too loud to have a conversation."
+  },
+  {
+    "word": "twice",
+    "zh": "两次；两倍",
+    "pos": "adv.",
+    "ipa": "",
+    "ex": "She visits her parents twice a month.",
+    "ex2": "He checked his answers twice before handing in the paper."
+  },
+  {
+    "word": "type",
+    "zh": "类型；打字",
+    "pos": "n./v.",
+    "ipa": "",
+    "ex": "What type of food do you prefer?",
+    "ex2": "She can type over sixty words per minute, which made her very efficient at work."
+  },
+  {
+    "word": "unfair",
+    "zh": "不公平的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She felt the punishment was unfair.",
+    "ex2": "It is unfair to judge someone before you have heard both sides of the story."
+  },
+  {
+    "word": "unless",
+    "zh": "除非",
+    "pos": "conj.",
+    "ipa": "",
+    "ex": "Do not go out unless you have a coat.",
+    "ex2": "The event will go ahead as planned unless the weather forecast changes significantly."
+  },
+  {
+    "word": "upset",
+    "zh": "心烦意乱的；使难过",
+    "pos": "adj./v.",
+    "ipa": "",
+    "ex": "She was upset about the bad news.",
+    "ex2": "He didn't mean to upset her by cancelling their plans at the last minute."
+  },
+  {
+    "word": "value",
+    "zh": "价值；重视",
+    "pos": "n./v.",
+    "ipa": "",
+    "ex": "Good health is something to value.",
+    "ex2": "The company values creativity and encourages employees to share new ideas freely."
+  },
+  {
+    "word": "vary",
+    "zh": "变化；不同",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Prices vary depending on the season.",
+    "ex2": "Results varied considerably between participants depending on their previous experience."
+  },
+  {
+    "word": "victim",
+    "zh": "受害者",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She is a victim of online fraud.",
+    "ex2": "Victims of the flood were offered emergency accommodation by the local council."
+  },
+  {
+    "word": "view",
+    "zh": "观点；景色；观看",
+    "pos": "n./v.",
+    "ipa": "",
+    "ex": "The view from the top was amazing.",
+    "ex2": "In his view, the decision was made without enough public consultation."
+  },
+  {
+    "word": "village",
+    "zh": "村庄",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She grew up in a small village.",
+    "ex2": "The village was largely unaffected by the economic changes taking place in the city."
+  },
+  {
+    "word": "violent",
+    "zh": "暴力的；猛烈的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "There was a violent storm last night.",
+    "ex2": "Violent scenes in the film meant it was not suitable for younger audiences."
+  },
+  {
+    "word": "waste",
+    "zh": "浪费；废料",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "Do not waste water — it is precious.",
+    "ex2": "The factory was fined for illegally dumping industrial waste in the local river."
+  },
+  {
+    "word": "wave",
+    "zh": "波浪；挥手",
+    "pos": "n./v.",
+    "ipa": "",
+    "ex": "She waved goodbye from the doorstep.",
+    "ex2": "Large waves made it impossible for the small fishing boats to leave the harbour."
+  },
+  {
+    "word": "weak",
+    "zh": "虚弱的；薄弱的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She felt weak after being ill for a week.",
+    "ex2": "The weakest part of the plan was that it relied entirely on one supplier."
+  },
+  {
+    "word": "wealth",
+    "zh": "财富",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Good health is more important than wealth.",
+    "ex2": "The country's wealth has grown rapidly thanks to its booming technology industry."
+  },
+  {
+    "word": "wipe",
+    "zh": "擦拭",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Could you wipe the table, please?",
+    "ex2": "She wiped the whiteboard clean before writing the new lesson objectives."
+  },
+  {
+    "word": "wonder",
+    "zh": "想知道；惊奇",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "I wonder what she is thinking.",
+    "ex2": "She gazed in wonder at the magnificent cathedral for the first time."
+  },
+  {
+    "word": "worry",
+    "zh": "担忧",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "Don't worry — everything will be fine.",
+    "ex2": "His parents began to worry when he did not come home by ten o'clock."
+  },
+  {
+    "word": "worth",
+    "zh": "值得的；价值",
+    "pos": "adj./n.",
+    "ipa": "",
+    "ex": "The film is definitely worth watching.",
+    "ex2": "She felt that all the hard work she had put in was worth it when she got the results."
+  },
+  {
+    "word": "wrap",
+    "zh": "包裹",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "She wrapped the present in bright paper.",
+    "ex2": "He wrapped a scarf around his neck before heading out into the freezing cold."
+  },
+  {
+    "word": "yard",
+    "zh": "院子；码",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The children played in the yard.",
+    "ex2": "The finish line was less than ten yards away when he collapsed from exhaustion."
+  },
+  {
+    "word": "yet",
+    "zh": "还；已经（疑问）",
+    "pos": "adv.",
+    "ipa": "",
+    "ex": "Has she arrived yet?",
+    "ex2": "The results are not yet available — they should be published by the end of the week."
+  },
+  {
+    "word": "zone",
+    "zh": "区域",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "This is a no-parking zone.",
+    "ex2": "The city centre has been designated a low-emission zone to reduce air pollution."
+  },
+  {
+    "word": "timetable",
+    "zh": "时刻表；课程表",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Check the timetable for the train times.",
+    "ex2": "The school issued a new timetable at the start of each academic term."
+  },
+  {
+    "word": "ingredient",
+    "zh": "食材；成分",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "What ingredients do you need for this dish?",
+    "ex2": "She checked the list of ingredients carefully to make sure nothing contained nuts."
+  },
+  {
+    "word": "symptom",
+    "zh": "症状",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A sore throat is a common symptom of a cold.",
+    "ex2": "If you develop any symptoms, you should contact your doctor immediately."
+  },
+  {
+    "word": "charity",
+    "zh": "慈善机构",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She donates to charity every month.",
+    "ex2": "The charity raised over a million pounds through its annual fundraising campaign."
+  },
+  {
+    "word": "tiring",
+    "zh": "令人疲倦的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "The long journey was really tiring.",
+    "ex2": "Looking after young children can be extremely tiring, especially at the end of a long day."
+  },
+  {
+    "word": "responsible",
+    "zh": "负责任的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She is responsible for the whole team.",
+    "ex2": "Parents are responsible for making sure their children attend school regularly."
+  },
+  {
+    "word": "bored",
+    "zh": "无聊的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "I was bored waiting at the airport.",
+    "ex2": "He got bored of his routine job and decided to retrain in a different field."
+  },
+  {
+    "word": "require",
+    "zh": "要求；需要",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "The task requires a lot of patience.",
+    "ex2": "All applicants are required to submit two references with their application form."
+  },
+  {
+    "word": "satisfy",
+    "zh": "使满足",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "The meal satisfied our hunger completely.",
+    "ex2": "She found it hard to satisfy all the different requirements of the new project."
+  },
+  {
+    "word": "spare time",
+    "zh": "业余时间",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "What do you do in your spare time?",
+    "ex2": "In her spare time, she enjoys painting and walking along the riverside."
+  },
+  {
+    "word": "wonder about",
+    "zh": "对…感到好奇",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "I sometimes wonder about my future.",
+    "ex2": "She wondered about the life of the previous owner as she explored the old house."
+  },
+  {
+    "word": "annoying",
+    "zh": "令人恼火的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "That noise is really annoying.",
+    "ex2": "She found it annoying when people talked loudly on the phone in public places."
+  },
+  {
+    "word": "shocked",
+    "zh": "震惊的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She was shocked by the unexpected news.",
+    "ex2": "Everyone was shocked to learn that the popular restaurant would be closing down."
+  },
+  {
+    "word": "delighted",
+    "zh": "高兴的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She was delighted with the results.",
+    "ex2": "He was absolutely delighted when his team won the championship for the first time."
+  },
+  {
+    "word": "disappointed",
+    "zh": "失望的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She was disappointed not to get the part.",
+    "ex2": "He was disappointed by the low turnout at the event after weeks of preparation."
+  },
+  {
+    "word": "worried",
+    "zh": "担忧的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "Are you worried about the test?",
+    "ex2": "She was worried that she had said the wrong thing during the interview."
+  },
+  {
+    "word": "satisfied",
+    "zh": "满意的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "Are you satisfied with the service?",
+    "ex2": "She was satisfied with the final results after months of hard work."
+  },
+  {
+    "word": "relieved",
+    "zh": "如释重负的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She felt relieved when the exam was over.",
+    "ex2": "Everyone was relieved to hear that the missing child had been found safe and well."
+  },
+  {
+    "word": "impressed",
+    "zh": "印象深刻的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She was impressed by his presentation.",
+    "ex2": "The judges were very impressed by the quality of work produced by the students."
+  },
+  {
+    "word": "confused",
+    "zh": "困惑的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She felt confused by the instructions.",
+    "ex2": "Many passengers were confused by the changes to the train service timetable."
+  },
+  {
+    "word": "frustrated",
+    "zh": "沮丧的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She felt frustrated with slow progress.",
+    "ex2": "He became frustrated when the same problems kept occurring week after week."
+  },
+  {
+    "word": "proud",
+    "zh": "自豪的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "Her parents were very proud of her.",
+    "ex2": "She was proud of everything the team had achieved over the past twelve months."
+  },
+  {
+    "word": "ashamed",
+    "zh": "感到惭愧的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "He felt ashamed of his behaviour.",
+    "ex2": "She was ashamed that she had not spoken up sooner to support her colleague."
+  },
+  {
+    "word": "jealous",
+    "zh": "嫉妒的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She felt jealous of her sister's success.",
+    "ex2": "He was jealous of the attention his colleague received for completing the project."
+  },
+  {
+    "word": "look up",
+    "zh": "查阅；抬头看",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Look up the word in a dictionary.",
+    "ex2": "She looked up the address before leaving to make sure she went to the right place."
+  },
+  {
+    "word": "take up",
+    "zh": "开始（爱好）；占用",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She took up swimming last summer.",
+    "ex2": "He decided to take up photography as a hobby after retiring from his teaching career."
+  },
+  {
+    "word": "keep up with",
+    "zh": "跟上；了解最新情况",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "It's hard to keep up with the news.",
+    "ex2": "She read journals every week to keep up with the latest developments in her field."
+  },
+  {
+    "word": "put on",
+    "zh": "穿上；增加",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Put on a coat before going outside.",
+    "ex2": "She had put on a lot of weight during the months she spent recovering at home."
+  },
+  {
+    "word": "run out of",
+    "zh": "用完",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "We have run out of milk.",
+    "ex2": "The team ran out of time before they could finish all the planned experiments."
+  },
+  {
+    "word": "go through",
+    "zh": "经历；检查",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She went through a very difficult period.",
+    "ex2": "He went through all the documents carefully before signing the contract."
+  },
+  {
+    "word": "end up",
+    "zh": "最终成为；结果是",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "We ended up staying for the whole day.",
+    "ex2": "She ended up taking a completely different career path from the one she had planned."
+  },
+  {
+    "word": "count on",
+    "zh": "依靠；指望",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "You can always count on her for help.",
+    "ex2": "He knew he could count on the support of his family during the difficult time."
+  },
+  {
+    "word": "turn up",
+    "zh": "出现；到来；调高",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She didn't turn up to the meeting.",
+    "ex2": "A hundred people were expected, but only sixty turned up on the day."
+  },
+  {
+    "word": "take off",
+    "zh": "起飞；脱下",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "The plane took off thirty minutes late.",
+    "ex2": "Please take off your shoes before entering the house."
+  },
+  {
+    "word": "point out",
+    "zh": "指出；使注意",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She pointed out several errors in the report.",
+    "ex2": "He politely pointed out that the meeting had been scheduled for Thursday, not Friday."
+  },
+  {
+    "word": "clean up",
+    "zh": "清理；打扫",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "We need to clean up after the party.",
+    "ex2": "Volunteers spent the morning cleaning up the beach after the festival."
+  },
+  {
+    "word": "fit in",
+    "zh": "融入；找时间",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She found it hard to fit in at first.",
+    "ex2": "Can you fit in a short meeting between two and three this afternoon?"
+  },
+  {
+    "word": "put up with",
+    "zh": "忍受",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She could not put up with the noise.",
+    "ex2": "He put up with the long commute for two years before finally moving closer to work."
+  },
+  {
+    "word": "come across",
+    "zh": "偶然发现；给人印象",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "I came across an interesting article today.",
+    "ex2": "She came across as confident and well-prepared during the interview."
+  },
+  {
+    "word": "take part in",
+    "zh": "参加",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She took part in a charity fun run.",
+    "ex2": "All students were encouraged to take part in the end-of-year drama production."
+  },
+  {
+    "word": "go ahead",
+    "zh": "继续；进行",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Please go ahead and start without me.",
+    "ex2": "The construction project went ahead despite strong objections from local residents."
+  },
+  {
+    "word": "look into",
+    "zh": "调查；研究",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "We will look into the problem immediately.",
+    "ex2": "She asked a colleague to look into the customer's complaint and respond by Friday."
+  },
+  {
+    "word": "show off",
+    "zh": "炫耀",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "He was always showing off in class.",
+    "ex2": "She showed off her new language skills by ordering in French at the restaurant."
+  },
+  {
+    "word": "calm down",
+    "zh": "冷静下来",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Please calm down and take a breath.",
+    "ex2": "It took a while for the crowd to calm down after the announcement was made."
+  },
+  {
+    "word": "cheer up",
+    "zh": "振作；使高兴",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She sent him flowers to cheer him up.",
+    "ex2": "The team organised a small party to cheer up a colleague who had been feeling low."
+  },
+  {
+    "word": "look out",
+    "zh": "小心；当心",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Look out — there's a car coming!",
+    "ex2": "She told the children to look out for uneven steps on the way down."
+  },
+  {
+    "word": "make up",
+    "zh": "编造；构成；和好",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Don't make up excuses for being late.",
+    "ex2": "After their argument, they made up and agreed to put the matter behind them."
+  },
+  {
+    "word": "lay off",
+    "zh": "裁员；停止（做某事）",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "The factory laid off two hundred workers.",
+    "ex2": "She was laid off during the economic downturn and spent six months looking for work."
+  },
+  {
+    "word": "slow down",
+    "zh": "减速；放慢",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Please slow down — you are driving too fast.",
+    "ex2": "Production slowed down considerably when key machinery broke down last month."
+  },
+  {
+    "word": "hold on",
+    "zh": "稍等；坚持",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Hold on, I will be right with you.",
+    "ex2": "She told herself to hold on and not give up during the most difficult stage of training."
+  },
+  {
+    "word": "drop off",
+    "zh": "顺路送；减少",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Can you drop me off at the station?",
+    "ex2": "Attendance at the evening classes dropped off after the autumn term ended."
+  },
+  {
+    "word": "try out",
+    "zh": "试用；尝试",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She tried out the new coffee machine.",
+    "ex2": "He tried out for the school football team and was selected for the squad."
+  },
+  {
+    "word": "work out",
+    "zh": "锻炼；解决；弄清楚",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She works out at the gym every morning.",
+    "ex2": "They could not work out why the machine kept stopping after just a few minutes."
+  },
+  {
+    "word": "pass out",
+    "zh": "晕倒；分发",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She nearly passed out from the heat.",
+    "ex2": "He passed out leaflets about the community event to people in the street."
+  },
+  {
+    "word": "take over",
+    "zh": "接管；接手",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She took over the project last month.",
+    "ex2": "A larger company took over the small business and rebranded it within six months."
+  },
+  {
+    "word": "break out",
+    "zh": "爆发；突然发生",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "A fire broke out in the building.",
+    "ex2": "Violence broke out in the streets following the announcement of the election results."
+  },
+  {
+    "word": "carry on",
+    "zh": "继续",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Please carry on with what you were doing.",
+    "ex2": "She carried on working even after she had been told the project had been cancelled."
+  },
+  {
+    "word": "burst out laughing",
+    "zh": "突然大笑",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Everyone burst out laughing at his joke.",
+    "ex2": "She tried to keep a straight face but burst out laughing during the serious meeting."
+  },
+  {
+    "word": "annoyed",
+    "zh": "恼火的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She was annoyed by the constant interruptions.",
+    "ex2": "He felt annoyed when someone took credit for his work without asking."
   }
 ]

@@ -8326,5 +8326,2501 @@
     "ipa": "",
     "ex": "That little noodle shop on the side street — IYKYK 🍜",
     "ex2": "Monday morning status updates before coffee... IYKYK 😅 — it's a special kind of suffering."
+  },
+  {
+    "word": "burn out",
+    "zh": "精力耗尽 / 倦怠",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She burned out after working 80-hour weeks for six months straight.",
+    "ex2": "He warned his team not to burn out before the project launch, urging everyone to take proper breaks."
+  },
+  {
+    "word": "take the lead",
+    "zh": "带头 / 主导",
+    "pos": "phr.",
+    "ipa": "",
+    "ex": "Who wants to take the lead on the new marketing campaign?",
+    "ex2": "She took the lead during the crisis and calmly guided the team through every difficult decision."
+  },
+  {
+    "word": "ghosting",
+    "zh": "突然消失 / 拉黑",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "After three dates, he started ghosting her without any explanation.",
+    "ex2": "Ghosting is increasingly common in the job market, with employers sometimes ignoring candidates after interviews."
+  },
+  {
+    "word": "vibe",
+    "zh": "氛围 / 感觉",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The café has such a relaxed vibe—perfect for getting work done.",
+    "ex2": "I got a weird vibe from the interview and decided not to take the job even though it paid well."
+  },
+  {
+    "word": "lowkey",
+    "zh": "有点 / 低调地",
+    "pos": "adv./adj.",
+    "ipa": "",
+    "ex": "I lowkey love reality TV, but I never admit it to anyone.",
+    "ex2": "She was lowkey stressed about the deadline but kept her cool in front of the team."
+  },
+  {
+    "word": "hit the nail on the head",
+    "zh": "说到点子上",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "You hit the nail on the head—that's exactly what's been causing the problem.",
+    "ex2": "Her analysis hit the nail on the head and convinced the board to change direction immediately."
+  },
+  {
+    "word": "bite the bullet",
+    "zh": "咬牙挺过去",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The surgery was scary, but I bit the bullet and went through with it.",
+    "ex2": "They bit the bullet and made the unpopular decision to cut the project budget significantly."
+  },
+  {
+    "word": "think outside the box",
+    "zh": "跳出固有思维",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "We need to think outside the box to come up with a truly original idea.",
+    "ex2": "The team was encouraged to think outside the box when designing the new user interface."
+  },
+  {
+    "word": "nice to meet you",
+    "zh": "很高兴认识你",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Nice to meet you—I've heard so many great things about your work.",
+    "ex2": "She shook his hand warmly and said, 'Nice to meet you—welcome to the company!'"
+  },
+  {
+    "word": "the elephant in the room",
+    "zh": "大家心照不宣的问题",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Nobody wanted to talk about the budget cuts, but it was the elephant in the room.",
+    "ex2": "The falling sales figures were the elephant in the room at every board meeting that quarter."
+  },
+  {
+    "word": "under the weather",
+    "zh": "身体不适",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "I'm feeling a bit under the weather today, so I'll work from home.",
+    "ex2": "She seemed under the weather all week and finally went to see a doctor on Friday."
+  },
+  {
+    "word": "step up",
+    "zh": "迎难而上 / 加把劲",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "With the manager away, someone needs to step up and lead the daily standups.",
+    "ex2": "He stepped up when the company needed him most and delivered outstanding results under pressure."
+  },
+  {
+    "word": "sign up",
+    "zh": "注册 / 报名",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Sign up for the webinar before all the spots are taken.",
+    "ex2": "Over two thousand people signed up for the free online course within the first 24 hours."
+  },
+  {
+    "word": "reach a consensus",
+    "zh": "达成共识",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "After two hours of debate, the committee finally reached a consensus.",
+    "ex2": "It was difficult to reach a consensus with so many different opinions on the table."
+  },
+  {
+    "word": "ballpark figure",
+    "zh": "大概数字",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Can you give me a ballpark figure for the renovation cost?",
+    "ex2": "The contractor provided a ballpark figure of 50,000 yuan, with the exact quote to follow next week."
+  },
+  {
+    "word": "drop the ball",
+    "zh": "失误 / 搞砸了",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "We really dropped the ball on that delivery—the client was furious.",
+    "ex2": "He admitted he had dropped the ball by not confirming the booking in time."
+  },
+  {
+    "word": "spill the tea",
+    "zh": "说八卦 / 爆料",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Come on, spill the tea—what happened at the party last night?",
+    "ex2": "She called her best friend to spill the tea about everything that had gone wrong on the date."
+  },
+  {
+    "word": "no brainer",
+    "zh": "不用想的事 / 显而易见",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Accepting the job offer was a no brainer—the salary was double what I earn now.",
+    "ex2": "Switching to LED lighting was a no brainer for reducing the office's electricity bill."
+  },
+  {
+    "word": "touch wood",
+    "zh": "祈祷好运（别说早）",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Touch wood, everything should go smoothly on the day of the launch.",
+    "ex2": "She knocked on her desk and said, 'Touch wood, we won't have any technical issues today.'"
+  },
+  {
+    "word": "at a loss",
+    "zh": "茫然 / 不知所措",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "I was at a loss for words when I heard the news about the layoffs.",
+    "ex2": "The customer support team was at a loss when the system went down without warning."
+  },
+  {
+    "word": "cut corners",
+    "zh": "走捷径 / 偷工减料",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Never cut corners on safety—it's not worth the risk.",
+    "ex2": "The contractor cut corners on materials, which caused serious problems six months later."
+  },
+  {
+    "word": "pull an all-nighter",
+    "zh": "通宵奋战",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "He pulled an all-nighter to finish the proposal before the morning deadline.",
+    "ex2": "The whole team pulled an all-nighter to fix the bugs before the product launch went live."
+  },
+  {
+    "word": "on the fence",
+    "zh": "举棋不定 / 犹豫不决",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "I'm still on the fence about whether to accept the job offer abroad.",
+    "ex2": "Several investors were on the fence about funding the startup until the demo blew them away."
+  },
+  {
+    "word": "call it a day",
+    "zh": "收工 / 今天到此为止",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "It's already 8 p.m.—let's call it a day and pick this up tomorrow morning.",
+    "ex2": "After twelve hours of negotiation, both sides agreed to call it a day and resume the next morning."
+  },
+  {
+    "word": "the big picture",
+    "zh": "大局 / 总体情况",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Don't get lost in the details—always keep the big picture in mind.",
+    "ex2": "The CEO asked everyone to step back and focus on the big picture before making hasty decisions."
+  },
+  {
+    "word": "a blessing in disguise",
+    "zh": "因祸得福",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Losing that job was a blessing in disguise—I found a much better one.",
+    "ex2": "The delay turned out to be a blessing in disguise, giving the team time to fix a critical flaw."
+  },
+  {
+    "word": "keep tabs on",
+    "zh": "密切关注",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Can you keep tabs on the project timeline while I'm travelling?",
+    "ex2": "She kept tabs on competitor activity by monitoring their social media and press releases weekly."
+  },
+  {
+    "word": "under pressure",
+    "zh": "承受压力",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "He performs extremely well under pressure and never misses a deadline.",
+    "ex2": "The whole team was under pressure to deliver before the end of the financial year."
+  },
+  {
+    "word": "split up",
+    "zh": "分开 / 分手",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "They split up after three years together and remained close friends.",
+    "ex2": "The task was too large for one person, so they split it up between four team members."
+  },
+  {
+    "word": "settle down",
+    "zh": "安定下来",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "After years of travelling, she finally settled down in the city.",
+    "ex2": "He took a few deep breaths to settle down before the high-stakes presentation began."
+  },
+  {
+    "word": "get along",
+    "zh": "相处融洽",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "The new hire gets along well with everyone on the team.",
+    "ex2": "It can take time to get along with a new roommate, but communication helps a lot."
+  },
+  {
+    "word": "give back",
+    "zh": "回馈 / 归还",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "He volunteers every weekend to give back to the local community.",
+    "ex2": "After achieving success, she wanted to give back by mentoring young professionals in her industry."
+  },
+  {
+    "word": "hang out",
+    "zh": "消磨时间 / 闲逛",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Do you want to hang out this weekend and catch a movie?",
+    "ex2": "They used to hang out at the same café every Saturday morning before life got too busy."
+  },
+  {
+    "word": "hold back",
+    "zh": "阻止 / 抑制",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Don't hold back—tell me what you really think of the design.",
+    "ex2": "Fear of failure was the only thing holding her back from launching her own business."
+  },
+  {
+    "word": "move on",
+    "zh": "继续前进 / 翻篇",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "It didn't work out, but we need to move on and stay positive.",
+    "ex2": "She moved on from the disappointment quickly and focused all her energy on the next opportunity."
+  },
+  {
+    "word": "pass out",
+    "zh": "昏过去 / 分发",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "He passed out from exhaustion after the marathon.",
+    "ex2": "Please pass out the handouts before the session starts so everyone can follow along."
+  },
+  {
+    "word": "pick up the phone",
+    "zh": "接电话 / 打电话",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Just pick up the phone and call them—an email will take too long.",
+    "ex2": "She couldn't pick up the phone during the flight, so she replied as soon as she landed."
+  },
+  {
+    "word": "point taken",
+    "zh": "我明白你的意思了",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Point taken—I'll be more careful with my wording next time.",
+    "ex2": "Point taken. We'll revise the timeline to make it more realistic before presenting again."
+  },
+  {
+    "word": "fair point",
+    "zh": "有道理",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Fair point—maybe we should get a second opinion before deciding.",
+    "ex2": "She raised a fair point about the risks, which caused everyone to reconsider the proposal."
+  },
+  {
+    "word": "in the loop",
+    "zh": "知情 / 了解动态",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Keep me in the loop if anything changes before the deadline.",
+    "ex2": "He made sure everyone on the team was in the loop about the client's new requirements."
+  },
+  {
+    "word": "out of the loop",
+    "zh": "不知情",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "I've been out of the loop all week—what did I miss?",
+    "ex2": "She felt out of the loop after returning from maternity leave and requested a comprehensive briefing."
+  },
+  {
+    "word": "break down",
+    "zh": "崩溃 / 出故障",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "The car broke down on the highway during the morning rush hour.",
+    "ex2": "She broke down in tears after hearing that the funding for her research had been denied."
+  },
+  {
+    "word": "make ends meet",
+    "zh": "勉强维持生计",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "With rising rent prices, many young families struggle to make ends meet.",
+    "ex2": "She took on two part-time jobs just to make ends meet while studying for her professional exams."
+  },
+  {
+    "word": "scratch the surface",
+    "zh": "触及皮毛 / 浅尝辄止",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "We've barely scratched the surface of what this technology can do.",
+    "ex2": "The research has only scratched the surface—there is still so much more to explore."
+  },
+  {
+    "word": "take a toll",
+    "zh": "造成损伤 / 损耗",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Working from home without any boundaries has taken a toll on her health.",
+    "ex2": "Years of competitive sport had taken a toll on his joints by the time he turned forty."
+  },
+  {
+    "word": "throw in the towel",
+    "zh": "认输 / 放弃",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "After months of trying to fix the failing system, the IT team threw in the towel.",
+    "ex2": "She refused to throw in the towel even when the odds were completely against her."
+  },
+  {
+    "word": "on track",
+    "zh": "按计划进行",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The project is on track—we should meet the deadline with no issues.",
+    "ex2": "Regular check-ins help ensure everyone stays on track and aligned with the overall goals."
+  },
+  {
+    "word": "off track",
+    "zh": "偏离轨道",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "We went off track during the discussion—let's refocus on the agenda.",
+    "ex2": "The project went off track when three key team members left unexpectedly in the same month."
+  },
+  {
+    "word": "miss the boat",
+    "zh": "错过机会",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "We'll miss the boat if we don't file the application this week.",
+    "ex2": "He missed the boat on the investment opportunity by waiting too long to make a decision."
+  },
+  {
+    "word": "get the hang of",
+    "zh": "掌握诀窍 / 上手",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "It takes a week to get the hang of the new software, but it's worth it.",
+    "ex2": "Once you get the hang of the workflow, the tasks become much faster and more efficient."
+  },
+  {
+    "word": "in the long run",
+    "zh": "从长远来看",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Investing in quality equipment saves money in the long run.",
+    "ex2": "In the long run, prioritising employee well-being leads to lower turnover and higher productivity."
+  },
+  {
+    "word": "cut to the chase",
+    "zh": "直接说重点",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Let's cut to the chase—do we have the budget or not?",
+    "ex2": "She cut to the chase in the presentation and focused only on the key findings and recommendations."
+  },
+  {
+    "word": "learn the ropes",
+    "zh": "学习基本方法 / 入门",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Give him a few weeks to learn the ropes before judging his performance.",
+    "ex2": "She spent her first month learning the ropes under the guidance of a patient senior colleague."
+  },
+  {
+    "word": "go the extra mile",
+    "zh": "多付出一分 / 额外努力",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "She always goes the extra mile for her clients and it shows.",
+    "ex2": "Going the extra mile with personalised service is what sets this restaurant apart from its competitors."
+  },
+  {
+    "word": "stay on top of",
+    "zh": "跟上 / 保持掌握",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "It's hard to stay on top of all the industry news when you're so busy.",
+    "ex2": "She uses a weekly planner to stay on top of her tasks and deadlines throughout the month."
+  },
+  {
+    "word": "run by",
+    "zh": "征求意见 / 提给…看",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Can I run this draft by you before I send it to the client?",
+    "ex2": "He ran the idea by the legal team before including it in the formal proposal to investors."
+  },
+  {
+    "word": "talk through",
+    "zh": "详细讨论 / 分析",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Let's talk through the risks before we commit to this plan.",
+    "ex2": "She talked through every scenario with her mentor before making her final career decision."
+  },
+  {
+    "word": "take a step back",
+    "zh": "退一步看 / 重新思考",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Let's take a step back and make sure we're solving the right problem.",
+    "ex2": "Taking a step back helped him see that the conflict was caused by a simple miscommunication."
+  },
+  {
+    "word": "make the most of",
+    "zh": "充分利用",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Make the most of the long weekend—you've earned the rest.",
+    "ex2": "She made the most of her time abroad by taking language classes every single evening."
+  },
+  {
+    "word": "side hustle",
+    "zh": "副业",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She sells handmade jewellery as a side hustle alongside her full-time job.",
+    "ex2": "Many people have started side hustles during the pandemic to create an extra stream of income."
+  },
+  {
+    "word": "passive income",
+    "zh": "被动收入",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Renting out a spare room can provide a steady passive income.",
+    "ex2": "He built up enough passive income through investments to retire comfortably at forty-five."
+  },
+  {
+    "word": "hustle",
+    "zh": "拼命干 / 奔忙",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "If you want to succeed, you have to be willing to hustle.",
+    "ex2": "She admired his hustle—he was always the first to arrive and the last to leave the office."
+  },
+  {
+    "word": "gig economy",
+    "zh": "零工经济",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Many workers in the gig economy lack job security and benefits.",
+    "ex2": "The rise of the gig economy has created flexible opportunities but also significant financial uncertainty."
+  },
+  {
+    "word": "open-plan",
+    "zh": "开放式（布局）",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "The open-plan office encourages collaboration but can be noisy and distracting.",
+    "ex2": "The new building features an open-plan workspace with quiet pods for focused individual tasks."
+  },
+  {
+    "word": "hybrid work",
+    "zh": "混合办公",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Most companies now offer hybrid work arrangements of two to three days in the office.",
+    "ex2": "Hybrid work has become the new standard, requiring clear policies on when staff must be present."
+  },
+  {
+    "word": "flex time",
+    "zh": "弹性工作时间",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The company offers flex time so employees can start anywhere between 7 and 10 a.m.",
+    "ex2": "Flex time arrangements have proven popular and have led to measurable gains in staff satisfaction."
+  },
+  {
+    "word": "wellbeing",
+    "zh": "身心健康",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The company invests heavily in employee wellbeing through gym memberships and counselling.",
+    "ex2": "Her manager checked in on her wellbeing regularly after she returned from a difficult personal situation."
+  },
+  {
+    "word": "talent acquisition",
+    "zh": "人才招聘",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The talent acquisition team is looking for experienced engineers across three offices.",
+    "ex2": "Talent acquisition has become more competitive as companies fight to attract the best candidates."
+  },
+  {
+    "word": "reference",
+    "zh": "推荐人 / 参考资料",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Please provide two professional references when submitting your application.",
+    "ex2": "Her former manager gave her an outstanding reference that helped her secure the senior position."
+  },
+  {
+    "word": "resignation letter",
+    "zh": "辞职信",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "He handed in his resignation letter after receiving a better offer from a competitor.",
+    "ex2": "She spent hours drafting a professional resignation letter that thanked the company for the experience."
+  },
+  {
+    "word": "severance",
+    "zh": "遣散费",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She received three months of severance pay when her role was made redundant.",
+    "ex2": "The severance package included a lump sum payment plus continuation of health insurance for six months."
+  },
+  {
+    "word": "performance bonus",
+    "zh": "绩效奖金",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Annual performance bonuses are paid in March based on the previous year's results.",
+    "ex2": "She was surprised by the size of her performance bonus, which far exceeded her initial expectations."
+  },
+  {
+    "word": "stock option",
+    "zh": "股票期权",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The startup offered stock options as part of the compensation package.",
+    "ex2": "Many early employees became millionaires when the company went public and their stock options vested."
+  },
+  {
+    "word": "project management",
+    "zh": "项目管理",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She earned a certification in project management to advance her career.",
+    "ex2": "Effective project management involves clear timelines, defined roles, and regular progress check-ins."
+  },
+  {
+    "word": "onsite",
+    "zh": "现场 / 在公司",
+    "pos": "adj./adv.",
+    "ipa": "",
+    "ex": "The client wants an onsite visit to see the workshop in person.",
+    "ex2": "Onsite training is more effective for hands-on skills than any online alternative could provide."
+  },
+  {
+    "word": "sign off on",
+    "zh": "正式批准",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "I need the director to sign off on this before we proceed.",
+    "ex2": "She refused to sign off on the report until all data discrepancies had been properly resolved."
+  },
+  {
+    "word": "get the ball rolling",
+    "zh": "开始推动 / 启动",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Let's get the ball rolling on the new campaign as soon as possible.",
+    "ex2": "He sent the first email to get the ball rolling on the partnership discussions with the supplier."
+  },
+  {
+    "word": "push back",
+    "zh": "反对 / 表示异议",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "The team pushed back on the unrealistic timeline set by senior management.",
+    "ex2": "She expected pushback on the proposal but was surprised by how quickly everyone agreed."
+  },
+  {
+    "word": "align",
+    "zh": "保持一致 / 协调",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "We need to align on the key objectives before the project begins.",
+    "ex2": "All departments must be aligned with the company's vision before the strategy can be rolled out."
+  },
+  {
+    "word": "leverage",
+    "zh": "利用 / 充分发挥",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "We can leverage our existing customer data to improve the marketing campaign.",
+    "ex2": "She leveraged her network of contacts to secure introductions with three major potential investors."
+  },
+  {
+    "word": "sync up",
+    "zh": "同步信息 / 对齐进度",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Let's sync up for fifteen minutes before the client call today.",
+    "ex2": "The two teams synced up every morning to ensure there were no overlaps or gaps in the workload."
+  },
+  {
+    "word": "debrief",
+    "zh": "复盘 / 情况汇报",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "We'll debrief the campaign results in Friday's team meeting.",
+    "ex2": "The project debrief revealed several process improvements that the team agreed to implement next time."
+  },
+  {
+    "word": "drill down",
+    "zh": "深入分析",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Let's drill down into the data to find out exactly where conversion dropped off.",
+    "ex2": "She drilled down into the complaint data and identified a recurring issue with one specific product."
+  },
+  {
+    "word": "run the numbers",
+    "zh": "核算数字 / 做数字分析",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Let me run the numbers before we commit to this purchase.",
+    "ex2": "After running the numbers, the finance team concluded that the expansion was financially viable."
+  },
+  {
+    "word": "connect the dots",
+    "zh": "把事情串联起来",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Once I connected the dots, it was clear the two issues had the same root cause.",
+    "ex2": "Good analysts connect the dots between multiple data sources to draw meaningful conclusions."
+  },
+  {
+    "word": "brainstorm",
+    "zh": "头脑风暴",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "Let's schedule a one-hour brainstorm session to generate ideas for the campaign.",
+    "ex2": "The team brainstormed over thirty potential solutions before narrowing them down to the best three."
+  },
+  {
+    "word": "flesh out",
+    "zh": "充实 / 详细阐述",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "The concept is interesting—let's flesh it out before presenting it to the client.",
+    "ex2": "She fleshed out the initial idea into a full ten-page proposal over the course of two days."
+  },
+  {
+    "word": "a heads-up",
+    "zh": "预先通知",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Thanks for the heads-up about the system outage this morning.",
+    "ex2": "She appreciated the heads-up before the difficult meeting, as it allowed her to prepare her response."
+  },
+  {
+    "word": "drop by",
+    "zh": "顺路来一下 / 过来",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Drop by the office whenever you're in the area—the door is always open.",
+    "ex2": "He dropped by the client's office to deliver the documents in person rather than sending them by post."
+  },
+  {
+    "word": "pop by",
+    "zh": "顺道拜访",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "I'll pop by after lunch to drop off those reports for you.",
+    "ex2": "She popped by the neighbour's place to return the borrowed toolbox before the weekend."
+  },
+  {
+    "word": "fit in",
+    "zh": "融入 / 适应",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "It took a few months to fit in at the new company, but I feel at home now.",
+    "ex2": "She was worried she wouldn't fit in with the team, but everyone turned out to be very welcoming."
+  },
+  {
+    "word": "call in sick",
+    "zh": "打电话请病假",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "I had to call in sick today—I couldn't even get out of bed.",
+    "ex2": "He called in sick on the day of the big presentation, leaving the team to cover without him."
+  },
+  {
+    "word": "work from home",
+    "zh": "居家办公",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "She works from home on Mondays and Fridays to avoid the rush hour.",
+    "ex2": "Working from home full-time has forced many people to redesign their daily routines and schedules."
+  },
+  {
+    "word": "onboard",
+    "zh": "入职培训 / 使适应",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "We need two weeks to properly onboard the new team members.",
+    "ex2": "The faster you can onboard new hires, the sooner they become fully productive contributors to the team."
+  },
+  {
+    "word": "glow up",
+    "zh": "蜕变 / 大变样",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The city centre has had a serious glow up since the renovation project finished.",
+    "ex2": "She posted a glow up comparison photo showing how much her fitness had improved over a year."
+  },
+  {
+    "word": "plot twist",
+    "zh": "剧情反转 / 意外变化",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Plot twist—the person who got the promotion was the newest member of the team.",
+    "ex2": "In a major plot twist, the client rejected the winning proposal and started the process over again."
+  },
+  {
+    "word": "adulting",
+    "zh": "像大人一样处理事情",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Cooking meals and paying bills—adulting is harder than it looks.",
+    "ex2": "She spent her first month in her new flat struggling with adulting but gradually got the hang of it."
+  },
+  {
+    "word": "slay",
+    "zh": "表现超棒 / 大杀四方",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "She absolutely slayed the presentation—the client loved every second.",
+    "ex2": "He walked into the room and slayed his first job interview with complete confidence and charisma."
+  },
+  {
+    "word": "it's giving",
+    "zh": "感觉像… / 散发…的气质",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "This colour scheme is giving very luxurious, high-end hotel vibes.",
+    "ex2": "The new office layout is giving startup energy—very modern, open, and creative."
+  },
+  {
+    "word": "moving the goalposts",
+    "zh": "不断变更要求",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Every time we deliver what they asked for, they're moving the goalposts.",
+    "ex2": "The project kept going over schedule because the client kept moving the goalposts at every review."
+  },
+  {
+    "word": "put someone on the spot",
+    "zh": "让某人当众回答难题",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Sorry to put you on the spot, but what's your honest opinion?",
+    "ex2": "The reporter put the spokesperson on the spot with a question the team hadn't anticipated."
+  },
+  {
+    "word": "bite off more than you can chew",
+    "zh": "贪多嚼不烂",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "I bit off more than I could chew by taking on three projects at once.",
+    "ex2": "The company bit off more than it could chew by expanding into five markets simultaneously."
+  },
+  {
+    "word": "clear the air",
+    "zh": "消除误会 / 坦诚沟通",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Let's have an honest conversation and clear the air between us.",
+    "ex2": "They held a meeting specifically to clear the air after weeks of tension within the team."
+  },
+  {
+    "word": "spill over",
+    "zh": "蔓延 / 溢出",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Work stress can easily spill over into your personal life if you don't set boundaries.",
+    "ex2": "The conflict between two team members spilled over into other departments and disrupted productivity."
+  },
+  {
+    "word": "jump on a call",
+    "zh": "快速通话 / 加入电话",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Can we jump on a call for ten minutes to go over the details?",
+    "ex2": "She asked the team to jump on a call as soon as the client's urgent request came in."
+  },
+  {
+    "word": "loop back",
+    "zh": "再次回到 / 回头确认",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Let's loop back on the pricing discussion after the team reviews the numbers.",
+    "ex2": "He looped back with the supplier two days later to confirm the order details had been finalised."
+  },
+  {
+    "word": "put it on paper",
+    "zh": "落到书面上 / 写下来",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "A verbal agreement isn't enough—let's put it on paper.",
+    "ex2": "She insisted on putting all terms on paper before agreeing to partner with the new vendor."
+  },
+  {
+    "word": "get a second wind",
+    "zh": "恢复干劲",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "I got a second wind after a quick coffee break and finished the report in an hour.",
+    "ex2": "The team got a second wind when the founder personally came in to rally their spirits."
+  },
+  {
+    "word": "put forward",
+    "zh": "提出（建议）",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She put forward a proposal to reduce costs by moving to a hybrid model.",
+    "ex2": "Several alternative strategies were put forward during the planning session for the board to consider."
+  },
+  {
+    "word": "keep up",
+    "zh": "保持进度 / 跟上",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "It's hard to keep up with all the new tools and technologies in this industry.",
+    "ex2": "She struggled to keep up at first but was fully competent within her first three months."
+  },
+  {
+    "word": "give a shout",
+    "zh": "告知一声 / 呼一声",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Give me a shout if you need any help with the presentation setup.",
+    "ex2": "He told the new hire to give him a shout whenever she had questions about the workflow."
+  },
+  {
+    "word": "on board",
+    "zh": "支持 / 同意参与",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Is everyone on board with the new strategy before we move forward?",
+    "ex2": "Getting all the key stakeholders on board was the hardest part of pushing through the change."
+  },
+  {
+    "word": "take stock",
+    "zh": "评估现状 / 反思",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "At the end of each year, I take stock of what I achieved and what I want to do differently.",
+    "ex2": "The leadership team took stock of the situation and decided a complete reset was necessary."
+  },
+  {
+    "word": "a steep learning curve",
+    "zh": "很难上手",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The new software has a steep learning curve, but it's very powerful once mastered.",
+    "ex2": "Starting a business involves a steep learning curve in areas like finance, marketing, and operations."
+  },
+  {
+    "word": "take a rain check",
+    "zh": "改天再说 / 这次就算了",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "I can't make dinner tonight—can I take a rain check for next week?",
+    "ex2": "She had to take a rain check on the conference invitation due to a family commitment."
+  },
+  {
+    "word": "pick someone's brain",
+    "zh": "向某人请教 / 取经",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Could I pick your brain about your experience with that supplier?",
+    "ex2": "He grabbed a coffee with the senior analyst to pick her brain about approaching the new market."
+  },
+  {
+    "word": "game changer",
+    "zh": "颠覆性改变 / 改变游戏规则的",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "This new AI tool is a game changer for content creators.",
+    "ex2": "The partnership turned out to be a game changer, tripling their reach within just six months."
+  },
+  {
+    "word": "elevator pitch",
+    "zh": "简短推介",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Perfect your elevator pitch so you can explain your business in thirty seconds.",
+    "ex2": "She rehearsed her elevator pitch hundreds of times before attending the investor networking event."
+  },
+  {
+    "word": "go viral",
+    "zh": "爆红 / 疯传",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The campaign video went viral overnight and reached fifty million views.",
+    "ex2": "Nobody expected the simple product demonstration to go viral and bring in thousands of new orders."
+  },
+  {
+    "word": "content creator",
+    "zh": "内容创作者",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She became a full-time content creator after her channel reached one million subscribers.",
+    "ex2": "Brands are increasingly partnering with content creators to reach younger, digitally native audiences."
+  },
+  {
+    "word": "algorithm",
+    "zh": "算法（推荐机制）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The algorithm pushes your content to more people when engagement is high.",
+    "ex2": "She spent months studying the platform's algorithm to understand how to grow her audience faster."
+  },
+  {
+    "word": "engagement",
+    "zh": "互动率 / 参与度",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "High engagement on social media posts signals to the platform that the content is popular.",
+    "ex2": "The team tracked engagement metrics weekly to measure the success of each new campaign."
+  },
+  {
+    "word": "influencer",
+    "zh": "网红 / 意见领袖",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The brand partnered with a lifestyle influencer to promote their new product line.",
+    "ex2": "Micro-influencers often have more engaged audiences than mega-influencers with millions of followers."
+  },
+  {
+    "word": "trending",
+    "zh": "流行的 / 上热搜的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "That song is trending—I've heard it everywhere this week.",
+    "ex2": "The topic was trending on social media for three days, drawing both praise and criticism."
+  },
+  {
+    "word": "meme",
+    "zh": "表情包 / 梗图",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She sent a funny meme to lighten the mood after the stressful meeting.",
+    "ex2": "The brand's marketing team created a series of memes that resonated deeply with their target audience."
+  },
+  {
+    "word": "scroll",
+    "zh": "滑动浏览",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "I spent an hour scrolling through news feeds instead of going to sleep.",
+    "ex2": "She caught herself scrolling mindlessly for thirty minutes and decided to put her phone down."
+  },
+  {
+    "word": "block",
+    "zh": "拉黑 / 屏蔽",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "She blocked the account after it kept posting negative comments on her page.",
+    "ex2": "He was surprised to find out his former colleague had blocked him on all social media platforms."
+  },
+  {
+    "word": "unfollow",
+    "zh": "取消关注",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "She unfollowed accounts that made her feel anxious or inadequate.",
+    "ex2": "A mass-unfollow campaign hit the brand after it posted an insensitive comment during a crisis."
+  },
+  {
+    "word": "repost",
+    "zh": "转发 / 再发",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "Please repost this if you find it useful—it helps spread the message.",
+    "ex2": "The original tweet was reposted over a hundred thousand times within the first two hours."
+  },
+  {
+    "word": "caption",
+    "zh": "配文 / 标题",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She spent as much time crafting the caption as she did taking the perfect photo.",
+    "ex2": "A witty caption can dramatically boost the engagement rate of an otherwise ordinary post."
+  },
+  {
+    "word": "bio",
+    "zh": "简介 / 个人介绍",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Update your social media bio to include your new role and skills.",
+    "ex2": "She rewrote her professional bio to better reflect the direction she wanted her career to take."
+  },
+  {
+    "word": "hashtag",
+    "zh": "井号标签",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Use the right hashtags to help new audiences discover your content.",
+    "ex2": "The campaign hashtag trended nationally for two days after a celebrity shared the original post."
+  },
+  {
+    "word": "doomscrolling",
+    "zh": "越刷越焦虑（负面新闻）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "I caught myself doomscrolling at midnight and felt worse than before.",
+    "ex2": "Doomscrolling has become a recognised phenomenon that negatively affects mental health and sleep quality."
+  },
+  {
+    "word": "burnout",
+    "zh": "职业倦怠",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Burnout is increasingly common in high-pressure industries like finance and technology.",
+    "ex2": "She recognised the signs of burnout early and took a two-week break before things got worse."
+  },
+  {
+    "word": "digital detox",
+    "zh": "断网休假 / 戒掉电子设备",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "I went on a digital detox over the long weekend and felt much more refreshed.",
+    "ex2": "More companies are encouraging employees to take digital detoxes during annual leave."
+  },
+  {
+    "word": "screen time",
+    "zh": "屏幕使用时长",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "My phone tells me my average screen time is seven hours a day—that's too much.",
+    "ex2": "Parents are increasingly concerned about their children's screen time and its impact on development."
+  },
+  {
+    "word": "dark mode",
+    "zh": "深色模式",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "I always use dark mode at night to reduce eye strain.",
+    "ex2": "The app's dark mode update was one of the most requested features by users, reducing battery usage too."
+  },
+  {
+    "word": "push notification",
+    "zh": "推送通知",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Turn off push notifications from apps you don't use regularly.",
+    "ex2": "The company uses push notifications to re-engage users who haven't opened the app in a week."
+  },
+  {
+    "word": "password manager",
+    "zh": "密码管理器",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A password manager makes it easy to use unique, strong passwords everywhere.",
+    "ex2": "She switched to a password manager after getting her email account hacked for the second time."
+  },
+  {
+    "word": "data plan",
+    "zh": "流量套餐",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Make sure your data plan includes enough international roaming.",
+    "ex2": "She upgraded her data plan after constantly running out of mobile data in the middle of the month."
+  },
+  {
+    "word": "plug in",
+    "zh": "插电 / 充电",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Plug in your laptop before the battery dies in the middle of the call.",
+    "ex2": "She plugged in her phone as soon as she arrived at the hotel, as the battery was nearly dead."
+  },
+  {
+    "word": "go offline",
+    "zh": "断线 / 离线",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "I'm going to go offline for the next two hours and focus on writing.",
+    "ex2": "The server went offline unexpectedly, disrupting access for all users across the platform."
+  },
+  {
+    "word": "buffer",
+    "zh": "缓冲 / 缓冲区",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "The video kept buffering because the internet connection was too slow.",
+    "ex2": "Add a time buffer between meetings so you have space to think and prepare before the next one."
+  },
+  {
+    "word": "tablet computer",
+    "zh": "平板电脑",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She prefers working on her tablet computer when travelling light.",
+    "ex2": "The school provided each student with a tablet computer to access digital learning materials."
+  },
+  {
+    "word": "earphones",
+    "zh": "耳机",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "I always wear earphones during my commute to listen to podcasts.",
+    "ex2": "She put in her earphones to signal that she didn't want to be disturbed while working."
+  },
+  {
+    "word": "wireless",
+    "zh": "无线的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "The wireless keyboard and mouse make the desk setup much cleaner.",
+    "ex2": "Wireless charging pads are now built into some desks, making it easy to charge devices without cables."
+  },
+  {
+    "word": "share a screen",
+    "zh": "共享屏幕",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Can you share a screen so we can walk through the presentation together?",
+    "ex2": "She shared a screen with the team to demonstrate the new feature step by step in real time."
+  },
+  {
+    "word": "unmute",
+    "zh": "取消静音",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Please unmute yourself when you're ready to speak.",
+    "ex2": "He forgot to unmute during his turn, so everyone saw his mouth moving but heard nothing at all."
+  },
+  {
+    "word": "on mute",
+    "zh": "静音中",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "I think you're on mute—we can see you but can't hear a word.",
+    "ex2": "She stayed on mute throughout the entire call as she was joining from a noisy café."
+  },
+  {
+    "word": "time slot",
+    "zh": "时间段 / 档期",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The only available time slot this week is Thursday at 3 p.m.",
+    "ex2": "She booked the last available time slot for the final round interview on Friday afternoon."
+  },
+  {
+    "word": "book a table",
+    "zh": "预订座位",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Book a table for six—it's a popular place and it gets very busy.",
+    "ex2": "They tried to book a table at the restaurant for their anniversary but it was fully reserved."
+  },
+  {
+    "word": "walk-in",
+    "zh": "无需预约的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "The barbershop accepts walk-in customers every day from 10 a.m.",
+    "ex2": "The walk-in clinic was a great option for minor issues without needing a prior appointment."
+  },
+  {
+    "word": "convenience store",
+    "zh": "便利店",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "I grabbed breakfast from the convenience store before catching the train.",
+    "ex2": "Convenience stores in Japan are legendary for the quality and variety of their fresh food offerings."
+  },
+  {
+    "word": "vending machine",
+    "zh": "自动贩卖机",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "There's a vending machine on the third floor if you need a snack.",
+    "ex2": "The office installed vending machines with healthy snack options to support employee wellbeing."
+  },
+  {
+    "word": "food court",
+    "zh": "美食广场",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The mall food court has options from ten different cuisines.",
+    "ex2": "They grabbed a quick lunch at the food court between shopping for clothes and household items."
+  },
+  {
+    "word": "portion size",
+    "zh": "份量大小",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The portion sizes here are massive—we could easily share one main course.",
+    "ex2": "The nutritionist recommended reducing portion sizes as the simplest way to cut calorie intake."
+  },
+  {
+    "word": "meal prep",
+    "zh": "预先备餐",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She does meal prep every Sunday so she has healthy lunches all week.",
+    "ex2": "Meal prep saves both time and money and makes it much easier to stick to a balanced diet."
+  },
+  {
+    "word": "go halves",
+    "zh": "各付一半 / 平摊",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Shall we go halves on the birthday present for our manager?",
+    "ex2": "They decided to go halves on the taxi fare since they were both going to the same neighbourhood."
+  },
+  {
+    "word": "chip in",
+    "zh": "凑份子 / 共同出钱",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Everyone chipped in a small amount so we could buy a group gift.",
+    "ex2": "All the neighbours chipped in to hire a cleaner for the communal areas once a week."
+  },
+  {
+    "word": "overspend",
+    "zh": "超支",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "I overspent on clothes this month and need to cut back on other expenses.",
+    "ex2": "The project was significantly over budget because the team had overspent on materials in phase one."
+  },
+  {
+    "word": "tighten your belt",
+    "zh": "节衣缩食 / 勒紧裤腰带",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "We'll have to tighten our belts after the unexpected medical bills.",
+    "ex2": "The company asked all departments to tighten their belts until revenue recovered."
+  },
+  {
+    "word": "break even",
+    "zh": "收支平衡",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The restaurant expects to break even by the end of its first year.",
+    "ex2": "They finally broke even after eighteen months, which gave them the confidence to expand."
+  },
+  {
+    "word": "cost of living",
+    "zh": "生活成本",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The cost of living in major cities has increased dramatically in recent years.",
+    "ex2": "She chose to move to a smaller city where the cost of living was far more manageable."
+  },
+  {
+    "word": "take a pay cut",
+    "zh": "接受降薪",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "He took a pay cut to move to a job that gave him better work-life balance.",
+    "ex2": "Several senior employees volunteered to take a pay cut to avoid junior staff being made redundant."
+  },
+  {
+    "word": "pay off",
+    "zh": "还清 / 有回报",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "All her hard work finally paid off when she was offered the directorship.",
+    "ex2": "He paid off his student loan in full before his thirtieth birthday, a goal he'd set years before."
+  },
+  {
+    "word": "long weekend",
+    "zh": "长周末 / 小长假",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "We're planning a road trip over the long weekend to escape the city.",
+    "ex2": "Long weekends are a great time to recharge, but popular destinations can get extremely crowded."
+  },
+  {
+    "word": "day trip",
+    "zh": "当天往返的短途旅行",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "We did a day trip to the ancient town and were back before midnight.",
+    "ex2": "Day trips by high-speed train have become popular among city residents wanting a quick break."
+  },
+  {
+    "word": "bucket list",
+    "zh": "遗愿清单 / 愿望清单",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Seeing the Northern Lights is at the top of my bucket list.",
+    "ex2": "She crossed three items off her bucket list during a single month of travelling across South America."
+  },
+  {
+    "word": "off the beaten track",
+    "zh": "人迹罕至 / 非主流路线",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "We prefer destinations that are a little off the beaten track.",
+    "ex2": "The hidden waterfall was off the beaten track, but the guide knew exactly how to get there."
+  },
+  {
+    "word": "packing light",
+    "zh": "轻装出行",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "I've learnt the art of packing light after years of frequent business trips.",
+    "ex2": "Packing light means you can skip the baggage carousel and go straight to the taxi rank."
+  },
+  {
+    "word": "first-time visitor",
+    "zh": "初次来访者",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "As a first-time visitor to Paris, I was completely overwhelmed by the beauty of the city.",
+    "ex2": "The tourist board has created special guides tailored specifically for first-time visitors to the region."
+  },
+  {
+    "word": "local cuisine",
+    "zh": "当地美食",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Always try the local cuisine when you travel—it tells you so much about the culture.",
+    "ex2": "The best way to experience local cuisine is to eat where the residents actually go, not the tourist traps."
+  },
+  {
+    "word": "jet-set",
+    "zh": "经常飞来飞去（富裕的）",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She leads a jet-set lifestyle, attending events across three continents.",
+    "ex2": "The jet-set crowd at the luxury resort seemed perfectly at ease spending that amount on a single night."
+  },
+  {
+    "word": "travel hack",
+    "zh": "旅行省钱小技巧",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "One great travel hack is to book flights on Tuesday afternoons for lower prices.",
+    "ex2": "She shared her top ten travel hacks in a video that quickly went viral among frequent flyers."
+  },
+  {
+    "word": "pet peeve",
+    "zh": "最让人讨厌的事",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "My biggest pet peeve is when people don't reply to messages they've already read.",
+    "ex2": "Loud chewing is a pet peeve for many people who work in open-plan offices."
+  },
+  {
+    "word": "deal breaker",
+    "zh": "不可接受的条件",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A long daily commute is a deal breaker for me when considering job offers.",
+    "ex2": "The lack of flexible working hours was the deal breaker that made her reject the otherwise excellent offer."
+  },
+  {
+    "word": "pros and cons",
+    "zh": "利弊 / 优缺点",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Let's weigh up the pros and cons before making a final decision.",
+    "ex2": "She wrote out all the pros and cons of moving abroad before discussing it with her family."
+  },
+  {
+    "word": "gut feeling",
+    "zh": "直觉 / 本能感受",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "I had a gut feeling something was off, and I was right.",
+    "ex2": "She trusted her gut feeling and turned down the offer, which later proved to be the right call."
+  },
+  {
+    "word": "strike a balance",
+    "zh": "取得平衡",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "It's hard to strike a balance between ambition and personal wellbeing.",
+    "ex2": "The manager tried hard to strike a balance between being supportive and setting high expectations."
+  },
+  {
+    "word": "raise awareness",
+    "zh": "提高意识 / 引起关注",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The campaign aims to raise awareness about mental health in the workplace.",
+    "ex2": "She organised a series of events to raise awareness about sustainable living in her community."
+  },
+  {
+    "word": "word of mouth",
+    "zh": "口碑 / 口口相传",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Most of our new customers come through word of mouth—no advertising needed.",
+    "ex2": "Word of mouth is still the most powerful form of marketing for small local businesses."
+  },
+  {
+    "word": "think twice",
+    "zh": "三思而后行",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Think twice before sending that email—it could come across as rude.",
+    "ex2": "She thought twice about leaving and decided to give it another six months before making a decision."
+  },
+  {
+    "word": "look on the bright side",
+    "zh": "往好处想",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Look on the bright side—at least we learned a lot from this experience.",
+    "ex2": "Even in tough times, she always managed to look on the bright side and keep the team motivated."
+  },
+  {
+    "word": "in the same boat",
+    "zh": "同舟共济 / 处境相同",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Don't worry—we're all in the same boat with the new system. Nobody finds it easy.",
+    "ex2": "Hearing that her colleagues were in the same boat made her feel less alone about the difficult situation."
+  },
+  {
+    "word": "put your foot down",
+    "zh": "立场坚定 / 强硬表态",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "She put her foot down and refused to work any more overtime without extra pay.",
+    "ex2": "He finally put his foot down and told the client that constant last-minute changes were not acceptable."
+  },
+  {
+    "word": "turn a blind eye",
+    "zh": "视而不见",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Management turned a blind eye to the small policy violations for too long.",
+    "ex2": "You shouldn't turn a blind eye to workplace bullying—it gets worse if left unaddressed."
+  },
+  {
+    "word": "sweep under the rug",
+    "zh": "掩盖问题",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The company tried to sweep the data breach under the rug, but it leaked to the press.",
+    "ex2": "You can't sweep problems under the rug forever—they always resurface at the worst possible moment."
+  },
+  {
+    "word": "easier said than done",
+    "zh": "说起来容易做起来难",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Achieving work-life balance sounds great, but it's easier said than done.",
+    "ex2": "Staying calm under pressure is easier said than done, but it's a skill that can be developed over time."
+  },
+  {
+    "word": "from scratch",
+    "zh": "从零开始",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The system crashed, so we had to rebuild the database from scratch.",
+    "ex2": "She started her career from scratch in a completely new industry and worked her way to the top."
+  },
+  {
+    "word": "food for thought",
+    "zh": "值得思考的内容",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "That's a very interesting observation—definitely food for thought.",
+    "ex2": "The research findings provided a lot of food for thought for policymakers working on education reform."
+  },
+  {
+    "word": "common ground",
+    "zh": "共同点 / 共识",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Despite their differences, the two parties found common ground on key issues.",
+    "ex2": "Finding common ground early in negotiations helps build trust and speeds up the decision-making process."
+  },
+  {
+    "word": "speak up",
+    "zh": "大声说 / 勇敢发言",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Please speak up if you disagree—everyone's opinion matters here.",
+    "ex2": "She was afraid to speak up in meetings, but once she did, her ideas were met with enthusiasm."
+  },
+  {
+    "word": "think on your feet",
+    "zh": "临机应变 / 即兴思考",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Client presentations require you to think on your feet when questions get tough.",
+    "ex2": "The best communicators can think on their feet and respond calmly even in surprising situations."
+  },
+  {
+    "word": "keep your options open",
+    "zh": "保留余地 / 不过早表态",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Don't accept the first offer—keep your options open for now.",
+    "ex2": "She applied to six different companies to keep her options open rather than counting on one outcome."
+  },
+  {
+    "word": "throw someone under the bus",
+    "zh": "把责任推给别人 / 出卖同事",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "He threw his colleague under the bus to avoid taking any blame himself.",
+    "ex2": "She was shocked when the manager threw her under the bus during the client debrief."
+  },
+  {
+    "word": "face the music",
+    "zh": "接受后果 / 面对现实",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "She had to face the music after the project failed to deliver any results.",
+    "ex2": "It's time to face the music and have an honest conversation about why the strategy isn't working."
+  },
+  {
+    "word": "rule of thumb",
+    "zh": "经验法则",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "As a rule of thumb, save at least 20% of your monthly income.",
+    "ex2": "The rule of thumb in this industry is to allow double the time you think a task will take."
+  },
+  {
+    "word": "short notice",
+    "zh": "临时通知 / 提前很短时间",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Sorry for the short notice—can you join an urgent call in ten minutes?",
+    "ex2": "The event was cancelled on short notice, leaving many attendees frustrated and out of pocket."
+  },
+  {
+    "word": "on a roll",
+    "zh": "手气正顺 / 势头正好",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The team is on a roll—three successful launches in one quarter!",
+    "ex2": "She was on a roll, closing five major deals in a single month without breaking a sweat."
+  },
+  {
+    "word": "nailed it",
+    "zh": "完美完成",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "You absolutely nailed it—that was one of the best pitches I've ever seen.",
+    "ex2": "She nailed it in the final interview and received the job offer by the end of the day."
+  },
+  {
+    "word": "juggle",
+    "zh": "同时应对多项任务",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "She has to juggle three different client projects at the same time.",
+    "ex2": "He manages to juggle a full-time job, a side hustle, and evening language classes every week."
+  },
+  {
+    "word": "overwhelm",
+    "zh": "使不知所措",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Don't let the amount of work overwhelm you—break it into smaller tasks.",
+    "ex2": "She was overwhelmed by the positive response to her first public post and didn't know where to start."
+  },
+  {
+    "word": "recharge",
+    "zh": "充电 / 恢复精力",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "I need a proper holiday to recharge before the next big project begins.",
+    "ex2": "Taking short breaks throughout the day helps you recharge and maintain focus for longer periods."
+  },
+  {
+    "word": "switch off",
+    "zh": "关掉 / 彻底放松",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "After a demanding week, she needs the weekend to properly switch off.",
+    "ex2": "He found it almost impossible to switch off from work even when he was on holiday with family."
+  },
+  {
+    "word": "strike while the iron is hot",
+    "zh": "趁热打铁",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "We should strike while the iron is hot and submit the bid today.",
+    "ex2": "She decided to strike while the iron is hot and launch the product while the trend was still growing."
+  },
+  {
+    "word": "back to basics",
+    "zh": "回归基本",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "After all the complex strategies failed, the team went back to basics.",
+    "ex2": "She stepped back and went back to basics when she realised the fundamentals weren't being executed well."
+  },
+  {
+    "word": "make a splash",
+    "zh": "引起轰动 / 大出风头",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The new product made a splash at the industry fair and attracted huge media coverage.",
+    "ex2": "She made a splash at the conference with a talk that challenged the entire industry's assumptions."
+  },
+  {
+    "word": "catch someone off guard",
+    "zh": "打个措手不及",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The sudden question caught me off guard during the interview.",
+    "ex2": "The resignation caught the entire management team off guard, as there had been no warning signs."
+  },
+  {
+    "word": "to the point",
+    "zh": "简洁扼要 / 切中要害",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "His feedback was brief but to the point, and I immediately knew what to fix.",
+    "ex2": "Please keep your presentation to the point—we only have fifteen minutes before the next session."
+  },
+  {
+    "word": "save face",
+    "zh": "保住面子",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "He apologised privately to avoid a public confrontation and to save face.",
+    "ex2": "The compromise allowed both parties to save face while still reaching an agreement everyone could accept."
+  },
+  {
+    "word": "behind the scenes",
+    "zh": "幕后",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "A lot happens behind the scenes to make a successful product launch look effortless.",
+    "ex2": "She was quietly working behind the scenes to mediate between the two conflicting departments."
+  },
+  {
+    "word": "smooth sailing",
+    "zh": "一帆风顺",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Once the initial setup is done, it should be smooth sailing from there.",
+    "ex2": "The first quarter was rocky, but from the second quarter onward, it was smooth sailing for the team."
+  },
+  {
+    "word": "hands full",
+    "zh": "忙不过来 / 手头满了",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "I've got my hands full this week—can we meet next Monday instead?",
+    "ex2": "The customer service team had their hands full with complaints after the system outage."
+  },
+  {
+    "word": "on the house",
+    "zh": "免费赠送（由商家请客）",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The dessert was on the house as a thank-you for being regular customers.",
+    "ex2": "The manager offered a round of drinks on the house to apologise for the long wait."
+  },
+  {
+    "word": "rain or shine",
+    "zh": "无论如何 / 风雨无阻",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The outdoor concert will go ahead rain or shine—bring a poncho just in case.",
+    "ex2": "She walks to work every morning, rain or shine, as part of her daily exercise routine."
+  },
+  {
+    "word": "old habits die hard",
+    "zh": "积习难改",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "He's been working fourteen-hour days for twenty years—old habits die hard.",
+    "ex2": "Old habits die hard, especially when it comes to adjusting to new technology or working methods."
+  },
+  {
+    "word": "give and take",
+    "zh": "互相妥协 / 有来有往",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "A successful partnership requires give and take on both sides.",
+    "ex2": "Negotiating a salary always involves some give and take—rarely does one side get everything they want."
+  },
+  {
+    "word": "rethink",
+    "zh": "重新考虑",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "We may need to rethink our approach after seeing these disappointing results.",
+    "ex2": "The poor market response forced the company to rethink its entire product positioning strategy."
+  },
+  {
+    "word": "reassess",
+    "zh": "重新评估",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "It's worth pausing to reassess our goals after the change in market conditions.",
+    "ex2": "She regularly reassesses her personal priorities to ensure her actions align with her long-term goals."
+  },
+  {
+    "word": "status quo",
+    "zh": "现状",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The new CEO challenged the status quo and introduced sweeping cultural changes.",
+    "ex2": "Many employees were comfortable with the status quo and resisted the proposed new working practices."
+  },
+  {
+    "word": "proactive",
+    "zh": "主动的 / 积极进取的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "Be proactive about addressing issues before they escalate into bigger problems.",
+    "ex2": "She was praised in her review for being proactive in identifying risks before they impacted the team."
+  },
+  {
+    "word": "accountability",
+    "zh": "责任感 / 担责",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A culture of accountability means everyone takes responsibility for their outcomes.",
+    "ex2": "Lack of accountability was identified as the main cause of repeated errors in the customer reports."
+  },
+  {
+    "word": "transparency",
+    "zh": "透明度",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The CEO emphasised transparency as a core value of the company culture.",
+    "ex2": "Greater transparency in decision-making helped rebuild trust within the team after the merger."
+  },
+  {
+    "word": "in good hands",
+    "zh": "被妥善照顾",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The project is in good hands with Sarah leading it—she never misses a detail.",
+    "ex2": "The doctor assured the patient's family that she was in good hands and recovering well."
+  },
+  {
+    "word": "first come, first served",
+    "zh": "先到先得",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Tickets are allocated on a first come, first served basis, so register early.",
+    "ex2": "The limited edition items were on sale on a first come, first served basis and sold out in minutes."
+  },
+  {
+    "word": "fair share",
+    "zh": "应得的份额 / 公平的一份",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Everyone deserves their fair share of credit for the project's success.",
+    "ex2": "She worked more than her fair share of overtime and raised the issue politely with her manager."
+  },
+  {
+    "word": "smooth over",
+    "zh": "化解 / 调和",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "She worked hard to smooth over the tension between the two departments.",
+    "ex2": "He tried to smooth over the mistake by sending a heartfelt apology and a discount voucher."
+  },
+  {
+    "word": "drive home",
+    "zh": "强调 / 让人明白",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Let me drive home the key message: quality must never be compromised.",
+    "ex2": "She used a powerful example to drive home why customer trust takes years to build and seconds to lose."
+  },
+  {
+    "word": "benchmark against",
+    "zh": "与…对标",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "We regularly benchmark our prices against those of our main competitors.",
+    "ex2": "The team benchmarked their service standards against the best in the industry to identify where to improve."
+  },
+  {
+    "word": "double down",
+    "zh": "加倍努力 / 坚持立场",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Instead of pivoting, they decided to double down on their original strategy.",
+    "ex2": "She doubled down on her argument when challenged, refusing to back down without new evidence."
+  },
+  {
+    "word": "pivot",
+    "zh": "转向 / 调整方向",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "The startup had to pivot quickly after realising its original product didn't fit the market.",
+    "ex2": "The pivot from B2B to B2C turned out to be the decision that saved the company from closure."
+  },
+  {
+    "word": "iterate",
+    "zh": "迭代 / 不断改进",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Good product design requires the ability to iterate quickly based on user feedback.",
+    "ex2": "The team iterated through five versions of the interface before landing on the one users loved."
+  },
+  {
+    "word": "north star",
+    "zh": "核心目标 / 指引方向",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Our north star is to create technology that genuinely improves everyday lives.",
+    "ex2": "The company's north star metric is daily active users, and every decision is evaluated against it."
+  },
+  {
+    "word": "scale",
+    "zh": "规模化 / 扩展",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "The model works at a small scale, but we need to test if it can scale.",
+    "ex2": "Scaling a business too quickly without the right infrastructure often leads to operational chaos."
+  },
+  {
+    "word": "onboard a client",
+    "zh": "开始服务新客户",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The first step is to onboard the client properly so they know exactly what to expect.",
+    "ex2": "Onboarding a new client well sets the tone for the entire relationship going forward."
+  },
+  {
+    "word": "cross-functional",
+    "zh": "跨部门的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "This requires a cross-functional team from design, engineering, and marketing.",
+    "ex2": "Cross-functional collaboration helps solve complex problems that no single department can handle alone."
+  },
+  {
+    "word": "get up to speed",
+    "zh": "跟上进度 / 了解最新情况",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Can you brief me and get me up to speed before the meeting?",
+    "ex2": "New team members typically need two weeks to get up to speed on all the active projects."
+  },
+  {
+    "word": "shift gears",
+    "zh": "换个方向 / 转换策略",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Let's shift gears and talk about the second half of the year.",
+    "ex2": "After the failed campaign, she shifted gears and tried a completely different approach with measurable success."
+  },
+  {
+    "word": "back-and-forth",
+    "zh": "来回沟通 / 反复讨论",
+    "pos": "n./adj.",
+    "ipa": "",
+    "ex": "After weeks of back-and-forth, both parties finally agreed on the contract terms.",
+    "ex2": "The back-and-forth between the design and engineering teams delayed the final product by two weeks."
+  },
+  {
+    "word": "hard copy",
+    "zh": "纸质版 / 实体文件",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Please bring a hard copy of the report for those who prefer paper.",
+    "ex2": "She filed hard copies of all critical contracts in a secured cabinet in the legal department."
+  },
+  {
+    "word": "soft copy",
+    "zh": "电子版文件",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "I'll send you a soft copy of the contract by email this afternoon.",
+    "ex2": "Soft copies of all meeting notes are shared in the team's shared drive within 24 hours."
+  },
+  {
+    "word": "quick win",
+    "zh": "快速取得的成效",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Let's identify a few quick wins to build momentum in the first month.",
+    "ex2": "Quick wins in the early stages of a project help maintain team confidence and stakeholder support."
+  },
+  {
+    "word": "long shot",
+    "zh": "可能性很小的事",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Winning the contract was a long shot, but she went for it anyway.",
+    "ex2": "It's a long shot, but we should still apply—you never know what might happen."
+  },
+  {
+    "word": "think aloud",
+    "zh": "把想法说出来",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Let me think aloud for a moment—what if we approached this from the customer's point of view?",
+    "ex2": "She thought aloud during the brainstorm and the team was able to build on each idea in real time."
+  },
+  {
+    "word": "check off",
+    "zh": "逐一完成并勾掉",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Check off each item on the list as you complete it.",
+    "ex2": "He checked off every task on his daily planner, which gave him a satisfying sense of accomplishment."
+  },
+  {
+    "word": "overdeliver",
+    "zh": "超额完成",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "She consistently overdelivers on client expectations, which is why they keep coming back.",
+    "ex2": "The team overdelivered on the brief by including a bonus feature that delighted the client."
+  },
+  {
+    "word": "underpromise and overdeliver",
+    "zh": "少承诺多兑现",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The best client strategy is to underpromise and overdeliver every single time.",
+    "ex2": "He built his reputation by consistently underpromising and overdelivering on every project."
+  },
+  {
+    "word": "be upfront",
+    "zh": "坦诚 / 直接说明",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Be upfront about the limitations of the proposal so there are no surprises later.",
+    "ex2": "She was upfront about the risks from day one, which the client really appreciated."
+  },
+  {
+    "word": "step by step",
+    "zh": "一步一步地",
+    "pos": "adv./adj.",
+    "ipa": "",
+    "ex": "Follow the step-by-step instructions in the user manual carefully.",
+    "ex2": "She walked the new employee through the process step by step on her first day."
+  },
+  {
+    "word": "year-end",
+    "zh": "年末 / 年底",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "The year-end performance reviews will be held during the last two weeks of December.",
+    "ex2": "Year-end targets were clearly communicated to all teams at the start of the fourth quarter."
+  },
+  {
+    "word": "mid-year",
+    "zh": "年中",
+    "pos": "adj./n.",
+    "ipa": "",
+    "ex": "A mid-year review is a good time to assess progress and adjust your goals.",
+    "ex2": "The mid-year sales figures were encouraging and gave the team confidence heading into the second half."
+  },
+  {
+    "word": "catch a flight",
+    "zh": "赶飞机",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "I need to leave by six to catch my flight to Singapore.",
+    "ex2": "She barely caught her flight after the train was delayed by forty minutes leaving the station."
+  },
+  {
+    "word": "miss a flight",
+    "zh": "误机",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "He missed his flight because the immigration queue was unexpectedly long.",
+    "ex2": "Missing a flight can be very costly, especially if the airline does not rebook you without extra charges."
+  },
+  {
+    "word": "hail a taxi",
+    "zh": "叫出租车（招手拦车）",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "It can be hard to hail a taxi in the rain when everyone else needs one too.",
+    "ex2": "She preferred to hail a taxi rather than waiting for the rideshare to arrive in an unfamiliar area."
+  },
+  {
+    "word": "at rush hour",
+    "zh": "在高峰期",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Travelling at rush hour on the subway requires patience and a thick skin.",
+    "ex2": "The traffic at rush hour can add an extra forty minutes to any journey across the city."
+  },
+  {
+    "word": "run for the bus",
+    "zh": "赶公共汽车",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "I had to run for the bus and barely made it before the doors closed.",
+    "ex2": "She ran for the last bus of the evening and was relieved when the driver waited for her."
+  },
+  {
+    "word": "fuel up",
+    "zh": "加油 / 补充能量",
+    "pos": "phr.v.",
+    "ipa": "",
+    "ex": "Let's fuel up before hitting the highway—there aren't many petrol stations ahead.",
+    "ex2": "She grabbed a coffee and a banana to fuel up before the long morning of back-to-back meetings."
+  },
+  {
+    "word": "freeway",
+    "zh": "高速公路（美式）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The freeway was closed due to an accident, causing hours of delays.",
+    "ex2": "She drove the freeway every day and knew all the shortcuts to avoid the worst congestion."
+  },
+  {
+    "word": "crossroads",
+    "zh": "十字路口 / 人生转折点",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The company is at a crossroads and must decide whether to expand or consolidate.",
+    "ex2": "She felt at a crossroads in her career and spent weeks reflecting on what truly mattered to her."
+  },
+  {
+    "word": "running costs",
+    "zh": "运营成本",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The running costs of the new office are significantly higher than expected.",
+    "ex2": "Reducing running costs without affecting quality is one of the key challenges facing the business."
+  },
+  {
+    "word": "above board",
+    "zh": "光明正大 / 合法合规",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Everything we do is completely above board—full compliance with all regulations.",
+    "ex2": "She made sure all financial transactions were above board and meticulously documented."
+  },
+  {
+    "word": "get the green light",
+    "zh": "获批 / 得到许可",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "We got the green light from management to start the pilot programme.",
+    "ex2": "Once she got the green light, she moved quickly to assemble the team and begin the work."
+  },
+  {
+    "word": "red tape",
+    "zh": "繁文缛节 / 官僚手续",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The project was delayed by months because of all the bureaucratic red tape.",
+    "ex2": "She navigated the red tape efficiently and got the licence approved in record time."
+  },
+  {
+    "word": "braindump",
+    "zh": "把脑中的想法全倒出来",
+    "pos": "n./v.",
+    "ipa": "",
+    "ex": "Let's do a quick braindump before we start organising the ideas.",
+    "ex2": "She braindumped everything onto a whiteboard before sorting ideas into themes and priorities."
+  },
+  {
+    "word": "micromanage",
+    "zh": "过度管控 / 事无巨细地管",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "A good manager trusts their team and doesn't micromanage every small detail.",
+    "ex2": "He was frustrated by his supervisor's tendency to micromanage even the most routine tasks."
+  },
+  {
+    "word": "hands-off",
+    "zh": "放手的 / 不干预的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She takes a hands-off approach and lets her team make their own decisions.",
+    "ex2": "A hands-off management style only works when team members are experienced and self-motivated."
+  },
+  {
+    "word": "end-to-end",
+    "zh": "端到端 / 全流程",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "She managed the campaign end-to-end, from strategy to execution and reporting.",
+    "ex2": "The team implemented an end-to-end solution that covered every step of the customer journey."
+  },
+  {
+    "word": "turnaround time",
+    "zh": "周转时间 / 交付时限",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The client expects a turnaround time of 48 hours for all revisions.",
+    "ex2": "Reducing the turnaround time on customer requests significantly improved satisfaction scores."
+  },
+  {
+    "word": "internal comms",
+    "zh": "内部沟通",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The internal comms team sent out a company-wide update about the new policy.",
+    "ex2": "Strong internal comms are essential during a period of change to avoid rumours and confusion."
+  },
+  {
+    "word": "cross-sell",
+    "zh": "交叉销售 / 附带推销",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Train staff to identify opportunities to cross-sell relevant products to existing customers.",
+    "ex2": "The platform uses purchase history to cross-sell complementary products during the checkout process."
+  },
+  {
+    "word": "upsell",
+    "zh": "向上销售 / 推销更高档产品",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Hotel staff are trained to upsell room upgrades to guests at check-in.",
+    "ex2": "She was skilled at upselling without being pushy, which clients consistently commented on positively."
+  },
+  {
+    "word": "customer journey",
+    "zh": "客户旅程",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Map out the full customer journey from first contact to purchase and beyond.",
+    "ex2": "Understanding the customer journey helps identify where friction occurs and where improvements are needed."
+  },
+  {
+    "word": "target audience",
+    "zh": "目标受众",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Know your target audience before you start creating any marketing content.",
+    "ex2": "The campaign failed because the messaging didn't resonate with the actual target audience at all."
+  },
+  {
+    "word": "lead generation",
+    "zh": "潜在客户获取",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The marketing team focuses on lead generation through content and paid advertising.",
+    "ex2": "Their lead generation strategy was refined over several months to increase the quality of enquiries."
+  },
+  {
+    "word": "conversion rate",
+    "zh": "转化率",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Improving the website's speed helped increase the conversion rate by fifteen percent.",
+    "ex2": "A high conversion rate means your landing page is successfully turning visitors into customers."
+  },
+  {
+    "word": "organic growth",
+    "zh": "自然增长",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The brand achieved impressive organic growth through genuine community engagement online.",
+    "ex2": "Organic growth takes longer but tends to produce a more loyal and engaged customer base."
+  },
+  {
+    "word": "user experience",
+    "zh": "用户体验",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The redesign focused on improving user experience by simplifying the navigation.",
+    "ex2": "A poor user experience on the checkout page is the main reason customers abandon their shopping carts."
+  },
+  {
+    "word": "pain-free",
+    "zh": "无痛的 / 轻松便利的",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "The new onboarding process is completely pain-free and takes less than five minutes.",
+    "ex2": "She designed the service to be as pain-free as possible, removing every unnecessary step."
+  },
+  {
+    "word": "track record",
+    "zh": "往绩 / 过往表现",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She has an impressive track record of delivering complex projects on time and budget.",
+    "ex2": "Investors look carefully at the management team's track record before committing any capital."
+  },
+  {
+    "word": "due date",
+    "zh": "截止日期 / 到期日",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The due date for the final report is this Friday at noon.",
+    "ex2": "She marked all the due dates on her calendar at the start of the month to avoid any surprises."
+  },
+  {
+    "word": "to-do list",
+    "zh": "待办清单",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "I keep a to-do list on my phone so I never forget what needs to be done.",
+    "ex2": "He starts each morning by reviewing his to-do list and prioritising the three most important tasks."
+  },
+  {
+    "word": "catch-22",
+    "zh": "两难困境",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "It's a catch-22—you need experience to get the job but need the job to get experience.",
+    "ex2": "The funding catch-22 meant they couldn't launch without investment but couldn't get investment without users."
+  },
+  {
+    "word": "silver lining",
+    "zh": "黑暗中的一线希望",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The silver lining of the delay is that we now have time to improve the product.",
+    "ex2": "She tried to find the silver lining in the rejection and used it as fuel to work even harder."
+  },
+  {
+    "word": "back on track",
+    "zh": "重回正轨",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "After a difficult few months, the project is finally back on track.",
+    "ex2": "The new manager worked intensively to get the struggling team back on track within six weeks."
+  },
+  {
+    "word": "tip of the iceberg",
+    "zh": "冰山一角",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The complaints we've received are just the tip of the iceberg.",
+    "ex2": "The audit revealed that the financial irregularities found so far were only the tip of the iceberg."
+  },
+  {
+    "word": "read between the lines",
+    "zh": "领会言外之意",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Read between the lines of his email—he's clearly unhappy with the outcome.",
+    "ex2": "She learned to read between the lines during negotiations and anticipate what the other side really wanted."
+  },
+  {
+    "word": "in the spotlight",
+    "zh": "受到关注 / 处于焦点",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The company is in the spotlight after the controversial announcement last week.",
+    "ex2": "She felt uncomfortable in the spotlight and preferred working quietly behind the scenes."
+  },
+  {
+    "word": "show of hands",
+    "zh": "举手表决",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Can I have a show of hands—who agrees with the proposed changes?",
+    "ex2": "A quick show of hands revealed that most of the team were in favour of extending the deadline."
+  },
+  {
+    "word": "cold call",
+    "zh": "陌生电话推销",
+    "pos": "n./v.",
+    "ipa": "",
+    "ex": "He spent every morning making cold calls to potential new clients.",
+    "ex2": "Cold calling is less effective than it once was, but it still generates a small number of valuable leads."
+  },
+  {
+    "word": "window shopping",
+    "zh": "逛街不买",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "We spent the afternoon window shopping along the high street.",
+    "ex2": "She enjoyed window shopping in the city centre but rarely bought anything unless it was truly necessary."
+  },
+  {
+    "word": "impulse buy",
+    "zh": "冲动购物",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "That espresso machine was an impulse buy I haven't regretted once.",
+    "ex2": "She deleted her shopping apps to avoid impulse buys that would derail her monthly savings plan."
+  },
+  {
+    "word": "loyalty programme",
+    "zh": "会员积分制度",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Sign up for the loyalty programme to earn points on every purchase.",
+    "ex2": "The airline's loyalty programme offered free upgrades and lounge access to its most frequent flyers."
+  },
+  {
+    "word": "price match",
+    "zh": "价格匹配保证",
+    "pos": "n./v.",
+    "ipa": "",
+    "ex": "The store offers a price match if you find the same product cheaper elsewhere.",
+    "ex2": "She asked the retailer to price match the online listing and saved over 200 yuan on the purchase."
+  },
+  {
+    "word": "knock off",
+    "zh": "仿品 / 假冒品",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Be careful buying designer goods online—many of them are knock-offs.",
+    "ex2": "The customs team seized a large shipment of knock-off goods at the port before they reached the market."
+  },
+  {
+    "word": "marked down",
+    "zh": "打折 / 降价",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Everything in this section is marked down by at least 30 percent.",
+    "ex2": "The end-of-season items were marked down to make room for the new collection arriving next week."
+  },
+  {
+    "word": "bulk buy",
+    "zh": "批量购买",
+    "pos": "v./n.",
+    "ipa": "",
+    "ex": "They bulk bought office supplies to take advantage of the volume discount.",
+    "ex2": "Bulk buying non-perishables like toilet paper and cleaning products is a great way to save money monthly."
+  },
+  {
+    "word": "subscription",
+    "zh": "订阅 / 会员费",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Cancel any subscriptions you don't use—they add up quickly.",
+    "ex2": "The software company switched from one-time purchases to a monthly subscription model to boost revenue."
+  },
+  {
+    "word": "flat rate",
+    "zh": "固定费率 / 统一价",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The delivery service charges a flat rate of 30 yuan regardless of distance.",
+    "ex2": "The lawyer offered a flat rate for the initial consultation so clients knew exactly what to expect."
+  },
+  {
+    "word": "fine print",
+    "zh": "合同细则 / 小字条款",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Always read the fine print before signing up for any financial product.",
+    "ex2": "She discovered a cancellation fee buried in the fine print of the terms and conditions."
+  },
+  {
+    "word": "down payment",
+    "zh": "首付 / 预付款",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "They saved for five years to afford the down payment on their first home.",
+    "ex2": "A larger down payment means lower monthly mortgage repayments over the life of the loan."
+  },
+  {
+    "word": "take a breath",
+    "zh": "深呼吸 / 冷静一下",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Take a breath—there's no need to rush. We'll get through this together.",
+    "ex2": "She took a breath before delivering the difficult news and spoke calmly and clearly throughout."
+  },
+  {
+    "word": "live and learn",
+    "zh": "吃一堑长一智",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "I shouldn't have agreed to that contract without legal advice—live and learn.",
+    "ex2": "He made the same mistake twice before finally applying the lesson—but as they say, live and learn."
+  },
+  {
+    "word": "back me up",
+    "zh": "支持我 / 为我作证",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Can you back me up in the meeting? I don't think my manager will believe me alone.",
+    "ex2": "She asked her colleague to back her up when presenting the data to the sceptical senior team."
+  },
+  {
+    "word": "wrap your head around",
+    "zh": "理解 / 搞清楚",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "It's hard to wrap your head around the scale of this project at first.",
+    "ex2": "She spent an hour trying to wrap her head around the new tax rules before giving up and calling an accountant."
+  },
+  {
+    "word": "be all ears",
+    "zh": "洗耳恭听",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Go ahead and explain your idea—I'm all ears.",
+    "ex2": "The team was all ears when the founder began to share the vision for the next five years."
+  },
+  {
+    "word": "come clean",
+    "zh": "坦白 / 坦诚交待",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "It's better to come clean about the mistake now before it becomes a bigger issue.",
+    "ex2": "He decided to come clean to the client about the delay rather than hoping they wouldn't notice."
+  },
+  {
+    "word": "get your act together",
+    "zh": "振作起来 / 搞好自己",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "You need to get your act together before the performance review next month.",
+    "ex2": "After a difficult period, she got her act together and produced some of her best work of the year."
+  },
+  {
+    "word": "no strings attached",
+    "zh": "没有附加条件",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "We offer a thirty-day free trial with absolutely no strings attached.",
+    "ex2": "He lent her the money with no strings attached, refusing to take any interest or repayment date."
+  },
+  {
+    "word": "know the drill",
+    "zh": "知道规矩 / 清楚流程",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "You know the drill—submit your expenses by the last Friday of each month.",
+    "ex2": "Everyone knew the drill for the fire drill and evacuated in under two minutes without any confusion."
+  },
+  {
+    "word": "get the memo",
+    "zh": "了解情况 / 接到通知",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "Did you get the memo about the new meeting room booking policy?",
+    "ex2": "Apparently, some colleagues didn't get the memo about the dress code change for the company event."
+  },
+  {
+    "word": "on the same wavelength",
+    "zh": "想法一致 / 志同道合",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "From the very first conversation, we were on the same wavelength about the direction.",
+    "ex2": "Working with someone on the same wavelength makes collaboration much faster and more enjoyable."
+  },
+  {
+    "word": "put two and two together",
+    "zh": "一加一地推断",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "When she saw the missed calls and messages, she put two and two together.",
+    "ex2": "He put two and two together and realised the system failure was connected to the earlier update."
   }
 ]

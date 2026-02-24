@@ -6716,5 +6716,1965 @@
     "ipa": "",
     "ex": "All borrowers in the protocol draw from a shared collateral pool that backstops the entire system.",
     "ex2": "Collateral pool designs must carefully balance asset diversity against correlation risk to prevent cascading liquidations."
+  },
+  {
+    "word": "sharding",
+    "zh": "分片（区块链扩容技术）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Full sharding splits the Ethereum network into parallel segments, each processing a subset of transactions.",
+    "ex2": "Sharding dramatically increases throughput by allowing different validator groups to process different portions of the chain simultaneously."
+  },
+  {
+    "word": "proposer-builder separation",
+    "zh": "提议者-构建者分离（PBS）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Proposer-builder separation was designed to reduce validator centralisation caused by MEV extraction.",
+    "ex2": "Under PBS, validators propose blocks from bids submitted by specialised builders, separating the two roles entirely."
+  },
+  {
+    "word": "enshrined PBS",
+    "zh": "原生 PBS（协议层内置 PBS）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Enshrined PBS would move MEV-Boost's block-building market directly into the Ethereum protocol.",
+    "ex2": "Unlike the current optional MEV-Boost system, enshrined PBS would make the builder market a native protocol feature."
+  },
+  {
+    "word": "attester-proposer separation",
+    "zh": "证明者-提议者分离（APS）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Attester-proposer separation is a research direction that further decentralises Ethereum's consensus responsibilities.",
+    "ex2": "APS would allow lightweight devices to participate in attestation while only powerful servers handle block production."
+  },
+  {
+    "word": "single-slot finality",
+    "zh": "单槽最终性（SSF）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Single-slot finality would allow Ethereum to achieve irreversible finality within one 12-second slot.",
+    "ex2": "SSF is a long-term Ethereum research goal that would eliminate the two-epoch wait currently required to finalise blocks."
+  },
+  {
+    "word": "execution ticket",
+    "zh": "执行票（区块提议权机制）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Execution tickets would allow validators to sell their right to propose a block in advance for a fee.",
+    "ex2": "The execution ticket design aims to separate the MEV-rich role of block building from ordinary validator duties."
+  },
+  {
+    "word": "ASIC",
+    "zh": "Application-Specific Integrated Circuit / 专用集成电路矿机",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Bitcoin mining shifted to ASICs years ago, making GPU mining unprofitable for the proof-of-work chain.",
+    "ex2": "ASICs are purpose-built for one algorithm, giving them massive efficiency advantages over general-purpose hardware."
+  },
+  {
+    "word": "mining rig",
+    "zh": "挖矿矿机",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "He assembled a mining rig with six GPUs to mine Ethereum before the Merge.",
+    "ex2": "A well-tuned mining rig balances hash rate, power draw, and heat management to maximise profitability per watt."
+  },
+  {
+    "word": "stratum protocol",
+    "zh": "矿池通信协议",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The stratum protocol is the standard communication layer between mining hardware and pool servers.",
+    "ex2": "Stratum V2 upgrades the original protocol with improved security and allows miners to choose their own transaction sets."
+  },
+  {
+    "word": "merge mining",
+    "zh": "合并挖矿",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Namecoin pioneered merge mining, allowing Bitcoin miners to secure both chains simultaneously.",
+    "ex2": "Merge mining lets a smaller chain inherit security from a larger one without splitting the miner's hash rate."
+  },
+  {
+    "word": "energy consumption",
+    "zh": "能耗",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Bitcoin's energy consumption rivals that of some small nations, fuelling ongoing environmental debate.",
+    "ex2": "Proof-of-stake chains have dramatically lower energy consumption than proof-of-work counterparts like Bitcoin."
+  },
+  {
+    "word": "Nakamoto consensus",
+    "zh": "中本聪共识",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Nakamoto consensus uses the longest-chain rule to resolve forks without any coordination between nodes.",
+    "ex2": "The elegance of Nakamoto consensus lies in its simplicity—honest nodes always build on the chain with the most accumulated work."
+  },
+  {
+    "word": "longest chain rule",
+    "zh": "最长链规则",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Bitcoin's longest chain rule ensures all nodes eventually converge on the same canonical chain.",
+    "ex2": "The longest chain rule can be gamed by a miner with over 50% hash rate, which is the basis of a 51% attack."
+  },
+  {
+    "word": "GHOST protocol",
+    "zh": "GHOST 协议（以太坊叔块权重规则）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Ethereum originally used the GHOST protocol to include uncle blocks and reduce wasted mining work.",
+    "ex2": "GHOST allowed Ethereum to use a shorter block time than Bitcoin while maintaining security against reorg attacks."
+  },
+  {
+    "word": "Casper FFG",
+    "zh": "Casper FFG 最终性机制",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Casper FFG provides economic finality by requiring two thirds of validators to justify and finalise checkpoints.",
+    "ex2": "Unlike probabilistic finality in PoW, Casper FFG's finality is absolute under normal network conditions."
+  },
+  {
+    "word": "LMD-GHOST",
+    "zh": "LMD-GHOST 分叉选择规则",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Ethereum uses LMD-GHOST as its fork choice rule to select the canonical head of the chain.",
+    "ex2": "LMD-GHOST weights the chain head based on the latest message from each validator, making it resistant to reorgs."
+  },
+  {
+    "word": "BFT",
+    "zh": "Byzantine Fault Tolerance / 拜占庭容错",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A BFT consensus system can tolerate up to one-third of nodes behaving maliciously or failing.",
+    "ex2": "Most modern proof-of-stake systems achieve BFT finality, providing stronger guarantees than probabilistic longest-chain rules."
+  },
+  {
+    "word": "pBFT",
+    "zh": "Practical Byzantine Fault Tolerance / 实用拜占庭容错",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "pBFT was one of the first practical consensus algorithms but does not scale well beyond dozens of nodes.",
+    "ex2": "Tendermint adapted pBFT for public blockchains with large validator sets, forming the basis of the Cosmos consensus engine."
+  },
+  {
+    "word": "Tendermint",
+    "zh": "Tendermint 共识引擎（Cosmos）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Tendermint is the consensus engine used by Cosmos app-chains, providing instant finality and BFT security.",
+    "ex2": "Unlike longest-chain protocols, Tendermint requires two-thirds of validators to sign off before a block is finalised."
+  },
+  {
+    "word": "delegated proof of stake",
+    "zh": "委托权益证明（DPoS）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "EOS used delegated proof of stake, where token holders vote for 21 block producers to run the network.",
+    "ex2": "Delegated proof of stake can be faster than standard PoS but sacrifices some decentralisation by concentrating power in elected delegates."
+  },
+  {
+    "word": "Sybil resistance",
+    "zh": "女巫攻击抵抗能力",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Proof of work provides Sybil resistance by requiring computational cost to gain block-producing rights.",
+    "ex2": "Sybil resistance ensures that creating many fake identities does not give an attacker disproportionate network influence."
+  },
+  {
+    "word": "world state",
+    "zh": "全局状态",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Every Ethereum transaction modifies the world state, updating account balances and contract storage.",
+    "ex2": "The world state is represented as a Merkle Patricia Trie, allowing efficient verification with compact cryptographic proofs."
+  },
+  {
+    "word": "Merkle Patricia Trie",
+    "zh": "默克尔帕特里夏树",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Ethereum stores its account state in a Merkle Patricia Trie for efficient verification and proof generation.",
+    "ex2": "The Merkle Patricia Trie enables light clients to verify specific state entries without downloading the full state."
+  },
+  {
+    "word": "state bloat",
+    "zh": "状态膨胀",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "State bloat is a growing problem as more contracts are deployed and the Ethereum world state expands.",
+    "ex2": "Researchers are exploring state expiry and statelessness to combat state bloat and keep node requirements manageable."
+  },
+  {
+    "word": "stateless client",
+    "zh": "无状态客户端",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A stateless client verifies blocks using witnesses instead of storing the full Ethereum state locally.",
+    "ex2": "Stateless clients would dramatically lower hardware requirements for running an Ethereum node."
+  },
+  {
+    "word": "verkle tree",
+    "zh": "Verkle 树",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Verkle trees would replace Merkle Patricia Tries, enabling compact witnesses needed for stateless Ethereum.",
+    "ex2": "The Ethereum roadmap includes a transition to verkle trees as a prerequisite for fully stateless nodes."
+  },
+  {
+    "word": "witness",
+    "zh": "状态见证数据",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A stateless node receives a witness alongside each block, containing all the data needed to verify state transitions.",
+    "ex2": "Verkle trees produce smaller witnesses than Merkle trees, making stateless client operation more practical."
+  },
+  {
+    "word": "EIP-7251",
+    "zh": "EIP-7251 验证者余额上限提升",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "EIP-7251 raises the maximum effective balance for validators from 32 ETH to 2048 ETH.",
+    "ex2": "By allowing larger validator balances, EIP-7251 reduces the total number of validators and improves network efficiency."
+  },
+  {
+    "word": "Pectra",
+    "zh": "Pectra 以太坊升级（Prague+Electra）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The Pectra upgrade combined Prague execution improvements and Electra consensus changes into a single network upgrade.",
+    "ex2": "Pectra introduced EIP-7702 and expanded blob capacity, advancing Ethereum's scalability and account abstraction roadmap."
+  },
+  {
+    "word": "EIP-7702",
+    "zh": "EIP-7702 EOA 临时代码账户",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "EIP-7702 allows an externally owned account to temporarily behave like a smart contract wallet for one transaction.",
+    "ex2": "With EIP-7702, users can batch transactions and sponsor gas without fully migrating to a new account abstraction standard."
+  },
+  {
+    "word": "externally owned account",
+    "zh": "外部拥有账户（EOA）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "An externally owned account is controlled by a private key and has no code—unlike a smart contract.",
+    "ex2": "Most Ethereum users interact through EOAs, but account abstraction aims to replace them with more flexible smart wallets."
+  },
+  {
+    "word": "EOA",
+    "zh": "Externally Owned Account / 外部拥有账户",
+    "pos": "abbr.",
+    "ipa": "",
+    "ex": "An EOA is the standard type of Ethereum account controlled by a private key.",
+    "ex2": "EOAs cannot initiate sponsored transactions natively—that requires account abstraction via ERC-4337 or EIP-7702."
+  },
+  {
+    "word": "EIP-7623",
+    "zh": "EIP-7623 Calldata 成本提升",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "EIP-7623 raises the cost of calldata to encourage rollups to use blobs instead for data posting.",
+    "ex2": "By making calldata more expensive, EIP-7623 pushes rollup operators toward the cheaper and more scalable blob solution."
+  },
+  {
+    "word": "PBS",
+    "zh": "Proposer-Builder Separation / 提议者-构建者分离",
+    "pos": "abbr.",
+    "ipa": "",
+    "ex": "PBS is currently implemented out-of-protocol via MEV-Boost and may be enshrined in the future.",
+    "ex2": "The PBS design prevents validators from needing to run sophisticated block-building software to remain competitive."
+  },
+  {
+    "word": "DAS",
+    "zh": "Data Availability Sampling / 数据可用性采样",
+    "pos": "abbr.",
+    "ipa": "",
+    "ex": "DAS allows light nodes to verify data availability by sampling random chunks rather than downloading everything.",
+    "ex2": "Full danksharding relies on DAS so that every node can confirm data availability without full block downloads."
+  },
+  {
+    "word": "KZG commitment",
+    "zh": "KZG 多项式承诺",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Ethereum blobs use KZG commitments to allow efficient cryptographic verification of large data sets.",
+    "ex2": "KZG commitments were chosen for EIP-4844 because they enable compact proofs and fast verification on-chain."
+  },
+  {
+    "word": "KZG ceremony",
+    "zh": "KZG 可信设置仪式",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The KZG ceremony for EIP-4844 attracted over 140,000 participants, making it the largest trusted setup in history.",
+    "ex2": "In the KZG ceremony, each contributor adds randomness that is destroyed afterwards, so the setup is secure as long as one participant is honest."
+  },
+  {
+    "word": "Dencun",
+    "zh": "Dencun 以太坊升级（Deneb+Cancun）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The Dencun upgrade activated EIP-4844, introducing blobs that slashed Layer 2 transaction fees by over 90%.",
+    "ex2": "Dencun combined the Cancun execution layer changes and Deneb consensus changes, shipping them as one coordinated upgrade."
+  },
+  {
+    "word": "Shapella",
+    "zh": "Shapella 以太坊提款升级（Shanghai+Capella）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Shapella enabled ETH staking withdrawals for the first time, unlocking billions in previously locked validator rewards.",
+    "ex2": "After Shapella, concerns about a mass validator exit proved unfounded as most stakers chose to keep their ETH staked."
+  },
+  {
+    "word": "EIP-3074",
+    "zh": "EIP-3074 AUTH 和 AUTHCALL 操作码",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "EIP-3074 proposed two new opcodes that would let EOAs delegate control to smart contracts temporarily.",
+    "ex2": "EIP-3074 was eventually superseded by EIP-7702 as the preferred path to bring account abstraction to EOA wallets."
+  },
+  {
+    "word": "EOF",
+    "zh": "EVM Object Format / EVM 对象格式",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "EOF introduces a structured bytecode container that separates code and data sections in EVM contracts.",
+    "ex2": "The EOF upgrade improves contract analysis tooling and removes legacy EVM quirks that complicate gas cost calculations."
+  },
+  {
+    "word": "Cairo",
+    "zh": "Cairo 编程语言（StarkNet）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Cairo is a purpose-built language for writing StarkNet smart contracts that are provable with STARK proofs.",
+    "ex2": "Developers transitioning from Solidity find Cairo's ownership model and explicit provability requirements a significant learning curve."
+  },
+  {
+    "word": "Ink!",
+    "zh": "Ink! Substrate 智能合约语言",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Ink! is a Rust-based smart contract language for Polkadot's Substrate framework.",
+    "ex2": "Ink! brings Rust's memory safety guarantees to smart contract development on Substrate-based blockchains."
+  },
+  {
+    "word": "Vyper",
+    "zh": "Vyper 以太坊智能合约语言",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Vyper is a Pythonic smart contract language designed to be more readable and auditable than Solidity.",
+    "ex2": "Curve Finance originally wrote its core contracts in Vyper to improve auditability of its critical financial logic."
+  },
+  {
+    "word": "Huff",
+    "zh": "Huff EVM 汇编语言",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Huff is a low-level EVM assembly language that gives developers direct control over every opcode.",
+    "ex2": "Security researchers use Huff to write maximally gas-efficient code when every unit of gas matters."
+  },
+  {
+    "word": "Foundry forge",
+    "zh": "Foundry Forge 测试框架",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Foundry forge runs smart contract tests written in Solidity itself, eliminating the need for JavaScript test files.",
+    "ex2": "Forge's fuzzing mode generates thousands of random inputs to uncover edge cases that hand-written tests miss."
+  },
+  {
+    "word": "symbolic execution",
+    "zh": "符号执行（合约形式验证）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Symbolic execution tools like Manticore explore all possible execution paths to find hidden vulnerabilities.",
+    "ex2": "By treating inputs as symbolic variables rather than concrete values, symbolic execution can prove or disprove safety properties."
+  },
+  {
+    "word": "formal verification",
+    "zh": "形式验证",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "MakerDAO formally verified its core contracts to mathematically prove the absence of critical bugs.",
+    "ex2": "Formal verification provides stronger guarantees than testing alone but is expensive and time-consuming for complex protocols."
+  },
+  {
+    "word": "fuzz testing",
+    "zh": "模糊测试",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Fuzz testing discovered a critical edge case in the lending contract that no hand-written test had caught.",
+    "ex2": "Automated fuzz testing with tools like Echidna or Foundry's fuzzer is now a standard part of smart contract auditing."
+  },
+  {
+    "word": "Echidna",
+    "zh": "Echidna Solidity 模糊测试工具",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Echidna is a property-based fuzzer for Solidity that tries to violate invariants specified by the developer.",
+    "ex2": "Running Echidna against a DeFi protocol's invariants before launch has become standard practice for security-focused teams."
+  },
+  {
+    "word": "Slither",
+    "zh": "Slither Solidity 静态分析工具",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Slither is a static analysis framework that flags common vulnerability patterns in Solidity source code.",
+    "ex2": "Running Slither as part of a CI pipeline catches low-hanging security issues before code ever reaches audit review."
+  },
+  {
+    "word": "Mythril",
+    "zh": "Mythril 以太坊安全分析工具",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Mythril uses symbolic analysis to detect smart contract vulnerabilities including reentrancy and integer overflow.",
+    "ex2": "Mythril is a popular first-pass tool for quick vulnerability scanning before a formal audit engagement begins."
+  },
+  {
+    "word": "invariant testing",
+    "zh": "不变量测试",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Invariant testing defines properties that must always hold and uses fuzzing to try to violate them.",
+    "ex2": "Writing strong invariants, such as 'total deposits always equal total withdrawals', catches systemic logic errors before deployment."
+  },
+  {
+    "word": "differential testing",
+    "zh": "差分测试",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Differential testing compares outputs of two implementations to ensure they always produce identical results.",
+    "ex2": "The Ethereum testing suite uses differential testing across multiple clients to catch consensus-level discrepancies early."
+  },
+  {
+    "word": "transient storage",
+    "zh": "瞬态存储（EIP-1153）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "EIP-1153 introduced transient storage that persists only within a transaction and is cleared afterwards.",
+    "ex2": "Transient storage is far cheaper than persistent storage and is ideal for within-transaction reentrancy locks."
+  },
+  {
+    "word": "access list",
+    "zh": "访问列表（EIP-2930）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "EIP-2930 access lists pre-declare storage slots a transaction will touch, reducing gas costs for accessing them.",
+    "ex2": "Using an access list in a complex transaction can save meaningful gas when many storage slots are repeatedly accessed."
+  },
+  {
+    "word": "self-destruct",
+    "zh": "合约自毁（selfdestruct）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The selfdestruct opcode sends all ETH from a contract to a target address and removes its bytecode.",
+    "ex2": "Ethereum has significantly restricted selfdestruct behaviour to prevent its use in destructive attack vectors."
+  },
+  {
+    "word": "re-entrancy attack",
+    "zh": "重入攻击（合约漏洞）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The classic re-entrancy attack exploits the fact that ETH transfers can call back into the sending contract.",
+    "ex2": "Modern protocols guard against re-entrancy attacks using locks, checks-effects-interactions patterns, and EIP-1153 transient storage."
+  },
+  {
+    "word": "price oracle manipulation",
+    "zh": "价格预言机操纵",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Price oracle manipulation typically uses flash loans to skew spot prices before exploiting a lending protocol.",
+    "ex2": "Time-weighted average prices are the standard defence against price oracle manipulation in modern DeFi protocols."
+  },
+  {
+    "word": "governance manipulation",
+    "zh": "治理操纵",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Governance manipulation occurs when a large token holder passes a malicious proposal without community notice.",
+    "ex2": "Timelocks and quorum requirements are the primary defences against governance manipulation in on-chain DAOs."
+  },
+  {
+    "word": "read-only reentrancy",
+    "zh": "只读重入攻击",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Read-only reentrancy exploits the fact that another contract's view function can return stale state mid-execution.",
+    "ex2": "The read-only reentrancy vector caught several protocols off-guard because they assumed view functions were always safe to call."
+  },
+  {
+    "word": "logic bomb",
+    "zh": "逻辑炸弹（合约后门）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A logic bomb hidden in a smart contract can trigger malicious behaviour only under specific conditions.",
+    "ex2": "Thorough audits and contract verification are the primary defences against logic bombs in production smart contracts."
+  },
+  {
+    "word": "supply chain attack",
+    "zh": "供应链攻击",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A supply chain attack compromised an npm package used by dozens of DeFi front-ends simultaneously.",
+    "ex2": "Supply chain attacks targeting JavaScript dependencies are a growing threat to Web3 application security."
+  },
+  {
+    "word": "pump and dump",
+    "zh": "拉高出货",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The coordinated pump and dump drove the low-cap token up 500% before insiders liquidated their positions.",
+    "ex2": "Regulatory agencies have charged numerous crypto influencers for participating in pump and dump schemes."
+  },
+  {
+    "word": "wash trading",
+    "zh": "对敲交易（刷量）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Wash trading inflates a DEX's volume statistics by the same entity simultaneously buying and selling.",
+    "ex2": "On-chain analysts use address clustering to detect wash trading and filter it out of real volume metrics."
+  },
+  {
+    "word": "spoofing",
+    "zh": "虚假挂单（市场操纵）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Spoofing involves placing large orders with no intention of filling them to create a false impression of demand.",
+    "ex2": "Spoofing is difficult to prosecute on DEX order books because order cancellation is not inherently fraudulent."
+  },
+  {
+    "word": "layering",
+    "zh": "叠加挂单（操纵订单簿）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Layering places multiple orders at different price levels to create the illusion of deep order book support.",
+    "ex2": "When regulators cracked down on spoofing, some actors shifted to layering as a subtler market manipulation technique."
+  },
+  {
+    "word": "OI",
+    "zh": "Open Interest / 未平仓量（衍生品）",
+    "pos": "abbr.",
+    "ipa": "",
+    "ex": "Rising OI alongside rising prices is a bullish signal indicating new money is entering the market.",
+    "ex2": "Analysing OI alongside funding rates helps traders gauge whether a directional move is likely to sustain or reverse."
+  },
+  {
+    "word": "perp",
+    "zh": "Perpetual Contract / 永续合约（缩写）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Traders use the perp instead of the spot market when they want leverage without an expiry date.",
+    "ex2": "The perp market for ETH consistently trades higher volume than spot because of the leverage and convenience it offers."
+  },
+  {
+    "word": "skew",
+    "zh": "期权偏斜（看涨/看跌失衡）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A positive skew shows demand for call options exceeds puts, indicating bullish market sentiment overall.",
+    "ex2": "Negative skew in Bitcoin options suggests traders are paying more to protect against downside than to capture upside."
+  },
+  {
+    "word": "vol surface",
+    "zh": "波动率曲面",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The vol surface maps implied volatility across all strikes and maturities for a given underlying asset.",
+    "ex2": "Traders use the vol surface to identify mispriced options and construct relative-value volatility strategies."
+  },
+  {
+    "word": "term structure",
+    "zh": "期限结构（波动率期限结构）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A steep term structure means near-term options carry much higher implied volatility than longer-dated ones.",
+    "ex2": "The term structure often inverts around major events like halvings, as near-term uncertainty spikes dramatically."
+  },
+  {
+    "word": "vol crush",
+    "zh": "波动率坍塌",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A vol crush hit options buyers hard after the Fed announcement, as implied volatility collapsed post-event.",
+    "ex2": "Experienced traders sell options before predictable events like earnings or upgrades to profit from the expected vol crush."
+  },
+  {
+    "word": "greeks",
+    "zh": "期权希腊字母（风险参数）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Managing your greeks means balancing delta, gamma, vega, and theta exposures across all options positions.",
+    "ex2": "Market makers continuously hedge their greeks to maintain a roughly neutral book against directional price moves."
+  },
+  {
+    "word": "rho",
+    "zh": "Rho（期权希腊字母，利率敏感度）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Rho measures how much an option's price changes when the risk-free interest rate moves by one percentage point.",
+    "ex2": "Rho is generally less critical in crypto options than in traditional finance because crypto rates are more volatile."
+  },
+  {
+    "word": "perpetual futures",
+    "zh": "永续期货",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Perpetual futures are the most liquid derivatives in crypto, with no expiry and a funding rate to anchor price.",
+    "ex2": "The perpetual futures market lets traders take directional bets with leverage without worrying about contract rollovers."
+  },
+  {
+    "word": "cash-settled",
+    "zh": "现金结算",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "Cash-settled futures pay out the price difference in USD rather than delivering the underlying cryptocurrency.",
+    "ex2": "Institutional investors often prefer cash-settled contracts as they avoid the operational complexity of taking physical delivery."
+  },
+  {
+    "word": "physically settled",
+    "zh": "实物结算",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "Physically settled Bitcoin futures require the buyer to receive actual BTC upon contract expiry.",
+    "ex2": "Some institutional holders prefer physically settled derivatives to accumulate spot Bitcoin rather than USD profits."
+  },
+  {
+    "word": "expiry date",
+    "zh": "合约到期日",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The quarterly Bitcoin expiry date often brings increased volatility as traders roll or close large positions.",
+    "ex2": "Options and futures traders watch expiry dates carefully, as large open interest can create significant price pressure."
+  },
+  {
+    "word": "max pain",
+    "zh": "最大痛点价格",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Max pain is the price at which the most options expire worthless, causing maximum loss for option buyers.",
+    "ex2": "Some traders believe price gravitates toward max pain near expiry, making it a popular reference point for short-term speculation."
+  },
+  {
+    "word": "SOPR",
+    "zh": "Spent Output Profit Ratio / 已花费输出利润比",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A SOPR above 1.0 means the average Bitcoin holder is selling at a profit, often a sign of near-term supply pressure.",
+    "ex2": "When SOPR drops below 1.0 and then rebounds, it historically signals a market bottom where sellers have exhausted their positions."
+  },
+  {
+    "word": "UTXO",
+    "zh": "Unspent Transaction Output / 未花费交易输出",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Bitcoin tracks balances through UTXOs rather than account balances, giving each coin its own traceable history.",
+    "ex2": "Analysing the age and value of UTXOs is a core on-chain analysis technique for understanding holder behaviour."
+  },
+  {
+    "word": "coin age",
+    "zh": "币龄",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Coin age is the product of coins held and the duration they have remained unspent.",
+    "ex2": "Metrics like coin days destroyed use coin age to identify when long-dormant wallets suddenly begin to move."
+  },
+  {
+    "word": "coin days destroyed",
+    "zh": "币天销毁",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A spike in coin days destroyed signals that old coins are finally being spent, often by long-term holders taking profits.",
+    "ex2": "Coin days destroyed is a powerful on-chain metric because it weights movements by how long coins have been dormant."
+  },
+  {
+    "word": "supply shock",
+    "zh": "供应冲击",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A Bitcoin halving creates a supply shock by cutting new miner issuance in half overnight.",
+    "ex2": "Supply shocks caused by mass withdrawal to cold storage have historically preceded strong price appreciation cycles."
+  },
+  {
+    "word": "Satoshi",
+    "zh": "聪（比特币最小单位，10⁻⁸ BTC）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "One Satoshi equals one hundred millionth of a Bitcoin—useful for micropayments on the Lightning Network.",
+    "ex2": "As Bitcoin's price rises, pricing goods in Satoshi rather than whole BTC becomes more practical for small transactions."
+  },
+  {
+    "word": "sat",
+    "zh": "聪（Satoshi 缩写）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Lightning Network invoices are often quoted in sats rather than BTC for everyday payment clarity.",
+    "ex2": "Some Bitcoin-focused apps and games use sats as the native unit to make small amounts feel more tangible."
+  },
+  {
+    "word": "rare sat",
+    "zh": "稀有聪（Ordinals 稀有度）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Rare sats are Satoshis from historically significant blocks like the genesis block or first halving.",
+    "ex2": "Collectors of rare sats pay substantial premiums for coins associated with notable Bitcoin milestones or events."
+  },
+  {
+    "word": "Runes",
+    "zh": "Runes 协议（比特币同质化代币）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Casey Rodarmor designed Runes as a more efficient fungible token protocol for Bitcoin compared to BRC-20.",
+    "ex2": "Runes launched at the 2024 Bitcoin halving block, instantly becoming the dominant token standard on the Bitcoin base layer."
+  },
+  {
+    "word": "Stamps",
+    "zh": "Stamps 比特币永久存储数据协议",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Bitcoin Stamps embed data directly in multisig outputs, making them harder to prune than Ordinals inscriptions.",
+    "ex2": "The Stamps protocol claims its data is more permanently anchored in Bitcoin's UTXO set than witness-based inscriptions."
+  },
+  {
+    "word": "Babylon",
+    "zh": "Babylon 比特币质押协议",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Babylon enables Bitcoin holders to stake their BTC to provide economic security to proof-of-stake chains.",
+    "ex2": "The Babylon protocol extends Bitcoin's cryptoeconomic security to other blockchains without bridging BTC away from the network."
+  },
+  {
+    "word": "BitVM",
+    "zh": "BitVM 比特币图灵完备计算框架",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "BitVM enables complex computation to be verified on Bitcoin using optimistic fraud proofs without any soft fork.",
+    "ex2": "BitVM unlocks a path to expressive Bitcoin smart contracts and trustless two-way pegs for Bitcoin bridges."
+  },
+  {
+    "word": "taproot",
+    "zh": "Taproot 比特币升级",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Taproot upgraded Bitcoin's scripting to support Schnorr signatures and more efficient complex transaction types.",
+    "ex2": "Taproot was the most significant Bitcoin upgrade since SegWit, enabling new use cases while improving privacy for complex scripts."
+  },
+  {
+    "word": "Schnorr signature",
+    "zh": "Schnorr 签名",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Schnorr signatures are smaller and more efficient than ECDSA signatures, and they enable key aggregation.",
+    "ex2": "With Schnorr signatures, multi-party transactions can be made to look identical to single-signature transactions on-chain."
+  },
+  {
+    "word": "MuSig2",
+    "zh": "MuSig2 多方 Schnorr 签名聚合协议",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "MuSig2 allows multiple parties to jointly create a single Schnorr signature that appears as one on-chain.",
+    "ex2": "MuSig2 improves privacy and efficiency for multisig setups by hiding the number of signers from on-chain observers."
+  },
+  {
+    "word": "SegWit",
+    "zh": "Segregated Witness / 隔离见证",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "SegWit separated witness data from transaction data, fixing transaction malleability and increasing effective block capacity.",
+    "ex2": "SegWit transactions are cheaper because witness data is discounted, encouraging adoption of the more efficient format."
+  },
+  {
+    "word": "P2SH",
+    "zh": "Pay-to-Script-Hash / 支付到脚本哈希",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "P2SH allows complex spending conditions to be hidden in a hash until the funds are spent.",
+    "ex2": "P2SH enabled multi-signature Bitcoin addresses to be short and user-friendly rather than revealing the full script upfront."
+  },
+  {
+    "word": "P2WPKH",
+    "zh": "Pay-to-Witness-Public-Key-Hash / 原生隔离见证地址",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "P2WPKH addresses start with 'bc1q' and are the most common native SegWit transaction format.",
+    "ex2": "Using P2WPKH instead of legacy P2PKH reduces transaction size and fees for standard single-signature Bitcoin payments."
+  },
+  {
+    "word": "P2TR",
+    "zh": "Pay-to-Taproot / Taproot 地址类型",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "P2TR addresses start with 'bc1p' and support both key-path and script-path spending using Taproot.",
+    "ex2": "Ordinals inscriptions use P2TR because Taproot's script path allows embedding arbitrary data efficiently in witness space."
+  },
+  {
+    "word": "CLTV",
+    "zh": "CheckLockTimeVerify / 绝对时间锁",
+    "pos": "abbr.",
+    "ipa": "",
+    "ex": "CLTV locks funds until a certain absolute block height, making it suitable for one-way channel closures.",
+    "ex2": "The Lightning Network uses CLTV to ensure that if a counterparty disappears, funds can be reclaimed after the timeout."
+  },
+  {
+    "word": "CSV",
+    "zh": "CheckSequenceVerify / 相对时间锁",
+    "pos": "abbr.",
+    "ipa": "",
+    "ex": "CSV allows funds to be locked for a relative number of blocks after a transaction is confirmed.",
+    "ex2": "Lightning Network revocation mechanisms rely on CSV to give the honest party time to claim funds if a counterparty cheats."
+  },
+  {
+    "word": "channel capacity",
+    "zh": "支付通道容量",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Channel capacity determines the maximum payment that can flow in either direction on a Lightning path.",
+    "ex2": "Routing nodes with high channel capacity can relay larger payments and earn more fees from the Lightning Network."
+  },
+  {
+    "word": "routing node",
+    "zh": "Lightning 路由节点",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A routing node forwards Lightning payments between other users, earning small fees for each successful relay.",
+    "ex2": "Operating a profitable routing node requires actively managing channel liquidity and connectivity with well-connected peers."
+  },
+  {
+    "word": "LNURL",
+    "zh": "Lightning Network URL 协议",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "LNURL simplifies the Lightning payment experience by encoding complex connection details in a scannable QR code.",
+    "ex2": "LNURL-auth allows users to log into websites using their Lightning wallet as a cryptographic identity provider."
+  },
+  {
+    "word": "bolt12",
+    "zh": "BOLT 12 闪电网络 Offer 协议",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "BOLT 12 introduces static invoices called offers that can be reused for multiple Lightning payments.",
+    "ex2": "Unlike traditional Lightning invoices, BOLT 12 offers support subscriptions and donations without generating a new invoice each time."
+  },
+  {
+    "word": "liquidity provision",
+    "zh": "流动性供给",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Liquidity provision to a DEX pool earns trading fees but carries impermanent loss risk.",
+    "ex2": "Incentivised liquidity provision programmes bootstrapped the early DeFi ecosystem by offering governance tokens as rewards."
+  },
+  {
+    "word": "liquidity incentive",
+    "zh": "流动性激励",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Protocols offer liquidity incentives to attract capital into their pools during the launch phase.",
+    "ex2": "Relying solely on liquidity incentives is unsustainable—protocols must evolve toward earning real yield to retain LPs."
+  },
+  {
+    "word": "mercenary liquidity",
+    "zh": "雇佣兵流动性",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Mercenary liquidity disappears as soon as incentives drop, leaving protocols with shallow pools after token launches.",
+    "ex2": "The Curve Wars emerged partly as an attempt to convert mercenary liquidity into stickier, protocol-loyal capital."
+  },
+  {
+    "word": "sticky liquidity",
+    "zh": "粘性流动性",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Protocols compete to attract sticky liquidity by offering deep governance alignment rather than just token rewards.",
+    "ex2": "veToken designs attempt to create sticky liquidity by requiring long-term lockups in exchange for enhanced rewards."
+  },
+  {
+    "word": "Aave v3",
+    "zh": "Aave v3 多链借贷升级",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Aave v3 introduced cross-chain portals, efficiency mode, and isolation mode for new collateral types.",
+    "ex2": "Aave v3's e-mode allows borrowers to maximise LTV when borrowing correlated assets like stablecoins against stablecoins."
+  },
+  {
+    "word": "isolation mode",
+    "zh": "隔离模式（Aave v3）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Isolation mode restricts new or riskier collateral types from being borrowed against freely to manage protocol risk.",
+    "ex2": "Assets in isolation mode have a separate debt ceiling and can only be used to borrow approved stablecoins."
+  },
+  {
+    "word": "efficiency mode",
+    "zh": "高效模式（Aave v3 E-Mode）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Efficiency mode allows borrowers using correlated collateral to access loan-to-value ratios close to 100%.",
+    "ex2": "Stablecoin borrowers use efficiency mode on Aave v3 to deploy maximum leverage with minimal liquidation risk."
+  },
+  {
+    "word": "lending protocol",
+    "zh": "借贷协议",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Lending protocols like Aave and Compound let anyone supply or borrow assets without a credit check.",
+    "ex2": "The best lending protocols manage risk through robust oracle design, carefully calibrated LTVs, and circuit breaker mechanisms."
+  },
+  {
+    "word": "money market",
+    "zh": "货币市场",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "DeFi money markets allow short-term borrowing and lending of assets at variable rates set by utilisation.",
+    "ex2": "On-chain money markets are more transparent than their traditional equivalents because all rates and balances are publicly visible."
+  },
+  {
+    "word": "senior debt",
+    "zh": "优先债务",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Senior debt holders are repaid first in case of default, making them the safest position in structured products.",
+    "ex2": "DeFi structured credit protocols offer senior debt tranches to risk-averse investors seeking steady yield over capital growth."
+  },
+  {
+    "word": "vault strategy",
+    "zh": "金库策略",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A vault strategy automatically harvests yield and reinvests it to compound returns without manual intervention.",
+    "ex2": "Advanced vault strategies combine lending, staking, and LP positions to generate the best risk-adjusted yield available."
+  },
+  {
+    "word": "strategy manager",
+    "zh": "策略管理者",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A strategy manager designs and deploys new vault strategies and is responsible for their ongoing maintenance.",
+    "ex2": "Top yield aggregators like Yearn vet strategy managers carefully to ensure they can safely handle significant deposited capital."
+  },
+  {
+    "word": "ERC-4626",
+    "zh": "ERC-4626 代币化金库标准",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "ERC-4626 defines a standard interface for yield-bearing vaults, enabling easy integration with DeFi protocols.",
+    "ex2": "With ERC-4626, any compliant vault can be plugged into aggregators and dashboards without custom integration work."
+  },
+  {
+    "word": "harvest",
+    "zh": "收割（提取并复投收益）",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "The keeper calls harvest every 12 hours to claim pending rewards and reinvest them into the vault.",
+    "ex2": "Frequent harvesting maximises compounding returns but incurs gas costs that must be weighed against the yield gained."
+  },
+  {
+    "word": "zapper",
+    "zh": "Zapper（DeFi 一键进出工具）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Zapper lets you enter a complex DeFi position in a single transaction instead of manually deploying each step.",
+    "ex2": "Using a zapper to enter an LP position converts a single token into the correct ratio and provides liquidity atomically."
+  },
+  {
+    "word": "omnichain",
+    "zh": "全链（跨多条链的协议）",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "Omnichain token standards allow assets to move natively between chains without wrapping or bridging.",
+    "ex2": "The shift toward omnichain design reflects the reality that no single blockchain will capture all future activity."
+  },
+  {
+    "word": "intent",
+    "zh": "交易意图（Intent-Based 架构）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The user specifies a trade intent and lets competing solvers find the best execution path automatically.",
+    "ex2": "Intents abstract away blockchain complexity—users describe desired outcomes and the infrastructure handles routing and execution."
+  },
+  {
+    "word": "fill",
+    "zh": "订单成交（Intent 填充）",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "Solvers compete to fill the user's intent at the best price, earning a small spread as their reward.",
+    "ex2": "A fill happens when a solver executes the user's requested swap and the outcome satisfies the specified conditions."
+  },
+  {
+    "word": "UniswapX",
+    "zh": "UniswapX 意图交易协议",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "UniswapX routes swaps through a Dutch auction where off-chain fillers compete for the best execution price.",
+    "ex2": "UniswapX fills can use off-chain liquidity, on-chain pools, or any combination to give users the best possible rate."
+  },
+  {
+    "word": "CoW Protocol",
+    "zh": "CoW Protocol 批量拍卖 DEX",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "CoW Protocol settles trades in batches where coinciding orders are matched peer-to-peer before touching AMM pools.",
+    "ex2": "CoW's coincidence of wants mechanism can fully eliminate slippage for matched orders by bypassing on-chain liquidity entirely."
+  },
+  {
+    "word": "token-weighted voting",
+    "zh": "代币加权投票",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Token-weighted voting gives more influence to larger holders, raising plutocracy concerns in DAO governance.",
+    "ex2": "Critics of token-weighted voting argue that it entrenches VC power and fails to represent the interests of smaller contributors."
+  },
+  {
+    "word": "conviction voting",
+    "zh": "定见投票",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Conviction voting accumulates voting weight over time, rewarding participants who commit to proposals consistently.",
+    "ex2": "Conviction voting was designed to prevent whale dominance by making last-minute large votes less decisive than sustained positions."
+  },
+  {
+    "word": "optimistic governance",
+    "zh": "乐观治理",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Optimistic governance assumes proposals pass unless enough token holders object within a set time window.",
+    "ex2": "By only requiring action to veto, optimistic governance reduces the voter apathy problem that plagues traditional DAO votes."
+  },
+  {
+    "word": "veto",
+    "zh": "否决权",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The security council holds a veto that can block any governance proposal it deems dangerous within 24 hours.",
+    "ex2": "A meaningful veto mechanism provides a backstop against malicious governance attacks without giving any party unilateral control."
+  },
+  {
+    "word": "security council",
+    "zh": "安全理事会（协议紧急治理委员会）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Arbitrum's security council can bypass standard governance to respond to critical protocol emergencies.",
+    "ex2": "Security councils are designed to expire or evolve as protocols decentralise, reducing their scope over time."
+  },
+  {
+    "word": "steward",
+    "zh": "代表委员（DAO 运营代表）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Elected stewards handle day-to-day protocol operations that are too granular for a full governance vote.",
+    "ex2": "Stewards are accountable to token holders and can be removed by governance if they fail to act in the protocol's interest."
+  },
+  {
+    "word": "ambassador",
+    "zh": "社区大使（DAO 推广角色）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Community ambassadors represent the protocol in new regions and help onboard local users and developers.",
+    "ex2": "Ambassadors often receive token grants in exchange for consistently promoting and representing the protocol at external events."
+  },
+  {
+    "word": "social consensus",
+    "zh": "社会共识",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Social consensus determined that the Ethereum community would hard fork in response to the DAO hack.",
+    "ex2": "On-chain governance only works within bounds that social consensus accepts—truly contentious forks still happen off-chain."
+  },
+  {
+    "word": "rough consensus",
+    "zh": "粗略共识（IETF 标准决策方式）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Ethereum development relies on rough consensus among core developers rather than formal voting procedures.",
+    "ex2": "Rough consensus means proceeding when no significant objection remains, even without unanimous agreement from all participants."
+  },
+  {
+    "word": "airdrop farming",
+    "zh": "空投挖矿（刷空投资格）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Airdrop farming involves using multiple wallets to interact with protocols and maximise future token distributions.",
+    "ex2": "Protocols combat airdrop farming by adding Sybil-detection criteria like minimum holding periods or on-chain identity verification."
+  },
+  {
+    "word": "defi llama",
+    "zh": "DeFi 数据追踪（DefiLlama 俗称）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The community checked defi llama to compare TVL across all chains after the bridge announcement.",
+    "ex2": "Defi llama's open-source approach and transparent methodology have made it the most trusted TVL tracker in the industry."
+  },
+  {
+    "word": "protocol-owned liquidity",
+    "zh": "协议自有流动性（POL）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "OlympusDAO popularised protocol-owned liquidity as a way to eliminate reliance on mercenary capital.",
+    "ex2": "Protocol-owned liquidity is more stable than rented liquidity because it cannot leave when emission incentives run out."
+  },
+  {
+    "word": "bonding",
+    "zh": "债券购买（Olympus 机制）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Olympus bonding allowed users to sell LP tokens to the protocol for discounted OHM with a vesting period.",
+    "ex2": "Bonding transfers liquidity ownership from individual LPs to the protocol itself, building a permanent reserve of assets."
+  },
+  {
+    "word": "(3,3)",
+    "zh": "(3,3) 博弈论最优策略（Olympus 文化）",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "(3,3) represents the game-theory optimal outcome where all holders stake rather than sell.",
+    "ex2": "Olympus popularised (3,3) as a cultural slogan, though critics argued it masked inflationary mechanics with game theory framing."
+  },
+  {
+    "word": "rebasing mechanism",
+    "zh": "弹性供应机制",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Algorithmic stablecoins use a rebasing mechanism to expand or contract supply and keep the price near target.",
+    "ex2": "Positive rebasing increases every holder's balance proportionally, which can mask the inflationary dilution behind apparent gains."
+  },
+  {
+    "word": "synthetic asset",
+    "zh": "合成资产",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Synthetix lets users create synthetic assets tracking the price of gold, stocks, and currencies.",
+    "ex2": "Synthetic assets give DeFi users exposure to traditional markets without needing custody of the underlying instrument."
+  },
+  {
+    "word": "wrapped BTC",
+    "zh": "包装比特币（WBTC）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Wrapped BTC brings Bitcoin value into Ethereum DeFi by holding real BTC in custody and issuing ERC-20 tokens.",
+    "ex2": "WBTC has been the dominant wrapped Bitcoin for years, though its centralised custodian model has attracted ongoing criticism."
+  },
+  {
+    "word": "WBTC",
+    "zh": "Wrapped Bitcoin / 包装比特币",
+    "pos": "abbr.",
+    "ipa": "",
+    "ex": "WBTC can be used as collateral in Aave, Compound, and MakerDAO to borrow stablecoins.",
+    "ex2": "The centralised custodian behind WBTC received regulatory scrutiny in 2023, briefly causing concern about its stability."
+  },
+  {
+    "word": "cbBTC",
+    "zh": "Coinbase Wrapped Bitcoin（cbBTC）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Coinbase launched cbBTC as a regulated alternative to WBTC on Ethereum and Base.",
+    "ex2": "cbBTC competes with WBTC by leveraging Coinbase's regulated custodial infrastructure and native Base chain integration."
+  },
+  {
+    "word": "tBTC",
+    "zh": "tBTC 去中心化包装比特币",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "tBTC uses a decentralised network of signers to custody BTC without a single trusted custodian.",
+    "ex2": "tBTC's trustless design appeals to DeFi users who want Bitcoin exposure without dependence on centralised entities."
+  },
+  {
+    "word": "stETH",
+    "zh": "stETH（Lido 流动质押 ETH）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "stETH is received when you stake ETH through Lido and automatically accrues staking rewards every day.",
+    "ex2": "stETH's deep liquidity across DeFi protocols makes it the most widely accepted liquid staking token in the ecosystem."
+  },
+  {
+    "word": "rETH",
+    "zh": "rETH（Rocket Pool 流动质押 ETH）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "rETH is a non-rebasing liquid staking token that grows in value relative to ETH as rewards accumulate.",
+    "ex2": "rETH's decentralised issuance through Rocket Pool's permissionless node operators makes it the preferred choice for DeFi purists."
+  },
+  {
+    "word": "wstETH",
+    "zh": "Wrapped stETH（非弹性供应 stETH）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "wstETH wraps stETH into a non-rebasing token, making it easier to use as collateral in DeFi protocols.",
+    "ex2": "Many lending protocols accept wstETH rather than stETH because its balance stays constant and does not trigger accounting issues."
+  },
+  {
+    "word": "token gating",
+    "zh": "代币门控（持币才能访问）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Token gating allows NFT holders exclusive access to private Discord channels and members-only events.",
+    "ex2": "Token gating is increasingly used by brands and creators to reward genuine supporters with exclusive perks and experiences."
+  },
+  {
+    "word": "utility NFT",
+    "zh": "功能性 NFT（赋予实际权益）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The utility NFT grants holders lifetime access to the platform's premium features and future airdrops.",
+    "ex2": "Unlike pure collectibles, utility NFTs retain value even in bear markets because they convey ongoing tangible benefits."
+  },
+  {
+    "word": "avatar NFT",
+    "zh": "头像 NFT",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Avatar NFTs like CryptoPunks became cultural symbols when celebrities adopted them as social media profile pictures.",
+    "ex2": "The avatar NFT market peaked in 2021 when top collections commanded prices above 100 ETH per token."
+  },
+  {
+    "word": "1/1 NFT",
+    "zh": "1/1 NFT（唯一作品）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A 1/1 NFT is a single unique edition artwork—there is exactly one token and one owner.",
+    "ex2": "Leading digital artists sell 1/1 NFTs at auction, with the scarcity commanding prices far above larger collection pieces."
+  },
+  {
+    "word": "open edition",
+    "zh": "开放版（NFT 不限量铸造）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The artist released an open edition for 48 hours, allowing unlimited mints at a fixed price during the window.",
+    "ex2": "Open editions democratise NFT collecting by removing scarcity pressure, but often trade at lower secondary prices than limited editions."
+  },
+  {
+    "word": "limited edition",
+    "zh": "限量版 NFT",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The limited edition of 500 prints sold out in seconds, with secondary prices quickly tripling.",
+    "ex2": "Limited edition NFTs build collector urgency and secondary market activity through enforced artificial scarcity."
+  },
+  {
+    "word": "burn-to-redeem",
+    "zh": "销毁换取实物或特权",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Holders could burn their token in a burn-to-redeem mechanism to receive a physical shoe from the brand.",
+    "ex2": "Burn-to-redeem creates a deflationary dynamic while rewarding the most committed community members with physical or exclusive digital goods."
+  },
+  {
+    "word": "airdrop to holders",
+    "zh": "向持有者空投",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The team airdropped a new token to all holders of the original NFT collection as a loyalty reward.",
+    "ex2": "Airdrop to holders is a common mechanism for rewarding long-term community members without diluting the core collection."
+  },
+  {
+    "word": "derivative collection",
+    "zh": "衍生 NFT 系列",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Dozens of derivative collections inspired by BAYC's aesthetic emerged after the trademark licence was released.",
+    "ex2": "Successful derivative collections can build their own identity while benefiting from the parent brand's existing audience."
+  },
+  {
+    "word": "trait rarity",
+    "zh": "特征稀有度",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Trait rarity scores rank each NFT by how unusual its combination of attributes is across the collection.",
+    "ex2": "High trait rarity does not always correlate with price—aesthetic appeal and cultural cachet matter as much as statistical scarcity."
+  },
+  {
+    "word": "floor sweep",
+    "zh": "扫地板价（批量买入低价 NFT）",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "The whale performed a floor sweep, buying fifty NFTs at floor price in a single transaction.",
+    "ex2": "Floor sweeps rapidly remove available supply and often signal strong conviction or coordinated accumulation by insiders."
+  },
+  {
+    "word": "bulk mint",
+    "zh": "批量铸造",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The bulk mint limit was capped at ten per wallet to prevent bots from dominating the launch.",
+    "ex2": "Removing bulk mint limits is a common mistake that allows bots to acquire disproportionate fractions of a new collection."
+  },
+  {
+    "word": "snapshot vote",
+    "zh": "Snapshot 链下治理投票",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A snapshot vote showed overwhelming community support before the team drafted the formal on-chain proposal.",
+    "ex2": "Snapshot votes use off-chain signatures to measure opinion without gas costs, making participation accessible to small holders."
+  },
+  {
+    "word": "governance forum",
+    "zh": "治理论坛",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Compound's governance forum is where proposals are debated and refined before moving to an on-chain vote.",
+    "ex2": "Active participation in the governance forum is how contributors build reputation and influence in a DAO community."
+  },
+  {
+    "word": "governance portal",
+    "zh": "治理门户（治理投票界面）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The governance portal showed that only 8% of eligible tokens had voted on the most recent proposal.",
+    "ex2": "Governance portals aggregate proposal discussion, off-chain signalling, and on-chain voting into a single interface."
+  },
+  {
+    "word": "sub-DAO",
+    "zh": "子 DAO",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The sub-DAO for developer grants operates with its own budget and internal voting procedures.",
+    "ex2": "Large DAOs increasingly delegate authority to sub-DAOs to enable faster decision-making on specialised topics."
+  },
+  {
+    "word": "meta-governance",
+    "zh": "元治理（通过代币代理投票权）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Holding a protocol's governance token can confer meta-governance rights over the assets it controls.",
+    "ex2": "Meta-governance allows one DAO to influence the governance of another DAO in which it holds a significant stake."
+  },
+  {
+    "word": "gauge vote",
+    "zh": "计量器投票（流动性分配投票）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "CRV holders cast weekly gauge votes to determine which Curve pools receive the next week's emissions.",
+    "ex2": "Gauge votes have become a multi-billion-dollar metagame as protocols compete to direct liquidity to their own pools."
+  },
+  {
+    "word": "vote delegation",
+    "zh": "投票权委托",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Vote delegation allows small token holders to amplify their influence by pooling votes with aligned delegates.",
+    "ex2": "Liquid vote delegation systems let holders change their delegate at any time, creating accountability for delegate behaviour."
+  },
+  {
+    "word": "wallet connect",
+    "zh": "WalletConnect 协议（前缀 v2）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "WalletConnect v2 lets users sign transactions on their phone while browsing a dApp on a desktop browser.",
+    "ex2": "Developers integrate WalletConnect to give users a choice of hardware and software wallets beyond browser extensions."
+  },
+  {
+    "word": "rainbow wallet",
+    "zh": "Rainbow 以太坊移动钱包",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Rainbow wallet is known for its intuitive interface and strong NFT browsing and DeFi features.",
+    "ex2": "Rainbow wallet's app store popularity has made it one of the most recognised consumer-facing Ethereum wallet brands."
+  },
+  {
+    "word": "Phantom wallet",
+    "zh": "Phantom 多链加密钱包（Solana 原生）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Phantom became the dominant wallet for Solana users and later expanded to Ethereum and other chains.",
+    "ex2": "Phantom's integrated NFT viewer and token swap features made it the go-to wallet for Solana ecosystem participants."
+  },
+  {
+    "word": "Trust Wallet",
+    "zh": "Trust Wallet 多链手机钱包",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Trust Wallet supports dozens of blockchains and is widely used in emerging markets for everyday crypto access.",
+    "ex2": "Binance acquired Trust Wallet in 2018, though it remains a separate non-custodial product with no Binance account required."
+  },
+  {
+    "word": "Coinbase Wallet",
+    "zh": "Coinbase Wallet 非托管钱包",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Coinbase Wallet is a self-custody wallet separate from the Coinbase exchange account.",
+    "ex2": "Users can access Base's DeFi ecosystem natively through Coinbase Wallet without bridge friction or extra configuration."
+  },
+  {
+    "word": "browser extension wallet",
+    "zh": "浏览器扩展钱包",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A browser extension wallet connects directly to dApps through the wallet provider's injected JavaScript object.",
+    "ex2": "Browser extension wallets are the most common way desktop users interact with Ethereum and EVM-compatible networks."
+  },
+  {
+    "word": "transaction history",
+    "zh": "交易历史",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Your transaction history is permanently public on-chain and cannot be deleted or hidden retroactively.",
+    "ex2": "Tax software for crypto pulls transaction history from block explorers to calculate capital gains and losses automatically."
+  },
+  {
+    "word": "wallet drainer",
+    "zh": "钱包盗取恶意合约",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The phishing link led to a wallet drainer that cleared the victim's entire balance in one transaction.",
+    "ex2": "Wallet drainers use malicious token approvals to transfer all assets from a compromised wallet without further user interaction."
+  },
+  {
+    "word": "signature phishing",
+    "zh": "签名钓鱼（诱导签名授权）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Signature phishing tricks users into signing a permit that gives the attacker full access to their tokens.",
+    "ex2": "The rise of EIP-712 made signatures more readable, but signature phishing remains a top threat for NFT and DeFi users."
+  },
+  {
+    "word": "permit2",
+    "zh": "Uniswap Permit2 通用签名授权",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Uniswap's Permit2 contract gives any token EIP-2612-style permit functionality via a shared approval contract.",
+    "ex2": "Permit2 reduces the number of on-chain approval transactions needed, improving the DeFi user experience significantly."
+  },
+  {
+    "word": "soul",
+    "zh": "灵魂（Desoc 身份账户）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "In Vitalik's DeSoc vision, a soul is a wallet that holds non-transferable soulbound tokens representing identity.",
+    "ex2": "Souls could accumulate verified credentials, memberships, and attestations to build a rich on-chain social identity."
+  },
+  {
+    "word": "DeSoc",
+    "zh": "Decentralized Society / 去中心化社会",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "DeSoc is a vision for Web3 social infrastructure built on soulbound tokens and decentralised identity.",
+    "ex2": "The DeSoc framework proposes replacing centralised social graphs with composable on-chain relationships and attestations."
+  },
+  {
+    "word": "on-chain identity",
+    "zh": "链上身份",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "On-chain identity systems like ENS and Lens Protocol allow users to own their digital presence on the blockchain.",
+    "ex2": "On-chain identity gives users a portable, self-sovereign profile that works across any compatible application."
+  },
+  {
+    "word": "ENS",
+    "zh": "Ethereum Name Service / 以太坊域名服务",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "ENS lets you replace a long wallet address with a human-readable name like alice.eth.",
+    "ex2": "ENS names can store wallet addresses, social links, and profile data in a decentralised, censorship-resistant way."
+  },
+  {
+    "word": ".eth domain",
+    "zh": ".eth 域名",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Registering a .eth domain gives you a memorable identifier that works across ENS-compatible apps and wallets.",
+    "ex2": "Blue-chip .eth domains like 000.eth have sold for hundreds of ETH, treating them as digital real estate investments."
+  },
+  {
+    "word": "Lens Protocol",
+    "zh": "Lens Protocol 去中心化社交图谱",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Lens Protocol stores social graphs on-chain, allowing any app to read and build on user connections.",
+    "ex2": "Unlike Twitter or Instagram, Lens lets users take their followers to any compatible app without losing their network."
+  },
+  {
+    "word": "Farcaster",
+    "zh": "Farcaster 去中心化社交协议",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Farcaster is a decentralised social protocol where users own their accounts and data via an Ethereum address.",
+    "ex2": "Warpcast, the most popular Farcaster client, attracted leading crypto founders and developers as its earliest power users."
+  },
+  {
+    "word": "frame",
+    "zh": "Frame（Farcaster 交互式帖子）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Farcaster frames allow users to mint NFTs or vote in polls directly within a social media post.",
+    "ex2": "Frames transformed Farcaster from a text platform into an interactive dApp ecosystem embedded in the social feed."
+  },
+  {
+    "word": "Warpcast",
+    "zh": "Warpcast Farcaster 客户端",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Warpcast is the primary client for the Farcaster protocol, similar to how Twitter.com served the Twitter protocol.",
+    "ex2": "The Warpcast team built the Frames standard that enabled interactive mini-dApps inside social posts."
+  },
+  {
+    "word": "on-chain social",
+    "zh": "链上社交",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "On-chain social platforms store user relationships and posts as NFTs or contract state rather than in databases.",
+    "ex2": "The on-chain social movement is driven by the belief that users should own their social graph and not rent it from corporations."
+  },
+  {
+    "word": "EAS",
+    "zh": "Ethereum Attestation Service / 以太坊证明服务",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "EAS provides a standard way for anyone to make on-chain attestations about any address or entity.",
+    "ex2": "Protocols use EAS to record KYC results, reputation scores, and community contributions in a composable, verifiable way."
+  },
+  {
+    "word": "Verifiable Credential",
+    "zh": "可验证凭证（W3C 标准）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A Verifiable Credential lets a university issue a tamper-proof digital diploma that anyone can verify.",
+    "ex2": "Combining Verifiable Credentials with blockchain ensures credentials are both self-sovereign and independently verifiable."
+  },
+  {
+    "word": "DID",
+    "zh": "Decentralized Identifier / 去中心化标识符",
+    "pos": "abbr.",
+    "ipa": "",
+    "ex": "A DID is a self-sovereign identifier that lives on a blockchain rather than being issued by a company.",
+    "ex2": "DIDs underpin many Web3 identity solutions, allowing individuals to control their own identifiers across multiple platforms."
+  },
+  {
+    "word": "proof of humanity",
+    "zh": "人类身份证明",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Proof of humanity uses video submission and social vouching to confirm a wallet belongs to a unique human.",
+    "ex2": "Protocols distribute Sybil-resistant airdrops by requiring proof of humanity, ensuring one person receives only one allocation."
+  },
+  {
+    "word": "Worldcoin",
+    "zh": "Worldcoin 虹膜扫描身份项目",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Worldcoin uses iris scans to issue World ID, a proof of unique human identity on-chain.",
+    "ex2": "The Worldcoin project sparked global privacy debates about biometric data collection in exchange for token distributions."
+  },
+  {
+    "word": "World ID",
+    "zh": "World ID（Worldcoin 身份）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A World ID proves you are a unique human without revealing your identity to the verifying application.",
+    "ex2": "Dapps integrate World ID to prevent Sybil attacks on airdrops and votes without requiring invasive KYC procedures."
+  },
+  {
+    "word": "zkProof of identity",
+    "zh": "零知识身份证明",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A zkProof of identity lets users prove they are over 18 without revealing their name or date of birth.",
+    "ex2": "ZK-based identity systems are the gold standard for privacy-preserving KYC compliance in regulated DeFi applications."
+  },
+  {
+    "word": "Gitcoin",
+    "zh": "Gitcoin 开源资助平台",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Gitcoin distributes matching funds to open-source projects using quadratic funding rounds.",
+    "ex2": "Gitcoin Grants has distributed tens of millions of dollars to Ethereum public goods developers since its inception."
+  },
+  {
+    "word": "Gitcoin Passport",
+    "zh": "Gitcoin Passport 抗女巫身份聚合",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Gitcoin Passport aggregates on-chain and off-chain identity signals to produce a Sybil-resistance score.",
+    "ex2": "Protocols use Gitcoin Passport scores to gate airdrop eligibility without requiring traditional KYC documentation."
+  },
+  {
+    "word": "layer 3",
+    "zh": "第三层网络（L3）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A layer 3 is an application-specific chain built on top of a layer 2, inheriting its security.",
+    "ex2": "Gaming studios deploy layer 3 chains for their own apps to avoid competing for block space with other users."
+  },
+  {
+    "word": "L3",
+    "zh": "Layer 3 / 第三层网络",
+    "pos": "abbr.",
+    "ipa": "",
+    "ex": "L3 chains settle to an L2, which in turn settles to Ethereum, creating a nested security model.",
+    "ex2": "The L3 concept is controversial—critics argue the security guarantees are weaker than direct L2 deployment."
+  },
+  {
+    "word": "app chain",
+    "zh": "应用链",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "dYdX deployed its own app chain on Cosmos to achieve the throughput needed for a perpetual futures exchange.",
+    "ex2": "App chains give protocols full control over execution and fee economics, trading some security for performance autonomy."
+  },
+  {
+    "word": "sovereign rollup",
+    "zh": "主权 Rollup",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A sovereign rollup uses a DA layer for data availability but settles its own disputes without an L1 court.",
+    "ex2": "Sovereign rollups have more autonomy than standard rollups but sacrifice the settlement security of Ethereum as the final arbiter."
+  },
+  {
+    "word": "AltDA",
+    "zh": "Alternative Data Availability / 替代数据可用性层",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "AltDA solutions like Celestia offer cheaper data posting than Ethereum blobs at the cost of different security assumptions.",
+    "ex2": "Choosing AltDA versus Ethereum blobs is a key architectural decision for rollup operators balancing cost and security."
+  },
+  {
+    "word": "sequencer fee",
+    "zh": "排序器费用",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The sequencer fee is the spread kept by the L2 operator between what users pay and what is posted to L1.",
+    "ex2": "Sequencer fees are a primary revenue source for rollup operators and fund ongoing infrastructure and development costs."
+  },
+  {
+    "word": "escape hatch",
+    "zh": "逃生通道（强制退出机制）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The escape hatch mechanism lets users withdraw directly to Ethereum even if the L2 sequencer is offline.",
+    "ex2": "A well-designed escape hatch is critical for user trust—it proves the rollup cannot permanently lock your funds."
+  },
+  {
+    "word": "decentralised sequencer",
+    "zh": "去中心化排序器",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A decentralised sequencer prevents a single operator from censoring transactions or extracting unfair MEV.",
+    "ex2": "Most major rollups plan to decentralise their sequencers over time, though many still rely on a single operator today."
+  },
+  {
+    "word": "proof of publication",
+    "zh": "发布证明（DA 证明）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A proof of publication confirms that transaction data was made available to the network before a block was finalised.",
+    "ex2": "Rollups require proof of publication to prevent sequencers from submitting state roots without sharing the underlying data."
+  },
+  {
+    "word": "ZK coprocessor",
+    "zh": "ZK 协处理器",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A ZK coprocessor lets smart contracts access and verify historical blockchain data without trusting a centralised API.",
+    "ex2": "Protocols integrate ZK coprocessors to enable on-chain analytics, risk models, and reputation systems based on verified history."
+  },
+  {
+    "word": "ZK identity",
+    "zh": "零知识身份",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "ZK identity systems let users prove membership in a group or meet a threshold without revealing which member they are.",
+    "ex2": "Protocols using ZK identity for governance can ensure each human votes only once while preserving pseudonymous participation."
+  },
+  {
+    "word": "Risc Zero",
+    "zh": "RISC Zero zkVM 通用零知识证明平台",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "RISC Zero's zkVM can generate proofs for any computation written in Rust, enabling general-purpose ZK applications.",
+    "ex2": "Protocols integrate RISC Zero to add verifiable off-chain computation results without trusting a centralised backend."
+  },
+  {
+    "word": "Succinct",
+    "zh": "Succinct ZK 证明服务",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Succinct builds the SP1 zkVM and provides ZK proving infrastructure for Ethereum applications and rollups.",
+    "ex2": "SP1 from Succinct allows developers to write provable programs in standard Rust without learning a ZK-specific language."
+  },
+  {
+    "word": "proving time",
+    "zh": "证明生成时间",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Reducing proving time is a key engineering challenge that limits how fast ZK rollups can settle on Ethereum.",
+    "ex2": "Hardware acceleration and specialised ASICs are being developed to bring proving time from minutes to seconds."
+  },
+  {
+    "word": "proof aggregation",
+    "zh": "证明聚合",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Proof aggregation combines multiple ZK proofs into one, reducing the per-proof verification cost on Ethereum.",
+    "ex2": "Aligned Layer uses proof aggregation to let independent rollups share a single on-chain verification transaction."
+  },
+  {
+    "word": "Aligned Layer",
+    "zh": "Aligned Layer ZK 证明验证层",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Aligned Layer is a shared verification layer that aggregates ZK proofs from multiple rollups for cheap on-chain settlement.",
+    "ex2": "By batching verification across rollups, Aligned Layer dramatically reduces the per-transaction cost of ZK proof settlement."
+  },
+  {
+    "word": "Hyperlane",
+    "zh": "Hyperlane 无需许可跨链消息",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Hyperlane enables permissionless deployment of interoperability between any two blockchains.",
+    "ex2": "Unlike bridge-specific protocols, Hyperlane lets developers deploy their own sovereign interoperability stack."
+  },
+  {
+    "word": "Axelar",
+    "zh": "Axelar 跨链通信网络",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Axelar connects over 50 blockchains using a proof-of-stake network of validators to relay cross-chain messages.",
+    "ex2": "Axelar's general message passing lets protocols trigger smart contract calls on any connected chain from a single transaction."
+  },
+  {
+    "word": "interoperability",
+    "zh": "互操作性",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Interoperability between blockchains is essential for a multi-chain future where value flows freely.",
+    "ex2": "Achieving trustless interoperability without introducing bridge risk remains one of the hardest unsolved problems in crypto."
+  },
+  {
+    "word": "message passing",
+    "zh": "消息传递（跨链）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Cross-chain message passing lets contracts on one chain trigger functions on contracts on another chain.",
+    "ex2": "Generalised message passing enables complex cross-chain applications far beyond simple token transfers."
+  },
+  {
+    "word": "relaying",
+    "zh": "消息转发（跨链中继）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Relaying is the act of transmitting cross-chain messages from the source to the destination chain.",
+    "ex2": "Permissionless relaying ensures that cross-chain messages cannot be censored even if the original relayer goes offline."
+  },
+  {
+    "word": "token bridge",
+    "zh": "代币跨链桥",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A token bridge locks assets on the source chain and mints representations on the destination chain.",
+    "ex2": "Token bridges are among the most exploited protocols in crypto because they hold large concentrated pools of locked assets."
+  },
+  {
+    "word": "native bridge",
+    "zh": "原生桥",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Using the native bridge is the safest way to move assets between Ethereum and a rollup network.",
+    "ex2": "Native bridges are secured by the rollup's own fraud or validity proof system rather than additional trust assumptions."
+  },
+  {
+    "word": "liquidity bridge",
+    "zh": "流动性桥（第三方快速跨链）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A liquidity bridge uses pooled assets to offer fast cross-chain transfers without the rollup's challenge period.",
+    "ex2": "Liquidity bridges charge small fees and carry smart contract risk, but avoid the multi-day wait of native bridges."
+  },
+  {
+    "word": "cross-chain liquidity",
+    "zh": "跨链流动性",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Aggregating cross-chain liquidity allows DEXs to offer trades across assets on multiple chains in one step.",
+    "ex2": "The fragmentation of cross-chain liquidity is a key challenge for the multi-chain ecosystem's usability."
+  },
+  {
+    "word": "Across Protocol",
+    "zh": "Across Protocol 跨链流动性桥",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Across Protocol uses an optimistic bridging model and a single liquidity pool to offer fast cross-chain transfers.",
+    "ex2": "Across fills bridge requests immediately through relayers and settles the underlying transfer using UMA's oracle later."
+  },
+  {
+    "word": "Stargate",
+    "zh": "Stargate 跨链流动性协议（LayerZero）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Stargate is built on LayerZero and lets users bridge stablecoins across chains with unified liquidity pools.",
+    "ex2": "Stargate's unified liquidity model means a single pool supports transfers between all connected chains, reducing fragmentation."
+  },
+  {
+    "word": "spot ETF",
+    "zh": "现货 ETF（现货比特币 ETF）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The approval of US spot Bitcoin ETFs in January 2024 was a watershed moment for institutional crypto adoption.",
+    "ex2": "Spot ETFs let traditional investors gain Bitcoin exposure through regulated brokerage accounts without self-custody."
+  },
+  {
+    "word": "Bitcoin ETF",
+    "zh": "比特币 ETF",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "BlackRock's Bitcoin ETF attracted over $10 billion in assets within weeks of its launch.",
+    "ex2": "Bitcoin ETFs democratise access for pension funds and retail investors who cannot hold self-custodied crypto directly."
+  },
+  {
+    "word": "ETF inflows",
+    "zh": "ETF 资金流入",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Record ETF inflows during January 2024 drove Bitcoin to new all-time highs as institutional demand surged.",
+    "ex2": "Analysts track daily ETF inflows and outflows as leading indicators of near-term institutional buying and selling pressure."
+  },
+  {
+    "word": "regulated custodian",
+    "zh": "持牌托管机构",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Bitcoin ETFs require a regulated custodian like Coinbase Custody to hold the underlying Bitcoin on behalf of investors.",
+    "ex2": "Regulated custodians must meet strict capital, insurance, and compliance requirements set by financial authorities."
+  },
+  {
+    "word": "authorised participant",
+    "zh": "授权参与者（ETF 创制赎回）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Authorised participants arbitrage any price gap between the ETF share price and the underlying BTC value.",
+    "ex2": "Only authorised participants can create or redeem ETF shares directly with the fund, keeping market prices close to NAV."
+  },
+  {
+    "word": "net asset value",
+    "zh": "净资产价值（NAV）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The Bitcoin ETF's net asset value is calculated daily using institutional-grade price benchmarks.",
+    "ex2": "When an ETF trades at a premium to net asset value, authorised participants create new shares to close the gap."
+  },
+  {
+    "word": "premium",
+    "zh": "溢价（相对于净值）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "GBTC historically traded at a premium before eventually collapsing to a discount during the bear market.",
+    "ex2": "A persistent premium to NAV signals that demand for the fund's shares exceeds the available supply in secondary markets."
+  },
+  {
+    "word": "discount",
+    "zh": "折价（相对于净值）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "GBTC traded at a 40% discount to its Bitcoin holdings during the 2022 bear market.",
+    "ex2": "Investors who bought GBTC at a deep discount and held until conversion to a spot ETF made significant profits on the spread."
+  },
+  {
+    "word": "GBTC",
+    "zh": "Grayscale Bitcoin Trust / 灰度比特币信托",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "GBTC was the first major vehicle for institutional Bitcoin exposure before spot ETFs were approved.",
+    "ex2": "After converting to a spot ETF in early 2024, GBTC saw significant outflows as competitors offered lower management fees."
+  },
+  {
+    "word": "management fee",
+    "zh": "管理费",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "ETF management fees range from 0.20% to 1.50% annually, directly reducing the effective return for investors.",
+    "ex2": "Fee competition between Bitcoin ETF providers drove management fees down significantly in the months after launch."
+  },
+  {
+    "word": "SEC",
+    "zh": "Securities and Exchange Commission / 美国证券交易委员会",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The SEC spent years rejecting spot Bitcoin ETF applications before finally approving them in January 2024.",
+    "ex2": "The SEC has classified many tokens as unregistered securities, creating ongoing legal uncertainty for exchanges."
+  },
+  {
+    "word": "securities law",
+    "zh": "证券法",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Whether a token constitutes a security under US securities law depends on the Howey Test analysis.",
+    "ex2": "Exchanges that listed tokens later deemed securities faced enforcement action under existing securities law frameworks."
+  },
+  {
+    "word": "Howey test",
+    "zh": "豪伊测试（证券认定标准）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The Howey Test asks whether an investment contract involves money, a common enterprise, and expectation of profits.",
+    "ex2": "Many token projects argue they pass the Howey Test and are therefore not securities subject to SEC registration."
+  },
+  {
+    "word": "utility token",
+    "zh": "功能代币",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A utility token gives access to a service rather than representing an investment in a company's profits.",
+    "ex2": "Regulators have been sceptical of the utility token classification when tokens are primarily bought for speculative returns."
+  },
+  {
+    "word": "security token",
+    "zh": "证券型代币",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Security tokens represent ownership in real assets and must comply with securities regulations.",
+    "ex2": "Security token offerings were hyped as a major trend in 2018 but regulatory complexity slowed their mass adoption."
+  },
+  {
+    "word": "STO",
+    "zh": "Security Token Offering / 证券型代币发行",
+    "pos": "abbr.",
+    "ipa": "",
+    "ex": "An STO is a legally compliant token sale where the token is registered as a security with regulators.",
+    "ex2": "STOs have found a niche in real estate and private equity tokenisation where regulatory compliance is non-negotiable."
+  },
+  {
+    "word": "staking as a service",
+    "zh": "质押即服务",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Staking as a service providers handle all technical validator operations so holders can earn yield passively.",
+    "ex2": "Institutional staking as a service includes features like insurance, slash protection, and detailed reporting."
+  },
+  {
+    "word": "validator client",
+    "zh": "验证者客户端",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The validator client manages signing duties and must stay online to avoid inactivity penalties.",
+    "ex2": "Running a diverse set of validator clients improves network resilience against bugs that might affect a single implementation."
+  },
+  {
+    "word": "slashing risk",
+    "zh": "罚没风险",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Solo stakers face slashing risk if their validator accidentally double-signs due to a configuration error.",
+    "ex2": "DVT technology reduces slashing risk by distributing the validator key across multiple nodes, preventing single-point failures."
+  },
+  {
+    "word": "block proposer",
+    "zh": "区块提议者",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The block proposer is randomly selected each slot and earns MEV rewards in addition to standard attestation fees.",
+    "ex2": "Being selected as a block proposer is rare for individual validators but brings significantly higher rewards when it occurs."
+  },
+  {
+    "word": "proposer boost",
+    "zh": "提议者权重提升（LMD-GHOST 机制）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Proposer boost assigns extra fork-choice weight to the current block proposer's block to deter short reorgs.",
+    "ex2": "Without proposer boost, MEV-seeking validators could feasibly reorg the previous block to steal its MEV rewards."
+  },
+  {
+    "word": "whistleblower",
+    "zh": "举报人（验证者作恶揭发者）",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "A whistleblower submits slashing evidence on-chain and receives a reward from the penalised validator's stake.",
+    "ex2": "The whistleblower reward mechanism creates economic incentives for monitoring validator behaviour across the network."
   }
 ]
