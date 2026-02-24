@@ -301,36 +301,37 @@
         }
         .done-action-tertiary .done-action-arrow { color: var(--muted); opacity: 1; }
         .done-action-tertiary:hover { border-color: var(--blue); }
-        .done-action-share {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: #fff;
-            box-shadow: 0 4px 18px rgba(59,130,246,0.32);
+        .done-share-pill {
+            display: flex; align-items: center; justify-content: center; gap: 7px;
+            padding: 9px 22px; border-radius: 99px;
+            border: 1.5px solid var(--border); color: var(--muted); background: transparent;
+            font-size: 0.84rem; font-weight: 600; cursor: pointer;
+            transition: border-color 0.15s, color 0.15s;
         }
-        .done-action-share:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(59,130,246,0.42); }
-        .btn-share-prac {
-            display: block; width: 100%; margin: 8px 0 0;
+        .done-share-pill:hover  { border-color: var(--blue); color: var(--blue); }
+        .done-share-pill:active { transform: scale(0.97); }
+        .share-svg { vertical-align: middle; flex-shrink: 0; }
+        /* Practice done footer buttons */
+        .prac-done-footer { display: flex; gap: 10px; width: 100%; margin-top: 4px; }
+        .prac-foot-share {
+            flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
             padding: 13px; border-radius: 12px;
-            border: 1.5px solid var(--blue); color: var(--blue); background: transparent;
-            font-size: 0.95rem; font-weight: 600; cursor: pointer;
-            transition: background 0.15s;
+            border: 1.5px solid var(--border); color: var(--muted); background: transparent;
+            font-size: 0.9rem; font-weight: 600; cursor: pointer;
+            transition: border-color 0.15s, color 0.15s;
         }
-        .btn-share-prac:hover { background: rgba(59,130,246,0.08); }
-        /* Keep btn-more for practice back button */
-        .btn-more {
+        .prac-foot-share:hover { border-color: var(--blue); color: var(--blue); }
+        .prac-foot-back {
+            flex: 2;
             background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: #fff;
-            border: none;
-            padding: 14px 36px;
-            border-radius: 14px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 8px;
-            box-shadow: 0 4px 16px rgba(59,130,246,0.35);
+            color: #fff; border: none;
+            padding: 13px; border-radius: 12px;
+            font-size: 0.95rem; font-weight: 700; cursor: pointer;
+            box-shadow: 0 4px 16px rgba(59,130,246,0.32);
             transition: box-shadow 0.15s, transform 0.1s;
         }
-        .btn-more:hover  { box-shadow: 0 6px 22px rgba(59,130,246,0.45); transform: translateY(-1px); }
-        .btn-more:active { transform: scale(0.97); box-shadow: none; }
+        .prac-foot-back:hover  { box-shadow: 0 6px 22px rgba(59,130,246,0.42); transform: translateY(-1px); }
+        .prac-foot-back:active { transform: scale(0.97); box-shadow: none; }
 
         /* ── Card area ───────────────────────── */
         .card-area {
@@ -931,7 +932,6 @@
             .xp-track   { height: 10px; }
             .done-stat-val { font-size: 2.5rem; }
             .done-title { font-size: 2.1rem; }
-            .btn-more   { padding: 16px 48px; font-size: 1rem; }
         }
 
         /* ── iPad Pro / Desktop (≥ 900px) ────────────────── */
@@ -1250,32 +1250,36 @@
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
         }
-        .prac-wrong-section {
-            width: 100%; text-align: left;
-            border-top: 1px solid var(--border); padding-top: 18px; margin-top: 4px;
-        }
-        .prac-wrong-title {
-            font-size: 0.78rem; font-weight: 700; color: var(--muted);
-            text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 12px;
-        }
-        .prac-wrong-item {
-            display: flex; flex-direction: column; gap: 3px;
-            padding: 10px 0; border-bottom: 1px solid var(--border);
-        }
-        .prac-wrong-item:last-child { border-bottom: none; }
-        .prac-wrong-row1 { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
-        .prac-wrong-en   { font-size: 1rem; font-weight: 700; color: var(--text); }
-        .prac-wrong-pos  {
-            font-size: 0.72rem; color: var(--muted); background: var(--surface);
-            border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px;
-        }
-        .prac-wrong-ipa  { font-size: 0.8rem; color: var(--muted); font-style: italic; }
-        .prac-wrong-zh   { font-size: 0.88rem; color: var(--muted); line-height: 1.45; }
-        .prac-done-emoji { font-size: 5rem; line-height: 1; }
-        .prac-done-title { font-size: 1.8rem; font-weight: 800; }
-        .prac-done-score { font-size: 1.1rem; color: var(--muted); font-weight: 600; }
-        .prac-done-bar-wrap { width: 100%; max-width: 280px; background: var(--border); border-radius: 99px; height: 14px; overflow: hidden; }
-        .prac-done-bar-fill  { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--green), var(--blue)); transition: width 0.9s cubic-bezier(.4,0,.2,1); }
+        /* Practice done — score hero */
+        .prac-done-hero { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
+        .prac-score-display { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .prac-score-pct { font-size: 3.8rem; font-weight: 900; line-height: 1; letter-spacing: -0.03em; }
+        .pct-green { color: var(--green); }
+        .pct-amber { color: var(--amber); }
+        .pct-red   { color: var(--red);   }
+        .prac-score-emoji { font-size: 1.6rem; }
+        .prac-done-title { font-size: 1.5rem; font-weight: 800; }
+        .prac-done-bar-wrap { width: 100%; max-width: 280px; background: var(--border); border-radius: 99px; height: 8px; overflow: hidden; }
+        .prac-done-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--green), var(--blue)); transition: width 0.9s cubic-bezier(.4,0,.2,1); }
+        .prac-done-chips { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: center; }
+        .pdc { font-size: 0.88rem; font-weight: 700; }
+        .pdc-good  { color: var(--green); }
+        .pdc-bad   { color: var(--red); }
+        .pdc-sep   { color: var(--border); font-weight: 400; }
+        .pdc-total { color: var(--muted); font-weight: 400; font-size: 0.82rem; }
+        /* Practice done — review cards */
+        .prac-review-section { width: 100%; text-align: left; border-top: 1px solid var(--border); padding-top: 16px; }
+        .prac-review-hd { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+        .prac-review-hd-text { font-size: 0.76rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; }
+        .prac-review-hd-count { font-size: 0.76rem; font-weight: 700; background: var(--border); color: var(--muted); padding: 1px 7px; border-radius: 99px; }
+        .prac-review-card { padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 4px; }
+        .prac-review-card:last-child { border-bottom: none; }
+        .prac-review-top { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+        .prac-review-word { font-size: 1rem; font-weight: 700; color: var(--text); }
+        .prac-review-pos  { font-size: 0.7rem; color: var(--muted); background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; }
+        .prac-review-ipa  { font-size: 0.78rem; color: var(--muted); font-style: italic; }
+        .prac-review-zh   { font-size: 0.88rem; color: var(--blue); }
+        .prac-review-ex   { font-size: 0.8rem; color: var(--muted); line-height: 1.5; font-style: italic; }
         /* ── Matching question ─────────────────────────────────────────── */
         .prac-match-wrap { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .prac-match-col  { display: flex; flex-direction: column; gap: 8px; }
@@ -1629,7 +1633,9 @@
                 <button class="btn-hd" :class="{active: readingOpen}"
                         @click="readingOpen ? closeReading() : openReading()"
                         :title="ui.readingBtn">📖</button>
-                <button class="btn-hd" @click="shareApp" :title="ui.shareBtn">📤</button>
+                <button class="btn-hd" @click="shareApp" :title="ui.shareBtn">
+                    <svg class="share-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                </button>
                 <button class="btn-hd danger" @click="confirmReset">{{ui.resetBtn}}</button>
             </div>
         </div>
@@ -1669,30 +1675,52 @@
 
         <!-- Practice done screen -->
         <div v-if="practiceDone" class="prac-done">
-            <div class="prac-done-emoji">
-                {{practiceScore / practiceQueue.length >= 1 ? '🏆' : practiceScore / practiceQueue.length >= 0.8 ? '🎉' : practiceScore / practiceQueue.length >= 0.5 ? '👍' : '💪'}}
-            </div>
-            <div class="prac-done-title">{{ui.practiceDoneTitle}}</div>
-            <div class="prac-done-score">{{ui.practiceDoneScore(practiceScore, practiceQueue.length)}}</div>
-            <div class="prac-done-bar-wrap">
-                <div class="prac-done-bar-fill" :style="{width: (practiceScore / practiceQueue.length * 100) + '%'}"></div>
-            </div>
 
-            <!-- Wrong words list -->
-            <div v-if="practiceWrongWords.length > 0" class="prac-wrong-section">
-                <div class="prac-wrong-title">{{ui.practiceWrongTitle}} · {{practiceWrongWords.length}}</div>
-                <div v-for="w in practiceWrongWords" :key="w.word" class="prac-wrong-item">
-                    <div class="prac-wrong-row1">
-                        <span class="prac-wrong-en">{{w.word}}</span>
-                        <span class="prac-wrong-pos" v-if="w.pos">{{w.pos}}</span>
-                        <span class="prac-wrong-ipa" v-if="dictCache[w.word] && dictCache[w.word].ipa">/{{dictCache[w.word].ipa}}/</span>
-                    </div>
-                    <div class="prac-wrong-zh">{{w.zh}}</div>
+            <!-- Score hero -->
+            <div class="prac-done-hero">
+                <div class="prac-score-display">
+                    <div class="prac-score-pct" :class="pctColorClass">{{pracScorePct}}%</div>
+                    <div class="prac-score-emoji">{{pracScoreEmoji}}</div>
+                </div>
+                <div class="prac-done-title">{{ui.practiceDoneTitle}}</div>
+                <div class="prac-done-bar-wrap">
+                    <div class="prac-done-bar-fill" :style="{width: pracScorePct + '%'}"></div>
+                </div>
+                <div class="prac-done-chips">
+                    <span class="pdc pdc-good">✓ {{practiceScore}}</span>
+                    <span class="pdc pdc-sep">/</span>
+                    <span class="pdc pdc-bad">✗ {{practiceQueue.length - practiceScore}}</span>
+                    <span class="pdc pdc-total">{{ui.practiceDoneScore(practiceScore, practiceQueue.length)}}</span>
                 </div>
             </div>
 
-            <button class="btn-share-prac" @click="sharePractice">📤 {{ui.shareBtn}}</button>
-            <button class="btn-more" @click="exitPractice">{{ui.practiceDoneBack}}</button>
+            <!-- Wrong words with example sentences -->
+            <div v-if="practiceWrongWords.length > 0" class="prac-review-section">
+                <div class="prac-review-hd">
+                    <span class="prac-review-hd-text">{{ui.practiceWrongTitle}}</span>
+                    <span class="prac-review-hd-count">{{practiceWrongWords.length}}</span>
+                </div>
+                <div class="prac-review-list">
+                    <div v-for="w in practiceWrongWords" :key="w.word" class="prac-review-card">
+                        <div class="prac-review-top">
+                            <span class="prac-review-word">{{w.word}}</span>
+                            <span v-if="w.pos" class="prac-review-pos">{{w.pos}}</span>
+                            <span v-if="dictCache[w.word] && dictCache[w.word].ipa" class="prac-review-ipa">/{{dictCache[w.word].ipa}}/</span>
+                        </div>
+                        <div class="prac-review-zh">{{w.zh}}</div>
+                        <div v-if="dictCache[w.word] && dictCache[w.word].example" class="prac-review-ex">{{dictCache[w.word].example}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer buttons -->
+            <div class="prac-done-footer">
+                <button class="prac-foot-share" @click="sharePractice">
+                    <svg class="share-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                    {{ui.shareBtn}}
+                </button>
+                <button class="prac-foot-back" @click="exitPractice">{{ui.practiceDoneBack}}</button>
+            </div>
         </div>
 
         <!-- Question screen -->
@@ -1942,16 +1970,13 @@
                 </div>
                 <span class="done-action-arrow">›</span>
             </button>
-            <!-- Share -->
-            <button class="done-action done-action-share" @click="shareSession">
-                <span class="done-action-icon">📤</span>
-                <div class="done-action-text">
-                    <span class="done-action-title">{{ui.shareBtn}}</span>
-                    <span class="done-action-hint">{{ui.shareHint}}</span>
-                </div>
-                <span class="done-action-arrow">›</span>
-            </button>
         </div>
+
+        <!-- Share pill — lightweight secondary action -->
+        <button class="done-share-pill" @click="shareSession">
+            <svg class="share-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            {{ui.shareBtn}}
+        </button>
 
     </div>
 
@@ -2948,6 +2973,18 @@ new Vue({
         },
         practiceCurrent() {
             return this.practiceQueue[this.practiceIndex] || null;
+        },
+        pracScorePct() {
+            if (!this.practiceQueue.length) return 0;
+            return Math.round(this.practiceScore / this.practiceQueue.length * 100);
+        },
+        pctColorClass() {
+            const p = this.pracScorePct;
+            return p >= 80 ? 'pct-green' : p >= 50 ? 'pct-amber' : 'pct-red';
+        },
+        pracScoreEmoji() {
+            const p = this.pracScorePct;
+            return p >= 100 ? '🏆' : p >= 80 ? '🎉' : p >= 50 ? '👍' : '💪';
         },
         /** Count cards due within the next 24 hours (but not already overdue/in queue) */
         tomorrowDueCount() {
