@@ -568,6 +568,14 @@
             margin-bottom: 4px;
             padding: 0 12px;
         }
+        .back-ipa {
+            font-family: 'SF Mono', 'Fira Mono', Menlo, monospace;
+            font-size: 0.82rem;
+            color: rgba(255,255,255,.6);
+            text-align: center;
+            letter-spacing: 0.03em;
+            margin-bottom: 6px;
+        }
         .back-zh {
             font-size: 2.1rem;
             font-weight: 800;
@@ -2249,6 +2257,7 @@
                     </div>
                     <div class="back-fullform" v-if="curZhParts.full">{{curZhParts.full}}</div>
                     <div class="back-word">{{cur.word}}</div>
+                    <div class="back-ipa" v-if="curDict && curDict.ipa">/{{curDict.ipa}}/</div>
                     <div class="back-zh">{{curZhParts.zh}}</div>
                     <!-- English definition — deepens monolingual comprehension -->
                     <div class="back-def" v-if="curDict && curDict.definition">{{curDict.definition}}</div>
@@ -2262,10 +2271,7 @@
                         "{{curExample2}}"
                     </div>
                     <div class="back-note" v-if="curNote">{{curNote}}</div>
-                    <div class="back-footer">
-                        {{cur.word}}
-                        <span v-if="curDict && curDict.ipa"> · {{curDict.ipa}}</span>
-                    </div>
+                    <div class="back-footer">{{cur.word}}</div>
                 </div>
             </div>
         </div>
@@ -3495,34 +3501,56 @@ new Vue({
         },
 
         // ── Audio ─────────────────────────────────────────────────────────
-        playAudio(word) {
-            if (!word) return;
-            const d = this.dictCache[word];
+        // Try playing a URL; resolves true on success, false on failure
+        _tryAudioUrl(url) {
+            return new Promise(resolve => {
+                const a = new Audio(url);
+                a.onended = () => { this.audioPlaying = false; };
+                a.onerror = () => resolve(false);
+                a.play().then(() => resolve(true)).catch(() => resolve(false));
+            });
+        },
 
+        async playAudio(word) {
+            if (!word) return;
+            this.audioPlaying = true;
+
+            // 1. Free Dictionary API — human recordings for common words
+            const d = this.dictCache[word];
             if (d && d.audio) {
-                const audio = new Audio(d.audio);
-                this.audioPlaying = true;
-                audio.play()
-                    .then(() => {
-                        audio.addEventListener('ended', () => { this.audioPlaying = false; });
-                    })
-                    .catch(() => {
-                        this.audioPlaying = false;
-                        this.tts(word);
-                    });
-            } else {
-                this.tts(word);
+                if (await this._tryAudioUrl(d.audio)) return;
             }
+
+            // 2. Youdao Dictionary — professional TTS, wide coverage incl. phrases & tech terms
+            const youdao = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`;
+            if (await this._tryAudioUrl(youdao)) return;
+
+            // 3. Browser TTS — best available voice as last resort
+            this.audioPlaying = false;
+            this.tts(word);
         },
 
         tts(word) {
             if (!('speechSynthesis' in window)) return;
             window.speechSynthesis.cancel();
             const u = new SpeechSynthesisUtterance(word);
-            u.lang  = 'en-US';
-            u.rate  = 0.85;
+            u.lang = 'en-US';
+            u.rate = 0.85;
+            // Prefer high-quality cloud/neural voices over local system voices
+            const voices = speechSynthesis.getVoices();
+            const PREF = [
+                'Google US English',
+                'Microsoft Aria Online (Natural) - English (United States)',
+                'Microsoft Ana Online (Natural) - English (United States)',
+                'Microsoft Jenny Online (Natural) - English (United States)',
+                'Samantha', 'Alex', 'Karen',
+            ];
+            const best = PREF.map(n => voices.find(v => v.name === n)).find(Boolean)
+                || voices.find(v => v.lang === 'en-US' && !v.localService)
+                || voices.find(v => v.lang.startsWith('en'));
+            if (best) u.voice = best;
             this.audioPlaying = true;
-            u.onend = () => { this.audioPlaying = false; };
+            u.onend  = () => { this.audioPlaying = false; };
             u.onerror = () => { this.audioPlaying = false; };
             window.speechSynthesis.speak(u);
         },
@@ -4536,6 +4564,11 @@ new Vue({
     },
     mounted() {
         window.addEventListener('keydown', this.onKey);
+        // Pre-load TTS voice list (async on some browsers; fire-and-forget)
+        if ('speechSynthesis' in window) {
+            speechSynthesis.getVoices();
+            speechSynthesis.addEventListener('voiceschanged', () => speechSynthesis.getVoices());
+        }
         // Save when user switches tabs / goes to background on mobile
         this._onVisibility = () => {
             if (document.hidden) {
