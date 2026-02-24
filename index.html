@@ -550,110 +550,92 @@
         .st-mature  { background: rgba(139,92,246,.25);  color: #c4b5fd; }
         .st-relearn { background: rgba(239,68,68,.25);   color: #fca5a5; }
 
-        .back-fullform {
-            font-size: 0.8rem;
-            color: rgba(255,255,255,.55);
-            text-align: center;
-            margin-bottom: 4px;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-            padding: 0 12px;
+        /* ── Card back layout ──────────────────────────────────── */
+        /* ① word + IPA inline header */
+        .back-header {
+            display: flex; align-items: baseline;
+            justify-content: center; gap: 8px;
+            margin-bottom: 2px;
         }
         .back-word {
-            font-size: 1.0rem;
-            font-weight: 700;
-            color: rgba(255,255,255,.6);
-            text-align: center;
+            font-size: 1.05rem; font-weight: 700;
+            color: rgba(255,255,255,.72);
             letter-spacing: 0.04em;
-            margin-bottom: 4px;
-            padding: 0 12px;
         }
         .back-ipa {
             font-family: 'SF Mono', 'Fira Mono', Menlo, monospace;
-            font-size: 0.82rem;
-            color: rgba(255,255,255,.6);
-            text-align: center;
-            letter-spacing: 0.03em;
-            margin-bottom: 6px;
+            font-size: 0.76rem;
+            color: rgba(255,255,255,.4);
+            letter-spacing: 0.02em;
         }
-        .back-zh {
-            font-size: 2.1rem;
-            font-weight: 800;
+        /* ② full form (abbreviations) */
+        .back-fullform {
+            font-size: 0.76rem;
+            color: rgba(255,255,255,.42);
             text-align: center;
-            line-height: 1.2;
+            margin-bottom: 6px;
+            letter-spacing: 0.01em;
+            padding: 0 12px;
+        }
+        /* ③ Chinese meaning — hero */
+        .back-zh {
+            font-size: 2.1rem; font-weight: 800;
+            text-align: center; line-height: 1.2;
+            margin-top: 2px; margin-bottom: 8px;
+        }
+        /* ④ pos badge + English definition — same row */
+        .back-def-row {
+            display: flex; align-items: flex-start;
+            justify-content: center; flex-wrap: wrap;
+            gap: 6px; padding: 0 16px;
         }
         .back-pos {
-            display: inline-block;
-            background: rgba(255,255,255,.15);
-            border-radius: 99px;
-            padding: 2px 10px;
-            font-size: 0.74rem;
-            font-weight: 600;
-            margin-top: 6px;
+            display: inline-flex; align-items: center;
+            background: rgba(255,255,255,.14);
+            border-radius: 99px; padding: 2px 9px;
+            font-size: 0.7rem; font-weight: 700;
+            letter-spacing: 0.02em; flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .back-def {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,.5);
+            font-style: italic;
+            text-align: left; line-height: 1.45;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; line-clamp: 2;
+            -webkit-box-orient: vertical; overflow: hidden;
+        }
+        /* ⑤ example sentences with separator */
+        .back-examples {
+            width: 100%;
+            border-top: 1px solid rgba(255,255,255,.1);
+            margin-top: 12px; padding-top: 10px;
+            display: flex; flex-direction: column; gap: 6px;
+            padding-left: 8px; padding-right: 8px;
         }
         .back-example {
             font-size: 0.79rem;
-            color: rgba(255,255,255,.72);
-            font-style: italic;
-            text-align: center;
-            margin-top: 8px;
-            padding: 0 8px;
+            color: rgba(255,255,255,.7);
+            font-style: italic; text-align: center;
             display: -webkit-box;
-            -webkit-line-clamp: 2;
-            line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            -webkit-line-clamp: 2; line-clamp: 2;
+            -webkit-box-orient: vertical; overflow: hidden;
             line-height: 1.5;
         }
         .back-example2 {
             font-size: 0.73rem;
-            color: rgba(255,255,255,.48);
-            font-style: italic;
-            text-align: center;
-            margin-top: 5px;
-            padding: 0 8px;
+            color: rgba(255,255,255,.45);
+            font-style: italic; text-align: center;
             display: -webkit-box;
-            -webkit-line-clamp: 2;
-            line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            -webkit-line-clamp: 2; line-clamp: 2;
+            -webkit-box-orient: vertical; overflow: hidden;
             line-height: 1.5;
         }
-        .back-example-src {
-            font-size: 0.62rem;
-            color: rgba(255,255,255,.3);
-            text-align: center;
-            margin-top: 3px;
-            font-style: normal;
-        }
         .back-note {
-            font-size: 0.64rem;
-            color: rgba(255,255,255,.4);
-            text-align: center;
-            margin-top: 2px;
-            padding: 0 12px;
-            line-height: 1.4;
-        }
-        /* English definition below Chinese meaning — reinforces monolingual comprehension */
-        .back-def {
-            font-size: 0.73rem;
-            color: rgba(255,255,255,.52);
-            font-style: italic;
-            text-align: center;
-            padding: 0 14px;
-            margin-top: 3px;
-            line-height: 1.45;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .back-footer {
-            position: absolute; bottom: 12px;
-            font-size: 0.76rem;
-            color: rgba(255,255,255,.4);
-            letter-spacing: 0.01em;
+            font-size: 0.64rem; color: rgba(255,255,255,.38);
+            text-align: center; margin-top: 4px;
+            padding: 0 12px; line-height: 1.4;
         }
 
         /* controls */
@@ -2255,23 +2237,26 @@
                     <div class="stage-tag" :class="'st-' + curStage">
                         {{stageLabel[curStage]}}
                     </div>
+                    <!-- ① word + IPA on one line -->
+                    <div class="back-header">
+                        <span class="back-word">{{cur.word}}</span>
+                        <span class="back-ipa" v-if="curDict && curDict.ipa">{{curDict.ipa}}</span>
+                    </div>
+                    <!-- ② full form (abbreviations) -->
                     <div class="back-fullform" v-if="curZhParts.full">{{curZhParts.full}}</div>
-                    <div class="back-word">{{cur.word}}</div>
-                    <div class="back-ipa" v-if="curDict && curDict.ipa">/{{curDict.ipa}}/</div>
+                    <!-- ③ Chinese meaning — hero -->
                     <div class="back-zh">{{curZhParts.zh}}</div>
-                    <!-- English definition — deepens monolingual comprehension -->
-                    <div class="back-def" v-if="curDict && curDict.definition">{{curDict.definition}}</div>
-                    <div class="back-pos" v-if="curDict && curDict.pos">
-                        {{posZh(curDict.pos)}}
+                    <!-- ④ pos + English definition -->
+                    <div class="back-def-row" v-if="(curDict && curDict.pos) || (curDict && curDict.definition)">
+                        <span class="back-pos" v-if="curDict && curDict.pos">{{posZh(curDict.pos)}}</span>
+                        <span class="back-def" v-if="curDict && curDict.definition">{{curDict.definition}}</span>
                     </div>
-                    <div class="back-example" v-if="curExample">
-                        "{{curExample.text}}"
-                    </div>
-                    <div class="back-example2" v-if="curExample2">
-                        "{{curExample2}}"
+                    <!-- ⑤ example sentences with separator -->
+                    <div class="back-examples" v-if="curExample || curExample2">
+                        <div class="back-example" v-if="curExample">"{{curExample.text}}"</div>
+                        <div class="back-example2" v-if="curExample2">"{{curExample2}}"</div>
                     </div>
                     <div class="back-note" v-if="curNote">{{curNote}}</div>
-                    <div class="back-footer">{{cur.word}}</div>
                 </div>
             </div>
         </div>
