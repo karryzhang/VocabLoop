@@ -1572,7 +1572,7 @@
             display: flex; flex-direction: column; align-items: center;
             text-align: center; gap: 8px; padding: 16px 0 8px;
         }
-        .ob-logo    { font-size: 3.6rem; line-height: 1; }
+        .ob-logo    { width: 80px; height: 80px; border-radius: 20px; object-fit: cover; box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
         .ob-brand   { font-size: 2rem; font-weight: 900; color: var(--text); letter-spacing: -0.02em; }
         .ob-tagline { font-size: 0.85rem; color: var(--muted); }
         .ob-section { display: flex; flex-direction: column; gap: 12px; }
@@ -1617,6 +1617,105 @@
         }
         .ob-cta:hover  { transform: translateY(-1px); box-shadow: 0 6px 26px rgba(139,92,246,0.48); }
         .ob-cta:active { transform: scale(0.98); box-shadow: none; }
+        /* ob-panel fills overlay on mobile */
+        .ob-panel {
+            display: flex; flex-direction: column;
+            flex: 1; width: 100%; overflow: hidden;
+        }
+        /* Large screen: centered card modal */
+        @media (min-width: 700px) {
+            .ob-overlay {
+                align-items: center; justify-content: center;
+                background: rgba(15,23,42,0.55);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+                animation: none;
+                padding-top: 0;
+            }
+            .ob-panel {
+                flex: none;
+                width: 100%; max-width: 560px;
+                max-height: 85vh;
+                background: var(--bg);
+                border-radius: 24px;
+                overflow: hidden;
+                box-shadow: 0 24px 64px rgba(0,0,0,0.28);
+                animation: rdSlideUp 0.32s cubic-bezier(.32,.72,0,1);
+            }
+            .ob-footer {
+                padding-bottom: 20px;
+            }
+            .ob-decks {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+            .ob-deck {
+                flex-direction: column; gap: 8px;
+                align-items: flex-start;
+            }
+        }
+
+        /* ── Daily Welcome ───────────────────────────────────────────────── */
+        .dw-overlay {
+            position: fixed; inset: 0; z-index: 410;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(15,23,42,0.52);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            padding: 24px 20px;
+            animation: fadeIn 0.22s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .dw-card {
+            width: 100%; max-width: 400px;
+            background: var(--bg);
+            border-radius: 24px;
+            padding: 28px 24px 22px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.26);
+            position: relative;
+            animation: scaleIn 0.28s cubic-bezier(.32,.72,0,1);
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.92) translateY(14px); }
+            to   { opacity: 1; transform: scale(1)    translateY(0);    }
+        }
+        .dw-close {
+            position: absolute; top: 16px; right: 16px;
+            background: none; border: none;
+            font-size: 0.82rem; color: var(--muted); cursor: pointer;
+            padding: 4px 8px; border-radius: 6px; transition: color 0.15s;
+        }
+        .dw-close:hover { color: var(--text); }
+        .dw-streak { text-align: center; padding: 4px 0 18px; }
+        .dw-streak-emoji { font-size: 2.8rem; line-height: 1; margin-bottom: 10px; }
+        .dw-streak-num {
+            font-size: 2.2rem; font-weight: 900; color: var(--text);
+            letter-spacing: -0.03em; line-height: 1;
+        }
+        .dw-streak-sub {
+            font-size: 0.88rem; color: var(--muted); margin-top: 8px; line-height: 1.45;
+        }
+        .dw-divider { height: 1px; background: var(--border); margin: 0 0 18px; }
+        .dw-quote-wrap { padding: 0 2px 20px; }
+        .dw-quote-text {
+            font-size: 0.9rem; color: var(--text); line-height: 1.65;
+            font-style: italic; letter-spacing: 0.01em;
+        }
+        .dw-quote-author {
+            font-size: 0.78rem; color: var(--muted); margin-top: 10px;
+            text-align: right; font-weight: 600;
+        }
+        .dw-cta {
+            width: 100%; padding: 14px;
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            color: #fff; border: none; border-radius: 14px;
+            font-size: 0.95rem; font-weight: 800; cursor: pointer;
+            box-shadow: 0 4px 16px rgba(139,92,246,0.35);
+            transition: transform 0.1s, box-shadow 0.15s;
+        }
+        .dw-cta:hover  { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(139,92,246,0.45); }
+        .dw-cta:active { transform: scale(0.98); box-shadow: none; }
 
         /* ── Word list modal ─────────────────────────────────────────────── */
         .wl-overlay {
@@ -1723,7 +1822,7 @@
             <button class="chip chip-master chip-btn" @click="showWordList('mastered')"
                     :title="ui.wlMastered">🏆 <transition name="chip-num"><span :key="masteredCount">{{masteredCount}}</span></transition></button>
             <span class="chip chip-streak" v-if="streak >= 3">🔥 {{streak}}</span>
-            <span class="chip chip-daily"  v-if="dailyStreak >= 2">📅 {{dailyStreak}}{{ui.dayUnit}}</span>
+            <button class="chip chip-daily chip-btn" v-if="dailyStreak >= 2" @click="openDailyWelcome">📅 {{dailyStreak}}{{ui.dayUnit}}</button>
         </div>
     </div>
 
@@ -2332,6 +2431,7 @@
 
     <!-- ── Onboarding overlay (new user) ───────────────────────────── -->
     <div v-if="showOnboarding" class="ob-overlay">
+        <div class="ob-panel">
         <!-- Header -->
         <div class="ob-hd">
             <span></span>
@@ -2343,7 +2443,7 @@
 
             <!-- Hero -->
             <div class="ob-hero">
-                <div class="ob-logo">📖</div>
+                <img class="ob-logo" src="icons/apple-touch-icon.png" alt="VocabLoop">
                 <div class="ob-brand">VocabLoop</div>
                 <div class="ob-tagline">{{ui.obTagline}}</div>
             </div>
@@ -2408,6 +2508,31 @@
         <div class="ob-footer">
             <button class="ob-cta" @click="dismissOnboarding">{{ui.obCta}}</button>
         </div>
+        </div><!-- /ob-panel -->
+    </div>
+
+    <!-- ── Daily Welcome (returning users) ───────────────────────────────── -->
+    <div v-if="showDailyWelcome" class="dw-overlay" @click.self="dismissDailyWelcome">
+        <div class="dw-card">
+            <button class="dw-close" @click="dismissDailyWelcome">✕</button>
+
+            <!-- Streak hero -->
+            <div class="dw-streak">
+                <div class="dw-streak-emoji">{{ui.dwStreakEmoji(dailyWelcomeDay)}}</div>
+                <div class="dw-streak-num">{{ui.dwStreakLabel(dailyWelcomeDay)}}</div>
+                <div class="dw-streak-sub">{{ui.dwSubtitle(dailyWelcomeDay)}}</div>
+            </div>
+
+            <div class="dw-divider"></div>
+
+            <!-- Quote -->
+            <div v-if="dailyWelcomeQuote" class="dw-quote-wrap">
+                <div class="dw-quote-text">"{{dailyWelcomeQuote.text}}"</div>
+                <div class="dw-quote-author">— {{dailyWelcomeQuote.author}}</div>
+            </div>
+
+            <button class="dw-cta" @click="dismissDailyWelcome">{{ui.dwCta}}</button>
+        </div>
     </div>
 
 </div>
@@ -2466,6 +2591,40 @@
 <script>
 // ── Internationalisation ────────────────────────────────────────────────────
 const LANG = /^zh/i.test(navigator.language) ? 'zh' : 'en';
+// ── 30 quotes: perseverance · success · language learning ─────────────────
+const DAILY_QUOTES = [
+  { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+  { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
+  { text: "Success is the sum of small efforts, repeated day in and day out.", author: "Robert Collier" },
+  { text: "The limits of my language mean the limits of my world.", author: "Ludwig Wittgenstein" },
+  { text: "A different language is a different vision of life.", author: "Federico Fellini" },
+  { text: "To have another language is to possess a second soul.", author: "Charlemagne" },
+  { text: "Fall seven times, stand up eight.", author: "Japanese Proverb" },
+  { text: "The man who moves a mountain begins by carrying away small stones.", author: "Confucius" },
+  { text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson" },
+  { text: "You don't have to be great to start, but you have to start to be great.", author: "Zig Ziglar" },
+  { text: "The beautiful thing about learning is that no one can take it away from you.", author: "B.B. King" },
+  { text: "One language sets you in a corridor for life. Two languages open every door along the way.", author: "Frank Smith" },
+  { text: "Language is the road map of a culture.", author: "Rita Mae Brown" },
+  { text: "Perseverance is failing 19 times and succeeding the 20th.", author: "Julie Andrews" },
+  { text: "Energy and persistence conquer all things.", author: "Benjamin Franklin" },
+  { text: "It always seems impossible until it's done.", author: "Nelson Mandela" },
+  { text: "With languages, you are at home anywhere.", author: "Edmund de Waal" },
+  { text: "Small daily improvements over time lead to stunning results.", author: "Robin Sharma" },
+  { text: "Every accomplishment starts with the decision to try.", author: "John F. Kennedy" },
+  { text: "Continuous effort — not strength or intelligence — is the key to unlocking our potential.", author: "Winston Churchill" },
+  { text: "Learning is not attained by chance; it must be sought for with ardor and diligence.", author: "Abigail Adams" },
+  { text: "Knowledge of languages is the doorway to wisdom.", author: "Roger Bacon" },
+  { text: "He who knows no foreign languages knows nothing of his own.", author: "Goethe" },
+  { text: "Do not be embarrassed by your failures, learn from them and start again.", author: "Richard Branson" },
+  { text: "The more languages you know, the more you are human.", author: "Tomáš Masaryk" },
+  { text: "Excellence is not a destination but a continuous journey that never ends.", author: "Brian Tracy" },
+  { text: "Your future is created by what you do today, not tomorrow.", author: "Robert Kiyosaki" },
+  { text: "If you talk to a man in his own language, that goes to his heart.", author: "Nelson Mandela" },
+  { text: "A man who dares to waste one hour of time has not discovered the value of life.", author: "Charles Darwin" },
+  { text: "Every day is a new beginning. Take a deep breath and start again.", author: "Anonymous" },
+];
+
 const STRINGS = {
   zh: {
     deckPET: 'PET 词汇', deckCrypto: 'Crypto 词汇', deckDaily: '日常口语',
@@ -2573,6 +2732,10 @@ const STRINGS = {
     obStep3:         '每天坚持，系统安排最优复习时间',
     obCta:           '开始学习 →',
     obSkip:          '跳过',
+    dwStreakEmoji:   n => n >= 30 ? '🏆' : n >= 14 ? '🔥' : n >= 7 ? '✨' : '🌱',
+    dwStreakLabel:   n => `第 ${n} 天`,
+    dwSubtitle:      n => n >= 30 ? `连续学习 ${n} 天，你是真正的学习达人！` : n >= 14 ? `已坚持 ${n} 天，状态超棒，继续冲！` : n >= 7 ? `已坚持 ${n} 天，习惯正在养成！` : `已坚持 ${n} 天，继续保持！`,
+    dwCta:           '继续学习 →',
     practicePlayAgain:     '再听一遍',
     practiceExitBtn:       '退出练习',
     undoBtn:               '↩ 撤销',
@@ -2715,6 +2878,10 @@ const STRINGS = {
     obStep3:         'Study daily — the system schedules optimal reviews',
     obCta:           'Start Learning →',
     obSkip:          'Skip',
+    dwStreakEmoji:   n => n >= 30 ? '🏆' : n >= 14 ? '🔥' : n >= 7 ? '✨' : '🌱',
+    dwStreakLabel:   n => `Day ${n}`,
+    dwSubtitle:      n => n >= 30 ? `${n} days strong — you're a true learning champion!` : n >= 14 ? `${n} days in — you're on fire!` : n >= 7 ? `${n} days — a habit is forming!` : `${n} days and counting. Keep it up!`,
+    dwCta:           'Keep Learning →',
     practicePlayAgain:     'Play again',
     practiceExitBtn:       'Exit Practice',
     undoBtn:               '↩ Undo',
@@ -3045,6 +3212,9 @@ new Vue({
             showUndo:  false,  // undo button visibility
             wordListModal: null, // { stageGroup, title, words } — word list bottom sheet
             showOnboarding: false,
+            showDailyWelcome: false,
+            dailyWelcomeDay: 0,
+            dailyWelcomeQuote: null,
         };
     },
 
@@ -3395,10 +3565,27 @@ new Vue({
                 alert(UI.loadError(e.message, this.currentDeck.file));
             }
             this.loading = false;
-            // Show onboarding for first-time users
+            // Track first and last visit dates
+            const todayStr = new Date().toDateString();
+            if (!localStorage.getItem('first_visit_date')) {
+                try { localStorage.setItem('first_visit_date', todayStr); } catch(e) {}
+            }
+            // Show onboarding for first-time users; daily welcome for returning users
             if (!localStorage.getItem('onboarding_seen')) {
                 this.showOnboarding = true;
+            } else {
+                const lastVisit = localStorage.getItem('last_visit_date');
+                if (lastVisit !== todayStr) {
+                    const firstVisit = localStorage.getItem('first_visit_date') || todayStr;
+                    const dayCount = Math.floor((new Date(todayStr) - new Date(firstVisit)) / 86400000) + 1;
+                    if (dayCount >= 2) {
+                        this.dailyWelcomeDay = dayCount;
+                        this.dailyWelcomeQuote = DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)];
+                        this.showDailyWelcome = true;
+                    }
+                }
             }
+            try { localStorage.setItem('last_visit_date', todayStr); } catch(e) {}
         },
 
         // ── Build today's queue ───────────────────────────────────────────
@@ -3680,6 +3867,20 @@ new Vue({
         dismissOnboarding() {
             this.showOnboarding = false;
             try { localStorage.setItem('onboarding_seen', '1'); } catch (e) {}
+        },
+
+        // ── Daily welcome ─────────────────────────────────────────────────
+        openDailyWelcome() {
+            if (!this.dailyWelcomeDay) {
+                const todayStr = new Date().toDateString();
+                const firstVisit = localStorage.getItem('first_visit_date') || todayStr;
+                this.dailyWelcomeDay = Math.floor((new Date(todayStr) - new Date(firstVisit)) / 86400000) + 1;
+            }
+            this.dailyWelcomeQuote = DAILY_QUOTES[Math.floor(Math.random() * DAILY_QUOTES.length)];
+            this.showDailyWelcome = true;
+        },
+        dismissDailyWelcome() {
+            this.showDailyWelcome = false;
         },
 
         // ── Share ─────────────────────────────────────────────────────────
