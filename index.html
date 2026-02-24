@@ -10,7 +10,7 @@
     <meta name="keywords" content="英语单词,间隔重复,闪卡,PET词汇,英语学习,口语短语,vocabulary,flashcard,spaced repetition,英语背单词">
     <meta name="author" content="VocabLoop">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://karryzhang.github.io/vocabloop/">
+    <link rel="canonical" href="https://karryzhang.github.io/VocabLoop/">
 
     <!-- ── PWA / Home Screen ────────────────────────────────────────── -->
     <link rel="manifest" href="manifest.json">
@@ -27,10 +27,10 @@
     <!-- ── Open Graph (Facebook / WeChat / Slack 等预览) ─────────────── -->
     <meta property="og:type"        content="website">
     <meta property="og:site_name"   content="VocabLoop">
-    <meta property="og:url"         content="https://karryzhang.github.io/vocabloop/">
+    <meta property="og:url"         content="https://karryzhang.github.io/VocabLoop/">
     <meta property="og:title"       content="VocabLoop – 智能英语单词记忆">
     <meta property="og:description" content="基于间隔重复算法的英语词汇 PWA，PET 考试 · 日常口语 · 加密金融词汇，支持离线与真人发音。">
-    <meta property="og:image"       content="https://karryzhang.github.io/vocabloop/icons/icon-512.png">
+    <meta property="og:image"       content="https://karryzhang.github.io/VocabLoop/icons/icon-512.png">
     <meta property="og:image:width"  content="512">
     <meta property="og:image:height" content="512">
     <meta property="og:image:alt"   content="VocabLoop 图标 – 蓝色背景白色 V 字母与循环箭头">
@@ -40,7 +40,7 @@
     <meta name="twitter:card"        content="summary">
     <meta name="twitter:title"       content="VocabLoop – 智能英语单词记忆">
     <meta name="twitter:description" content="间隔重复闪卡 PWA，PET 考试 · 日常口语 · 加密词汇，随时随地背单词。">
-    <meta name="twitter:image"       content="https://karryzhang.github.io/vocabloop/icons/icon-512.png">
+    <meta name="twitter:image"       content="https://karryzhang.github.io/VocabLoop/icons/icon-512.png">
 
     <!-- ── JSON-LD 结构化数据 ─────────────────────────────────────────── -->
     <script type="application/ld+json">
@@ -48,14 +48,14 @@
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "VocabLoop",
-      "url": "https://karryzhang.github.io/vocabloop/",
+      "url": "https://karryzhang.github.io/VocabLoop/",
       "description": "基于间隔重复算法的英语词汇学习 PWA，涵盖 PET 考试词汇、日常口语短语和加密金融术语，支持离线使用与真人发音。",
       "applicationCategory": "EducationApplication",
       "operatingSystem": "Web, iOS, Android",
       "inLanguage": ["zh-CN", "en"],
       "isAccessibleForFree": true,
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "image": "https://karryzhang.github.io/vocabloop/icons/icon-512.png",
+      "image": "https://karryzhang.github.io/VocabLoop/icons/icon-512.png",
       "featureList": ["间隔重复算法", "PET词汇", "日常口语短语", "网络缩写", "加密金融词汇", "离线PWA", "真人发音"]
     }
     </script>
@@ -3457,12 +3457,12 @@ new Vue({
         // ── Share ─────────────────────────────────────────────────────────
         shareApp() {
             const text = LANG === 'zh'
-                ? `📚 VocabLoop — 间隔重复英语词汇 PWA\nPET / 日常口语 / Crypto 三大词库，科学记单词\n→ https://karryzhang.github.io/vocabloop/`
-                : `📚 VocabLoop — Spaced Repetition Vocabulary PWA\nPET / Daily English / Crypto — science-backed word learning\n→ https://karryzhang.github.io/vocabloop/`;
+                ? `📚 VocabLoop — 间隔重复英语词汇 PWA\nPET / 日常口语 / Crypto 三大词库，科学记单词\n→ https://karryzhang.github.io/VocabLoop/`
+                : `📚 VocabLoop — Spaced Repetition Vocabulary PWA\nPET / Daily English / Crypto — science-backed word learning\n→ https://karryzhang.github.io/VocabLoop/`;
             this._doShare(text);
         },
         shareSession() {
-            const url = 'https://karryzhang.github.io/vocabloop/';
+            const url = 'https://karryzhang.github.io/VocabLoop/';
             const streakLine = this.dailyStreak >= 2
                 ? (LANG === 'zh' ? `🔥 ${this.dailyStreak} 天连续学习\n` : `🔥 ${this.dailyStreak}-day streak\n`)
                 : '';
@@ -3472,7 +3472,7 @@ new Vue({
             this._doShare(text);
         },
         sharePractice() {
-            const url = 'https://karryzhang.github.io/vocabloop/';
+            const url = 'https://karryzhang.github.io/VocabLoop/';
             const pct = this.practiceQueue.length > 0
                 ? Math.round(this.practiceScore / this.practiceQueue.length * 100)
                 : 0;
