@@ -343,6 +343,11 @@
         .done-share-pill:hover  { border-color: var(--blue); color: var(--blue); }
         .done-share-pill:active { transform: scale(0.97); }
         .share-svg { vertical-align: middle; flex-shrink: 0; }
+        /* ── Sync button ── */
+        .sync-svg { vertical-align: middle; flex-shrink: 0; transition: transform .3s; }
+        .btn-hd.syncing .sync-svg { animation: syncSpin .8s linear infinite; }
+        .btn-hd.sync-ok { border-color: var(--green) !important; color: var(--green) !important; }
+        @keyframes syncSpin { to { transform: rotate(360deg); } }
         /* Practice done footer buttons */
         .prac-done-footer { display: flex; gap: 10px; width: 100%; margin-top: 4px; }
         .prac-foot-share {
@@ -1825,6 +1830,9 @@
                 <button class="btn-hd" @click="shareApp" :title="ui.shareBtn">
                     <svg class="share-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                 </button>
+                <button id="syncBtn" class="btn-hd" onclick="window.__vocabSync && window.__vocabSync.manualSync()" :title="ui.syncBtn">
+                    <svg id="syncIcon" class="sync-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+                </button>
                 <button id="accountBtn" class="btn-hd" onclick="window.location.href='account.html'" title="Account">👤</button>
                 <button class="btn-hd danger" @click="confirmReset">{{ui.resetBtn}}</button>
             </div>
@@ -2814,6 +2822,10 @@ const STRINGS = {
     pwaIOSStep2: '向下滑动，选择 <em>「添加到主屏幕」</em>',
     pwaIOSStep3: '点击右上角 <em>「添加」</em>，大功告成！',
     pwaIOSDismiss: '我知道了',
+    syncBtn: '同步', syncSyncing: '同步中…', syncDone: '已同步', syncFail: '同步失败',
+    syncPull: '正在拉取云端数据…', syncPush: '正在上传数据…',
+    syncMerged: '已合并云端与本地数据', syncNoAccount: '请先登录以同步学习记录',
+    syncUpToDate: '数据已是最新', syncLastSync: (t) => `上次同步：${t}`,
   },
   en: {
     deckPET: 'PET Vocab', deckCrypto: 'Crypto', deckDaily: 'Daily English', deckIELTS: 'IELTS',
@@ -2963,6 +2975,10 @@ const STRINGS = {
     pwaIOSStep2: 'Scroll down and tap <em>"Add to Home Screen"</em>',
     pwaIOSStep3: 'Tap <em>"Add"</em> in the top-right corner',
     pwaIOSDismiss: 'Got it',
+    syncBtn: 'Sync', syncSyncing: 'Syncing…', syncDone: 'Synced', syncFail: 'Sync failed',
+    syncPull: 'Pulling cloud data…', syncPush: 'Uploading data…',
+    syncMerged: 'Merged cloud and local data', syncNoAccount: 'Please log in to sync your progress',
+    syncUpToDate: 'Up to date', syncLastSync: (t) => `Last sync: ${t}`,
   },
 };
 const UI = STRINGS[LANG];
@@ -4932,6 +4948,268 @@ new Vue({
   }else{
     setAccountLabel();
   }
+})();
+</script>
+
+<!-- ── Cloud Sync Module ───────────────────────────────────────────────── -->
+<script>
+(function(){
+  'use strict';
+
+  /* ── Refs ── */
+  const SYNC_TS_KEY  = 'vocabloop_sync_ts';   // last successful sync timestamp
+  const DECK_IDS     = ['pet', 'daily', 'ielts', 'crypto'];
+  const GLOBAL_KEY   = 'srs_global_v1';
+  const DECK_PREF    = 'preferred_deck';
+  const DEBOUNCE_MS  = 3000;   // debounce push after save
+  let _debounceTimer = null;
+  let _syncing       = false;
+
+  /* ── Helpers ── */
+  function getAuth(){
+    try{ return JSON.parse(localStorage.getItem('vocabloop_auth')); } catch(e){ return null; }
+  }
+
+  function getSyncBtn(){ return document.getElementById('syncBtn'); }
+
+  function setSyncState(state){
+    const btn = getSyncBtn();
+    if(!btn) return;
+    btn.classList.remove('syncing', 'sync-ok');
+    if(state === 'syncing') btn.classList.add('syncing');
+    if(state === 'done')    btn.classList.add('sync-ok');
+    if(state === 'done'){
+      setTimeout(function(){ btn.classList.remove('sync-ok'); }, 2000);
+    }
+  }
+
+  /** Collect all syncable data from localStorage */
+  function collectLocal(){
+    const decks = {};
+    for(const id of DECK_IDS){
+      try{
+        const raw = localStorage.getItem('srs_' + id + '_v1');
+        if(raw) decks[id] = JSON.parse(raw);
+      } catch(e){}
+    }
+    let global = {};
+    try{
+      const raw = localStorage.getItem(GLOBAL_KEY);
+      if(raw) global = JSON.parse(raw);
+    } catch(e){}
+
+    let readingHistory = [];
+    try{
+      const raw = localStorage.getItem('reading_history');
+      if(raw) readingHistory = JSON.parse(raw);
+    } catch(e){}
+
+    return {
+      decks:          decks,
+      global:         global,
+      preferredDeck:  localStorage.getItem(DECK_PREF) || '',
+      readingHistory: readingHistory,
+    };
+  }
+
+  /** Apply merged cloud data back to localStorage and reload Vue state */
+  function applyData(data){
+    if(!data) return;
+
+    // Write deck states
+    if(data.decks){
+      for(const id of DECK_IDS){
+        if(data.decks[id]){
+          try{ localStorage.setItem('srs_' + id + '_v1', JSON.stringify(data.decks[id])); } catch(e){}
+        }
+      }
+    }
+
+    // Write global state
+    if(data.global){
+      try{ localStorage.setItem(GLOBAL_KEY, JSON.stringify(data.global)); } catch(e){}
+    }
+
+    // Write preferred deck
+    if(data.preferredDeck){
+      try{ localStorage.setItem(DECK_PREF, data.preferredDeck); } catch(e){}
+    }
+
+    // Write reading history
+    if(Array.isArray(data.readingHistory)){
+      try{ localStorage.setItem('reading_history', JSON.stringify(data.readingHistory)); } catch(e){}
+    }
+
+    // Record sync timestamp
+    try{ localStorage.setItem(SYNC_TS_KEY, String(Date.now())); } catch(e){}
+  }
+
+  /** Reload the Vue app's in-memory state from localStorage (if Vue app exists) */
+  function reloadVueState(){
+    var app = document.getElementById('app');
+    if(app && app.__vue__){
+      var vm = app.__vue__;
+      vm.loadSaved();
+      vm.loadGlobal();
+      vm.buildQueue();
+    }
+  }
+
+  /** Call the sync API */
+  async function callSync(payload){
+    const r = await fetch('/api/sync', {
+      method: 'POST',
+      headers: {'content-type':'application/json'},
+      body: JSON.stringify(payload),
+    });
+    return r.json();
+  }
+
+  /**
+   * Full sync: merge local with cloud, apply result.
+   * Returns true on success.
+   */
+  async function doSync(){
+    const auth = getAuth();
+    if(!auth || !auth.token) return false;
+    if(_syncing) return false;
+    _syncing = true;
+    setSyncState('syncing');
+
+    try{
+      const localData = collectLocal();
+      const result = await callSync({
+        action: 'merge',
+        token:  auth.token,
+        data:   localData,
+      });
+
+      if(result.ok && result.data){
+        applyData(result.data);
+        reloadVueState();
+        setSyncState('done');
+        return true;
+      } else {
+        setSyncState('');
+        return false;
+      }
+    } catch(e){
+      setSyncState('');
+      return false;
+    } finally {
+      _syncing = false;
+    }
+  }
+
+  /**
+   * Push-only sync (debounced): upload local data to cloud without pulling.
+   * Used after each saveState/saveGlobal call.
+   */
+  async function debouncedPush(){
+    const auth = getAuth();
+    if(!auth || !auth.token) return;
+    clearTimeout(_debounceTimer);
+    _debounceTimer = setTimeout(async function(){
+      if(_syncing) return;
+      _syncing = true;
+      setSyncState('syncing');
+      try{
+        const localData = collectLocal();
+        const result = await callSync({
+          action: 'push',
+          token:  auth.token,
+          data:   localData,
+        });
+        if(result.ok){
+          try{ localStorage.setItem(SYNC_TS_KEY, String(Date.now())); } catch(e){}
+          setSyncState('done');
+        } else {
+          setSyncState('');
+        }
+      } catch(e){
+        setSyncState('');
+      } finally {
+        _syncing = false;
+      }
+    }, DEBOUNCE_MS);
+  }
+
+  /**
+   * Manual sync (triggered by sync button click).
+   */
+  async function manualSync(){
+    var auth = getAuth();
+    if(!auth || !auth.token){
+      // Show toast via Vue app if possible
+      var app = document.getElementById('app');
+      if(app && app.__vue__ && app.__vue__.showToast){
+        app.__vue__.showToast(typeof UI !== 'undefined' ? UI.syncNoAccount : 'Please log in first', 'bad');
+      }
+      return;
+    }
+    var ok = await doSync();
+    var app = document.getElementById('app');
+    if(app && app.__vue__ && app.__vue__.showToast){
+      if(ok) app.__vue__.showToast(typeof UI !== 'undefined' ? UI.syncDone : 'Synced!', 'good');
+      else   app.__vue__.showToast(typeof UI !== 'undefined' ? UI.syncFail : 'Sync failed', 'bad');
+    }
+  }
+
+  /* ── Hook into Vue app's save methods ── */
+  function hookSaveState(){
+    var app = document.getElementById('app');
+    if(!app || !app.__vue__) return;
+    var vm = app.__vue__;
+
+    // Wrap saveState
+    var origSave = vm.saveState.bind(vm);
+    vm.saveState = function(){
+      origSave();
+      debouncedPush();
+    };
+
+    // Wrap saveGlobal
+    var origGlobal = vm.saveGlobal.bind(vm);
+    vm.saveGlobal = function(){
+      origGlobal();
+      // Push is already debounced, so calling again just resets the timer
+      debouncedPush();
+    };
+  }
+
+  /* ── Auto-sync on page load if logged in ── */
+  function init(){
+    var auth = getAuth();
+    if(auth && auth.token){
+      // Sync on load (merge cloud + local)
+      doSync().then(function(){
+        // After initial sync, hook save methods for auto-push
+        hookSaveState();
+      });
+    } else {
+      // Not logged in — just hook saves in case they log in later (no-op push without token)
+      hookSaveState();
+    }
+  }
+
+  /* ── Sync when returning to app from background ── */
+  document.addEventListener('visibilitychange', function(){
+    if(!document.hidden){
+      var auth = getAuth();
+      if(auth && auth.token) doSync();
+    }
+  });
+
+  /* ── Expose for manual trigger ── */
+  window.__vocabSync = { manualSync: manualSync, doSync: doSync };
+
+  /* ── Start ── */
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', function(){ setTimeout(init, 300); });
+  } else {
+    setTimeout(init, 300);
+  }
+
 })();
 </script>
 </body>

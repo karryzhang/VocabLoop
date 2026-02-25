@@ -32,7 +32,8 @@ VocabLoop/
 ├── account.html            # Login/registration page (standalone, no Vue)
 ├── manifest.json           # PWA manifest
 ├── api/
-│   └── auth.js             # Node.js auth endpoint (register/login)
+│   ├── auth.js             # Node.js auth endpoint (register/login)
+│   └── sync.js             # Cloud sync endpoint (push/pull/merge learning data)
 ├── data/
 │   ├── pet-words-1000.json       # Cambridge PET exam vocab (1000 words)
 │   ├── daily-words-1000.json     # Daily conversational phrases (1000+ words)
@@ -78,6 +79,42 @@ node scripts/enrich-vocab.js --dry-run
 
 Static hosting (GitHub Pages, Vercel, Netlify). The `api/auth.js` endpoint requires a Node.js runtime (Vercel serverless).
 
+## Cloud Sync
+
+Learning data is synced to the cloud via `api/sync.js` so users can continue across devices.
+
+### Sync Architecture
+
+- **Endpoint**: `POST /api/sync` with actions: `push`, `pull`, `merge`
+- **Auth**: Token from `vocabloop_auth` localStorage (base64url-encoded)
+- **Storage**: In-memory Map keyed by username (same pattern as auth.js; replace with DB for production)
+
+### Data Synced
+
+| Key | Synced | Reason |
+|-----|--------|--------|
+| `srs_{deck}_v1` | Yes | Core learning state (per-word SRS data) |
+| `srs_global_v1` | Yes | Streaks, achievements, total reviews |
+| `preferred_deck` | Yes | Last selected deck |
+| `reading_history` | Yes | AI-generated reading articles |
+| `shared_dict_v1` | No | Cache, can be rebuilt from API |
+| `vocabloop_theme` | No | Device preference |
+| `vocabloop_auth` | No | Device session |
+
+### Merge Strategy
+
+- **Per-word merge**: For SRS states, each word is compared independently; the version with the later `next` review timestamp wins (more recently studied)
+- **Global state**: `dailyStreak` and `totalReviewed` take the max; `achievements` are unioned; `lastStudyDate` takes the later date
+- **Reading history**: Deduplicated union, capped at 50 entries
+
+### Sync Triggers
+
+1. **On page load**: If logged in, full merge sync (cloud + local → merged result)
+2. **After each save**: Debounced push (3s) after `saveState()` / `saveGlobal()`
+3. **On visibility change**: Pull when returning from background
+4. **Manual**: Sync button in header
+5. **On login/register**: Merge sync in account.html before redirect
+
 ## Code Conventions
 
 ### JavaScript
@@ -122,6 +159,7 @@ Fields: `word` (required), `zh` (Chinese translation, required), `pos` (part of 
 | `srs_global_v1` | Cross-deck global state (achievements, streaks, XP) |
 | `vocabloop_theme` | Theme preference (`light`/`dark`) |
 | `vocabloop_auth` | Auth session (`{ username, token, at }`) |
+| `vocabloop_sync_ts` | Timestamp of last successful cloud sync |
 
 ### SRS Algorithm (Custom SM-2 Variant)
 

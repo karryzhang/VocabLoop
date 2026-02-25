@@ -409,11 +409,61 @@
     }
     function clearAuth(){ localStorage.removeItem('vocabloop_auth'); }
 
-    /* ── Success overlay + redirect ── */
-    function showSuccessAndRedirect(){
+    /* ── Success overlay + redirect with cloud sync ── */
+    async function showSuccessAndRedirect(){
       const overlay = $('successOverlay');
       overlay.classList.add('show');
+      /* Trigger a merge sync so cloud data is pulled before redirect */
+      try{ await syncOnAuth(); }catch(e){ /* non-blocking: redirect even if sync fails */ }
       setTimeout(() => { window.location.href = '/'; }, 1200);
+    }
+
+    /** Sync learning data with cloud on login/register */
+    async function syncOnAuth(){
+      const auth = getAuth();
+      if(!auth || !auth.token) return;
+      try{
+        /* Collect all local learning data */
+        const DECK_IDS = ['pet', 'daily', 'ielts', 'crypto'];
+        const decks = {};
+        for(const id of DECK_IDS){
+          try{
+            const raw = localStorage.getItem('srs_' + id + '_v1');
+            if(raw) decks[id] = JSON.parse(raw);
+          }catch(e){}
+        }
+        let global = {};
+        try{ const raw = localStorage.getItem('srs_global_v1'); if(raw) global = JSON.parse(raw); }catch(e){}
+        let readingHistory = [];
+        try{ const raw = localStorage.getItem('reading_history'); if(raw) readingHistory = JSON.parse(raw); }catch(e){}
+
+        const localData = {
+          decks: decks,
+          global: global,
+          preferredDeck: localStorage.getItem('preferred_deck') || '',
+          readingHistory: readingHistory,
+        };
+
+        const r = await fetch('/api/sync', {
+          method:'POST', headers:{'content-type':'application/json'},
+          body: JSON.stringify({ action:'merge', token:auth.token, data:localData })
+        });
+        const result = await r.json();
+
+        /* Apply merged data back to localStorage */
+        if(result.ok && result.data){
+          const d = result.data;
+          if(d.decks){
+            for(const id of DECK_IDS){
+              if(d.decks[id]) try{ localStorage.setItem('srs_'+id+'_v1', JSON.stringify(d.decks[id])); }catch(e){}
+            }
+          }
+          if(d.global) try{ localStorage.setItem('srs_global_v1', JSON.stringify(d.global)); }catch(e){}
+          if(d.preferredDeck) try{ localStorage.setItem('preferred_deck', d.preferredDeck); }catch(e){}
+          if(Array.isArray(d.readingHistory)) try{ localStorage.setItem('reading_history', JSON.stringify(d.readingHistory)); }catch(e){}
+          try{ localStorage.setItem('vocabloop_sync_ts', String(Date.now())); }catch(e){}
+        }
+      }catch(e){ /* ignore sync errors — don't block redirect */ }
     }
 
     /* ── Shake animation helper ── */
