@@ -4242,9 +4242,14 @@ new Vue({
                     headers: { 'content-type': 'application/json' },
                     body: '{}',
                 });
-                // Real backend returns JSON; static 404 page returns HTML
                 const ct = (res.headers.get('content-type') || '');
-                this.backendAvailable = ct.includes('application/json') || ct.includes('text/json');
+                if (ct.includes('application/json') || ct.includes('text/json')) {
+                    // Verify response body has expected backend signature
+                    const data = await res.json();
+                    this.backendAvailable = !!(data && typeof data.ok === 'boolean' && typeof data.message === 'string');
+                } else {
+                    this.backendAvailable = false;
+                }
             } catch (e) {
                 this.backendAvailable = false;
             }
