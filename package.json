@@ -1,0 +1,9 @@
+{
+  "name": "vocabloop-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VocabLoop backend API (auth + sync)",
+  "dependencies": {
+    "better-sqlite3": "^11.7.0"
+  }
+}

@@ -1,9 +1,5 @@
 const crypto = require('crypto');
-
-if (!global.__VOCABLOOP_USERS__) {
-  global.__VOCABLOOP_USERS__ = new Map();
-}
-const users = global.__VOCABLOOP_USERS__;
+const { getDb } = require('./db');
 
 function normalizeUsername(input = '') {
   return String(input).trim().toLowerCase();
@@ -34,6 +30,7 @@ module.exports = async (req, res) => {
     return res.status(405).json({ ok: false, message: 'Method not allowed' });
   }
 
+  const db = getDb();
   const { action, username, password } = req.body || {};
   const u = normalizeUsername(username);
 
@@ -44,12 +41,14 @@ module.exports = async (req, res) => {
     if (!validatePassword(password)) {
       return res.status(400).json({ ok: false, message: 'Password must be at least 6 digits.' });
     }
-    if (users.has(u)) {
+
+    const existing = db.prepare('SELECT 1 FROM users WHERE username = ?').get(u);
+    if (existing) {
       return res.status(409).json({ ok: false, message: 'Username already exists.' });
     }
 
     const { salt, hash } = hashPassword(password);
-    users.set(u, { salt, hash, createdAt: Date.now() });
+    db.prepare('INSERT INTO users (username, salt, hash, created_at) VALUES (?, ?, ?, ?)').run(u, salt, hash, Date.now());
 
     return res.status(200).json({ ok: true, message: 'Registered successfully.', user: { username: u }, token: token(u) });
   }
@@ -59,7 +58,7 @@ module.exports = async (req, res) => {
       return res.status(400).json({ ok: false, message: 'Invalid username or password format.' });
     }
 
-    const user = users.get(u);
+    const user = db.prepare('SELECT salt, hash FROM users WHERE username = ?').get(u);
     if (!user || !verifyPassword(password, user.salt, user.hash)) {
       return res.status(401).json({ ok: false, message: 'Invalid credentials.' });
     }

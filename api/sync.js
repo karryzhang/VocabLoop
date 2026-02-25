@@ -8,14 +8,10 @@
  *
  * Auth: token from vocabloop_auth (base64url-encoded "username:ts:random")
  *
- * Storage: in-memory Map (same pattern as auth.js).
- * For production, replace with a database (Vercel KV, Supabase, etc.).
+ * Storage: SQLite via api/db.js (.data/vocabloop.db)
  */
 
-if (!global.__VOCABLOOP_SYNC__) {
-  global.__VOCABLOOP_SYNC__ = new Map();   // username → { data, updatedAt }
-}
-const store = global.__VOCABLOOP_SYNC__;
+const { getDb } = require('./db');
 
 /**
  * Extract username from token.
@@ -120,6 +116,7 @@ module.exports = async (req, res) => {
     return res.status(405).json({ ok: false, message: 'Method not allowed' });
   }
 
+  const db = getDb();
   const { action, token, data } = req.body || {};
   const username = getUserFromToken(token);
 
@@ -132,17 +129,18 @@ module.exports = async (req, res) => {
     if (!data || typeof data !== 'object') {
       return res.status(400).json({ ok: false, message: 'Missing data payload.' });
     }
-    store.set(username, { data, updatedAt: Date.now() });
-    return res.status(200).json({ ok: true, message: 'Data saved.', updatedAt: Date.now() });
+    const now = Date.now();
+    db.prepare('INSERT OR REPLACE INTO sync_data (username, data, updated_at) VALUES (?, ?, ?)').run(username, JSON.stringify(data), now);
+    return res.status(200).json({ ok: true, message: 'Data saved.', updatedAt: now });
   }
 
   // ── PULL: client downloads cloud copy ──────────────────────────────────
   if (action === 'pull') {
-    const record = store.get(username);
+    const record = db.prepare('SELECT data, updated_at FROM sync_data WHERE username = ?').get(username);
     if (!record) {
       return res.status(200).json({ ok: true, data: null, message: 'No cloud data found.' });
     }
-    return res.status(200).json({ ok: true, data: record.data, updatedAt: record.updatedAt });
+    return res.status(200).json({ ok: true, data: JSON.parse(record.data), updatedAt: record.updated_at });
   }
 
   // ── MERGE: two-way merge, return merged result and save to cloud ──────
@@ -150,11 +148,12 @@ module.exports = async (req, res) => {
     if (!data || typeof data !== 'object') {
       return res.status(400).json({ ok: false, message: 'Missing data payload.' });
     }
-    const record = store.get(username);
-    const cloudData = record ? record.data : {};
+    const record = db.prepare('SELECT data FROM sync_data WHERE username = ?').get(username);
+    const cloudData = record ? JSON.parse(record.data) : {};
     const merged = mergeAll(data, cloudData);
-    store.set(username, { data: merged, updatedAt: Date.now() });
-    return res.status(200).json({ ok: true, data: merged, updatedAt: Date.now(), message: 'Merged successfully.' });
+    const now = Date.now();
+    db.prepare('INSERT OR REPLACE INTO sync_data (username, data, updated_at) VALUES (?, ?, ?)').run(username, JSON.stringify(merged), now);
+    return res.status(200).json({ ok: true, data: merged, updatedAt: now, message: 'Merged successfully.' });
   }
 
   return res.status(400).json({ ok: false, message: 'Unsupported action. Use push, pull, or merge.' });
