@@ -3601,9 +3601,11 @@ new Vue({
             this.slideshowMode ? this.stopSlideshow() : this.startSlideshow();
         },
         startSlideshow() {
-            const words = this.getTodayPracticeWords();
+            // Use current SRS queue (all today's pending words);
+            // fall back to today's practiced words if session is already done.
+            const words = this.queue.length ? [...this.queue] : this.getTodayPracticeWords();
             if (!words.length) return;
-            this.slideshowQueue = [...words];
+            this.slideshowQueue = words;
             this.slideshowIdx   = 0;
             this.slideshowMode  = true;
             this.flipped        = false;
