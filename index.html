@@ -1637,7 +1637,7 @@
             }
             .ob-decks {
                 display: grid;
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(2, 1fr);
                 gap: 10px;
             }
             .ob-deck {
@@ -2464,6 +2464,13 @@
                         </div>
                     </div>
                     <div class="ob-deck">
+                        <span class="ob-deck-icon">🎓</span>
+                        <div>
+                            <div class="ob-deck-name">{{ui.deckIELTS}}</div>
+                            <div class="ob-deck-desc">{{ui.obDeckIeltsDesc}}</div>
+                        </div>
+                    </div>
+                    <div class="ob-deck">
                         <span class="ob-deck-icon">₿</span>
                         <div>
                             <div class="ob-deck-name">{{ui.deckCrypto}}</div>
@@ -2618,7 +2625,7 @@ const DAILY_QUOTES = [
 
 const STRINGS = {
   zh: {
-    deckPET: 'PET 词汇', deckCrypto: 'Crypto 词汇', deckDaily: '日常口语',
+    deckPET: 'PET 词汇', deckCrypto: 'Crypto 词汇', deckDaily: '日常口语', deckIELTS: '雅思词汇',
     autoPlayOn:  '自动朗读：开（点击关闭）', autoPlayOff: '自动朗读：关（点击开启）',
     listToLearn: '今日新学', listToReview: '今日复习',
     viewList: '切换到列表', viewCard: '切换到卡片',
@@ -2713,9 +2720,10 @@ const STRINGS = {
     obTagline:       '间隔重复英语词汇 · 科学记忆',
     obSrsTitle:      '🧠 科学记忆原理',
     obSrsDesc:       '基于间隔重复算法（SRS）——刚学的词频繁出现，记熟的词逐渐拉长间隔。系统在最该复习的时刻推送单词，用最少时间记最多词。',
-    obDecksTitle:    '📚 三大词库',
+    obDecksTitle:    '📚 四大词库',
     obDeckPetDesc:   '剑桥 PET 考试核心词汇，夯实英语基础',
     obDeckDailyDesc: '职场口语 · 网络缩写 · 日常高频短语',
+    obDeckIeltsDesc: '雅思考试学术词汇 · B2–C1 高频核心词',
     obDeckCryptoDesc:'区块链 · DeFi · Web3 专业术语',
     obHowTitle:      '🃏 如何使用',
     obStep1:         '看到单词，回忆含义，点击卡片翻开',
@@ -2764,7 +2772,7 @@ const STRINGS = {
     pwaIOSDismiss: '我知道了',
   },
   en: {
-    deckPET: 'PET Vocab', deckCrypto: 'Crypto', deckDaily: 'Daily English',
+    deckPET: 'PET Vocab', deckCrypto: 'Crypto', deckDaily: 'Daily English', deckIELTS: 'IELTS',
     autoPlayOn:  'Auto-read: ON (tap to disable)', autoPlayOff: 'Auto-read: OFF (tap to enable)',
     listToLearn: 'To Learn', listToReview: 'To Review',
     viewList: 'Switch to list', viewCard: 'Switch to cards',
@@ -2859,9 +2867,10 @@ const STRINGS = {
     obTagline:       'Spaced Repetition Vocabulary · Science-backed',
     obSrsTitle:      '🧠 Science of Memory',
     obSrsDesc:       'Built on Spaced Repetition (SRS) — new words appear often, mastered words at longer intervals. The system shows each word at the perfect moment, so you retain more with less effort.',
-    obDecksTitle:    '📚 Three Vocabulary Decks',
+    obDecksTitle:    '📚 Four Vocabulary Decks',
     obDeckPetDesc:   'Cambridge PET exam core vocabulary',
     obDeckDailyDesc: 'Business phrases · Internet slang · Daily expressions',
+    obDeckIeltsDesc: 'IELTS academic vocabulary · B2–C1 core words',
     obDeckCryptoDesc:'Blockchain · DeFi · Web3 terminology',
     obHowTitle:      '🃏 How to Use',
     obStep1:         'See a word, recall its meaning, tap to flip',
@@ -2916,6 +2925,7 @@ const UI = STRINGS[LANG];
 const DECKS = [
     { id: 'pet',    icon: '📚', name: UI.deckPET,    file: 'data/pet-words-1000.json' },
     { id: 'daily',  icon: '💬', name: UI.deckDaily,  file: 'data/daily-words-1000.json' },
+    { id: 'ielts',  icon: '🎓', name: UI.deckIELTS,  file: 'data/ielts-words.json' },
     { id: 'crypto', icon: '₿',  name: UI.deckCrypto, file: 'data/crypto-words-1000.json' },
 ];
 const DECK_PREF_KEY = 'preferred_deck';
