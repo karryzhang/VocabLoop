@@ -104,6 +104,19 @@
       tokenBox.textContent = `Session token:\n${token}`;
     }
 
+    function saveAuth(user, token){
+      if(!user || !user.username || !token) return;
+      localStorage.setItem('vocabloop_auth', JSON.stringify({
+        username: user.username,
+        token,
+        at: Date.now()
+      }));
+    }
+
+    function redirectHome(){
+      setTimeout(()=>{ window.location.href = '/'; }, 500);
+    }
+
     async function callAuth(payload){
       const r = await fetch('/api/auth', {
         method:'POST',
@@ -118,8 +131,10 @@
       const password = document.getElementById('rPass').value.trim();
       const data = await callAuth({ action:'register', username, password });
       if(data.ok){
-        setMsg('Registered successfully. You can login now (or use returned token).','ok');
+        saveAuth(data.user, data.token);
+        setMsg('Registered & logged in successfully. Redirecting to home...','ok');
         setToken(data.token || '');
+        redirectHome();
       }else{
         setMsg(data.message || 'Register failed.');
         setToken('');
@@ -131,8 +146,10 @@
       const password = document.getElementById('lPass').value.trim();
       const data = await callAuth({ action:'login', username, password });
       if(data.ok){
-        setMsg(`Welcome back, ${data.user?.username || 'user'}!`,'ok');
+        saveAuth(data.user, data.token);
+        setMsg(`Welcome back, ${data.user?.username || 'user'}! Redirecting...`,'ok');
         setToken(data.token || '');
+        redirectHome();
       }else{
         setMsg(data.message || 'Login failed.');
         setToken('');
