@@ -2311,7 +2311,9 @@
             <div class="key-hint" :class="{visible: !flipped && !slideshowMode}" v-html="ui.keyHint"></div>
         </div>
 
-        <!-- ── Mode bar：视图切换 + 自动播放 ─────────────── -->
+        </template><!-- end card view -->
+
+        <!-- ── Mode bar：视图切换 + 自动播放（始终可见）──── -->
         <div class="mode-bar">
             <button class="mode-btn" :class="{active: viewMode==='list'}"
                     @click="toggleView">
@@ -2323,7 +2325,6 @@
                 {{slideshowMode ? ui.slideshowStop : ui.slideshowStart}}
             </button>
         </div>
-        </template><!-- end card view -->
     </main>
 
     <!-- Footer -->
