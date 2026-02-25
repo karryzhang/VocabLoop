@@ -3542,7 +3542,30 @@ new Vue({
         },
 
         prefetchAhead() {
-            this.queue.slice(0, PREFETCH_N).forEach(w => this.fetchDict(w.word));
+            this.queue.slice(0, PREFETCH_N).forEach(w => {
+                // Immediately preload Youdao audio (no API needed)
+                this._preloadAudio(w.word);
+                // After dict fetch, upgrade to Free Dict recording if available
+                this.fetchDict(w.word).then(() => this._preloadAudio(w.word));
+            });
+        },
+
+        // Preload audio for a word into _audioPreloads cache.
+        // Called immediately (uses Youdao) and again after fetchDict (upgrades to Free Dict).
+        _preloadAudio(word) {
+            if (!word || word.includes(' ')) return;
+            const d = this.dictCache[word];
+            const url = (d && d.audio)
+                || `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`;
+            const existing = this._audioPreloads[word];
+            // Skip if already preloading the same URL
+            if (existing && existing._preloadSrc === url) return;
+            const a = new Audio();
+            a.preload = 'auto';
+            a.src = url;
+            a._preloadSrc = url;
+            a.load();
+            this._audioPreloads[word] = a;
         },
 
         // ── Audio ─────────────────────────────────────────────────────────
@@ -3560,12 +3583,23 @@ new Vue({
         async _playAndWait(word) {
             if (!word) return;
             this.audioPlaying = true;
+            const waitEndEl = (el) => new Promise(resolve => {
+                el.currentTime = 0;
+                el.onended = () => { this.audioPlaying = false; resolve(true); };
+                el.onerror = () => resolve(false);
+                el.play().catch(() => resolve(false));
+            });
             const waitEnd = (url) => new Promise(resolve => {
                 const a = new Audio(url);
                 a.onended = () => { this.audioPlaying = false; resolve(true); };
                 a.onerror = () => resolve(false);
                 a.play().catch(() => resolve(false));
             });
+            // 0. Use preloaded & buffered audio if available
+            const preloaded = this._audioPreloads && this._audioPreloads[word];
+            if (preloaded && preloaded.readyState >= 2) {
+                if (await waitEndEl(preloaded)) return;
+            }
             const d = this.dictCache[word];
             if (d && d.audio && await waitEnd(d.audio)) return;
             const youdao = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`;
@@ -3615,6 +3649,13 @@ new Vue({
             if (!this.slideshowMode) return;
             this.slideshowWord = this.slideshowQueue[this.slideshowIdx];
             this.flipped       = false;
+            // Preload audio for the next few upcoming slideshow cards
+            this.slideshowQueue
+                .slice(this.slideshowIdx + 1, this.slideshowIdx + 1 + PREFETCH_N)
+                .forEach(w => {
+                    this._preloadAudio(w.word);
+                    this.fetchDict(w.word).then(() => this._preloadAudio(w.word));
+                });
             await new Promise(r => setTimeout(r, 500));
             if (!this.slideshowMode) return;
             await this._playAndWait(this.slideshowWord.word);
@@ -3640,6 +3681,14 @@ new Vue({
         async playAudio(word) {
             if (!word) return;
             this.audioPlaying = true;
+
+            // 0. Preloaded & buffered audio — instant playback
+            const preloaded = this._audioPreloads && this._audioPreloads[word];
+            if (preloaded && preloaded.readyState >= 2) {
+                preloaded.currentTime = 0;
+                preloaded.onended = () => { this.audioPlaying = false; };
+                try { await preloaded.play(); return; } catch(e) { /* fall through */ }
+            }
 
             // 1. Free Dictionary API — human recordings for common words
             const d = this.dictCache[word];
@@ -4680,6 +4729,8 @@ new Vue({
     },
 
     created() {
+        // Non-reactive audio preload cache: word -> preloaded Audio element
+        this._audioPreloads = {};
         // Restore preferred deck before loading state
         const savedDeckId = localStorage.getItem(DECK_PREF_KEY);
         if (savedDeckId) {
