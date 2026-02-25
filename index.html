@@ -1835,10 +1835,10 @@
                     <svg id="syncIcon" class="sync-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
                 </button>
                 <button id="accountBtn" v-show="backendAvailable" class="btn-hd" onclick="window.location.href='account.html'" title="Account">👤</button>
-                <button class="btn-hd" @click="exportProgress" :title="ui.exportBtn">
+                <button class="btn-hd" v-show="!backendAvailable" @click="exportProgress" :title="ui.exportBtn">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 </button>
-                <button class="btn-hd" @click="triggerImport" :title="ui.importBtn">
+                <button class="btn-hd" v-show="!backendAvailable" @click="triggerImport" :title="ui.importBtn">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                 </button>
             </div>
