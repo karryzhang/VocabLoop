@@ -67,6 +67,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <style>
+        /* Hide raw template until Vue mounts — prevents {{mustache}} flash */
+        [v-cloak] { display: none !important; }
+
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
@@ -1803,7 +1806,7 @@
     </style>
 </head>
 <body>
-<div id="app">
+<div id="app" v-cloak>
 
     <!-- Header -->
     <div class="hd">
