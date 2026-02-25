@@ -3542,11 +3542,22 @@ new Vue({
         },
 
         prefetchAhead() {
-            this.queue.slice(0, PREFETCH_N).forEach(w => {
-                // Immediately preload Youdao audio (no API needed)
-                this._preloadAudio(w.word);
-                // After dict fetch, upgrade to Free Dict recording if available
-                this.fetchDict(w.word).then(() => this._preloadAudio(w.word));
+            // Cancel pending audio preload timers from previous card
+            this._prefetchTimers.forEach(t => clearTimeout(t));
+            this._prefetchTimers = [];
+
+            const upcoming = this.queue.slice(0, PREFETCH_N + 1);
+            // Dict fetch: immediate for all (needed for IPA / UI display)
+            upcoming.forEach(w => this.fetchDict(w.word));
+
+            // Audio preload: skip queue[0] (current card — played directly, don't compete).
+            // Stagger the rest so current card's audio gets full bandwidth first.
+            upcoming.slice(1).forEach((w, i) => {
+                const t = setTimeout(() => {
+                    this._preloadAudio(w.word);
+                    this.fetchDict(w.word).then(() => this._preloadAudio(w.word));
+                }, 2000 + i * 1000);
+                this._prefetchTimers.push(t);
             });
         },
 
@@ -3649,17 +3660,19 @@ new Vue({
             if (!this.slideshowMode) return;
             this.slideshowWord = this.slideshowQueue[this.slideshowIdx];
             this.flipped       = false;
-            // Preload audio for the next few upcoming slideshow cards
-            this.slideshowQueue
-                .slice(this.slideshowIdx + 1, this.slideshowIdx + 1 + PREFETCH_N)
-                .forEach(w => {
-                    this._preloadAudio(w.word);
-                    this.fetchDict(w.word).then(() => this._preloadAudio(w.word));
-                });
             await new Promise(r => setTimeout(r, 500));
             if (!this.slideshowMode) return;
             await this._playAndWait(this.slideshowWord.word);
             if (!this.slideshowMode) return;
+            // Audio finished — safe to preload upcoming cards without competing
+            this.slideshowQueue
+                .slice(this.slideshowIdx + 1, this.slideshowIdx + 1 + PREFETCH_N)
+                .forEach((w, i) => {
+                    setTimeout(() => {
+                        this._preloadAudio(w.word);
+                        this.fetchDict(w.word).then(() => this._preloadAudio(w.word));
+                    }, i * 800);
+                });
             this.flipped = true;
             this._slideshowTimer = setTimeout(() => {
                 if (!this.slideshowMode) return;
@@ -4729,8 +4742,9 @@ new Vue({
     },
 
     created() {
-        // Non-reactive audio preload cache: word -> preloaded Audio element
-        this._audioPreloads = {};
+        // Non-reactive caches (avoid Vue reactivity overhead on Audio/timer objects)
+        this._audioPreloads  = {};   // word -> preloaded Audio element
+        this._prefetchTimers = [];   // pending staggered preload timers
         // Restore preferred deck before loading state
         const savedDeckId = localStorage.getItem(DECK_PREF_KEY);
         if (savedDeckId) {
