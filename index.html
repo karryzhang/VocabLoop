@@ -162,7 +162,8 @@
             color: var(--muted);
             white-space: nowrap;
         }
-        .hd-btns { display: flex; gap: 6px; align-items: center; }
+        .hd-btns { display: flex; gap: 6px; align-items: center; overflow-x: auto; flex-shrink: 1; min-width: 0; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .hd-btns::-webkit-scrollbar { display: none; }
         .btn-hd {
             background: none;
             border: 1px solid var(--border);
@@ -343,6 +344,11 @@
         .done-share-pill:hover  { border-color: var(--blue); color: var(--blue); }
         .done-share-pill:active { transform: scale(0.97); }
         .share-svg { vertical-align: middle; flex-shrink: 0; }
+        /* ── Sync button ── */
+        .sync-svg { vertical-align: middle; flex-shrink: 0; transition: transform .3s; }
+        .btn-hd.syncing .sync-svg { animation: syncSpin .8s linear infinite; }
+        .btn-hd.sync-ok { border-color: var(--green) !important; color: var(--green) !important; }
+        @keyframes syncSpin { to { transform: rotate(360deg); } }
         /* Practice done footer buttons */
         .prac-done-footer { display: flex; gap: 10px; width: 100%; margin-top: 4px; }
         .prac-foot-share {
@@ -1825,10 +1831,20 @@
                 <button class="btn-hd" @click="shareApp" :title="ui.shareBtn">
                     <svg class="share-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                 </button>
-                <button id="accountBtn" class="btn-hd" onclick="window.location.href='account.html'" title="Account">👤</button>
-                <button class="btn-hd danger" @click="confirmReset">{{ui.resetBtn}}</button>
+                <button id="syncBtn" v-show="backendAvailable" class="btn-hd" onclick="window.__vocabSync && window.__vocabSync.manualSync()" :title="ui.syncBtn">
+                    <svg id="syncIcon" class="sync-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+                </button>
+                <button id="accountBtn" v-show="backendAvailable" class="btn-hd" onclick="window.location.href='account.html'" title="Account">👤</button>
+                <button class="btn-hd" @click="exportProgress" :title="ui.exportBtn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
+                <button class="btn-hd" @click="triggerImport" :title="ui.importBtn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </button>
             </div>
         </div>
+        <!-- Hidden file input for import -->
+        <input type="file" id="importFileInput" accept=".json" style="display:none" @change="handleImportFile">
         <!-- Row 2: stats chips (horizontal scroll, always one line) -->
         <div class="chips">
             <button class="chip chip-new chip-btn"   @click="showWordList('new')"
@@ -2671,7 +2687,11 @@ const STRINGS = {
     autoPlayOn:  '自动朗读：开（点击关闭）', autoPlayOff: '自动朗读：关（点击开启）',
     listToLearn: '今日新学', listToReview: '今日复习',
     viewList: '切换到列表', viewCard: '切换到卡片',
-    exportBtn: '导出进度', resetBtn: '重置', dayUnit: '天',
+    exportBtn: '导出', importBtn: '导入', resetBtn: '重置', dayUnit: '天',
+    importConfirm: '将从文件中导入学习记录。\n已有的单词将智能合并（保留复习更近的版本），不会丢失现有进度。\n\n确定导入吗？',
+    importOk: (n) => `导入成功！已合并 ${n} 个词库的数据`,
+    importFail: '导入失败：文件格式不正确',
+    importEmpty: '文件中没有找到学习记录',
     loading: '正在加载词汇...',
     doneTitle: '今日任务完成！',
     doneTodayLearned: '今日新学', doneSessionCorrect: '本次答对',
@@ -2814,13 +2834,21 @@ const STRINGS = {
     pwaIOSStep2: '向下滑动，选择 <em>「添加到主屏幕」</em>',
     pwaIOSStep3: '点击右上角 <em>「添加」</em>，大功告成！',
     pwaIOSDismiss: '我知道了',
+    syncBtn: '同步', syncSyncing: '同步中…', syncDone: '已同步', syncFail: '同步失败',
+    syncPull: '正在拉取云端数据…', syncPush: '正在上传数据…',
+    syncMerged: '已合并云端与本地数据', syncNoAccount: '请先登录以同步学习记录',
+    syncUpToDate: '数据已是最新', syncLastSync: (t) => `上次同步：${t}`,
   },
   en: {
     deckPET: 'PET Vocab', deckCrypto: 'Crypto', deckDaily: 'Daily English', deckIELTS: 'IELTS',
     autoPlayOn:  'Auto-read: ON (tap to disable)', autoPlayOff: 'Auto-read: OFF (tap to enable)',
     listToLearn: 'To Learn', listToReview: 'To Review',
     viewList: 'Switch to list', viewCard: 'Switch to cards',
-    exportBtn: 'Export progress', resetBtn: 'Reset', dayUnit: 'd',
+    exportBtn: 'Export', importBtn: 'Import', resetBtn: 'Reset', dayUnit: 'd',
+    importConfirm: 'Import learning records from file.\nExisting words will be smart-merged (keeping the more recently reviewed version). No data will be lost.\n\nProceed?',
+    importOk: (n) => `Imported! Merged data from ${n} deck${n === 1 ? '' : 's'}`,
+    importFail: 'Import failed: invalid file format',
+    importEmpty: 'No learning records found in file',
     loading: 'Loading vocabulary…',
     doneTitle: 'Session complete!',
     doneTodayLearned: 'New today', doneSessionCorrect: 'Correct',
@@ -2963,6 +2991,10 @@ const STRINGS = {
     pwaIOSStep2: 'Scroll down and tap <em>"Add to Home Screen"</em>',
     pwaIOSStep3: 'Tap <em>"Add"</em> in the top-right corner',
     pwaIOSDismiss: 'Got it',
+    syncBtn: 'Sync', syncSyncing: 'Syncing…', syncDone: 'Synced', syncFail: 'Sync failed',
+    syncPull: 'Pulling cloud data…', syncPush: 'Uploading data…',
+    syncMerged: 'Merged cloud and local data', syncNoAccount: 'Please log in to sync your progress',
+    syncUpToDate: 'Up to date', syncLastSync: (t) => `Last sync: ${t}`,
   },
 };
 const UI = STRINGS[LANG];
@@ -3267,6 +3299,7 @@ new Vue({
             _slideshowTimer: null,
             dailyWelcomeDay: 0,
             dailyWelcomeQuote: null,
+            backendAvailable: false,
         };
     },
 
@@ -3429,10 +3462,17 @@ new Vue({
         // When a new card appears: fetch its dict data and prefetch ahead
         'cur.word'(newWord) {
             if (!newWord) return;
+            this._preloadAudio(newWord);
             this.fetchDict(newWord);
             this.prefetchAhead();
             if (this.autoPlay) {
                 setTimeout(() => this.playAudio(newWord), 520);
+            }
+        },
+        // Silent full sync when study session completes
+        sessionDone(done) {
+            if (done && this.backendAvailable && window.__vocabSync) {
+                window.__vocabSync.doSync();
             }
         },
     },
@@ -3570,8 +3610,8 @@ new Vue({
             const url = (d && d.audio)
                 || `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`;
             const existing = this._audioPreloads[word];
-            // Skip if already preloading the same URL
-            if (existing && existing._preloadSrc === url) return;
+            // Don't replace already-buffered audio (even if a "better" URL is available)
+            if (existing && (existing.readyState >= 2 || existing._preloadSrc === url)) return;
             const a = new Audio();
             a.preload = 'auto';
             a.src = url;
@@ -3607,10 +3647,20 @@ new Vue({
                 a.onerror = () => resolve(false);
                 a.play().catch(() => resolve(false));
             });
-            // 0. Use preloaded & buffered audio if available
+            // 0. Preloaded audio — play instantly or wait briefly for in-progress preload
             const preloaded = this._audioPreloads && this._audioPreloads[word];
-            if (preloaded && preloaded.readyState >= 2) {
-                if (await waitEndEl(preloaded)) return;
+            if (preloaded) {
+                if (preloaded.readyState >= 2) {
+                    if (await waitEndEl(preloaded)) return;
+                } else {
+                    const ready = await new Promise(r => {
+                        if (preloaded.readyState >= 2) return r(true);
+                        preloaded.addEventListener('canplaythrough', () => r(true), { once: true });
+                        preloaded.addEventListener('error', () => r(false), { once: true });
+                        setTimeout(() => r(false), 3000);
+                    });
+                    if (ready && await waitEndEl(preloaded)) return;
+                }
             }
             const d = this.dictCache[word];
             if (d && d.audio && await waitEnd(d.audio)) return;
@@ -3696,12 +3746,27 @@ new Vue({
             if (!word) return;
             this.audioPlaying = true;
 
-            // 0. Preloaded & buffered audio — instant playback
+            // 0. Preloaded audio — play instantly or wait briefly for in-progress preload
             const preloaded = this._audioPreloads && this._audioPreloads[word];
-            if (preloaded && preloaded.readyState >= 2) {
-                preloaded.currentTime = 0;
-                preloaded.onended = () => { this.audioPlaying = false; };
-                try { await preloaded.play(); return; } catch(e) { /* fall through */ }
+            if (preloaded) {
+                if (preloaded.readyState >= 2) {
+                    preloaded.currentTime = 0;
+                    preloaded.onended = () => { this.audioPlaying = false; };
+                    try { await preloaded.play(); return; } catch(e) { /* fall through */ }
+                } else {
+                    // Audio is preloading — wait up to 3s for it to buffer
+                    const ready = await new Promise(r => {
+                        if (preloaded.readyState >= 2) return r(true);
+                        preloaded.addEventListener('canplaythrough', () => r(true), { once: true });
+                        preloaded.addEventListener('error', () => r(false), { once: true });
+                        setTimeout(() => r(false), 3000);
+                    });
+                    if (ready) {
+                        preloaded.currentTime = 0;
+                        preloaded.onended = () => { this.audioPlaying = false; };
+                        try { await preloaded.play(); return; } catch(e) { /* fall through */ }
+                    }
+                }
             }
 
             // 1. Free Dictionary API — human recordings for common words
@@ -3778,6 +3843,8 @@ new Vue({
                     this.dictCache = Object.assign({}, this.dictCache, additions);
                 }
                 this.buildQueue();
+                // Eagerly preload first card's audio (Youdao URL is deterministic, no API needed)
+                if (this.queue.length) this._preloadAudio(this.queue[0].word);
             } catch (e) {
                 alert(UI.loadError(e.message, this.currentDeck.file));
             }
@@ -4196,6 +4263,27 @@ new Vue({
                 localStorage.removeItem(DICT_KEY);
             }
         },
+        async checkBackend() {
+            try {
+                const res = await fetch('/api/auth', {
+                    method: 'POST',
+                    headers: { 'content-type': 'application/json' },
+                    body: '{}',
+                });
+                const ct = (res.headers.get('content-type') || '');
+                if (ct.includes('application/json') || ct.includes('text/json')) {
+                    // Verify response body has expected backend signature
+                    const data = await res.json();
+                    this.backendAvailable = !!(data && typeof data.ok === 'boolean' && typeof data.message === 'string');
+                } else {
+                    this.backendAvailable = false;
+                }
+            } catch (e) {
+                this.backendAvailable = false;
+            }
+            // Expose for sync module (initializes asynchronously)
+            window.__backendAvailable = this.backendAvailable;
+        },
         confirmReset() {
             if (confirm(UI.confirmReset(this.currentDeck.name))) {
                 localStorage.removeItem(this.storageKey);
@@ -4307,7 +4395,10 @@ new Vue({
                     if (raw) allState[deck.id] = JSON.parse(raw);
                 } catch (e) {}
             }
+            let readingHistory = [];
+            try { const raw = localStorage.getItem('reading_history'); if (raw) readingHistory = JSON.parse(raw); } catch (e) {}
             const data = {
+                version:      1,
                 exportDate:   new Date().toISOString(),
                 global:       {
                     dailyStreak:   this.dailyStreak,
@@ -4315,15 +4406,119 @@ new Vue({
                     totalReviewed: this.totalReviewed,
                     achievements:  this.achievements,
                 },
-                decks: allState,
+                decks:          allState,
+                preferredDeck:  localStorage.getItem(DECK_PREF_KEY) || '',
+                readingHistory: readingHistory,
             };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url  = URL.createObjectURL(blob);
             const a    = document.createElement('a');
             a.href     = url;
-            a.download = 'flashcard-progress-' + today() + '.json';
+            a.download = 'vocabloop-backup-' + today() + '.json';
             a.click();
             URL.revokeObjectURL(url);
+            this.showToast(UI.exportBtn + ' ✓', 'good');
+        },
+        triggerImport() {
+            document.getElementById('importFileInput').click();
+        },
+        handleImportFile(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                try {
+                    const data = JSON.parse(ev.target.result);
+                    this.importProgress(data);
+                } catch (err) {
+                    this.showToast(UI.importFail, 'bad');
+                }
+                // Reset file input so the same file can be re-imported
+                e.target.value = '';
+            };
+            reader.readAsText(file);
+        },
+        importProgress(data) {
+            // Validate structure
+            if (!data || typeof data !== 'object' || !data.decks) {
+                this.showToast(UI.importFail, 'bad');
+                return;
+            }
+            if (!confirm(UI.importConfirm)) return;
+
+            let mergedCount = 0;
+
+            // Merge each deck's SRS state at word level
+            for (const deck of DECKS) {
+                const importedDeck = data.decks[deck.id];
+                if (!importedDeck) continue;
+                const importedState = importedDeck.state || {};
+                if (Object.keys(importedState).length === 0) continue;
+
+                // Load existing local state for this deck
+                let localDeck = {};
+                try {
+                    const raw = localStorage.getItem('srs_' + deck.id + '_v1');
+                    if (raw) localDeck = JSON.parse(raw);
+                } catch (e) {}
+                const localState = localDeck.state || {};
+
+                // Per-word merge: keep version with later next timestamp
+                const merged = {};
+                const allWords = new Set([...Object.keys(localState), ...Object.keys(importedState)]);
+                for (const word of allWords) {
+                    const l = localState[word];
+                    const c = importedState[word];
+                    if (!l) { merged[word] = c; continue; }
+                    if (!c) { merged[word] = l; continue; }
+                    merged[word] = (l.next || 0) >= (c.next || 0) ? l : c;
+                }
+
+                const mergedDeck = {
+                    state:    merged,
+                    points:   Math.max(localDeck.points || 0, importedDeck.points || 0),
+                    streak:   Math.max(localDeck.streak || 0, importedDeck.streak || 0),
+                    autoPlay: localDeck.autoPlay !== undefined ? localDeck.autoPlay : importedDeck.autoPlay,
+                };
+
+                try { localStorage.setItem('srs_' + deck.id + '_v1', JSON.stringify(mergedDeck)); } catch (e) {}
+                mergedCount++;
+            }
+
+            // Merge global state
+            if (data.global) {
+                const g = data.global;
+                this.dailyStreak   = Math.max(this.dailyStreak, g.dailyStreak || 0);
+                this.lastStudyDate = (this.lastStudyDate || '') >= (g.lastStudyDate || '') ? this.lastStudyDate : g.lastStudyDate;
+                this.totalReviewed = Math.max(this.totalReviewed, g.totalReviewed || 0);
+                if (Array.isArray(g.achievements)) {
+                    this.achievements = [...new Set([...this.achievements, ...g.achievements])];
+                }
+                this.saveGlobal();
+            }
+
+            // Merge reading history
+            if (Array.isArray(data.readingHistory) && data.readingHistory.length > 0) {
+                let existing = [];
+                try { const raw = localStorage.getItem('reading_history'); if (raw) existing = JSON.parse(raw); } catch (e) {}
+                const seen = new Set();
+                const merged = [];
+                for (const item of [...existing, ...data.readingHistory]) {
+                    const key = JSON.stringify(item);
+                    if (!seen.has(key)) { seen.add(key); merged.push(item); }
+                }
+                try { localStorage.setItem('reading_history', JSON.stringify(merged.slice(-50))); } catch (e) {}
+            }
+
+            // Reload current deck state into Vue
+            this.loadSaved();
+            this.buildQueue();
+
+            if (mergedCount > 0) {
+                this.showToast(UI.importOk(mergedCount), 'good');
+            } else {
+                this.showToast(UI.importEmpty, 'bad');
+            }
         },
 
         // ── Practice Mode ─────────────────────────────────────────────────
@@ -4497,6 +4692,8 @@ new Vue({
             if (this.readingHistory.length > 30)
                 this.readingHistory = this.readingHistory.slice(0, 30);
             localStorage.setItem('reading_history', JSON.stringify(this.readingHistory));
+            // Silent sync reading history to cloud
+            if (window.__vocabSync && window.__vocabSync.push) window.__vocabSync.push();
         },
         async pasteApiKey() {
             try {
@@ -4772,6 +4969,9 @@ new Vue({
             }
         };
         document.addEventListener('visibilitychange', this._onVisibility);
+
+        // Detect if Node.js backend API is available
+        this.checkBackend();
     },
     beforeDestroy() {
         window.removeEventListener('keydown', this.onKey);
@@ -4915,6 +5115,8 @@ new Vue({
 <script>
 (function(){
   function setAccountLabel(){
+    // Only show username when backend is available (Vue will handle button visibility)
+    if(!window.__backendAvailable) return;
     try{
       const btn = document.getElementById('accountBtn');
       if(!btn) return;
@@ -4927,11 +5129,284 @@ new Vue({
       }
     }catch(_e){}
   }
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', setAccountLabel);
-  }else{
-    setAccountLabel();
+  // Defer until Vue has finished backend detection
+  function trySetLabel(){
+    if(window.__backendAvailable !== undefined) { setAccountLabel(); return; }
+    setTimeout(trySetLabel, 200);
   }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', function(){ setTimeout(trySetLabel, 300); });
+  }else{
+    setTimeout(trySetLabel, 300);
+  }
+})();
+</script>
+
+<!-- ── Cloud Sync Module ───────────────────────────────────────────────── -->
+<script>
+(function(){
+  'use strict';
+
+  /* ── Refs ── */
+  const SYNC_TS_KEY  = 'vocabloop_sync_ts';   // last successful sync timestamp
+  const DECK_IDS     = ['pet', 'daily', 'ielts', 'crypto'];
+  const GLOBAL_KEY   = 'srs_global_v1';
+  const DECK_PREF    = 'preferred_deck';
+  const DEBOUNCE_MS  = 3000;   // debounce push after save
+  let _debounceTimer = null;
+  let _syncing       = false;
+
+  /* ── Helpers ── */
+  function getAuth(){
+    try{ return JSON.parse(localStorage.getItem('vocabloop_auth')); } catch(e){ return null; }
+  }
+
+  function getSyncBtn(){ return document.getElementById('syncBtn'); }
+
+  function setSyncState(state){
+    const btn = getSyncBtn();
+    if(!btn) return;
+    btn.classList.remove('syncing', 'sync-ok');
+    if(state === 'syncing') btn.classList.add('syncing');
+    if(state === 'done')    btn.classList.add('sync-ok');
+    if(state === 'done'){
+      setTimeout(function(){ btn.classList.remove('sync-ok'); }, 2000);
+    }
+  }
+
+  /** Collect all syncable data from localStorage */
+  function collectLocal(){
+    const decks = {};
+    for(const id of DECK_IDS){
+      try{
+        const raw = localStorage.getItem('srs_' + id + '_v1');
+        if(raw) decks[id] = JSON.parse(raw);
+      } catch(e){}
+    }
+    let global = {};
+    try{
+      const raw = localStorage.getItem(GLOBAL_KEY);
+      if(raw) global = JSON.parse(raw);
+    } catch(e){}
+
+    let readingHistory = [];
+    try{
+      const raw = localStorage.getItem('reading_history');
+      if(raw) readingHistory = JSON.parse(raw);
+    } catch(e){}
+
+    return {
+      decks:          decks,
+      global:         global,
+      preferredDeck:  localStorage.getItem(DECK_PREF) || '',
+      readingHistory: readingHistory,
+    };
+  }
+
+  /** Apply merged cloud data back to localStorage and reload Vue state */
+  function applyData(data){
+    if(!data) return;
+
+    // Write deck states
+    if(data.decks){
+      for(const id of DECK_IDS){
+        if(data.decks[id]){
+          try{ localStorage.setItem('srs_' + id + '_v1', JSON.stringify(data.decks[id])); } catch(e){}
+        }
+      }
+    }
+
+    // Write global state
+    if(data.global){
+      try{ localStorage.setItem(GLOBAL_KEY, JSON.stringify(data.global)); } catch(e){}
+    }
+
+    // Write preferred deck
+    if(data.preferredDeck){
+      try{ localStorage.setItem(DECK_PREF, data.preferredDeck); } catch(e){}
+    }
+
+    // Write reading history
+    if(Array.isArray(data.readingHistory)){
+      try{ localStorage.setItem('reading_history', JSON.stringify(data.readingHistory)); } catch(e){}
+    }
+
+    // Record sync timestamp
+    try{ localStorage.setItem(SYNC_TS_KEY, String(Date.now())); } catch(e){}
+  }
+
+  /** Reload the Vue app's in-memory state from localStorage (if Vue app exists) */
+  function reloadVueState(){
+    var app = document.getElementById('app');
+    if(app && app.__vue__){
+      var vm = app.__vue__;
+      vm.loadSaved();
+      vm.loadGlobal();
+      vm.buildQueue();
+    }
+  }
+
+  /** Call the sync API */
+  async function callSync(payload){
+    const r = await fetch('/api/sync', {
+      method: 'POST',
+      headers: {'content-type':'application/json'},
+      body: JSON.stringify(payload),
+    });
+    return r.json();
+  }
+
+  /**
+   * Full sync: merge local with cloud, apply result.
+   * Returns true on success.
+   */
+  async function doSync(){
+    const auth = getAuth();
+    if(!auth || !auth.token) return false;
+    if(_syncing) return false;
+    _syncing = true;
+    setSyncState('syncing');
+
+    try{
+      const localData = collectLocal();
+      const result = await callSync({
+        action: 'merge',
+        token:  auth.token,
+        data:   localData,
+      });
+
+      if(result.ok && result.data){
+        applyData(result.data);
+        reloadVueState();
+        setSyncState('done');
+        return true;
+      } else {
+        setSyncState('');
+        return false;
+      }
+    } catch(e){
+      setSyncState('');
+      return false;
+    } finally {
+      _syncing = false;
+    }
+  }
+
+  /**
+   * Push-only sync (debounced): upload local data to cloud without pulling.
+   * Used after each saveState/saveGlobal call.
+   */
+  async function debouncedPush(){
+    const auth = getAuth();
+    if(!auth || !auth.token) return;
+    clearTimeout(_debounceTimer);
+    _debounceTimer = setTimeout(async function(){
+      if(_syncing) return;
+      _syncing = true;
+      setSyncState('syncing');
+      try{
+        const localData = collectLocal();
+        const result = await callSync({
+          action: 'push',
+          token:  auth.token,
+          data:   localData,
+        });
+        if(result.ok){
+          try{ localStorage.setItem(SYNC_TS_KEY, String(Date.now())); } catch(e){}
+          setSyncState('done');
+        } else {
+          setSyncState('');
+        }
+      } catch(e){
+        setSyncState('');
+      } finally {
+        _syncing = false;
+      }
+    }, DEBOUNCE_MS);
+  }
+
+  /**
+   * Manual sync (triggered by sync button click).
+   */
+  async function manualSync(){
+    var auth = getAuth();
+    if(!auth || !auth.token){
+      // Show toast via Vue app if possible
+      var app = document.getElementById('app');
+      if(app && app.__vue__ && app.__vue__.showToast){
+        app.__vue__.showToast(typeof UI !== 'undefined' ? UI.syncNoAccount : 'Please log in first', 'bad');
+      }
+      return;
+    }
+    var ok = await doSync();
+    var app = document.getElementById('app');
+    if(app && app.__vue__ && app.__vue__.showToast){
+      if(ok) app.__vue__.showToast(typeof UI !== 'undefined' ? UI.syncDone : 'Synced!', 'good');
+      else   app.__vue__.showToast(typeof UI !== 'undefined' ? UI.syncFail : 'Sync failed', 'bad');
+    }
+  }
+
+  /* ── Hook into Vue app's save methods ── */
+  function hookSaveState(){
+    var app = document.getElementById('app');
+    if(!app || !app.__vue__) return;
+    var vm = app.__vue__;
+
+    // Wrap saveState
+    var origSave = vm.saveState.bind(vm);
+    vm.saveState = function(){
+      origSave();
+      debouncedPush();
+    };
+
+    // Wrap saveGlobal
+    var origGlobal = vm.saveGlobal.bind(vm);
+    vm.saveGlobal = function(){
+      origGlobal();
+      // Push is already debounced, so calling again just resets the timer
+      debouncedPush();
+    };
+  }
+
+  /* ── Auto-sync on page load if logged in ── */
+  function init(){
+    // Skip sync initialization when backend is not available (static hosting)
+    if(!window.__backendAvailable) return;
+    var auth = getAuth();
+    if(auth && auth.token){
+      // Sync on load (merge cloud + local)
+      doSync().then(function(){
+        // After initial sync, hook save methods for auto-push
+        hookSaveState();
+      });
+    } else {
+      // Not logged in — just hook saves in case they log in later (no-op push without token)
+      hookSaveState();
+    }
+  }
+
+  /* ── Sync when returning to app from background ── */
+  document.addEventListener('visibilitychange', function(){
+    if(!document.hidden && window.__backendAvailable){
+      var auth = getAuth();
+      if(auth && auth.token) doSync();
+    }
+  });
+
+  /* ── Expose for manual trigger & silent push ── */
+  window.__vocabSync = { manualSync: manualSync, doSync: doSync, push: debouncedPush };
+
+  /* ── Start — wait for backend detection before initializing ── */
+  function waitAndInit(){
+    if(window.__backendAvailable !== undefined){ setTimeout(init, 100); return; }
+    setTimeout(waitAndInit, 200);
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', function(){ setTimeout(waitAndInit, 300); });
+  } else {
+    setTimeout(waitAndInit, 300);
+  }
+
 })();
 </script>
 </body>
