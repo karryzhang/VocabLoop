@@ -1834,9 +1834,17 @@
                     <svg id="syncIcon" class="sync-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
                 </button>
                 <button id="accountBtn" class="btn-hd" onclick="window.location.href='account.html'" title="Account">👤</button>
+                <button class="btn-hd" @click="exportProgress" :title="ui.exportBtn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
+                <button class="btn-hd" @click="triggerImport" :title="ui.importBtn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </button>
                 <button class="btn-hd danger" @click="confirmReset">{{ui.resetBtn}}</button>
             </div>
         </div>
+        <!-- Hidden file input for import -->
+        <input type="file" id="importFileInput" accept=".json" style="display:none" @change="handleImportFile">
         <!-- Row 2: stats chips (horizontal scroll, always one line) -->
         <div class="chips">
             <button class="chip chip-new chip-btn"   @click="showWordList('new')"
@@ -2679,7 +2687,11 @@ const STRINGS = {
     autoPlayOn:  '自动朗读：开（点击关闭）', autoPlayOff: '自动朗读：关（点击开启）',
     listToLearn: '今日新学', listToReview: '今日复习',
     viewList: '切换到列表', viewCard: '切换到卡片',
-    exportBtn: '导出进度', resetBtn: '重置', dayUnit: '天',
+    exportBtn: '导出', importBtn: '导入', resetBtn: '重置', dayUnit: '天',
+    importConfirm: '将从文件中导入学习记录。\n已有的单词将智能合并（保留复习更近的版本），不会丢失现有进度。\n\n确定导入吗？',
+    importOk: (n) => `导入成功！已合并 ${n} 个词库的数据`,
+    importFail: '导入失败：文件格式不正确',
+    importEmpty: '文件中没有找到学习记录',
     loading: '正在加载词汇...',
     doneTitle: '今日任务完成！',
     doneTodayLearned: '今日新学', doneSessionCorrect: '本次答对',
@@ -2832,7 +2844,11 @@ const STRINGS = {
     autoPlayOn:  'Auto-read: ON (tap to disable)', autoPlayOff: 'Auto-read: OFF (tap to enable)',
     listToLearn: 'To Learn', listToReview: 'To Review',
     viewList: 'Switch to list', viewCard: 'Switch to cards',
-    exportBtn: 'Export progress', resetBtn: 'Reset', dayUnit: 'd',
+    exportBtn: 'Export', importBtn: 'Import', resetBtn: 'Reset', dayUnit: 'd',
+    importConfirm: 'Import learning records from file.\nExisting words will be smart-merged (keeping the more recently reviewed version). No data will be lost.\n\nProceed?',
+    importOk: (n) => `Imported! Merged data from ${n} deck${n === 1 ? '' : 's'}`,
+    importFail: 'Import failed: invalid file format',
+    importEmpty: 'No learning records found in file',
     loading: 'Loading vocabulary…',
     doneTitle: 'Session complete!',
     doneTodayLearned: 'New today', doneSessionCorrect: 'Correct',
@@ -4323,7 +4339,10 @@ new Vue({
                     if (raw) allState[deck.id] = JSON.parse(raw);
                 } catch (e) {}
             }
+            let readingHistory = [];
+            try { const raw = localStorage.getItem('reading_history'); if (raw) readingHistory = JSON.parse(raw); } catch (e) {}
             const data = {
+                version:      1,
                 exportDate:   new Date().toISOString(),
                 global:       {
                     dailyStreak:   this.dailyStreak,
@@ -4331,15 +4350,119 @@ new Vue({
                     totalReviewed: this.totalReviewed,
                     achievements:  this.achievements,
                 },
-                decks: allState,
+                decks:          allState,
+                preferredDeck:  localStorage.getItem(DECK_PREF_KEY) || '',
+                readingHistory: readingHistory,
             };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url  = URL.createObjectURL(blob);
             const a    = document.createElement('a');
             a.href     = url;
-            a.download = 'flashcard-progress-' + today() + '.json';
+            a.download = 'vocabloop-backup-' + today() + '.json';
             a.click();
             URL.revokeObjectURL(url);
+            this.showToast(UI.exportBtn + ' ✓', 'good');
+        },
+        triggerImport() {
+            document.getElementById('importFileInput').click();
+        },
+        handleImportFile(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                try {
+                    const data = JSON.parse(ev.target.result);
+                    this.importProgress(data);
+                } catch (err) {
+                    this.showToast(UI.importFail, 'bad');
+                }
+                // Reset file input so the same file can be re-imported
+                e.target.value = '';
+            };
+            reader.readAsText(file);
+        },
+        importProgress(data) {
+            // Validate structure
+            if (!data || typeof data !== 'object' || !data.decks) {
+                this.showToast(UI.importFail, 'bad');
+                return;
+            }
+            if (!confirm(UI.importConfirm)) return;
+
+            let mergedCount = 0;
+
+            // Merge each deck's SRS state at word level
+            for (const deck of DECKS) {
+                const importedDeck = data.decks[deck.id];
+                if (!importedDeck) continue;
+                const importedState = importedDeck.state || {};
+                if (Object.keys(importedState).length === 0) continue;
+
+                // Load existing local state for this deck
+                let localDeck = {};
+                try {
+                    const raw = localStorage.getItem('srs_' + deck.id + '_v1');
+                    if (raw) localDeck = JSON.parse(raw);
+                } catch (e) {}
+                const localState = localDeck.state || {};
+
+                // Per-word merge: keep version with later next timestamp
+                const merged = {};
+                const allWords = new Set([...Object.keys(localState), ...Object.keys(importedState)]);
+                for (const word of allWords) {
+                    const l = localState[word];
+                    const c = importedState[word];
+                    if (!l) { merged[word] = c; continue; }
+                    if (!c) { merged[word] = l; continue; }
+                    merged[word] = (l.next || 0) >= (c.next || 0) ? l : c;
+                }
+
+                const mergedDeck = {
+                    state:    merged,
+                    points:   Math.max(localDeck.points || 0, importedDeck.points || 0),
+                    streak:   Math.max(localDeck.streak || 0, importedDeck.streak || 0),
+                    autoPlay: localDeck.autoPlay !== undefined ? localDeck.autoPlay : importedDeck.autoPlay,
+                };
+
+                try { localStorage.setItem('srs_' + deck.id + '_v1', JSON.stringify(mergedDeck)); } catch (e) {}
+                mergedCount++;
+            }
+
+            // Merge global state
+            if (data.global) {
+                const g = data.global;
+                this.dailyStreak   = Math.max(this.dailyStreak, g.dailyStreak || 0);
+                this.lastStudyDate = (this.lastStudyDate || '') >= (g.lastStudyDate || '') ? this.lastStudyDate : g.lastStudyDate;
+                this.totalReviewed = Math.max(this.totalReviewed, g.totalReviewed || 0);
+                if (Array.isArray(g.achievements)) {
+                    this.achievements = [...new Set([...this.achievements, ...g.achievements])];
+                }
+                this.saveGlobal();
+            }
+
+            // Merge reading history
+            if (Array.isArray(data.readingHistory) && data.readingHistory.length > 0) {
+                let existing = [];
+                try { const raw = localStorage.getItem('reading_history'); if (raw) existing = JSON.parse(raw); } catch (e) {}
+                const seen = new Set();
+                const merged = [];
+                for (const item of [...existing, ...data.readingHistory]) {
+                    const key = JSON.stringify(item);
+                    if (!seen.has(key)) { seen.add(key); merged.push(item); }
+                }
+                try { localStorage.setItem('reading_history', JSON.stringify(merged.slice(-50))); } catch (e) {}
+            }
+
+            // Reload current deck state into Vue
+            this.loadSaved();
+            this.buildQueue();
+
+            if (mergedCount > 0) {
+                this.showToast(UI.importOk(mergedCount), 'good');
+            } else {
+                this.showToast(UI.importEmpty, 'bad');
+            }
         },
 
         // ── Practice Mode ─────────────────────────────────────────────────
