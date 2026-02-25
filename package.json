@@ -1,0 +1,13 @@
+{
+  "name": "vocabloop-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VocabLoop backend API (auth + sync)",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.7.0",
+    "express": "^4.21.0"
+  }
+}

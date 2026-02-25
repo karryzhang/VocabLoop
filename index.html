@@ -61,8 +61,34 @@
     }
     </script>
 
+    <!-- ── SEO 域名自适配：根据当前 URL 自动更新 canonical / OG / Twitter 等 meta ── -->
+    <script>
+    (function(){
+      var base = location.origin + location.pathname.replace(/[^/]*$/, '');
+      var icon = base + 'icons/icon-512.png';
+      function setMeta(sel, attr, val){
+        var el = document.querySelector(sel);
+        if(el) el.setAttribute(attr, val);
+      }
+      setMeta('link[rel="canonical"]',      'href',    base);
+      setMeta('meta[property="og:url"]',     'content', base);
+      setMeta('meta[property="og:image"]',   'content', icon);
+      setMeta('meta[name="twitter:image"]',  'content', icon);
+      // Update JSON-LD
+      var ld = document.querySelector('script[type="application/ld+json"]');
+      if(ld){
+        try{
+          var data = JSON.parse(ld.textContent);
+          data.url = base; data.image = icon;
+          ld.textContent = JSON.stringify(data);
+        }catch(_){}
+      }
+    })();
+    </script>
+
     <!-- ── 性能预连接 ─────────────────────────────────────────────────── -->
     <link rel="preconnect" href="https://api.dictionaryapi.dev">
+    <link rel="preconnect" href="https://dict.youdao.com">
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
@@ -3463,10 +3489,11 @@ new Vue({
         'cur.word'(newWord) {
             if (!newWord) return;
             this._preloadAudio(newWord);
-            this.fetchDict(newWord);
+            // After dict fetch completes, upgrade current card to Free Dict audio if available
+            this.fetchDict(newWord).then(() => this._preloadAudio(newWord));
             this.prefetchAhead();
             if (this.autoPlay) {
-                setTimeout(() => this.playAudio(newWord), 520);
+                setTimeout(() => this.playAudio(newWord), 200);
             }
         },
         // Silent full sync when study session completes
@@ -3591,13 +3618,13 @@ new Vue({
             // Dict fetch: immediate for all (needed for IPA / UI display)
             upcoming.forEach(w => this.fetchDict(w.word));
 
-            // Audio preload: skip queue[0] (current card — played directly, don't compete).
-            // Stagger the rest so current card's audio gets full bandwidth first.
+            // Audio preload: skip queue[0] (current card — handled by watcher).
+            // Start earlier, stagger tightly so next cards are ready sooner.
             upcoming.slice(1).forEach((w, i) => {
                 const t = setTimeout(() => {
                     this._preloadAudio(w.word);
                     this.fetchDict(w.word).then(() => this._preloadAudio(w.word));
-                }, 2000 + i * 1000);
+                }, 500 + i * 500);
                 this._prefetchTimers.push(t);
             });
         },
@@ -3657,7 +3684,7 @@ new Vue({
                         if (preloaded.readyState >= 2) return r(true);
                         preloaded.addEventListener('canplaythrough', () => r(true), { once: true });
                         preloaded.addEventListener('error', () => r(false), { once: true });
-                        setTimeout(() => r(false), 3000);
+                        setTimeout(() => r(false), 1500);
                     });
                     if (ready && await waitEndEl(preloaded)) return;
                 }
@@ -3754,12 +3781,12 @@ new Vue({
                     preloaded.onended = () => { this.audioPlaying = false; };
                     try { await preloaded.play(); return; } catch(e) { /* fall through */ }
                 } else {
-                    // Audio is preloading — wait up to 3s for it to buffer
+                    // Audio is preloading — wait up to 1.5s for it to buffer, then fall through
                     const ready = await new Promise(r => {
                         if (preloaded.readyState >= 2) return r(true);
                         preloaded.addEventListener('canplaythrough', () => r(true), { once: true });
                         preloaded.addEventListener('error', () => r(false), { once: true });
-                        setTimeout(() => r(false), 3000);
+                        setTimeout(() => r(false), 1500);
                     });
                     if (ready) {
                         preloaded.currentTime = 0;
@@ -4163,17 +4190,21 @@ new Vue({
         },
 
         // ── Share ─────────────────────────────────────────────────────────
+        _shareUrl() {
+            // Auto-detect base URL from current domain (works on any hosting)
+            return window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
+        },
         shareApp() {
             this._doShare({
                 title: 'VocabLoop',
                 text: LANG === 'zh'
-                    ? '📚 VocabLoop — 间隔重复英语词汇 PWA\nPET / 日常口语 / Crypto 三大词库，科学记单词'
-                    : '📚 VocabLoop — Spaced Repetition Vocabulary PWA\nPET / Daily English / Crypto — science-backed word learning',
-                url: 'https://karryzhang.github.io/VocabLoop/',
+                    ? '📚 VocabLoop — 间隔重复英语词汇 PWA\nPET / 日常口语 / Crypto 三大词库，科学记单词\n🆓 开源免费，无广告打扰'
+                    : '📚 VocabLoop — Spaced Repetition Vocabulary PWA\nPET / Daily English / Crypto — science-backed word learning\n🆓 Open-source, free, no ads',
+                url: this._shareUrl(),
             });
         },
         shareSession() {
-            const url = 'https://karryzhang.github.io/VocabLoop/';
+            const url = this._shareUrl();
             const streakLine = this.dailyStreak >= 2
                 ? (LANG === 'zh' ? `🔥 ${this.dailyStreak} 天连续学习\n` : `🔥 ${this.dailyStreak}-day streak\n`)
                 : '';
@@ -4186,7 +4217,7 @@ new Vue({
             });
         },
         sharePractice() {
-            const url = 'https://karryzhang.github.io/VocabLoop/';
+            const url = this._shareUrl();
             const pct = this.practiceQueue.length > 0
                 ? Math.round(this.practiceScore / this.practiceQueue.length * 100) : 0;
             this._doShare({

@@ -149,6 +149,17 @@
     .check-path{stroke-dasharray:50;stroke-dashoffset:50;animation:drawCheck .4s .3s ease forwards}
     @keyframes drawCheck{to{stroke-dashoffset:0}}
 
+    /* ── Offline mode panel ── */
+    .offline-panel{text-align:center;padding:24px 0}
+    .offline-icon{font-size:2.4rem;margin-bottom:10px}
+    .offline-title{font-size:1.2rem;font-weight:800;margin-bottom:8px}
+    .offline-desc{color:var(--muted);font-size:.92rem;line-height:1.55;margin-bottom:20px}
+    .offline-features{text-align:left;margin:16px 0 20px;padding:14px;
+      background:color-mix(in srgb, var(--pri) 6%, transparent);border-radius:12px;
+      border:1px solid color-mix(in srgb, var(--pri) 15%, transparent)}
+    .offline-features li{color:var(--muted);font-size:.88rem;margin:6px 0;line-height:1.4}
+    .offline-features li strong{color:var(--ink)}
+
     /* ── Logged-in profile panel ── */
     .profile{text-align:center;padding:16px 0}
     .profile-avatar{width:72px;height:72px;border-radius:50%;
@@ -189,7 +200,7 @@
 <body>
   <div class="wrap">
     <div class="top">
-      <a class="back" href="/" id="backBtn">← Back to Home</a>
+      <a class="back" href="./" id="backBtn">← Back to Home</a>
       <button class="ghost" id="themeBtn">🌓 Theme</button>
     </div>
 
@@ -217,8 +228,35 @@
         <button class="btn-logout" id="logoutBtn">Logout</button>
       </div>
 
-      <!-- Auth form view -->
-      <div id="authPanel">
+      <!-- Offline mode (no backend) -->
+      <div id="offlinePanel" style="display:none">
+        <div class="offline-panel">
+          <div class="offline-icon">📴</div>
+          <div class="offline-title" id="offlineTitle">Offline Mode</div>
+          <div class="offline-desc" id="offlineDesc">You're using VocabLoop as a static page — no server is connected. Your learning data is stored locally in this browser.</div>
+          <ul class="offline-features" id="offlineFeatures">
+            <li id="offlineFeat1"><strong>All learning features</strong> work normally without an account</li>
+            <li id="offlineFeat2">Use <strong>Export / Import</strong> below to back up or transfer your progress</li>
+            <li id="offlineFeat3">Deploy with a Node.js backend to enable <strong>cloud sync</strong> across devices</li>
+          </ul>
+          <div class="data-section" style="border-top:none;margin-top:0;padding-top:0">
+            <div class="data-btns">
+              <button class="btn-data" onclick="exportProgress()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span id="offlineExportLabel">Export</span>
+              </button>
+              <button class="btn-data" onclick="document.getElementById('offlineImportInput').click()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <span id="offlineImportLabel">Import</span>
+              </button>
+            </div>
+          </div>
+          <input type="file" id="offlineImportInput" accept=".json" style="display:none" onchange="handleImportFile(event)">
+        </div>
+      </div>
+
+      <!-- Auth form view (hidden until backend detected) -->
+      <div id="authPanel" style="display:none">
         <h1 id="title">Account</h1>
         <div class="muted" id="subtitle">Create your account or login to continue learning across sessions.</div>
 
@@ -324,7 +362,12 @@
         importOk:(n)=>`Imported! Merged data from ${n} deck${n===1?'':'s'}`,
         importFail:'Import failed: invalid file format',
         importEmpty:'No learning records found in file',
-        exportOk:'Export ✓'
+        exportOk:'Export ✓',
+        offlineTitle:'Offline Mode',
+        offlineDesc:'You\'re using VocabLoop as a static page — no server is connected. Your learning data is stored locally in this browser.',
+        offlineFeat1:'<strong>All learning features</strong> work normally without an account',
+        offlineFeat2:'Use <strong>Export / Import</strong> below to back up or transfer your progress',
+        offlineFeat3:'Deploy with a Node.js backend to enable <strong>cloud sync</strong> across devices'
       },
       zh: {
         back:'← 返回首页', theme:'🌓 主题', title:'账户',
@@ -356,7 +399,12 @@
         importOk:(n)=>`导入成功！已合并 ${n} 个词库的数据`,
         importFail:'导入失败：文件格式不正确',
         importEmpty:'文件中没有找到学习记录',
-        exportOk:'导出 ✓'
+        exportOk:'导出 ✓',
+        offlineTitle:'离线模式',
+        offlineDesc:'当前以静态页面运行，未连接服务端。你的学习数据保存在本地浏览器中。',
+        offlineFeat1:'<strong>所有学习功能</strong>无需账号即可正常使用',
+        offlineFeat2:'使用下方的<strong>导出/导入</strong>可备份或迁移学习进度',
+        offlineFeat3:'部署 Node.js 后端即可开启<strong>跨设备云同步</strong>'
       }
     };
 
@@ -410,6 +458,14 @@
       $('exportLabel').textContent = t.exportBtn;
       $('importLabel').textContent = t.importBtn;
       $('dataTitle').textContent = state.lang === 'zh' ? '数据管理' : 'Data';
+      /* Offline panel i18n */
+      $('offlineTitle').textContent = t.offlineTitle;
+      $('offlineDesc').textContent = t.offlineDesc;
+      $('offlineFeat1').innerHTML = t.offlineFeat1;
+      $('offlineFeat2').innerHTML = t.offlineFeat2;
+      $('offlineFeat3').innerHTML = t.offlineFeat3;
+      $('offlineExportLabel').textContent = t.exportBtn;
+      $('offlineImportLabel').textContent = t.importBtn;
     }
 
     /* ── Tab switching with sliding indicator ── */
@@ -465,7 +521,11 @@
       overlay.classList.add('show');
       /* Trigger a merge sync so cloud data is pulled before redirect */
       try{ await syncOnAuth(); }catch(e){ /* non-blocking: redirect even if sync fails */ }
-      setTimeout(() => { window.location.href = '/'; }, 1200);
+      setTimeout(() => {
+        /* Use relative path so it works on GitHub Pages subdirectory */
+        const base = window.location.pathname.replace(/account\.html.*$/, '');
+        window.location.href = base || '/';
+      }, 1200);
     }
 
     /** Sync learning data with cloud on login/register */
@@ -812,17 +872,47 @@
     $('themeBtn').addEventListener('click', switchTheme);
     $('logoutBtn').addEventListener('click', handleLogout);
 
+    /* ── Backend detection ── */
+    async function checkBackend(){
+      try{
+        const res = await fetch(
+          window.location.pathname.replace(/account\.html.*$/, '') + 'api/auth',
+          { method:'POST', headers:{'content-type':'application/json'}, body:'{}' }
+        );
+        const ct = (res.headers.get('content-type') || '');
+        if(ct.includes('application/json') || ct.includes('text/json')){
+          const data = await res.json();
+          return !!(data && typeof data.ok === 'boolean' && typeof data.message === 'string');
+        }
+      }catch(_){}
+      return false;
+    }
+
+    function showOfflineMode(){
+      $('authPanel').style.display = 'none';
+      $('profilePanel').style.display = 'none';
+      $('offlinePanel').style.display = 'block';
+    }
+
     /* ── Init ── */
     applyTheme(state.theme);
     applyI18n();
 
-    /* Check if already logged in */
-    const existingAuth = getAuth();
-    if(existingAuth && existingAuth.username){
-      showProfile(existingAuth);
-    } else {
-      switchTab('register');
-    }
+    /* Detect backend, then show appropriate view */
+    checkBackend().then(function(available){
+      if(!available){
+        showOfflineMode();
+        return;
+      }
+      /* Backend available — normal flow */
+      const existingAuth = getAuth();
+      if(existingAuth && existingAuth.username){
+        showProfile(existingAuth);
+      } else {
+        $('authPanel').style.display = 'block';
+        switchTab('register');
+      }
+    });
   </script>
 </body>
 </html>
