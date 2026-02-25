@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VocabLoop Account</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f3f6fb; margin: 0; }
+    .wrap { max-width: 760px; margin: 40px auto; padding: 16px; }
+    .card { background: white; border-radius: 14px; padding: 16px; margin-bottom: 14px; box-shadow: 0 6px 18px rgba(0,0,0,.08); }
+    input { width: 100%; padding: 10px; margin: 8px 0; border-radius: 10px; border: 1px solid #d5deea; }
+    button { border: 0; padding: 10px 14px; border-radius: 10px; background: #2563eb; color: #fff; font-weight: 700; cursor: pointer; }
+    .muted { color: #64748b; font-size: 13px; }
+    pre { background: #0f172a; color: #e2e8f0; padding: 12px; border-radius: 10px; overflow:auto; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h2>Register</h2>
+      <div class="muted">Username ≥ 5 chars, Password ≥ 6 digits</div>
+      <input id="rUser" placeholder="username" />
+      <input id="rPass" placeholder="password (digits only)" />
+      <button onclick="register()">Register</button>
+    </div>
+
+    <div class="card">
+      <h2>Login</h2>
+      <input id="lUser" placeholder="username" />
+      <input id="lPass" placeholder="password (digits only)" />
+      <button onclick="login()">Login</button>
+    </div>
+
+    <div class="card">
+      <h3>Result</h3>
+      <pre id="out">Ready.</pre>
+    </div>
+  </div>
+
+  <script>
+    const out = document.getElementById('out');
+    function show(x){ out.textContent = typeof x === 'string' ? x : JSON.stringify(x, null, 2); }
+
+    async function register(){
+      const username = document.getElementById('rUser').value;
+      const password = document.getElementById('rPass').value;
+      const r = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ action:'register', username, password })
+      });
+      show(await r.json());
+    }
+
+    async function login(){
+      const username = document.getElementById('lUser').value;
+      const password = document.getElementById('lPass').value;
+      const r = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ action:'login', username, password })
+      });
+      show(await r.json());
+    }
+  </script>
+</body>
+</html>
