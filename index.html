@@ -88,6 +88,7 @@
 
     <!-- ── 性能预连接 ─────────────────────────────────────────────────── -->
     <link rel="preconnect" href="https://api.dictionaryapi.dev">
+    <link rel="preconnect" href="https://dict.youdao.com">
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
@@ -3488,10 +3489,11 @@ new Vue({
         'cur.word'(newWord) {
             if (!newWord) return;
             this._preloadAudio(newWord);
-            this.fetchDict(newWord);
+            // After dict fetch completes, upgrade current card to Free Dict audio if available
+            this.fetchDict(newWord).then(() => this._preloadAudio(newWord));
             this.prefetchAhead();
             if (this.autoPlay) {
-                setTimeout(() => this.playAudio(newWord), 520);
+                setTimeout(() => this.playAudio(newWord), 200);
             }
         },
         // Silent full sync when study session completes
@@ -3616,13 +3618,13 @@ new Vue({
             // Dict fetch: immediate for all (needed for IPA / UI display)
             upcoming.forEach(w => this.fetchDict(w.word));
 
-            // Audio preload: skip queue[0] (current card — played directly, don't compete).
-            // Stagger the rest so current card's audio gets full bandwidth first.
+            // Audio preload: skip queue[0] (current card — handled by watcher).
+            // Start earlier, stagger tightly so next cards are ready sooner.
             upcoming.slice(1).forEach((w, i) => {
                 const t = setTimeout(() => {
                     this._preloadAudio(w.word);
                     this.fetchDict(w.word).then(() => this._preloadAudio(w.word));
-                }, 2000 + i * 1000);
+                }, 500 + i * 500);
                 this._prefetchTimers.push(t);
             });
         },
@@ -3682,7 +3684,7 @@ new Vue({
                         if (preloaded.readyState >= 2) return r(true);
                         preloaded.addEventListener('canplaythrough', () => r(true), { once: true });
                         preloaded.addEventListener('error', () => r(false), { once: true });
-                        setTimeout(() => r(false), 3000);
+                        setTimeout(() => r(false), 1500);
                     });
                     if (ready && await waitEndEl(preloaded)) return;
                 }
@@ -3779,12 +3781,12 @@ new Vue({
                     preloaded.onended = () => { this.audioPlaying = false; };
                     try { await preloaded.play(); return; } catch(e) { /* fall through */ }
                 } else {
-                    // Audio is preloading — wait up to 3s for it to buffer
+                    // Audio is preloading — wait up to 1.5s for it to buffer, then fall through
                     const ready = await new Promise(r => {
                         if (preloaded.readyState >= 2) return r(true);
                         preloaded.addEventListener('canplaythrough', () => r(true), { once: true });
                         preloaded.addEventListener('error', () => r(false), { once: true });
-                        setTimeout(() => r(false), 3000);
+                        setTimeout(() => r(false), 1500);
                     });
                     if (ready) {
                         preloaded.currentTime = 0;
