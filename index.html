@@ -131,7 +131,7 @@
             gap: 5px;
             overflow-x: auto;
             flex-wrap: nowrap;
-            padding-bottom: 10px;
+            padding: 4px 0 10px;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
         }
@@ -175,6 +175,32 @@
         .btn-hd.active { border-color: var(--blue); background: var(--blue); color: #fff; }
         .btn-hd.danger:hover { border-color: var(--red); color: var(--red); }
 
+        /* ── Mode bar (below card) ───────────── */
+        .mode-bar {
+            display: flex; gap: 8px;
+            justify-content: center;
+            padding: 8px 14px 2px;
+            flex-shrink: 0;
+        }
+        .mode-btn {
+            background: none;
+            border: 1.5px solid var(--border);
+            border-radius: 99px;
+            padding: 5px 16px;
+            font-size: 0.78rem; font-weight: 600;
+            color: var(--muted); cursor: pointer;
+            transition: all 0.15s;
+        }
+        .mode-btn:hover { border-color: var(--blue); color: var(--blue); }
+        .mode-btn.active {
+            border-color: var(--blue); color: var(--blue);
+            background: rgba(59,130,246,.08);
+        }
+        .mode-btn-play.active {
+            border-color: #8b5cf6; color: #8b5cf6;
+            background: rgba(139,92,246,.08);
+        }
+
         /* ── Deck selector bar ───────────────── */
         .deck-bar {
             background: var(--surface);
@@ -183,7 +209,10 @@
             display: flex;
             gap: 8px;
             overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
         }
+        .deck-bar::-webkit-scrollbar { display: none; }
         .deck-btn {
             background: none;
             border: 1.5px solid var(--border);
@@ -1784,11 +1813,6 @@
             <div class="hd-btns">
                 <button class="btn-hd" :class="{active: autoPlay}" @click="autoPlay = !autoPlay"
                         :title="autoPlay ? ui.autoPlayOn : ui.autoPlayOff">🔊</button>
-                <button class="btn-hd" :class="{active: viewMode === 'list'}"
-                        @click="viewMode = viewMode === 'card' ? 'list' : 'card'"
-                        :title="viewMode === 'card' ? ui.viewList : ui.viewCard">
-                    {{ viewMode === 'card' ? '☰' : '⊟' }}
-                </button>
                 <button class="btn-hd" :class="{active: practiceMode}"
                         @click="practiceMode ? exitPractice() : startPractice()"
                         :title="ui.practiceBtn">✏️</button>
@@ -2263,7 +2287,7 @@
 
         <!-- Buttons (after flip) -->
         <div class="controls-wrap">
-            <div class="controls" :class="{visible: flipped}">
+            <div class="controls" :class="{visible: flipped && !slideshowMode}">
                 <button class="cb cb-again" @click="answer('again')" :disabled="!flipped">
                     <span class="cb-label">{{ui.btnAgain}}</span>
                     <span class="cb-interval">{{iv('again')}}</span>
@@ -2281,7 +2305,20 @@
                     <span class="cb-interval">{{iv('easy')}}</span>
                 </button>
             </div>
-            <div class="key-hint" :class="{visible: !flipped}" v-html="ui.keyHint"></div>
+            <div class="key-hint" :class="{visible: !flipped && !slideshowMode}" v-html="ui.keyHint"></div>
+        </div>
+
+        <!-- ── Mode bar：视图切换 + 自动播放 ─────────────── -->
+        <div class="mode-bar">
+            <button class="mode-btn" :class="{active: viewMode==='list'}"
+                    @click="toggleView">
+                {{viewMode === 'card' ? '☰ ' + ui.viewList : '⊟ ' + ui.viewCard}}
+            </button>
+            <button class="mode-btn mode-btn-play" :class="{active: slideshowMode}"
+                    @click="toggleSlideshow"
+                    v-if="viewMode === 'card'">
+                {{slideshowMode ? ui.slideshowStop : ui.slideshowStart}}
+            </button>
         </div>
         </template><!-- end card view -->
     </main>
@@ -2735,6 +2772,8 @@ const STRINGS = {
     dwStreakLabel:   n => `第 ${n} 天`,
     dwSubtitle:      n => n >= 30 ? `连续学习 ${n} 天，你是真正的学习达人！` : n >= 14 ? `已坚持 ${n} 天，状态超棒，继续冲！` : n >= 7 ? `已坚持 ${n} 天，习惯正在养成！` : `已坚持 ${n} 天，继续保持！`,
     dwCta:           '继续学习 →',
+    slideshowStart:  '▷ 自动播放',
+    slideshowStop:   '⏸ 停止',
     practicePlayAgain:     '再听一遍',
     practiceExitBtn:       '退出练习',
     undoBtn:               '↩ 撤销',
@@ -2882,6 +2921,8 @@ const STRINGS = {
     dwStreakLabel:   n => `Day ${n}`,
     dwSubtitle:      n => n >= 30 ? `${n} days strong — you're a true learning champion!` : n >= 14 ? `${n} days in — you're on fire!` : n >= 7 ? `${n} days — a habit is forming!` : `${n} days and counting. Keep it up!`,
     dwCta:           'Keep Learning →',
+    slideshowStart:  '▷ Auto Play',
+    slideshowStop:   '⏸ Stop',
     practicePlayAgain:     'Play again',
     practiceExitBtn:       'Exit Practice',
     undoBtn:               '↩ Undo',
@@ -3214,6 +3255,11 @@ new Vue({
             wordListModal: null, // { stageGroup, title, words } — word list bottom sheet
             showOnboarding: false,
             showDailyWelcome: false,
+            slideshowMode:   false,
+            slideshowQueue:  [],
+            slideshowIdx:    0,
+            slideshowWord:   null,
+            _slideshowTimer: null,
             dailyWelcomeDay: 0,
             dailyWelcomeQuote: null,
         };
@@ -3266,7 +3312,7 @@ new Vue({
             return Object.values(this.state).filter(s => s && s.firstSeen === tdy).length;
         },
         sessionDone() { return !this.loading && this.queue.length === 0; },
-        cur()  { return this.queue[0] || { word: '', zh: '', pos: '' }; },
+        cur()  { return this.slideshowWord || this.queue[0] || { word: '', zh: '', pos: '' }; },
         curStage() {
             const s = this.state[this.cur.word];
             return s ? (s.stage || 'new') : 'new';
@@ -3506,6 +3552,85 @@ new Vue({
             });
         },
 
+        // Plays audio and waits until it ENDS (for slideshow auto-flip)
+        async _playAndWait(word) {
+            if (!word) return;
+            this.audioPlaying = true;
+            const waitEnd = (url) => new Promise(resolve => {
+                const a = new Audio(url);
+                a.onended = () => { this.audioPlaying = false; resolve(true); };
+                a.onerror = () => resolve(false);
+                a.play().catch(() => resolve(false));
+            });
+            const d = this.dictCache[word];
+            if (d && d.audio && await waitEnd(d.audio)) return;
+            const youdao = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`;
+            if (await waitEnd(youdao)) return;
+            this.audioPlaying = false;
+            // TTS fallback — wait for speech end
+            await new Promise(resolve => {
+                if (!('speechSynthesis' in window)) { resolve(); return; }
+                window.speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(word);
+                u.lang = 'en-US'; u.rate = 0.85;
+                const voices = speechSynthesis.getVoices();
+                const PREF = ['Google US English',
+                    'Microsoft Aria Online (Natural) - English (United States)',
+                    'Samantha', 'Alex'];
+                const best = PREF.map(n => voices.find(v => v.name === n)).find(Boolean)
+                    || voices.find(v => v.lang === 'en-US' && !v.localService)
+                    || voices.find(v => v.lang.startsWith('en'));
+                if (best) u.voice = best;
+                this.audioPlaying = true;
+                u.onend  = () => { this.audioPlaying = false; resolve(); };
+                u.onerror = () => { this.audioPlaying = false; resolve(); };
+                speechSynthesis.speak(u);
+            });
+        },
+
+        // ── Slideshow (auto-play) mode ──────────────────────────────
+        toggleView() {
+            this.stopSlideshow();
+            this.viewMode = this.viewMode === 'card' ? 'list' : 'card';
+        },
+        toggleSlideshow() {
+            this.slideshowMode ? this.stopSlideshow() : this.startSlideshow();
+        },
+        startSlideshow() {
+            const words = this.getTodayPracticeWords();
+            if (!words.length) return;
+            this.slideshowQueue = [...words];
+            this.slideshowIdx   = 0;
+            this.slideshowMode  = true;
+            this.flipped        = false;
+            this._slideshowStep();
+        },
+        async _slideshowStep() {
+            if (!this.slideshowMode) return;
+            this.slideshowWord = this.slideshowQueue[this.slideshowIdx];
+            this.flipped       = false;
+            await new Promise(r => setTimeout(r, 500));
+            if (!this.slideshowMode) return;
+            await this._playAndWait(this.slideshowWord.word);
+            if (!this.slideshowMode) return;
+            this.flipped = true;
+            this._slideshowTimer = setTimeout(() => {
+                if (!this.slideshowMode) return;
+                this.slideshowIdx++;
+                if (this.slideshowIdx >= this.slideshowQueue.length) {
+                    this.stopSlideshow(); return;
+                }
+                this._slideshowStep();
+            }, 5000);
+        },
+        stopSlideshow() {
+            clearTimeout(this._slideshowTimer);
+            this._slideshowTimer = null;
+            this.slideshowMode   = false;
+            this.slideshowWord   = null;
+            this.flipped         = false;
+        },
+
         async playAudio(word) {
             if (!word) return;
             this.audioPlaying = true;
@@ -3678,12 +3803,15 @@ new Vue({
         },
 
         // ── Card interaction ──────────────────────────────────────────────
-        onCardClick() { if (!this.flipped) this.flipCard(); else this.playAudio(this.cur.word); },
+        onCardClick() {
+            if (this.slideshowMode) return;
+            if (!this.flipped) this.flipCard(); else this.playAudio(this.cur.word);
+        },
         flipCard()    { this.flipped = !this.flipped; },
 
         // ── SRS answer ────────────────────────────────────────────────────
         answer(level) {
-            if (!this.flipped) return;
+            if (!this.flipped || this.slideshowMode) return;
 
             this.totalReviewed++;
             this.updateDailyStreak();
