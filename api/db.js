@@ -14,7 +14,10 @@ const fs     = require('fs');
 const crypto = require('crypto');
 const Database = require('better-sqlite3');
 
-const DATA_DIR = path.join(__dirname, '..', '.data');
+// Vercel serverless: project dir is read-only, only /tmp is writable
+const DATA_DIR = process.env.VERCEL
+  ? '/tmp'
+  : path.join(__dirname, '..', '.data');
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 
 const DB_PATH = path.join(DATA_DIR, 'vocabloop.db');
