@@ -3462,6 +3462,7 @@ new Vue({
         // When a new card appears: fetch its dict data and prefetch ahead
         'cur.word'(newWord) {
             if (!newWord) return;
+            this._preloadAudio(newWord);
             this.fetchDict(newWord);
             this.prefetchAhead();
             if (this.autoPlay) {
@@ -3609,8 +3610,8 @@ new Vue({
             const url = (d && d.audio)
                 || `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`;
             const existing = this._audioPreloads[word];
-            // Skip if already preloading the same URL
-            if (existing && existing._preloadSrc === url) return;
+            // Don't replace already-buffered audio (even if a "better" URL is available)
+            if (existing && (existing.readyState >= 2 || existing._preloadSrc === url)) return;
             const a = new Audio();
             a.preload = 'auto';
             a.src = url;
@@ -3646,10 +3647,20 @@ new Vue({
                 a.onerror = () => resolve(false);
                 a.play().catch(() => resolve(false));
             });
-            // 0. Use preloaded & buffered audio if available
+            // 0. Preloaded audio — play instantly or wait briefly for in-progress preload
             const preloaded = this._audioPreloads && this._audioPreloads[word];
-            if (preloaded && preloaded.readyState >= 2) {
-                if (await waitEndEl(preloaded)) return;
+            if (preloaded) {
+                if (preloaded.readyState >= 2) {
+                    if (await waitEndEl(preloaded)) return;
+                } else {
+                    const ready = await new Promise(r => {
+                        if (preloaded.readyState >= 2) return r(true);
+                        preloaded.addEventListener('canplaythrough', () => r(true), { once: true });
+                        preloaded.addEventListener('error', () => r(false), { once: true });
+                        setTimeout(() => r(false), 3000);
+                    });
+                    if (ready && await waitEndEl(preloaded)) return;
+                }
             }
             const d = this.dictCache[word];
             if (d && d.audio && await waitEnd(d.audio)) return;
@@ -3735,12 +3746,27 @@ new Vue({
             if (!word) return;
             this.audioPlaying = true;
 
-            // 0. Preloaded & buffered audio — instant playback
+            // 0. Preloaded audio — play instantly or wait briefly for in-progress preload
             const preloaded = this._audioPreloads && this._audioPreloads[word];
-            if (preloaded && preloaded.readyState >= 2) {
-                preloaded.currentTime = 0;
-                preloaded.onended = () => { this.audioPlaying = false; };
-                try { await preloaded.play(); return; } catch(e) { /* fall through */ }
+            if (preloaded) {
+                if (preloaded.readyState >= 2) {
+                    preloaded.currentTime = 0;
+                    preloaded.onended = () => { this.audioPlaying = false; };
+                    try { await preloaded.play(); return; } catch(e) { /* fall through */ }
+                } else {
+                    // Audio is preloading — wait up to 3s for it to buffer
+                    const ready = await new Promise(r => {
+                        if (preloaded.readyState >= 2) return r(true);
+                        preloaded.addEventListener('canplaythrough', () => r(true), { once: true });
+                        preloaded.addEventListener('error', () => r(false), { once: true });
+                        setTimeout(() => r(false), 3000);
+                    });
+                    if (ready) {
+                        preloaded.currentTime = 0;
+                        preloaded.onended = () => { this.audioPlaying = false; };
+                        try { await preloaded.play(); return; } catch(e) { /* fall through */ }
+                    }
+                }
             }
 
             // 1. Free Dictionary API — human recordings for common words
@@ -3817,6 +3843,8 @@ new Vue({
                     this.dictCache = Object.assign({}, this.dictCache, additions);
                 }
                 this.buildQueue();
+                // Eagerly preload first card's audio (Youdao URL is deterministic, no API needed)
+                if (this.queue.length) this._preloadAudio(this.queue[0].word);
             } catch (e) {
                 alert(UI.loadError(e.message, this.currentDeck.file));
             }
