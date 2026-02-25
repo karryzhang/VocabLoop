@@ -161,6 +161,24 @@
       padding:10px 24px;font-weight:700;cursor:pointer;transition:.15s;font-size:.92rem}
     .btn-logout:hover{background:color-mix(in srgb, var(--err) 10%, transparent)}
 
+    /* ── Data management buttons ── */
+    .data-section{margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+    .data-section h3{margin:0 0 10px;font-size:.95rem;font-weight:700}
+    .data-btns{display:flex;gap:10px}
+    .btn-data{flex:1;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;
+      padding:10px 14px;font-weight:700;cursor:pointer;transition:.15s;font-size:.88rem;
+      display:flex;align-items:center;justify-content:center;gap:6px}
+    .btn-data:hover{background:color-mix(in srgb, var(--pri) 8%, var(--card));border-color:var(--pri)}
+    .btn-data:active{transform:translateY(1px)}
+    .btn-data svg{width:16px;height:16px;flex-shrink:0}
+
+    /* ── Toast ── */
+    .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);
+      background:var(--ink);color:var(--card);padding:10px 20px;border-radius:12px;
+      font-size:.88rem;font-weight:600;opacity:0;transition:all .3s ease;z-index:200;pointer-events:none;
+      white-space:nowrap}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
     @media (max-width: 520px){
       .wrap{margin:12px auto}
       .card{padding:14px}
@@ -181,6 +199,21 @@
         <div class="profile-avatar" id="profileAvatar">U</div>
         <div class="profile-name" id="profileName">username</div>
         <div class="profile-meta" id="profileMeta">Logged in</div>
+        <div class="data-section">
+          <h3 id="dataTitle">Data</h3>
+          <div class="data-btns">
+            <button class="btn-data" id="exportBtn" onclick="exportProgress()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span id="exportLabel">Export</span>
+            </button>
+            <button class="btn-data" id="importBtnEl" onclick="document.getElementById('importFileInput').click()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span id="importLabel">Import</span>
+            </button>
+          </div>
+        </div>
+        <input type="file" id="importFileInput" accept=".json" style="display:none" onchange="handleImportFile(event)">
+        <div style="height:12px"></div>
         <button class="btn-logout" id="logoutBtn">Logout</button>
       </div>
 
@@ -257,6 +290,8 @@
     </div>
   </div>
 
+  <div class="toast" id="toast"></div>
+
   <script>
     const I18N = {
       en: {
@@ -283,7 +318,13 @@
         loggedIn:'Logged in',
         logout:'Logout',
         logoutConfirm:'Are you sure you want to logout?',
-        strengthWeak:'Weak', strengthMedium:'Medium', strengthStrong:'Strong'
+        strengthWeak:'Weak', strengthMedium:'Medium', strengthStrong:'Strong',
+        exportBtn:'Export', importBtn:'Import',
+        importConfirm:'Import learning records from file.\nExisting words will be smart-merged (keeping the more recently reviewed version). No data will be lost.\n\nProceed?',
+        importOk:(n)=>`Imported! Merged data from ${n} deck${n===1?'':'s'}`,
+        importFail:'Import failed: invalid file format',
+        importEmpty:'No learning records found in file',
+        exportOk:'Export ✓'
       },
       zh: {
         back:'← 返回首页', theme:'🌓 主题', title:'账户',
@@ -309,7 +350,13 @@
         loggedIn:'已登录',
         logout:'退出登录',
         logoutConfirm:'确定要退出登录吗？',
-        strengthWeak:'弱', strengthMedium:'中', strengthStrong:'强'
+        strengthWeak:'弱', strengthMedium:'中', strengthStrong:'强',
+        exportBtn:'导出', importBtn:'导入',
+        importConfirm:'将从文件中导入学习记录。\n已有的单词将智能合并（保留复习更近的版本），不会丢失现有进度。\n\n确定导入吗？',
+        importOk:(n)=>`导入成功！已合并 ${n} 个词库的数据`,
+        importFail:'导入失败：文件格式不正确',
+        importEmpty:'文件中没有找到学习记录',
+        exportOk:'导出 ✓'
       }
     };
 
@@ -360,6 +407,9 @@
       $('lUser').placeholder = t.loginUser;
       $('lPass').placeholder = t.loginPass;
       $('logoutBtn').textContent = t.logout;
+      $('exportLabel').textContent = t.exportBtn;
+      $('importLabel').textContent = t.importBtn;
+      $('dataTitle').textContent = state.lang === 'zh' ? '数据管理' : 'Data';
     }
 
     /* ── Tab switching with sliding indicator ── */
@@ -464,6 +514,136 @@
           try{ localStorage.setItem('vocabloop_sync_ts', String(Date.now())); }catch(e){}
         }
       }catch(e){ /* ignore sync errors — don't block redirect */ }
+    }
+
+    /* ── Toast ── */
+    function showToast(msg){
+      const el = $('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      clearTimeout(el._tid);
+      el._tid = setTimeout(() => el.classList.remove('show'), 2200);
+    }
+
+    /* ── Export / Import ── */
+    const DECK_IDS = ['pet', 'daily', 'ielts', 'crypto'];
+
+    function today(){
+      const d = new Date();
+      return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    }
+
+    function exportProgress(){
+      const t = state.t;
+      const allState = {};
+      for(const id of DECK_IDS){
+        try{ const raw = localStorage.getItem('srs_'+id+'_v1'); if(raw) allState[id] = JSON.parse(raw); }catch(e){}
+      }
+      let global = {};
+      try{ const raw = localStorage.getItem('srs_global_v1'); if(raw) global = JSON.parse(raw); }catch(e){}
+      let readingHistory = [];
+      try{ const raw = localStorage.getItem('reading_history'); if(raw) readingHistory = JSON.parse(raw); }catch(e){}
+      const data = {
+        version: 1,
+        exportDate: new Date().toISOString(),
+        global: global,
+        decks: allState,
+        preferredDeck: localStorage.getItem('preferred_deck') || '',
+        readingHistory: readingHistory,
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'vocabloop-backup-' + today() + '.json';
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast(t.exportOk);
+    }
+
+    function handleImportFile(e){
+      const file = e.target.files && e.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev){
+        try{
+          const data = JSON.parse(ev.target.result);
+          importProgress(data);
+        }catch(err){
+          showToast(state.t.importFail);
+        }
+        e.target.value = '';
+      };
+      reader.readAsText(file);
+    }
+
+    function importProgress(data){
+      const t = state.t;
+      if(!data || typeof data !== 'object' || !data.decks){
+        showToast(t.importFail); return;
+      }
+      if(!confirm(t.importConfirm)) return;
+
+      let mergedCount = 0;
+      for(const id of DECK_IDS){
+        const importedDeck = data.decks[id];
+        if(!importedDeck) continue;
+        const importedState = importedDeck.state || {};
+        if(Object.keys(importedState).length === 0) continue;
+
+        let localDeck = {};
+        try{ const raw = localStorage.getItem('srs_'+id+'_v1'); if(raw) localDeck = JSON.parse(raw); }catch(e){}
+        const localState = localDeck.state || {};
+
+        const merged = {};
+        const allWords = new Set([...Object.keys(localState), ...Object.keys(importedState)]);
+        for(const word of allWords){
+          const l = localState[word];
+          const c = importedState[word];
+          if(!l){ merged[word] = c; continue; }
+          if(!c){ merged[word] = l; continue; }
+          merged[word] = (l.next||0) >= (c.next||0) ? l : c;
+        }
+        const mergedDeck = {
+          state: merged,
+          points: Math.max(localDeck.points||0, importedDeck.points||0),
+          streak: Math.max(localDeck.streak||0, importedDeck.streak||0),
+          autoPlay: localDeck.autoPlay !== undefined ? localDeck.autoPlay : importedDeck.autoPlay,
+        };
+        try{ localStorage.setItem('srs_'+id+'_v1', JSON.stringify(mergedDeck)); }catch(e){}
+        mergedCount++;
+      }
+
+      if(data.global){
+        let g = data.global;
+        let local = {};
+        try{ const raw = localStorage.getItem('srs_global_v1'); if(raw) local = JSON.parse(raw); }catch(e){}
+        local.dailyStreak   = Math.max(local.dailyStreak||0, g.dailyStreak||0);
+        local.lastStudyDate = (local.lastStudyDate||'') >= (g.lastStudyDate||'') ? local.lastStudyDate : g.lastStudyDate;
+        local.totalReviewed = Math.max(local.totalReviewed||0, g.totalReviewed||0);
+        if(Array.isArray(g.achievements)){
+          local.achievements = [...new Set([...(local.achievements||[]), ...g.achievements])];
+        }
+        try{ localStorage.setItem('srs_global_v1', JSON.stringify(local)); }catch(e){}
+      }
+
+      if(Array.isArray(data.readingHistory) && data.readingHistory.length > 0){
+        let existing = [];
+        try{ const raw = localStorage.getItem('reading_history'); if(raw) existing = JSON.parse(raw); }catch(e){}
+        const seen = new Set();
+        const merged = [];
+        for(const item of [...existing, ...data.readingHistory]){
+          const key = JSON.stringify(item);
+          if(!seen.has(key)){ seen.add(key); merged.push(item); }
+        }
+        try{ localStorage.setItem('reading_history', JSON.stringify(merged.slice(-50))); }catch(e){}
+      }
+
+      if(mergedCount > 0){
+        showToast(t.importOk(mergedCount));
+      } else {
+        showToast(t.importEmpty);
+      }
     }
 
     /* ── Shake animation helper ── */
