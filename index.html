@@ -3468,6 +3468,12 @@ new Vue({
                 setTimeout(() => this.playAudio(newWord), 520);
             }
         },
+        // Silent full sync when study session completes
+        sessionDone(done) {
+            if (done && this.backendAvailable && window.__vocabSync) {
+                window.__vocabSync.doSync();
+            }
+        },
     },
 
     methods: {
@@ -4653,6 +4659,8 @@ new Vue({
             if (this.readingHistory.length > 30)
                 this.readingHistory = this.readingHistory.slice(0, 30);
             localStorage.setItem('reading_history', JSON.stringify(this.readingHistory));
+            // Silent sync reading history to cloud
+            if (window.__vocabSync && window.__vocabSync.push) window.__vocabSync.push();
         },
         async pasteApiKey() {
             try {
@@ -5352,8 +5360,8 @@ new Vue({
     }
   });
 
-  /* ── Expose for manual trigger ── */
-  window.__vocabSync = { manualSync: manualSync, doSync: doSync };
+  /* ── Expose for manual trigger & silent push ── */
+  window.__vocabSync = { manualSync: manualSync, doSync: doSync, push: debouncedPush };
 
   /* ── Start — wait for backend detection before initializing ── */
   function waitAndInit(){
