@@ -1830,10 +1830,10 @@
                 <button class="btn-hd" @click="shareApp" :title="ui.shareBtn">
                     <svg class="share-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                 </button>
-                <button id="syncBtn" class="btn-hd" onclick="window.__vocabSync && window.__vocabSync.manualSync()" :title="ui.syncBtn">
+                <button id="syncBtn" v-show="backendAvailable" class="btn-hd" onclick="window.__vocabSync && window.__vocabSync.manualSync()" :title="ui.syncBtn">
                     <svg id="syncIcon" class="sync-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
                 </button>
-                <button id="accountBtn" class="btn-hd" onclick="window.location.href='account.html'" title="Account">👤</button>
+                <button id="accountBtn" v-show="backendAvailable" class="btn-hd" onclick="window.location.href='account.html'" title="Account">👤</button>
                 <button class="btn-hd" @click="exportProgress" :title="ui.exportBtn">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 </button>
@@ -3299,6 +3299,7 @@ new Vue({
             _slideshowTimer: null,
             dailyWelcomeDay: 0,
             dailyWelcomeQuote: null,
+            backendAvailable: false,
         };
     },
 
@@ -4228,6 +4229,22 @@ new Vue({
                 localStorage.removeItem(DICT_KEY);
             }
         },
+        async checkBackend() {
+            try {
+                const res = await fetch('/api/auth', {
+                    method: 'POST',
+                    headers: { 'content-type': 'application/json' },
+                    body: '{}',
+                });
+                // Real backend returns JSON; static 404 page returns HTML
+                const ct = (res.headers.get('content-type') || '');
+                this.backendAvailable = ct.includes('application/json') || ct.includes('text/json');
+            } catch (e) {
+                this.backendAvailable = false;
+            }
+            // Expose for sync module (initializes asynchronously)
+            window.__backendAvailable = this.backendAvailable;
+        },
         confirmReset() {
             if (confirm(UI.confirmReset(this.currentDeck.name))) {
                 localStorage.removeItem(this.storageKey);
@@ -4911,6 +4928,9 @@ new Vue({
             }
         };
         document.addEventListener('visibilitychange', this._onVisibility);
+
+        // Detect if Node.js backend API is available
+        this.checkBackend();
     },
     beforeDestroy() {
         window.removeEventListener('keydown', this.onKey);
@@ -5054,6 +5074,8 @@ new Vue({
 <script>
 (function(){
   function setAccountLabel(){
+    // Only show username when backend is available (Vue will handle button visibility)
+    if(!window.__backendAvailable) return;
     try{
       const btn = document.getElementById('accountBtn');
       if(!btn) return;
@@ -5066,10 +5088,15 @@ new Vue({
       }
     }catch(_e){}
   }
+  // Defer until Vue has finished backend detection
+  function trySetLabel(){
+    if(window.__backendAvailable !== undefined) { setAccountLabel(); return; }
+    setTimeout(trySetLabel, 200);
+  }
   if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', setAccountLabel);
+    document.addEventListener('DOMContentLoaded', function(){ setTimeout(trySetLabel, 300); });
   }else{
-    setAccountLabel();
+    setTimeout(trySetLabel, 300);
   }
 })();
 </script>
@@ -5302,6 +5329,8 @@ new Vue({
 
   /* ── Auto-sync on page load if logged in ── */
   function init(){
+    // Skip sync initialization when backend is not available (static hosting)
+    if(!window.__backendAvailable) return;
     var auth = getAuth();
     if(auth && auth.token){
       // Sync on load (merge cloud + local)
@@ -5317,7 +5346,7 @@ new Vue({
 
   /* ── Sync when returning to app from background ── */
   document.addEventListener('visibilitychange', function(){
-    if(!document.hidden){
+    if(!document.hidden && window.__backendAvailable){
       var auth = getAuth();
       if(auth && auth.token) doSync();
     }
@@ -5326,11 +5355,15 @@ new Vue({
   /* ── Expose for manual trigger ── */
   window.__vocabSync = { manualSync: manualSync, doSync: doSync };
 
-  /* ── Start ── */
+  /* ── Start — wait for backend detection before initializing ── */
+  function waitAndInit(){
+    if(window.__backendAvailable !== undefined){ setTimeout(init, 100); return; }
+    setTimeout(waitAndInit, 200);
+  }
   if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', function(){ setTimeout(init, 300); });
+    document.addEventListener('DOMContentLoaded', function(){ setTimeout(waitAndInit, 300); });
   } else {
-    setTimeout(init, 300);
+    setTimeout(waitAndInit, 300);
   }
 
 })();
