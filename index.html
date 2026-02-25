@@ -61,6 +61,31 @@
     }
     </script>
 
+    <!-- ── SEO 域名自适配：根据当前 URL 自动更新 canonical / OG / Twitter 等 meta ── -->
+    <script>
+    (function(){
+      var base = location.origin + location.pathname.replace(/[^/]*$/, '');
+      var icon = base + 'icons/icon-512.png';
+      function setMeta(sel, attr, val){
+        var el = document.querySelector(sel);
+        if(el) el.setAttribute(attr, val);
+      }
+      setMeta('link[rel="canonical"]',      'href',    base);
+      setMeta('meta[property="og:url"]',     'content', base);
+      setMeta('meta[property="og:image"]',   'content', icon);
+      setMeta('meta[name="twitter:image"]',  'content', icon);
+      // Update JSON-LD
+      var ld = document.querySelector('script[type="application/ld+json"]');
+      if(ld){
+        try{
+          var data = JSON.parse(ld.textContent);
+          data.url = base; data.image = icon;
+          ld.textContent = JSON.stringify(data);
+        }catch(_){}
+      }
+    })();
+    </script>
+
     <!-- ── 性能预连接 ─────────────────────────────────────────────────── -->
     <link rel="preconnect" href="https://api.dictionaryapi.dev">
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
@@ -4163,17 +4188,21 @@ new Vue({
         },
 
         // ── Share ─────────────────────────────────────────────────────────
+        _shareUrl() {
+            // Auto-detect base URL from current domain (works on any hosting)
+            return window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
+        },
         shareApp() {
             this._doShare({
                 title: 'VocabLoop',
                 text: LANG === 'zh'
                     ? '📚 VocabLoop — 间隔重复英语词汇 PWA\nPET / 日常口语 / Crypto 三大词库，科学记单词'
                     : '📚 VocabLoop — Spaced Repetition Vocabulary PWA\nPET / Daily English / Crypto — science-backed word learning',
-                url: 'https://karryzhang.github.io/VocabLoop/',
+                url: this._shareUrl(),
             });
         },
         shareSession() {
-            const url = 'https://karryzhang.github.io/VocabLoop/';
+            const url = this._shareUrl();
             const streakLine = this.dailyStreak >= 2
                 ? (LANG === 'zh' ? `🔥 ${this.dailyStreak} 天连续学习\n` : `🔥 ${this.dailyStreak}-day streak\n`)
                 : '';
@@ -4186,7 +4215,7 @@ new Vue({
             });
         },
         sharePractice() {
-            const url = 'https://karryzhang.github.io/VocabLoop/';
+            const url = this._shareUrl();
             const pct = this.practiceQueue.length > 0
                 ? Math.round(this.practiceScore / this.practiceQueue.length * 100) : 0;
             this._doShare({
