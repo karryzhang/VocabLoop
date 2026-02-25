@@ -35,8 +35,11 @@
     .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px}
     .back,.ghost{
       border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 12px;
-      color:var(--ink);text-decoration:none;font-weight:700;cursor:pointer
+      color:var(--ink);text-decoration:none;font-weight:700;cursor:pointer;
+      transition: transform .12s, box-shadow .12s
     }
+    .back:hover,.ghost:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+    .back:active,.ghost:active{transform:translateY(0);box-shadow:none}
 
     .card{
       background:var(--card);
@@ -50,11 +53,23 @@
     h1{margin:4px 0 6px;font-size:1.48rem;letter-spacing:.2px}
     .muted{color:var(--muted);font-size:.92rem;line-height:1.45}
 
-    .tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0 12px}
-    .tab{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:12px;padding:11px;font-weight:800;cursor:pointer;transition:.15s}
-    .tab.active{background:linear-gradient(180deg,var(--pri),var(--pri2));color:#fff;border-color:transparent;box-shadow:0 8px 18px color-mix(in srgb, var(--pri) 35%, transparent)}
+    /* ── Tabs with sliding indicator ── */
+    .tabs{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:16px 0 12px;position:relative;
+      background:color-mix(in srgb, var(--line) 35%, transparent);border-radius:14px;padding:3px}
+    .tab{border:0;background:transparent;color:var(--muted);border-radius:11px;padding:11px;
+      font-weight:800;cursor:pointer;transition: color .2s;position:relative;z-index:1}
+    .tab.active{color:#fff}
+    .tab-slider{position:absolute;top:3px;left:3px;width:calc(50% - 3px);height:calc(100% - 6px);
+      background:linear-gradient(180deg,var(--pri),var(--pri2));border-radius:11px;
+      transition:transform .28s cubic-bezier(.4,0,.2,1);
+      box-shadow:0 4px 14px color-mix(in srgb, var(--pri) 35%, transparent);z-index:0}
+    .tab-slider.right{transform:translateX(100%)}
 
-    .panel{display:none}.panel.active{display:block}
+    /* ── Panel transitions ── */
+    .panels{position:relative;overflow:hidden}
+    .panel{display:none;animation:panelIn .25s ease}
+    .panel.active{display:block}
+    @keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
     label{display:flex;justify-content:space-between;align-items:center;margin:11px 0 6px;font-size:.92rem;font-weight:700}
     .tiny{font-size:.75rem;color:var(--muted);font-weight:600}
@@ -70,24 +85,81 @@
 
     .toggle-eye{
       position:absolute;right:9px;top:50%;transform:translateY(-50%);
-      border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:1rem
+      border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:1rem;
+      transition:color .15s
     }
+    .toggle-eye:hover{color:var(--ink)}
 
-    .inline{font-size:.82rem;margin-top:6px;min-height:1.2em;line-height:1.35}
+    /* ── Password strength meter ── */
+    .strength-bar{height:4px;border-radius:2px;background:var(--line);margin-top:6px;overflow:hidden}
+    .strength-fill{height:100%;width:0;border-radius:2px;transition:width .3s ease,background .3s ease}
+    .strength-fill.s1{width:33%;background:var(--err)}
+    .strength-fill.s2{width:66%;background:var(--warn)}
+    .strength-fill.s3{width:100%;background:var(--ok)}
+
+    .inline{font-size:.82rem;margin-top:6px;min-height:1.2em;line-height:1.35;
+      transition:opacity .2s}
     .inline.ok{color:var(--ok)} .inline.err{color:var(--err)} .inline.warn{color:var(--warn)}
 
+    /* ── CTA buttons ── */
     .cta{
-      margin-top:13px;width:100%;border:0;border-radius:12px;padding:12px;
+      margin-top:16px;width:100%;border:0;border-radius:12px;padding:13px;
       color:#fff;background:linear-gradient(180deg,var(--pri),var(--pri2));font-weight:800;cursor:pointer;
-      transition:.15s;box-shadow:0 8px 18px color-mix(in srgb, var(--pri) 36%, transparent)
+      font-size:.95rem;letter-spacing:.3px;
+      transition: transform .12s, box-shadow .15s, opacity .15s;
+      box-shadow:0 8px 18px color-mix(in srgb, var(--pri) 36%, transparent);
+      display:flex;align-items:center;justify-content:center;gap:8px
     }
+    .cta:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 10px 24px color-mix(in srgb, var(--pri) 45%, transparent)}
+    .cta:active:not(:disabled){transform:translateY(1px);box-shadow:0 4px 10px color-mix(in srgb, var(--pri) 25%, transparent)}
     .cta:disabled{opacity:.65;cursor:not-allowed}
 
-    .msg{margin-top:12px;padding:10px 12px;border-radius:11px;font-size:.92rem;display:none}
-    .msg.ok{display:block;background:color-mix(in srgb, var(--ok) 13%, transparent);color:var(--ok);border:1px solid color-mix(in srgb, var(--ok) 40%, transparent)}
-    .msg.err{display:block;background:color-mix(in srgb, var(--err) 12%, transparent);color:var(--err);border:1px solid color-mix(in srgb, var(--err) 40%, transparent)}
+    /* ── Spinner ── */
+    .spinner{display:none;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.3);
+      border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+    .cta.loading .spinner{display:block}
+    .cta.loading .btn-text{opacity:.8}
+    @keyframes spin{to{transform:rotate(360deg)}}
 
-    .token{margin-top:10px;padding:10px;border-radius:10px;background:#0f172a;color:#e2e8f0;font-family:ui-monospace,Menlo,monospace;font-size:.8rem;word-break:break-all;display:none}
+    /* ── Message box ── */
+    .msg{margin-top:12px;padding:10px 12px;border-radius:11px;font-size:.92rem;
+      display:none;align-items:center;gap:8px;animation:msgIn .25s ease}
+    .msg.ok{display:flex;background:color-mix(in srgb, var(--ok) 13%, transparent);color:var(--ok);
+      border:1px solid color-mix(in srgb, var(--ok) 40%, transparent)}
+    .msg.err{display:flex;background:color-mix(in srgb, var(--err) 12%, transparent);color:var(--err);
+      border:1px solid color-mix(in srgb, var(--err) 40%, transparent)}
+    .msg-icon{font-size:1.1rem;flex-shrink:0}
+    @keyframes msgIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+
+    /* ── Shake on error ── */
+    @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+    .shake{animation:shake .4s ease}
+
+    /* ── Success overlay ── */
+    .success-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+      background:rgba(0,0,0,.35);backdrop-filter:blur(4px);z-index:100;opacity:0;
+      transition:opacity .3s ease;pointer-events:none}
+    .success-overlay.show{opacity:1;pointer-events:auto}
+    .success-check{width:80px;height:80px;border-radius:50%;
+      background:linear-gradient(135deg,var(--ok),#16a34a);
+      display:flex;align-items:center;justify-content:center;
+      transform:scale(0);transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+    .success-overlay.show .success-check{transform:scale(1)}
+    .success-check svg{width:44px;height:44px}
+    .check-path{stroke-dasharray:50;stroke-dashoffset:50;animation:drawCheck .4s .3s ease forwards}
+    @keyframes drawCheck{to{stroke-dashoffset:0}}
+
+    /* ── Logged-in profile panel ── */
+    .profile{text-align:center;padding:16px 0}
+    .profile-avatar{width:72px;height:72px;border-radius:50%;
+      background:linear-gradient(135deg,var(--pri),#8b5cf6);
+      display:inline-flex;align-items:center;justify-content:center;
+      font-size:2rem;color:#fff;font-weight:700;margin-bottom:12px}
+    .profile-name{font-size:1.3rem;font-weight:800;margin-bottom:4px}
+    .profile-meta{color:var(--muted);font-size:.88rem;margin-bottom:16px}
+    .btn-logout{border:1px solid var(--err);background:transparent;color:var(--err);border-radius:12px;
+      padding:10px 24px;font-weight:700;cursor:pointer;transition:.15s;font-size:.92rem}
+    .btn-logout:hover{background:color-mix(in srgb, var(--err) 10%, transparent)}
 
     @media (max-width: 520px){
       .wrap{margin:12px auto}
@@ -104,51 +176,84 @@
     </div>
 
     <div class="card">
-      <h1 id="title">Account</h1>
-      <div class="muted" id="subtitle">Create your account or login to continue learning across sessions.</div>
-
-      <div class="tabs">
-        <button id="tabRegister" class="tab active" onclick="switchTab('register')">Register</button>
-        <button id="tabLogin" class="tab" onclick="switchTab('login')">Login</button>
+      <!-- Logged-in profile view -->
+      <div id="profilePanel" class="profile" style="display:none">
+        <div class="profile-avatar" id="profileAvatar">U</div>
+        <div class="profile-name" id="profileName">username</div>
+        <div class="profile-meta" id="profileMeta">Logged in</div>
+        <button class="btn-logout" id="logoutBtn">Logout</button>
       </div>
 
-      <div id="panelRegister" class="panel active">
-        <label for="rUser"><span id="labelUser">Username</span> <span class="tiny" id="ruleUser">min 5 chars</span></label>
-        <div class="input-wrap"><input id="rUser" placeholder="At least 5 characters" autocomplete="username" /></div>
-        <div id="rUserHint" class="inline"></div>
+      <!-- Auth form view -->
+      <div id="authPanel">
+        <h1 id="title">Account</h1>
+        <div class="muted" id="subtitle">Create your account or login to continue learning across sessions.</div>
 
-        <label for="rPass"><span id="labelPass">Password</span> <span class="tiny" id="rulePass">digits only, min 6</span></label>
-        <div class="input-wrap">
-          <input id="rPass" type="password" placeholder="At least 6 digits" autocomplete="new-password" />
-          <button type="button" class="toggle-eye" onclick="togglePwd('rPass', this)">👁️</button>
+        <div class="tabs">
+          <button id="tabRegister" class="tab active">Register</button>
+          <button id="tabLogin" class="tab">Login</button>
+          <div class="tab-slider" id="tabSlider"></div>
         </div>
-        <div id="rPassHint" class="inline"></div>
 
-        <label for="rPass2" id="labelPass2">Confirm Password</label>
-        <div class="input-wrap">
-          <input id="rPass2" type="password" placeholder="Re-enter your password" autocomplete="new-password" />
-          <button type="button" class="toggle-eye" onclick="togglePwd('rPass2', this)">👁️</button>
+        <div class="panels">
+          <div id="panelRegister" class="panel active">
+            <form id="registerForm" autocomplete="on" novalidate>
+              <label for="rUser"><span id="labelUser">Username</span> <span class="tiny" id="ruleUser">min 5 chars</span></label>
+              <div class="input-wrap"><input id="rUser" placeholder="At least 5 characters" autocomplete="username" /></div>
+              <div id="rUserHint" class="inline"></div>
+
+              <label for="rPass"><span id="labelPass">Password</span> <span class="tiny" id="rulePass">digits only, min 6</span></label>
+              <div class="input-wrap">
+                <input id="rPass" type="password" inputmode="numeric" placeholder="At least 6 digits" autocomplete="new-password" />
+                <button type="button" class="toggle-eye" data-target="rPass">👁️</button>
+              </div>
+              <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+              <div id="rPassHint" class="inline"></div>
+
+              <label for="rPass2" id="labelPass2">Confirm Password</label>
+              <div class="input-wrap">
+                <input id="rPass2" type="password" inputmode="numeric" placeholder="Re-enter your password" autocomplete="new-password" />
+                <button type="button" class="toggle-eye" data-target="rPass2">👁️</button>
+              </div>
+              <div id="rPass2Hint" class="inline"></div>
+
+              <button type="submit" id="registerBtn" class="cta">
+                <span class="btn-text">Create Account</span>
+                <span class="spinner"></span>
+              </button>
+            </form>
+          </div>
+
+          <div id="panelLogin" class="panel">
+            <form id="loginForm" autocomplete="on" novalidate>
+              <label for="lUser" id="lUserLabel">Username</label>
+              <div class="input-wrap"><input id="lUser" placeholder="Your username" autocomplete="username" /></div>
+
+              <label for="lPass" id="lPassLabel">Password</label>
+              <div class="input-wrap">
+                <input id="lPass" type="password" inputmode="numeric" placeholder="Your password" autocomplete="current-password" />
+                <button type="button" class="toggle-eye" data-target="lPass">👁️</button>
+              </div>
+
+              <button type="submit" id="loginBtn" class="cta">
+                <span class="btn-text">Login</span>
+                <span class="spinner"></span>
+              </button>
+            </form>
+          </div>
         </div>
-        <div id="rPass2Hint" class="inline"></div>
 
-        <button id="registerBtn" class="cta" onclick="register()">Create Account</button>
+        <div id="msg" class="msg"><span class="msg-icon"></span><span class="msg-text"></span></div>
       </div>
+    </div>
+  </div>
 
-      <div id="panelLogin" class="panel">
-        <label for="lUser" id="lUserLabel">Username</label>
-        <div class="input-wrap"><input id="lUser" placeholder="Your username" autocomplete="username" /></div>
-
-        <label for="lPass" id="lPassLabel">Password</label>
-        <div class="input-wrap">
-          <input id="lPass" type="password" placeholder="Your password" autocomplete="current-password" />
-          <button type="button" class="toggle-eye" onclick="togglePwd('lPass', this)">👁️</button>
-        </div>
-
-        <button id="loginBtn" class="cta" onclick="login()">Login</button>
-      </div>
-
-      <div id="msg" class="msg"></div>
-      <div id="token" class="token"></div>
+  <!-- Success overlay -->
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-check">
+      <svg viewBox="0 0 44 44" fill="none">
+        <path class="check-path" d="M10 22 L19 31 L34 14" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </div>
   </div>
 
@@ -169,13 +274,16 @@
         hPassOk:'Password format is valid.', hPassBad:'Use digits only, at least 6 numbers.',
         hPass2Ok:'Passwords match.', hPass2Bad:'Passwords do not match yet.',
         fixFields:'Please fix the highlighted fields, then try again.',
-        registerOk:'Account created. You are now logged in — redirecting to home...',
+        registerOk:'Account created. You are now logged in!',
         registerTaken:'This username is already taken. Try another one, or login directly.',
         registerFail:'Register failed. Please try again.',
-        loginOk:(u)=>`Welcome back, ${u}! Redirecting...`,
+        loginOk:(u)=>`Welcome back, ${u}!`,
         loginFail:'Login failed. Please check username/password and try again.',
         network:'Network issue. Please retry in a moment.',
-        token:'Session token:'
+        loggedIn:'Logged in',
+        logout:'Logout',
+        logoutConfirm:'Are you sure you want to logout?',
+        strengthWeak:'Weak', strengthMedium:'Medium', strengthStrong:'Strong'
       },
       zh: {
         back:'← 返回首页', theme:'🌓 主题', title:'账户',
@@ -192,121 +300,195 @@
         hPassOk:'密码格式正确。', hPassBad:'密码需为至少6位数字。',
         hPass2Ok:'两次密码一致。', hPass2Bad:'两次密码暂未一致。',
         fixFields:'请先修正高亮字段后再提交。',
-        registerOk:'注册成功，已自动登录，正在返回首页...',
+        registerOk:'注册成功，已自动登录！',
         registerTaken:'该用户名已存在，建议更换或直接登录。',
         registerFail:'注册失败，请稍后重试。',
-        loginOk:(u)=>`欢迎回来，${u}，正在返回首页...`,
+        loginOk:(u)=>`欢迎回来，${u}！`,
         loginFail:'登录失败，请检查用户名或密码。',
         network:'网络异常，请稍后重试。',
-        token:'会话令牌：'
+        loggedIn:'已登录',
+        logout:'退出登录',
+        logoutConfirm:'确定要退出登录吗？',
+        strengthWeak:'弱', strengthMedium:'中', strengthStrong:'强'
       }
     };
 
     const state = {
       lang: (navigator.language || '').toLowerCase().startsWith('zh') ? 'zh' : 'en',
       t: null,
-      theme: localStorage.getItem('vocabloop_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      theme: localStorage.getItem('vocabloop_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
+      currentTab: 'register',
+      touched: { rUser: false, rPass: false, rPass2: false }
     };
 
-    const msg = document.getElementById('msg');
-    const tokenBox = document.getElementById('token');
-    const rUser = document.getElementById('rUser');
-    const rPass = document.getElementById('rPass');
-    const rPass2 = document.getElementById('rPass2');
+    /* ── DOM refs ── */
+    const $ = id => document.getElementById(id);
+    const msgEl = $('msg');
+    const rUser = $('rUser');
+    const rPass = $('rPass');
+    const rPass2 = $('rPass2');
 
+    /* ── Theme ── */
     function applyTheme(theme){
       state.theme = theme;
       document.documentElement.setAttribute('data-theme', theme);
       localStorage.setItem('vocabloop_theme', theme);
     }
-
     function switchTheme(){ applyTheme(state.theme === 'dark' ? 'light' : 'dark'); }
 
+    /* ── i18n ── */
     function applyI18n(){
       state.t = I18N[state.lang] || I18N.en;
       const t = state.t;
       document.documentElement.lang = state.lang === 'zh' ? 'zh-CN' : 'en';
-      document.getElementById('backBtn').textContent = t.back;
-      document.getElementById('themeBtn').textContent = t.theme;
-      document.getElementById('title').textContent = t.title;
-      document.getElementById('subtitle').textContent = t.subtitle;
-      document.getElementById('tabRegister').textContent = t.register;
-      document.getElementById('tabLogin').textContent = t.login;
-      document.getElementById('labelUser').textContent = t.username;
-      document.getElementById('ruleUser').textContent = t.userRule;
-      document.getElementById('labelPass').textContent = t.password;
-      document.getElementById('rulePass').textContent = t.passRule;
-      document.getElementById('labelPass2').textContent = t.confirm;
-      document.getElementById('lUserLabel').textContent = t.username;
-      document.getElementById('lPassLabel').textContent = t.password;
-      document.getElementById('registerBtn').textContent = t.create;
-      document.getElementById('loginBtn').textContent = t.loginBtn;
+      $('backBtn').textContent = t.back;
+      $('themeBtn').textContent = t.theme;
+      $('title').textContent = t.title;
+      $('subtitle').textContent = t.subtitle;
+      $('tabRegister').textContent = t.register;
+      $('tabLogin').textContent = t.login;
+      $('labelUser').textContent = t.username;
+      $('ruleUser').textContent = t.userRule;
+      $('labelPass').textContent = t.password;
+      $('rulePass').textContent = t.passRule;
+      $('labelPass2').textContent = t.confirm;
+      $('lUserLabel').textContent = t.username;
+      $('lPassLabel').textContent = t.password;
+      $('registerBtn').querySelector('.btn-text').textContent = t.create;
+      $('loginBtn').querySelector('.btn-text').textContent = t.loginBtn;
       rUser.placeholder = t.phUser; rPass.placeholder = t.phPass; rPass2.placeholder = t.phPass2;
-      document.getElementById('lUser').placeholder = t.loginUser;
-      document.getElementById('lPass').placeholder = t.loginPass;
+      $('lUser').placeholder = t.loginUser;
+      $('lPass').placeholder = t.loginPass;
+      $('logoutBtn').textContent = t.logout;
     }
 
+    /* ── Tab switching with sliding indicator ── */
     function switchTab(tab){
+      state.currentTab = tab;
       const isRegister = tab === 'register';
-      document.getElementById('tabRegister').classList.toggle('active', isRegister);
-      document.getElementById('tabLogin').classList.toggle('active', !isRegister);
-      document.getElementById('panelRegister').classList.toggle('active', isRegister);
-      document.getElementById('panelLogin').classList.toggle('active', !isRegister);
-      setMsg(''); setToken('');
+      $('tabRegister').classList.toggle('active', isRegister);
+      $('tabLogin').classList.toggle('active', !isRegister);
+      $('tabSlider').classList.toggle('right', !isRegister);
+      $('panelRegister').classList.toggle('active', isRegister);
+      $('panelLogin').classList.toggle('active', !isRegister);
+      setMsg('', '');
+      /* Auto-focus first input */
+      setTimeout(() => {
+        const target = isRegister ? rUser : $('lUser');
+        target.focus();
+      }, 280);
     }
 
-    function togglePwd(id, btn){
-      const input = document.getElementById(id);
-      input.type = input.type === 'password' ? 'text' : 'password';
-      btn.textContent = input.type === 'password' ? '👁️' : '🙈';
+    /* ── Password toggle ── */
+    document.querySelectorAll('.toggle-eye').forEach(btn => {
+      btn.addEventListener('click', function(){
+        const input = $(this.dataset.target);
+        input.type = input.type === 'password' ? 'text' : 'password';
+        this.textContent = input.type === 'password' ? '👁️' : '🙈';
+      });
+    });
+
+    /* ── Message display ── */
+    function setMsg(text, type){
+      msgEl.className = 'msg';
+      const iconEl = msgEl.querySelector('.msg-icon');
+      const textEl = msgEl.querySelector('.msg-text');
+      textEl.textContent = text || '';
+      if(!text){ iconEl.textContent = ''; return; }
+      iconEl.textContent = type === 'ok' ? '✓' : '✕';
+      msgEl.classList.add(type === 'ok' ? 'ok' : 'err');
     }
 
-    function setMsg(text, type=''){
-      msg.className = 'msg';
-      msg.textContent = text || '';
-      if(!text) return;
-      msg.classList.add(type === 'ok' ? 'ok' : 'err');
-    }
-
-    function setToken(token){
-      if(!token){ tokenBox.style.display='none'; tokenBox.textContent=''; return; }
-      tokenBox.style.display='block';
-      tokenBox.textContent = `${state.t.token}\n${token}`;
-    }
-
+    /* ── Auth persistence ── */
     function saveAuth(user, token){
       if(!user || !user.username || !token) return;
       localStorage.setItem('vocabloop_auth', JSON.stringify({ username:user.username, token, at:Date.now() }));
     }
+    function getAuth(){
+      try{ return JSON.parse(localStorage.getItem('vocabloop_auth')); }catch(e){ return null; }
+    }
+    function clearAuth(){ localStorage.removeItem('vocabloop_auth'); }
 
-    function redirectHome(){ setTimeout(()=>{ window.location.href = '/'; }, 450); }
+    /* ── Success overlay + redirect ── */
+    function showSuccessAndRedirect(){
+      const overlay = $('successOverlay');
+      overlay.classList.add('show');
+      setTimeout(() => { window.location.href = '/'; }, 1200);
+    }
 
-    function setInline(elId, text, type=''){
-      const el = document.getElementById(elId);
+    /* ── Shake animation helper ── */
+    function shakeEl(el){
+      el.classList.remove('shake');
+      void el.offsetWidth;
+      el.classList.add('shake');
+    }
+
+    /* ── Inline hints ── */
+    function setInline(elId, text, type){
+      const el = $(elId);
       el.className = 'inline';
       el.textContent = text || '';
       if(type) el.classList.add(type);
     }
 
-    function validateRegisterForm(){
+    /* ── Password strength meter ── */
+    function updateStrength(val){
+      const fill = $('strengthFill');
+      fill.className = 'strength-fill';
+      if(!val){ return; }
+      const digits = val.replace(/\D/g, '');
+      if(digits.length >= 10) fill.classList.add('s3');
+      else if(digits.length >= 6) fill.classList.add('s2');
+      else if(digits.length >= 1) fill.classList.add('s1');
+    }
+
+    /* ── Register validation (only validates touched fields) ── */
+    function validateRegisterForm(submitAttempt){
       const t = state.t;
       const u = rUser.value.trim();
       const p = rPass.value.trim();
       const p2 = rPass2.value.trim();
       let ok = true;
 
-      if(u.length >= 5){ setInline('rUserHint',t.hUserOk,'ok'); rUser.classList.add('valid'); rUser.classList.remove('invalid'); }
-      else { ok = false; setInline('rUserHint',t.hUserBad,'warn'); rUser.classList.add('invalid'); rUser.classList.remove('valid'); }
+      /* Username */
+      if(state.touched.rUser || submitAttempt){
+        if(u.length >= 5){
+          setInline('rUserHint',t.hUserOk,'ok'); rUser.classList.add('valid'); rUser.classList.remove('invalid');
+        } else {
+          ok = false; setInline('rUserHint',t.hUserBad,'warn'); rUser.classList.add('invalid'); rUser.classList.remove('valid');
+        }
+      } else if(u.length < 5) ok = false;
 
-      if(/^\d{6,}$/.test(p)){ setInline('rPassHint',t.hPassOk,'ok'); rPass.classList.add('valid'); rPass.classList.remove('invalid'); }
-      else { ok = false; setInline('rPassHint',t.hPassBad,'warn'); rPass.classList.add('invalid'); rPass.classList.remove('valid'); }
+      /* Password */
+      if(state.touched.rPass || submitAttempt){
+        if(/^\d{6,}$/.test(p)){
+          setInline('rPassHint',t.hPassOk,'ok'); rPass.classList.add('valid'); rPass.classList.remove('invalid');
+        } else {
+          ok = false; setInline('rPassHint',t.hPassBad,'warn'); rPass.classList.add('invalid'); rPass.classList.remove('valid');
+        }
+      } else if(!/^\d{6,}$/.test(p)) ok = false;
 
-      if(p2 && p === p2){ setInline('rPass2Hint',t.hPass2Ok,'ok'); rPass2.classList.add('valid'); rPass2.classList.remove('invalid'); }
-      else { ok = false; setInline('rPass2Hint',t.hPass2Bad,'err'); rPass2.classList.add('invalid'); rPass2.classList.remove('valid'); }
+      /* Confirm password */
+      if(state.touched.rPass2 || submitAttempt){
+        if(p2 && p === p2){
+          setInline('rPass2Hint',t.hPass2Ok,'ok'); rPass2.classList.add('valid'); rPass2.classList.remove('invalid');
+        } else {
+          ok = false; setInline('rPass2Hint',t.hPass2Bad,'err'); rPass2.classList.add('invalid'); rPass2.classList.remove('valid');
+        }
+      } else if(!p2 || p !== p2) ok = false;
 
+      updateStrength(p);
       return ok;
     }
 
+    /* ── Set button loading state ── */
+    function setBtnLoading(btn, loading, text){
+      btn.disabled = loading;
+      btn.classList.toggle('loading', loading);
+      btn.querySelector('.btn-text').textContent = text;
+    }
+
+    /* ── API call ── */
     async function callAuth(payload){
       const r = await fetch('/api/auth', {
         method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(payload)
@@ -314,40 +496,103 @@
       return r.json();
     }
 
+    /* ── Register ── */
     async function register(){
       const t = state.t;
-      if(!validateRegisterForm()){ setMsg(t.fixFields); return; }
-      const btn = document.getElementById('registerBtn'); btn.disabled = true; btn.textContent = t.creating;
+      /* Mark all fields as touched on submit attempt */
+      state.touched.rUser = state.touched.rPass = state.touched.rPass2 = true;
+      if(!validateRegisterForm(true)){
+        setMsg(t.fixFields, 'err');
+        shakeEl($('registerBtn'));
+        return;
+      }
+      const btn = $('registerBtn');
+      setBtnLoading(btn, true, t.creating);
       try{
         const data = await callAuth({ action:'register', username:rUser.value.trim(), password:rPass.value.trim() });
-        if(data.ok){ saveAuth(data.user, data.token); setMsg(t.registerOk,'ok'); setToken(data.token || ''); redirectHome(); }
-        else {
+        if(data.ok){
+          saveAuth(data.user, data.token);
+          setMsg(t.registerOk, 'ok');
+          showSuccessAndRedirect();
+        } else {
           const m = (data.message || '').toLowerCase();
-          if(m.includes('exists')) setMsg(t.registerTaken);
-          else setMsg(data.message || t.registerFail);
-          setToken('');
+          if(m.includes('exists')) setMsg(t.registerTaken, 'err');
+          else setMsg(data.message || t.registerFail, 'err');
+          shakeEl(btn);
         }
-      }catch(_){ setMsg(t.network); }
-      finally { btn.disabled = false; btn.textContent = t.create; }
+      }catch(_){ setMsg(t.network, 'err'); shakeEl(btn); }
+      finally { setBtnLoading(btn, false, t.create); }
     }
 
+    /* ── Login ── */
     async function login(){
       const t = state.t;
-      const btn = document.getElementById('loginBtn'); btn.disabled = true; btn.textContent = t.logging;
+      const btn = $('loginBtn');
+      const uVal = $('lUser').value.trim();
+      const pVal = $('lPass').value.trim();
+      if(!uVal || !pVal){
+        setMsg(t.fixFields, 'err'); shakeEl(btn); return;
+      }
+      setBtnLoading(btn, true, t.logging);
       try{
-        const data = await callAuth({ action:'login', username:document.getElementById('lUser').value.trim(), password:document.getElementById('lPass').value.trim() });
-        if(data.ok){ saveAuth(data.user, data.token); setMsg(t.loginOk(data.user?.username || 'user'),'ok'); setToken(data.token || ''); redirectHome(); }
-        else { setMsg(t.loginFail); setToken(''); }
-      }catch(_){ setMsg(t.network); }
-      finally { btn.disabled = false; btn.textContent = t.loginBtn; }
+        const data = await callAuth({ action:'login', username:uVal, password:pVal });
+        if(data.ok){
+          saveAuth(data.user, data.token);
+          setMsg(t.loginOk(data.user?.username || 'user'), 'ok');
+          showSuccessAndRedirect();
+        } else { setMsg(t.loginFail, 'err'); shakeEl(btn); }
+      }catch(_){ setMsg(t.network, 'err'); shakeEl(btn); }
+      finally { setBtnLoading(btn, false, t.loginBtn); }
     }
 
-    [rUser, rPass, rPass2].forEach(el => el.addEventListener('input', validateRegisterForm));
-    document.getElementById('themeBtn').addEventListener('click', switchTheme);
+    /* ── Logged-in profile view ── */
+    function showProfile(auth){
+      $('authPanel').style.display = 'none';
+      $('profilePanel').style.display = 'block';
+      const name = auth.username || 'User';
+      $('profileAvatar').textContent = name.charAt(0).toUpperCase();
+      $('profileName').textContent = name;
+      $('profileMeta').textContent = state.t.loggedIn;
+    }
 
+    function handleLogout(){
+      if(!confirm(state.t.logoutConfirm)) return;
+      clearAuth();
+      $('authPanel').style.display = 'block';
+      $('profilePanel').style.display = 'none';
+      switchTab('login');
+    }
+
+    /* ── Event listeners ── */
+    /* Track which fields user has touched for gentle validation */
+    rUser.addEventListener('focus', () => { state.touched.rUser = true; });
+    rPass.addEventListener('focus', () => { state.touched.rPass = true; });
+    rPass2.addEventListener('focus', () => { state.touched.rPass2 = true; });
+    [rUser, rPass, rPass2].forEach(el => el.addEventListener('input', () => validateRegisterForm(false)));
+
+    /* Form submit via Enter key */
+    $('registerForm').addEventListener('submit', e => { e.preventDefault(); register(); });
+    $('loginForm').addEventListener('submit', e => { e.preventDefault(); login(); });
+
+    /* Tab buttons */
+    $('tabRegister').addEventListener('click', () => switchTab('register'));
+    $('tabLogin').addEventListener('click', () => switchTab('login'));
+
+    /* Theme & logout */
+    $('themeBtn').addEventListener('click', switchTheme);
+    $('logoutBtn').addEventListener('click', handleLogout);
+
+    /* ── Init ── */
     applyTheme(state.theme);
     applyI18n();
-    switchTab('register');
+
+    /* Check if already logged in */
+    const existingAuth = getAuth();
+    if(existingAuth && existingAuth.username){
+      showProfile(existingAuth);
+    } else {
+      switchTab('register');
+    }
   </script>
 </body>
 </html>
