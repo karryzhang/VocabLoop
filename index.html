@@ -162,7 +162,8 @@
             color: var(--muted);
             white-space: nowrap;
         }
-        .hd-btns { display: flex; gap: 6px; align-items: center; }
+        .hd-btns { display: flex; gap: 6px; align-items: center; overflow-x: auto; flex-shrink: 1; min-width: 0; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .hd-btns::-webkit-scrollbar { display: none; }
         .btn-hd {
             background: none;
             border: 1px solid var(--border);
