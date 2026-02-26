@@ -741,6 +741,112 @@
         .cb-label    { font-size: 0.9rem; }
         .cb-interval { font-size: 0.68rem; opacity: 0.7; }
 
+        /* ── Exercise challenge (inline SRS) ── */
+        .challenge-wrap {
+            width: 100%;
+            padding: 10px 16px 6px;
+            animation: challengeIn .3s ease;
+        }
+        @keyframes challengeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .challenge-type {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--blue);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .challenge-skip {
+            margin-left: auto;
+            font-size: 0.7rem;
+            color: var(--muted);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 2px 8px;
+            border-radius: 6px;
+            transition: .15s;
+            font-weight: 600;
+        }
+        .challenge-skip:hover { background: color-mix(in srgb, var(--line) 50%, transparent); color: var(--ink); }
+        .challenge-prompt {
+            font-size: 0.92rem;
+            line-height: 1.5;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+        .challenge-prompt b {
+            color: var(--blue);
+        }
+        .challenge-input-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .challenge-input {
+            flex: 1;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 2px solid var(--line);
+            font-size: 1rem;
+            background: transparent;
+            color: var(--ink);
+            outline: none;
+            transition: .15s;
+        }
+        .challenge-input:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 20%, transparent);
+        }
+        .challenge-input.correct {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--green) 20%, transparent);
+        }
+        .challenge-input.wrong {
+            border-color: var(--red);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--red) 20%, transparent);
+        }
+        .challenge-submit {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 12px;
+            background: var(--blue);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: .15s;
+            white-space: nowrap;
+        }
+        .challenge-submit:hover { opacity: 0.85; }
+        .challenge-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+        .challenge-result {
+            margin-top: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        .challenge-result.ok { color: var(--green); }
+        .challenge-result.fail { color: var(--red); }
+        .challenge-audio-btn {
+            border: 1px solid var(--line);
+            background: transparent;
+            border-radius: 10px;
+            padding: 8px 14px;
+            cursor: pointer;
+            font-size: 0.88rem;
+            color: var(--ink);
+            transition: .15s;
+            margin-bottom: 6px;
+        }
+        .challenge-audio-btn:hover { border-color: var(--blue); color: var(--blue); }
+
         .controls-wrap {
             position: relative;
             width: 100%;
@@ -2358,22 +2464,73 @@
             </div>
         </div>
 
+        <!-- Exercise Challenge (after flip, before grade buttons) -->
+        <div v-if="challenge" class="challenge-wrap">
+            <div class="challenge-type">
+                <span v-if="challenge.type === 'cloze'">✏️ {{ui.chCloze}}</span>
+                <span v-else-if="challenge.type === 'dictation'">🎧 {{ui.chDictation}}</span>
+                <span v-else>✍️ {{ui.chSpelling}}</span>
+                <button class="challenge-skip" @click="skipChallenge" v-if="!challengeAnswered">{{ui.chSkip}}</button>
+            </div>
+
+            <!-- Cloze prompt -->
+            <div v-if="challenge.type === 'cloze'" class="challenge-prompt">{{challenge.sentence}}</div>
+
+            <!-- Dictation prompt -->
+            <div v-if="challenge.type === 'dictation'" style="margin-bottom:6px;">
+                <button class="challenge-audio-btn" @click="playAudio(cur.word)">
+                    🔊 {{audioPlaying ? ui.audioPlaying : ui.chPlayAgain}}
+                </button>
+            </div>
+
+            <!-- Spelling prompt -->
+            <div v-if="challenge.type === 'spelling'" class="challenge-prompt">
+                {{cur.zh}} · <b>{{challenge.partial}}</b>
+            </div>
+
+            <!-- Shared input -->
+            <div class="challenge-input-row">
+                <input ref="challengeInput"
+                       v-model="challengeInput"
+                       class="challenge-input"
+                       :class="{correct: challengeResult === 'correct', wrong: challengeResult === 'wrong'}"
+                       :placeholder="ui.chInputPh"
+                       :disabled="challengeAnswered"
+                       autocomplete="off" autocapitalize="off" spellcheck="false"
+                       @keydown.enter.prevent="!challengeAnswered && submitChallenge()" />
+                <button v-if="!challengeAnswered"
+                        class="challenge-submit"
+                        :disabled="!challengeInput.trim()"
+                        @click="submitChallenge()">{{ui.chSubmit}}</button>
+            </div>
+
+            <!-- Result -->
+            <div v-if="challengeAnswered" class="challenge-result" :class="challengeResult === 'correct' ? 'ok' : 'fail'">
+                <template v-if="challengeResult === 'correct'">✓ {{ui.chCorrect}}</template>
+                <template v-else>✕ {{ui.chWrong}} <strong>{{challenge.correct}}</strong></template>
+            </div>
+            <div v-if="challengeAnswered && challengeResult === 'correct' && challenge.type === 'cloze' && challenge.original"
+                 style="margin-top:4px;font-size:0.82rem;color:var(--muted);">
+                {{challenge.original}}
+            </div>
+        </div>
+
         <!-- Buttons (after flip) -->
         <div class="controls-wrap">
-            <div class="controls" :class="{visible: flipped && !slideshowMode}">
-                <button class="cb cb-again" @click="answer('again')" :disabled="!flipped">
+            <div class="controls" :class="{visible: flipped && !slideshowMode && (!challenge || challengeAnswered)}">
+                <button class="cb cb-again" @click="answer('again')" :disabled="!flipped || (challenge && !challengeAnswered)">
                     <span class="cb-label">{{ui.btnAgain}}</span>
                     <span class="cb-interval">{{iv('again')}}</span>
                 </button>
-                <button class="cb cb-hard" @click="answer('hard')" :disabled="!flipped">
+                <button class="cb cb-hard" @click="answer('hard')" :disabled="!flipped || (challenge && !challengeAnswered)">
                     <span class="cb-label">{{ui.btnHard}}</span>
                     <span class="cb-interval">{{iv('hard')}}</span>
                 </button>
-                <button class="cb cb-good" @click="answer('good')" :disabled="!flipped">
+                <button class="cb cb-good" @click="answer('good')" :disabled="!flipped || (challenge && !challengeAnswered)">
                     <span class="cb-label">{{ui.btnGood}}</span>
                     <span class="cb-interval">{{iv('good')}}</span>
                 </button>
-                <button class="cb cb-easy" @click="answer('easy')" :disabled="!flipped">
+                <button class="cb cb-easy" @click="answer('easy')" :disabled="!flipped || (challenge && !challengeAnswered)">
                     <span class="cb-label">{{ui.btnEasy}}</span>
                     <span class="cb-interval">{{iv('easy')}}</span>
                 </button>
@@ -2856,6 +3013,16 @@ const STRINGS = {
     slideshowStop:   '⏸ 停止',
     practicePlayAgain:     '再听一遍',
     practiceExitBtn:       '退出练习',
+    /* Challenge (inline SRS exercise) */
+    chCloze:      '填空挑战',
+    chDictation:  '听写挑战',
+    chSpelling:   '拼写挑战',
+    chSkip:       '跳过',
+    chInputPh:    '输入单词…',
+    chSubmit:     '确认',
+    chCorrect:    '答对了！',
+    chWrong:      '正确答案：',
+    chPlayAgain:  '再听一遍',
     undoBtn:               '↩ 撤销',
     wlNew:     '🆕 未学单词',
     wlLearn:   '📖 学习中（学习 + 早期复习）',
@@ -3016,6 +3183,16 @@ const STRINGS = {
     slideshowStop:   '⏸ Stop',
     practicePlayAgain:     'Play again',
     practiceExitBtn:       'Exit Practice',
+    /* Challenge (inline SRS exercise) */
+    chCloze:      'Cloze Challenge',
+    chDictation:  'Dictation Challenge',
+    chSpelling:   'Spelling Challenge',
+    chSkip:       'Skip',
+    chInputPh:    'Type the word…',
+    chSubmit:     'Submit',
+    chCorrect:    'Correct!',
+    chWrong:      'Answer: ',
+    chPlayAgain:  'Play again',
     undoBtn:               '↩ Undo',
     wlNew:     '🆕 Not Yet Learned',
     wlLearn:   '📖 Learning (active + early review)',
@@ -3365,6 +3542,11 @@ new Vue({
             matchSelLeft:  null,      // key of selected left item
             matchElim:     [],        // keys of matched pairs
             matchShakeKeys:[],        // keys currently shaking (wrong match)
+            // ── Inline SRS Challenge ─────────────────────────────────
+            challenge:          null,   // current challenge question object (or null)
+            challengeInput:     '',
+            challengeAnswered:  false,
+            challengeResult:    null,   // 'correct' | 'wrong' | null
             // ── Reading overlay ──────────────────────────────────────
             readingOpen:     false,
             readingArticle:  '',
@@ -3807,6 +3989,7 @@ new Vue({
             this.slideshowIdx   = 0;
             this.slideshowMode  = true;
             this.flipped        = false;
+            this.clearChallenge();
             this._slideshowStep();
         },
         async _slideshowStep() {
@@ -3842,6 +4025,7 @@ new Vue({
             this.slideshowMode   = false;
             this.slideshowWord   = null;
             this.flipped         = false;
+            this.clearChallenge();
         },
 
         async playAudio(word) {
@@ -4034,6 +4218,7 @@ new Vue({
             this.streak          = 0;
             this.queue           = [];
             this.flipped         = false;
+            this.clearChallenge();
             this.extraNewAllowed = 0;
             this.sessionCorrect  = 0;
             this.loadSaved();
@@ -4045,11 +4230,92 @@ new Vue({
             if (this.slideshowMode) return;
             if (!this.flipped) this.flipCard(); else this.playAudio(this.cur.word);
         },
-        flipCard()    { this.flipped = !this.flipped; },
+        flipCard() {
+            this.flipped = !this.flipped;
+            if (this.flipped) this.generateChallenge();
+            else this.clearChallenge();
+        },
+
+        // ── Inline SRS Challenge ─────────────────────────────────────────
+        /**
+         * Generate a mini-exercise after flipping the card.
+         * Conditions:
+         *  - Word is NOT new (has been seen before)
+         *  - Probabilistic: ~40% for learning, ~60% for young/mature
+         *  - Only cloze, spelling, dictation types (production exercises)
+         */
+        generateChallenge() {
+            this.clearChallenge();
+            if (this.slideshowMode) return;
+            const w = this.cur;
+            if (!w || !w.word) return;
+            const s = this.state[w.word];
+            if (!s || s.stage === 'new') return;   // skip new words
+            if (s.stage === 'mastered') return;     // skip mastered
+
+            // Probabilistic trigger — more likely for more advanced stages
+            const prob = (s.stage === 'learning' || s.stage === 'relearn') ? 0.4 : 0.6;
+            if (Math.random() > prob) return;
+
+            // Try generating a challenge (prefer cloze > dictation > spelling)
+            const types = shuffle(['cloze', 'dictation', 'spelling']);
+            for (const t of types) {
+                const q = Q_GENERATORS[t](w, this.allWords, this.dictCache);
+                if (q) {
+                    this.challenge = q;
+                    this.$nextTick(() => {
+                        if (t === 'dictation') {
+                            this.playAudio(w.word);
+                        }
+                        if (this.$refs.challengeInput) {
+                            this.$refs.challengeInput.focus();
+                        }
+                    });
+                    return;
+                }
+            }
+            // No challenge could be generated (no example sentences, no audio, etc.)
+        },
+        clearChallenge() {
+            this.challenge = null;
+            this.challengeInput = '';
+            this.challengeAnswered = false;
+            this.challengeResult = null;
+        },
+        submitChallenge() {
+            if (!this.challenge || this.challengeAnswered) return;
+            const input = this.challengeInput.trim().toLowerCase();
+            const correct = this.challenge.correct.toLowerCase();
+            this.challengeAnswered = true;
+            if (input === correct) {
+                this.challengeResult = 'correct';
+                this.points += 5;
+            } else {
+                this.challengeResult = 'wrong';
+                // Increment againCount as penalty for wrong challenge answer
+                const wordId = this.cur.word;
+                const s = this.state[wordId];
+                if (s) {
+                    s.againCount = (s.againCount || 0) + 1;
+                    this.$set(this.state, wordId, { ...s });
+                }
+            }
+        },
+        skipChallenge() {
+            // Skipping counts as a miss — doesn't penalize SRS but no bonus
+            this.challengeAnswered = true;
+            this.challengeResult = 'wrong';
+        },
 
         // ── SRS answer ────────────────────────────────────────────────────
         answer(level) {
             if (!this.flipped || this.slideshowMode) return;
+
+            // If challenge was answered wrong, downgrade the SRS grade
+            if (this.challenge && this.challengeResult === 'wrong') {
+                if (level === 'easy') level = 'good';
+                else if (level === 'good') level = 'hard';
+            }
 
             this.totalReviewed++;
             this.updateDailyStreak();
@@ -4182,6 +4448,7 @@ new Vue({
             s.next = ts() + nextMs;
             this.$set(this.state, wordId, { ...s });
             this.flipped = false;
+            this.clearChallenge();
             this.saveState();
             this.checkAchievements();
             this.saveGlobal();    // always persist totalReviewed + streak
@@ -4721,6 +4988,7 @@ new Vue({
                 this.queue.unshift(card);
             }
             this.flipped  = false;
+            this.clearChallenge();
             this.showUndo = false;
             this.undoSnap = null;
             this.saveState();
@@ -5049,6 +5317,8 @@ new Vue({
             };
             if (arrowMap[e.code]) {
                 e.preventDefault();
+                // Block grading while a challenge is pending
+                if (this.flipped && this.challenge && !this.challengeAnswered) return;
                 if (this.flipped) this.answer(arrowMap[e.code]);
                 else              this.flipCard();
             }
