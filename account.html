@@ -1164,10 +1164,8 @@
     }
 
     function showOfflineMode(){
-      $('authPanel').style.display = 'none';
-      $('profilePanel').style.display = 'none';
-      $('offlinePanel').style.display = 'block';
-      $('accountCard').style.display = 'block';
+      // No backend — hide the entire account card (login/register not useful offline)
+      $('accountCard').style.display = 'none';
     }
 
     /* ── Learning Report ── */
