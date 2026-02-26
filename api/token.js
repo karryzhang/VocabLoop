@@ -44,7 +44,11 @@ async function verifyToken(token) {
     const sig     = token.slice(dotIdx + 1);
     const secret  = await getSecret();
     const expected = sign(payload, secret);
-    if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return null;
+    // timingSafeEqual throws if buffers have different lengths — guard first
+    const sigBuf = Buffer.from(sig);
+    const expBuf = Buffer.from(expected);
+    if (sigBuf.length !== expBuf.length) return null;
+    if (!crypto.timingSafeEqual(sigBuf, expBuf)) return null;
     try {
       const data = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8'));
       if (!data.sub || typeof data.sub !== 'string') return null;

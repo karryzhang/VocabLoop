@@ -2863,6 +2863,7 @@ const STRINGS = {
     syncBtn: '同步', syncSyncing: '同步中…', syncDone: '已同步', syncFail: '同步失败',
     syncPull: '正在拉取云端数据…', syncPush: '正在上传数据…',
     syncMerged: '已合并云端与本地数据', syncNoAccount: '请先登录以同步学习记录',
+    syncTokenExpired: '登录已过期，请重新登录',
     syncUpToDate: '数据已是最新', syncLastSync: (t) => `上次同步：${t}`,
   },
   en: {
@@ -3020,6 +3021,7 @@ const STRINGS = {
     syncBtn: 'Sync', syncSyncing: 'Syncing…', syncDone: 'Synced', syncFail: 'Sync failed',
     syncPull: 'Pulling cloud data…', syncPush: 'Uploading data…',
     syncMerged: 'Merged cloud and local data', syncNoAccount: 'Please log in to sync your progress',
+    syncTokenExpired: 'Session expired, please log in again',
     syncUpToDate: 'Up to date', syncLastSync: (t) => `Last sync: ${t}`,
   },
 };
@@ -5315,6 +5317,11 @@ new Vue({
         return true;
       } else {
         setSyncState('');
+        // Token expired or invalid — clear stored auth so user is prompted to re-login
+        if(result.message && (result.message.includes('Invalid or expired') || result.message.includes('expired'))) {
+          try { localStorage.removeItem('vocabloop_auth'); } catch(_){}
+          return 'token_expired';
+        }
         return false;
       }
     } catch(e){
@@ -5371,11 +5378,15 @@ new Vue({
       }
       return;
     }
-    var ok = await doSync();
+    var result = await doSync();
     var app = document.getElementById('app');
     if(app && app.__vue__ && app.__vue__.showToast){
-      if(ok) app.__vue__.showToast(typeof UI !== 'undefined' ? UI.syncDone : 'Synced!', 'good');
-      else   app.__vue__.showToast(typeof UI !== 'undefined' ? UI.syncFail : 'Sync failed', 'bad');
+      if(result === true)             app.__vue__.showToast(typeof UI !== 'undefined' ? UI.syncDone : 'Synced!', 'good');
+      else if(result === 'token_expired') {
+        app.__vue__.showToast(typeof UI !== 'undefined' ? UI.syncTokenExpired : 'Session expired, please log in again', 'bad');
+        // Redirect to account page after a short delay so user sees the toast
+        setTimeout(function(){ window.location.href = 'account.html'; }, 1800);
+      } else                          app.__vue__.showToast(typeof UI !== 'undefined' ? UI.syncFail : 'Sync failed', 'bad');
     }
   }
 
