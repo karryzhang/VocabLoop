@@ -357,6 +357,29 @@
     .overall-info-title{font-size:.82rem;font-weight:700;color:var(--ink);margin-bottom:2px}
     .overall-info-sub{font-size:.75rem;color:var(--muted);line-height:1.4}
 
+    /* ── Share progress banner ─────────────────────────────────── */
+    .share-progress{margin-top:20px;padding-top:18px;border-top:1px solid var(--line);
+      display:flex;flex-direction:column;align-items:center;gap:14px;
+      animation:rptFadeUp .5s .25s ease both}
+    .share-preview{width:100%;border-radius:14px;padding:14px 16px;
+      background:linear-gradient(135deg,color-mix(in srgb,var(--pri) 7%,var(--card)),
+        color-mix(in srgb,#8b5cf6 7%,var(--card)));
+      border:1px solid color-mix(in srgb,var(--pri) 18%,var(--line));
+      font-size:.82rem;line-height:1.85;color:var(--ink);white-space:pre-wrap;word-break:break-word}
+    .share-preview-label{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+      color:var(--muted);margin-bottom:6px}
+    .share-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+    .share-main-btn{display:flex;align-items:center;gap:8px;
+      background:linear-gradient(135deg,var(--pri),#8b5cf6);color:#fff;border:none;
+      border-radius:99px;padding:11px 26px;font-size:.88rem;font-weight:700;cursor:pointer;
+      transition:opacity .15s,transform .1s,box-shadow .15s;
+      box-shadow:0 4px 18px color-mix(in srgb,var(--pri) 32%,transparent)}
+    .share-main-btn:hover{opacity:.9;transform:scale(1.03)}
+    .share-main-btn:active{transform:scale(.96)}
+    .share-main-btn.copied{background:linear-gradient(135deg,var(--ok),#34d399);
+      box-shadow:0 4px 18px color-mix(in srgb,var(--ok) 32%,transparent)}
+    .share-hint{font-size:.75rem;color:var(--muted);text-align:center}
+
     @media (max-width: 520px){
       .wrap{margin:12px auto}
       .card{padding:14px}
@@ -390,10 +413,10 @@
       <!-- Offline mode (compact) -->
       <div id="offlinePanel" style="display:none">
         <div class="offline-panel">
-          <div class="offline-icon">📴</div>
+          <div class="offline-icon">💾</div>
           <div class="offline-body">
-            <div class="offline-title" id="offlineTitle">Offline Mode</div>
-            <div class="offline-desc" id="offlineDesc">Data is stored locally in this browser.</div>
+            <div class="offline-title" id="offlineTitle">Local Mode</div>
+            <div class="offline-desc" id="offlineDesc">Your progress is saved in this browser. Register to sync across devices.</div>
           </div>
         </div>
       </div>
@@ -557,6 +580,24 @@
           <div class="achieve-grid" id="achieveList"></div>
         </div>
       </div>
+
+      <!-- Share progress banner -->
+      <div class="share-progress" id="shareProgress" style="display:none">
+        <div style="width:100%">
+          <div class="share-preview-label" id="sharePreviewLabel">分享预览</div>
+          <div class="share-preview" id="sharePreviewText"></div>
+        </div>
+        <div class="share-actions">
+          <button class="share-main-btn" id="shareMainBtn" onclick="doShareProgress()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
+            <span id="shareBtnLabel">分享学习进度</span>
+          </button>
+        </div>
+        <div class="share-hint" id="shareHintText">让朋友见证你的成长 ✨</div>
+      </div>
     </div>
 
     <!-- ③ Data Management card (always visible at bottom) -->
@@ -623,8 +664,8 @@
         exportOk:'Export ✓',
         dataTitle:'Data Management',
         dataHint:'Export your learning progress as JSON backup, or import from a previous backup file.',
-        offlineTitle:'Offline Mode',
-        offlineDesc:'Data is stored locally in this browser.',
+        offlineTitle:'Local Mode',
+        offlineDesc:'Your progress is saved in this browser. Register to sync across devices.',
         /* Report */
         rptTitle:'📊 Learning Report', rptStudied:'Studied', rptMastered:'Mastered',
         rptReviewed:'Reviews', rptStreak:'Streak', rptDeckTitle:'Deck Progress',
@@ -635,6 +676,11 @@
         rptStudiedOf:(a,b)=>`${a} studied / ${b} mastered`,
         rptOverall:'Overall Progress',
         rptOverallSub:(studied,total,masteredPct)=>`${studied} / ${total} words studied, ${masteredPct}% mastered`,
+        sharePreviewLabel:'Share Preview',
+        shareBtnLabel:'Share Progress',
+        shareHint:'Show your progress to friends ✨',
+        shareCopied:'Copied ✓',
+        shareCopyFallback:'Copy to share:',
       },
       zh: {
         back:'← 返回首页', theme:'🌓 主题', title:'账户',
@@ -669,8 +715,8 @@
         exportOk:'导出 ✓',
         dataTitle:'数据管理',
         dataHint:'导出学习进度为 JSON 备份，或从备份文件中导入。',
-        offlineTitle:'离线模式',
-        offlineDesc:'数据保存在本地浏览器中。',
+        offlineTitle:'本地模式',
+        offlineDesc:'学习进度保存在本地浏览器中。注册账户后可跨设备同步。',
         /* Report */
         rptTitle:'📊 学习报告', rptStudied:'已学', rptMastered:'已掌握',
         rptReviewed:'总复习', rptStreak:'连续天', rptDeckTitle:'词库进度',
@@ -681,6 +727,11 @@
         rptStudiedOf:(a,b)=>`已学 ${a} / 掌握 ${b}`,
         rptOverall:'总体进度',
         rptOverallSub:(studied,total,masteredPct)=>`已学 ${studied} / ${total} 词，掌握率 ${masteredPct}%`,
+        sharePreviewLabel:'分享预览',
+        shareBtnLabel:'分享学习进度',
+        shareHint:'让朋友见证你的成长 ✨',
+        shareCopied:'已复制 ✓',
+        shareCopyFallback:'复制以下内容分享：',
       }
     };
 
@@ -1149,24 +1200,23 @@
     /* ── Backend detection ── */
     async function checkBackend(){
       try{
-        const res = await fetch(
-          window.location.pathname.replace(/account\.html.*$/, '') + 'api/auth',
-          { method:'POST', headers:{'content-type':'application/json'}, body:'{}' }
-        );
+        const base = window.location.pathname.replace(/account\.html.*$/, '');
+        const res = await fetch(base + 'api/auth', {
+          method:'POST', headers:{'content-type':'application/json'},
+          body: JSON.stringify({ action: 'ping' }),
+        });
         const ct = (res.headers.get('content-type') || '');
         if(ct.includes('application/json') || ct.includes('text/json')){
           const data = await res.json();
-          return !!(data && typeof data.ok === 'boolean' && typeof data.message === 'string');
+          return !!(data && data.ok === true && data.message === 'pong');
         }
       }catch(_){}
       return false;
     }
 
     function showOfflineMode(){
-      $('authPanel').style.display = 'none';
-      $('profilePanel').style.display = 'none';
-      $('offlinePanel').style.display = 'block';
-      $('accountCard').style.display = 'block';
+      // No backend — hide the entire account card (login/register not useful offline)
+      $('accountCard').style.display = 'none';
     }
 
     /* ── Learning Report ── */
@@ -1235,6 +1285,67 @@
         const parsed = JSON.parse(raw);
         return parsed.state || {};
       }catch(e){ return {}; }
+    }
+
+    /* ── Share progress ── */
+    let _shareData = null;
+
+    function buildShareText(d) {
+      const lang = state.lang;
+      const milestone = (() => {
+        if (d.streak >= 30) return lang === 'zh' ? '🏆 坚持学习 30 天！' : '🏆 30-day champion!';
+        if (d.streak >= 7)  return lang === 'zh' ? '🔥 连续学习 7 天！'  : '🔥 7-day streak!';
+        if (d.mastered >= 200) return lang === 'zh' ? '👑 已掌握 200 词！'  : '👑 200 words mastered!';
+        if (d.mastered >= 100) return lang === 'zh' ? '🎯 100 词里程碑！'   : '🎯 100 words milestone!';
+        if (d.pct >= 50)    return lang === 'zh' ? '🌟 已完成一半！'      : '🌟 Halfway there!';
+        return '';
+      })();
+      const lines = lang === 'zh'
+        ? [
+            `📚 我在 VocabLoop 学了 ${d.studied} 个英语单词！`,
+            milestone,
+            `✅ 已掌握 ${d.mastered} 个 | 学习进度 ${d.pct}%`,
+            d.streak > 0 ? `🔥 连续学习 ${d.streak} 天` : '',
+            `→ ${d.url}`,
+          ]
+        : [
+            `📚 I've studied ${d.studied} English words on VocabLoop!`,
+            milestone,
+            `✅ Mastered ${d.mastered} · ${d.pct}% progress`,
+            d.streak > 0 ? `🔥 ${d.streak}-day learning streak` : '',
+            `→ ${d.url}`,
+          ];
+      return lines.filter(Boolean).join('\n');
+    }
+
+    function updateShareBanner() {
+      if (!_shareData) return;
+      const t = state.t;
+      $('sharePreviewLabel').textContent = t.sharePreviewLabel;
+      $('sharePreviewText').textContent = buildShareText(_shareData);
+      $('shareBtnLabel').textContent = t.shareBtnLabel;
+      $('shareHintText').textContent = t.shareHint;
+    }
+
+    async function doShareProgress() {
+      if (!_shareData) return;
+      const t = state.t;
+      const text  = buildShareText(_shareData);
+      const title = state.lang === 'zh' ? '我的 VocabLoop 学习进度' : 'My VocabLoop Progress';
+      const btn   = $('shareMainBtn');
+      const label = $('shareBtnLabel');
+      if (navigator.share) {
+        try { await navigator.share({ title, text, url: _shareData.url }); return; }
+        catch(e) { if (e.name === 'AbortError') return; }
+      }
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.classList.add('copied');
+        label.textContent = t.shareCopied;
+        setTimeout(() => { btn.classList.remove('copied'); updateShareBanner(); }, 2200);
+      } catch(e) {
+        prompt(t.shareCopyFallback, text);
+      }
     }
 
     async function renderReport(){
@@ -1467,6 +1578,20 @@
         });
         $('achieveSection').style.display = 'block';
       }
+
+      /* ── Share banner ── */
+      const shareUrl = window.location.origin +
+        window.location.pathname.replace(/account\.html.*$/, '');
+      _shareData = {
+        studied: allStudied,
+        mastered: allMastered,
+        total:    totalWords,
+        pct:      overallPct,
+        streak:   globalState.dailyStreak || 0,
+        url:      shareUrl,
+      };
+      updateShareBanner();
+      $('shareProgress').style.display = '';
     }
 
     /* ── Init ── */

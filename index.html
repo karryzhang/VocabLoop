@@ -1800,6 +1800,72 @@
         .dw-cta:hover  { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(139,92,246,0.45); }
         .dw-cta:active { transform: scale(0.98); box-shadow: none; }
 
+        /* ── Share panel (desktop fallback) ─────────────────────────────── */
+        .sp-overlay {
+            position: fixed; inset: 0; z-index: 600;
+            background: rgba(0,0,0,0.45);
+            display: flex; align-items: center; justify-content: center;
+            padding: 20px;
+        }
+        .sp-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            width: 100%; max-width: 400px;
+            display: flex; flex-direction: column; gap: 14px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+            animation: slideUp 0.22s cubic-bezier(0.34,1.3,0.64,1);
+        }
+        .sp-title {
+            font-size: 0.85rem; font-weight: 700;
+            color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase;
+        }
+        .sp-text {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 0.84rem; line-height: 1.55;
+            color: var(--text);
+            white-space: pre-wrap; word-break: break-word;
+            max-height: 120px; overflow-y: auto;
+        }
+        .sp-url {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 0.8rem; color: var(--blue);
+            word-break: break-all;
+            font-family: 'SF Mono', Menlo, monospace;
+        }
+        .sp-btns {
+            display: flex; gap: 8px; flex-wrap: wrap;
+        }
+        .sp-btn {
+            flex: 1; min-width: 0;
+            padding: 9px 14px;
+            border-radius: 99px;
+            border: 1.5px solid var(--border);
+            background: none;
+            font-size: 0.8rem; font-weight: 600;
+            color: var(--muted); cursor: pointer;
+            transition: all 0.15s;
+        }
+        .sp-btn:hover { border-color: var(--blue); color: var(--blue); }
+        .sp-btn.primary {
+            background: var(--blue); border-color: var(--blue);
+            color: #fff;
+        }
+        .sp-btn.primary:hover { opacity: 0.88; }
+        .sp-btn.copied { border-color: var(--green); color: var(--green); }
+        .sp-close {
+            position: absolute; top: 14px; right: 14px;
+            background: none; border: none; font-size: 1.1rem;
+            color: var(--muted); cursor: pointer; line-height: 1;
+        }
+
         /* ── Word list modal ─────────────────────────────────────────────── */
         .wl-overlay {
             position: fixed; inset: 0; z-index: 500;
@@ -1889,17 +1955,9 @@
                 <button id="syncBtn" v-show="backendAvailable" class="btn-hd" onclick="window.__vocabSync && window.__vocabSync.manualSync()" :title="ui.syncBtn">
                     <svg id="syncIcon" class="sync-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
                 </button>
-                <button id="accountBtn" v-show="backendAvailable" class="btn-hd" onclick="window.location.href='account.html'" title="Account">👤</button>
-                <button class="btn-hd" v-show="!backendAvailable" @click="exportProgress" :title="ui.exportBtn">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                </button>
-                <button class="btn-hd" v-show="!backendAvailable" @click="triggerImport" :title="ui.importBtn">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                </button>
+                <button id="accountBtn" class="btn-hd" onclick="window.location.href='account.html'" title="Account">👤</button>
             </div>
         </div>
-        <!-- Hidden file input for import -->
-        <input type="file" id="importFileInput" accept=".json" style="display:none" @change="handleImportFile">
         <!-- Row 2: stats chips (horizontal scroll, always one line) -->
         <div class="chips">
             <button class="chip chip-new chip-btn"   @click="showWordList('new')"
@@ -2491,6 +2549,30 @@
         </div>
     </transition>
 
+    <!-- ── Share panel (desktop fallback) ───────────────────────────── -->
+    <transition name="toast">
+        <div v-if="sharePanel" class="sp-overlay" @click.self="closeSharePanel">
+            <div class="sp-card">
+                <div class="sp-title">
+                    <span>{{ui.sharePanelTitle}}</span>
+                    <button class="sp-close" @click="closeSharePanel">✕</button>
+                </div>
+                <div class="sp-text">{{sharePanel.text}}</div>
+                <div class="sp-url">{{sharePanel.url}}</div>
+                <div class="sp-btns">
+                    <button class="sp-btn" :class="{copied: sharePanel._textCopied}"
+                            @click="copyShareText">
+                        {{sharePanel._textCopied ? ui.shareCopied : ui.shareCopyText}}
+                    </button>
+                    <button class="sp-btn primary" :class="{copied: sharePanel._urlCopied}"
+                            @click="copyShareUrl">
+                        {{sharePanel._urlCopied ? ui.shareCopied : ui.shareCopyLink}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </transition>
+
     <!-- ── Reading overlay ─────────────────────────────────────────── -->
     <div v-if="readingOpen" class="reading-overlay">
         <div class="reading-hd">
@@ -2881,6 +2963,9 @@ const STRINGS = {
     shareHint:             '把你的学习成果分享给朋友',
     shareCopied:           '已复制，去分享吧！',
     shareCopyFallback:     '复制以下内容分享：',
+    sharePanelTitle:       '分享',
+    shareCopyText:         '复制文案',
+    shareCopyLink:         '复制链接',
     obTagline:       '间隔重复英语词汇 · 科学记忆',
     obSrsTitle:      '🧠 科学记忆原理',
     obSrsDesc:       '基于间隔重复算法（SRS）——刚学的词频繁出现，记熟的词逐渐拉长间隔。系统在最该复习的时刻推送单词，用最少时间记最多词。',
@@ -2940,6 +3025,7 @@ const STRINGS = {
     syncBtn: '同步', syncSyncing: '同步中…', syncDone: '已同步', syncFail: '同步失败',
     syncPull: '正在拉取云端数据…', syncPush: '正在上传数据…',
     syncMerged: '已合并云端与本地数据', syncNoAccount: '请先登录以同步学习记录',
+    syncTokenExpired: '登录已过期，请重新登录',
     syncUpToDate: '数据已是最新', syncLastSync: (t) => `上次同步：${t}`,
   },
   en: {
@@ -3049,6 +3135,9 @@ const STRINGS = {
     shareHint:             'Show friends your progress',
     shareCopied:           'Copied — go share!',
     shareCopyFallback:     'Copy to share:',
+    sharePanelTitle:       'Share',
+    shareCopyText:         'Copy Text',
+    shareCopyLink:         'Copy Link',
     obTagline:       'Spaced Repetition Vocabulary · Science-backed',
     obSrsTitle:      '🧠 Science of Memory',
     obSrsDesc:       'Built on Spaced Repetition (SRS) — new words appear often, mastered words at longer intervals. The system shows each word at the perfect moment, so you retain more with less effort.',
@@ -3108,6 +3197,7 @@ const STRINGS = {
     syncBtn: 'Sync', syncSyncing: 'Syncing…', syncDone: 'Synced', syncFail: 'Sync failed',
     syncPull: 'Pulling cloud data…', syncPush: 'Uploading data…',
     syncMerged: 'Merged cloud and local data', syncNoAccount: 'Please log in to sync your progress',
+    syncTokenExpired: 'Session expired, please log in again',
     syncUpToDate: 'Up to date', syncLastSync: (t) => `Last sync: ${t}`,
   },
 };
@@ -3434,6 +3524,7 @@ new Vue({
             undoSnap:  null,   // pre-answer snapshot
             showUndo:  false,  // undo button visibility
             wordListModal: null, // { stageGroup, title, words } — word list bottom sheet
+            sharePanel: null,   // { text, url } — desktop share panel
             showOnboarding: false,
             showDailyWelcome: false,
             slideshowMode:   false,
@@ -3781,19 +3872,36 @@ new Vue({
         // Try playing a URL; resolves true on success, false on failure
         _tryAudioUrl(url) {
             return new Promise(resolve => {
+                // Cancel any previous non-preloaded audio to avoid overlap
+                if (this._currentAudio) {
+                    try { this._currentAudio.pause(); } catch(e) {}
+                }
                 const a = new Audio(url);
+                this._currentAudio = a;
                 let settled = false;
-                const done = (ok) => { if (settled) return; settled = true; if (!ok) { a.pause(); a.src = ''; } resolve(ok); };
-                // Timeout: if audio doesn't start within 3s, give up
-                const timer = setTimeout(() => done(false), 3000);
-                a.onended = () => { this.audioPlaying = false; };
+                const done = (ok) => {
+                    if (settled) return;
+                    settled = true;
+                    if (!ok) {
+                        try { a.pause(); a.src = ''; } catch(e) {}
+                        if (this._currentAudio === a) this._currentAudio = null;
+                    }
+                    resolve(ok);
+                };
+                // Timeout: if audio doesn't become playable in time, fail fast
+                const timer = setTimeout(() => done(false), 5000);
+                a.onended = () => {
+                    this.audioPlaying = false;
+                    if (this._currentAudio === a) this._currentAudio = null;
+                };
                 a.onerror = () => { clearTimeout(timer); done(false); };
-                a.play().then(() => {
+                // Resolve true when audio is actually playable to avoid false positives
+                a.oncanplay = () => {
                     clearTimeout(timer);
-                    // Youdao returns very short/silent audio for unknown words; treat < 0.5s as failure
                     if (isFinite(a.duration) && a.duration < 0.5) { done(false); return; }
                     done(true);
-                }).catch(() => { clearTimeout(timer); done(false); });
+                };
+                a.play().catch(() => { clearTimeout(timer); done(false); });
             });
         },
 
@@ -3826,7 +3934,7 @@ new Vue({
             });
             // 0. Preloaded audio — play instantly or wait briefly for in-progress preload
             const preloaded = this._audioPreloads && this._audioPreloads[word];
-            if (preloaded) {
+            if (preloaded && !preloaded.error) {  // skip immediately if preload errored
                 if (preloaded.readyState >= 2) {
                     if (await waitEndEl(preloaded)) return;
                 } else {
@@ -3925,7 +4033,7 @@ new Vue({
 
             // 0. Preloaded audio — play instantly or wait briefly for in-progress preload
             const preloaded = this._audioPreloads && this._audioPreloads[word];
-            if (preloaded) {
+            if (preloaded && !preloaded.error) {  // skip immediately if preload errored
                 const tryPreloaded = async (el) => {
                     if (isFinite(el.duration) && el.duration < 0.5) return false;
                     el.currentTime = 0;
@@ -4390,13 +4498,27 @@ new Vue({
                 try { await navigator.share({ title, text, url }); return; }
                 catch (e) { if (e.name === 'AbortError') return; }
             }
-            const fullText = `${text}\n→ ${url}`;
-            try {
-                await navigator.clipboard.writeText(fullText);
-                this.showToast(UI.shareCopied, 'good');
-            } catch (e) {
-                prompt(UI.shareCopyFallback, fullText);
-            }
+            // Desktop fallback: show share panel with separate copy buttons
+            this.sharePanel = { text, url, _textCopied: false, _urlCopied: false };
+        },
+        copyShareText() {
+            if (!this.sharePanel) return;
+            const t = this.sharePanel.text;
+            navigator.clipboard.writeText(t).then(() => {
+                this.sharePanel = { ...this.sharePanel, _textCopied: true };
+                setTimeout(() => { if (this.sharePanel) this.sharePanel = { ...this.sharePanel, _textCopied: false }; }, 1800);
+            }).catch(() => prompt(UI.shareCopyFallback, t));
+        },
+        copyShareUrl() {
+            if (!this.sharePanel) return;
+            const u = this.sharePanel.url;
+            navigator.clipboard.writeText(u).then(() => {
+                this.sharePanel = { ...this.sharePanel, _urlCopied: true };
+                setTimeout(() => { if (this.sharePanel) this.sharePanel = { ...this.sharePanel, _urlCopied: false }; }, 1800);
+            }).catch(() => prompt(UI.shareCopyFallback, u));
+        },
+        closeSharePanel() {
+            this.sharePanel = null;
         },
 
         // ── Persistence ──────────────────────────────────────────────────
@@ -4453,16 +4575,18 @@ new Vue({
         },
         async checkBackend() {
             try {
+                // Use 'ping' action — does a real DB query to confirm full backend health.
+                // Empty-body probe was misleading: it bypassed the DB and falsely showed
+                // backendAvailable=true even when TURSO_DATABASE_URL was not configured.
                 const res = await fetch('/api/auth', {
                     method: 'POST',
                     headers: { 'content-type': 'application/json' },
-                    body: '{}',
+                    body: JSON.stringify({ action: 'ping' }),
                 });
                 const ct = (res.headers.get('content-type') || '');
                 if (ct.includes('application/json') || ct.includes('text/json')) {
-                    // Verify response body has expected backend signature
                     const data = await res.json();
-                    this.backendAvailable = !!(data && typeof data.ok === 'boolean' && typeof data.message === 'string');
+                    this.backendAvailable = !!(data && data.ok === true && data.message === 'pong');
                 } else {
                     this.backendAvailable = false;
                 }
@@ -5153,6 +5277,7 @@ new Vue({
         // Non-reactive caches (avoid Vue reactivity overhead on Audio/timer objects)
         this._audioPreloads  = {};   // word -> preloaded Audio element
         this._prefetchTimers = [];   // pending staggered preload timers
+        this._currentAudio   = null; // currently playing Audio element (holds ref to prevent GC)
         // Restore preferred deck before loading state
         const savedDeckId = localStorage.getItem(DECK_PREF_KEY);
         if (savedDeckId) {
@@ -5492,6 +5617,11 @@ new Vue({
         return true;
       } else {
         setSyncState('');
+        // Token expired or invalid — clear stored auth so user is prompted to re-login
+        if(result.message && (result.message.includes('Invalid or expired') || result.message.includes('expired'))) {
+          try { localStorage.removeItem('vocabloop_auth'); } catch(_){}
+          return 'token_expired';
+        }
         return false;
       }
     } catch(e){
@@ -5548,11 +5678,15 @@ new Vue({
       }
       return;
     }
-    var ok = await doSync();
+    var result = await doSync();
     var app = document.getElementById('app');
     if(app && app.__vue__ && app.__vue__.showToast){
-      if(ok) app.__vue__.showToast(typeof UI !== 'undefined' ? UI.syncDone : 'Synced!', 'good');
-      else   app.__vue__.showToast(typeof UI !== 'undefined' ? UI.syncFail : 'Sync failed', 'bad');
+      if(result === true)             app.__vue__.showToast(typeof UI !== 'undefined' ? UI.syncDone : 'Synced!', 'good');
+      else if(result === 'token_expired') {
+        app.__vue__.showToast(typeof UI !== 'undefined' ? UI.syncTokenExpired : 'Session expired, please log in again', 'bad');
+        // Redirect to account page after a short delay so user sees the toast
+        setTimeout(function(){ window.location.href = 'account.html'; }, 1800);
+      } else                          app.__vue__.showToast(typeof UI !== 'undefined' ? UI.syncFail : 'Sync failed', 'bad');
     }
   }
 

@@ -3,7 +3,7 @@
  *
  * Uses @libsql/client for both remote (Turso) and local (file-based SQLite):
  *   - Production (Vercel): Set TURSO_DATABASE_URL + TURSO_AUTH_TOKEN env vars
- *   - Local dev:           Falls back to file:.data/vocabloop.db
+ *   - Local dev:           Falls back to file:/tmp/vocabloop.db (writable on all platforms)
  *
  * Tables: config, users, sync_data
  */
@@ -11,26 +11,49 @@
 const path   = require('path');
 const fs     = require('fs');
 const crypto = require('crypto');
-const { createClient } = require('@libsql/client');
 
-// Local dev: ensure .data/ directory exists for SQLite file
-if (!process.env.TURSO_DATABASE_URL) {
-  const dataDir = path.join(__dirname, '..', '.data');
-  if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+/* ── Client initialisation (lazy, fail-safe) ─────────────────────────── */
+
+let client = null;
+let _clientError = null;
+
+function getClient() {
+  if (_clientError) throw _clientError;
+  if (client) return client;
+
+  try {
+    const { createClient } = require('@libsql/client');
+
+    if (process.env.TURSO_DATABASE_URL) {
+      // Production: remote Turso DB (pure HTTP, no native modules needed)
+      client = createClient({
+        url:       process.env.TURSO_DATABASE_URL,
+        authToken: process.env.TURSO_AUTH_TOKEN,
+      });
+    } else if (process.env.VERCEL) {
+      // Running on Vercel but TURSO_DATABASE_URL not configured — fail clearly
+      throw new Error('TURSO_DATABASE_URL environment variable is not set. Configure it in the Vercel dashboard.');
+    } else {
+      // Local dev: use /tmp which is writable on all platforms
+      const dbPath = path.join('/tmp', 'vocabloop.db');
+      client = createClient({ url: `file:${dbPath}` });
+      console.log('[db] No TURSO_DATABASE_URL set — using local SQLite at', dbPath);
+    }
+  } catch (err) {
+    _clientError = err;
+    console.error('[db] Failed to initialise database client:', err.message);
+    throw err;
+  }
+
+  return client;
 }
-
-const client = createClient(
-  process.env.TURSO_DATABASE_URL
-    ? { url: process.env.TURSO_DATABASE_URL, authToken: process.env.TURSO_AUTH_TOKEN }
-    : { url: `file:${path.join(__dirname, '..', '.data', 'vocabloop.db')}` }
-);
 
 let _initialized = false;
 
 /** Ensure tables exist (runs once per cold start) */
 async function initDb() {
   if (_initialized) return;
-  await client.batch([
+  await getClient().batch([
     `CREATE TABLE IF NOT EXISTS config (
       key   TEXT PRIMARY KEY,
       value TEXT NOT NULL
@@ -54,14 +77,14 @@ async function initDb() {
 /** Execute a read query — returns first row or null */
 async function queryOne(sql, args = []) {
   await initDb();
-  const result = await client.execute({ sql, args });
+  const result = await getClient().execute({ sql, args });
   return result.rows[0] || null;
 }
 
 /** Execute a write statement (INSERT / UPDATE / DELETE) */
 async function execute(sql, args = []) {
   await initDb();
-  return client.execute({ sql, args });
+  return getClient().execute({ sql, args });
 }
 
 /** Get or create the HMAC signing secret */
