@@ -846,6 +846,14 @@
             margin-bottom: 6px;
         }
         .challenge-audio-btn:hover { border-color: var(--blue); color: var(--blue); }
+        .challenge-grade-note {
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--amber);
+            font-weight: 600;
+            margin-top: 2px;
+            animation: challengeIn .3s ease;
+        }
 
         .controls-wrap {
             position: relative;
@@ -1071,6 +1079,16 @@
             .card-area  { padding: 10px 10px 14px; }
             .back-example{ font-size: 0.74rem; }
             .done-stat-val { font-size: 1.8rem; }
+            /* Challenge responsive */
+            .challenge-wrap { padding: 8px 10px 4px; }
+            .challenge-prompt { font-size: 0.82rem; }
+            .challenge-input { padding: 9px 10px; font-size: 0.9rem; }
+            .challenge-submit { padding: 9px 12px; font-size: 0.82rem; }
+            .challenge-type { font-size: 0.68rem; }
+            /* Practice done responsive */
+            .prac-score-pct { font-size: 2.8rem; }
+            .prac-done-title { font-size: 1.2rem; }
+            .prac-done-tip { font-size: 0.78rem; padding: 8px 12px; }
         }
 
         /* ── Regular mobile (391–599px) ──────────────────── */
@@ -1094,6 +1112,17 @@
             .xp-track   { height: 10px; }
             .done-stat-val { font-size: 2.5rem; }
             .done-title { font-size: 2.1rem; }
+            /* Challenge — wider on tablet/PC */
+            .challenge-wrap { padding: 12px 20px 8px; }
+            .challenge-input { padding: 12px 14px; font-size: 1.05rem; }
+            .challenge-prompt { font-size: 1rem; }
+            .challenge-result { font-size: 0.88rem; }
+            /* Practice done — wider */
+            .prac-score-pct { font-size: 4.2rem; }
+            .prac-done-title { font-size: 1.6rem; }
+            .prac-done-tip { max-width: 400px; font-size: 0.9rem; }
+            .prac-review-section { max-width: 480px; margin: 0 auto; }
+            .prac-done-footer { max-width: 400px; margin: 0 auto; }
         }
 
         /* ── iPad Pro / Desktop (≥ 900px) ────────────────── */
@@ -1340,6 +1369,8 @@
         @media (hover: none) {
             .prac-opt:hover:not(:disabled)    { border-color: var(--border); background: var(--surface); }
             .prac-tf-btn:hover:not(:disabled) { border-color: var(--border); background: var(--surface); transform: none; box-shadow: none; }
+            .challenge-submit:hover { opacity: 1; }
+            .challenge-audio-btn:hover { border-color: var(--line); color: var(--ink); }
         }
 
         /* Spelling */
@@ -1429,6 +1460,19 @@
         .pdc-bad   { color: var(--red); }
         .pdc-sep   { color: var(--border); font-weight: 400; }
         .pdc-total { color: var(--muted); font-weight: 400; font-size: 0.82rem; }
+        /* Practice done — motivational tip */
+        .prac-done-tip {
+            font-size: 0.85rem;
+            color: var(--muted);
+            line-height: 1.5;
+            padding: 10px 16px;
+            background: color-mix(in srgb, var(--blue) 6%, transparent);
+            border: 1px solid color-mix(in srgb, var(--blue) 12%, transparent);
+            border-radius: 12px;
+            text-align: center;
+            width: 100%;
+            max-width: 320px;
+        }
         /* Practice done — review cards */
         .prac-review-section { width: 100%; text-align: left; border-top: 1px solid var(--border); padding-top: 16px; }
         .prac-review-hd { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
@@ -2036,6 +2080,11 @@
                 </div>
             </div>
 
+            <!-- Motivational tip -->
+            <div class="prac-done-tip">
+                {{pracScorePct >= 80 ? ui.pracDoneTipGreat : pracScorePct >= 50 ? ui.pracDoneTipGood : ui.pracDoneTipKeepGo}}
+            </div>
+
             <!-- Wrong words with example sentences -->
             <div v-if="practiceWrongWords.length > 0" class="prac-review-section">
                 <div class="prac-review-hd">
@@ -2050,7 +2099,7 @@
                             <span v-if="dictCache[w.word] && dictCache[w.word].ipa" class="prac-review-ipa">/{{dictCache[w.word].ipa}}/</span>
                         </div>
                         <div class="prac-review-zh">{{w.zh}}</div>
-                        <div v-if="dictCache[w.word] && dictCache[w.word].example" class="prac-review-ex">{{dictCache[w.word].example}}</div>
+                        <div v-if="dictCache[w.word] && dictCache[w.word].example" class="prac-review-ex">"{{dictCache[w.word].example}}"</div>
                     </div>
                 </div>
             </div>
@@ -2285,7 +2334,11 @@
                 <div class="done-stat-val">{{dailyStreak}}</div>
                 <div class="done-stat-label">{{ui.doneDailyStreak}}</div>
             </div>
-            <div class="done-stat">
+            <div class="done-stat" v-if="sessionChallengeTotal > 0">
+                <div class="done-stat-val">{{sessionChallengeCorrect}}/{{sessionChallengeTotal}}</div>
+                <div class="done-stat-label">{{ui.doneChallengeLabel}}</div>
+            </div>
+            <div class="done-stat" v-else>
                 <div class="done-stat-val">{{totalReviewed}}</div>
                 <div class="done-stat-label">{{ui.doneTotalReviewed}}</div>
             </div>
@@ -2536,6 +2589,9 @@
                 </button>
             </div>
             <div class="key-hint" :class="{visible: !flipped && !slideshowMode}" v-html="ui.keyHint"></div>
+            <div class="challenge-grade-note" v-if="challenge && challengeAnswered && challengeResult === 'wrong'">
+                {{ui.chGradeNote}}
+            </div>
         </div>
 
         </template><!-- end card view -->
@@ -2907,9 +2963,14 @@ const STRINGS = {
     doneTodayLearned: '今日新学', doneSessionCorrect: '本次答对',
     doneMastered: '已掌握', doneDailyStreak: '📅 连续天数',
     doneTotalReviewed: '累计答题', donePoints: '积分',
+    doneChallengeLabel: '✏️ 挑战',
     doneContinue: '继续学习更多单词', achLabel: '成就',
     doneSubtitle:      '今天的积累，是明天流利的基础 ✨',
     donePracticeHint:  '做题检验，真正掌握今日词汇',
+    /* Practice done — motivational tips */
+    pracDoneTipGreat:   '表现优秀！你的词汇正在快速巩固。',
+    pracDoneTipGood:    '不错的成绩！错的词会在复习中加强。',
+    pracDoneTipKeepGo:  '别灰心！多练几次就会更熟练。',
     doneStoryHint:     '在真实语境的故事中巩固记忆',
     doneContinueHint:  '继续学习，认识更多新单词',
     doneTomorrow:      (n) => n > 0 ? `📅 明天有 ${n} 个词等你复习` : '今天的词汇已安排到最优复习时间',
@@ -2931,6 +2992,7 @@ const STRINGS = {
     againMsgs: ['没关系，再来！💪', '继续加油！🔄', '复习一次！📖', '不怕，慢慢来！🌱'],
     goodMsgs:  ['✓ 很好！', '👍 记住了！', '💪 不错！', '✨ 棒！', '🎯 准确！', '👏 继续！', '💡 清晰！', '🌟 很棒！'],
     easyMsgs:  ['太棒了！🌟', '完美！⭐', '出色！🚀', '厉害！💎', '超强！⚡', '满分！🎯'],
+    chCorrectMsgs: ['✏️ 拼对了！', '✨ 挑战成功！', '💡 记忆扎实！', '🎯 一次过！'],
     streakToasts: {
       3:  { msg: '👍 连击 3！',            type: 'good' },
       5:  { msg: '🔥 连击 5！',            type: 'bonus' },
@@ -3023,6 +3085,7 @@ const STRINGS = {
     chCorrect:    '答对了！',
     chWrong:      '正确答案：',
     chPlayAgain:  '再听一遍',
+    chGradeNote:  '⚠ 挑战未通过，评分已自动降级',
     undoBtn:               '↩ 撤销',
     wlNew:     '🆕 未学单词',
     wlLearn:   '📖 学习中（学习 + 早期复习）',
@@ -3077,9 +3140,14 @@ const STRINGS = {
     doneTodayLearned: 'New today', doneSessionCorrect: 'Correct',
     doneMastered: 'Mastered', doneDailyStreak: '📅 Day streak',
     doneTotalReviewed: 'Reviews', donePoints: 'Points',
+    doneChallengeLabel: '✏️ Challenge',
     doneContinue: 'Study more words', achLabel: 'Badges',
     doneSubtitle:      'Small daily steps create big results ✨',
     donePracticeHint:  'Test yourself and truly lock in today\'s words',
+    /* Practice done — motivational tips */
+    pracDoneTipGreat:   'Excellent work! Your vocabulary is growing fast.',
+    pracDoneTipGood:    'Good effort! Missed words will get extra review.',
+    pracDoneTipKeepGo:  'Keep going! Practice makes progress.',
     doneStoryHint:     'See your words come alive in a real story',
     doneContinueHint:  'Keep going and learn even more new words',
     doneTomorrow:      (n) => n > 0 ? `📅 ${n} cards due tomorrow — come back!` : 'All cards scheduled at optimal intervals',
@@ -3101,6 +3169,7 @@ const STRINGS = {
     againMsgs: ["No worries, try again! 💪", "Keep going! 🔄", "Review time! 📖", "Slow and steady! 🌱"],
     goodMsgs:  ['✓ Got it!', '👍 Nailed it!', '💪 Nice!', '✨ Great!', '🎯 Spot on!', '👏 Keep it up!', '💡 Clear!', '🌟 Excellent!'],
     easyMsgs:  ['Awesome! 🌟', 'Perfect! ⭐', 'Outstanding! 🚀', 'Superb! 💎', 'Blazing! ⚡', 'Flawless! 🎯'],
+    chCorrectMsgs: ['✏️ Spelled it!', '✨ Challenge won!', '💡 Solid recall!', '🎯 Nailed it!'],
     streakToasts: {
       3:  { msg: '👍 3-streak!',          type: 'good' },
       5:  { msg: '🔥 5-streak!',          type: 'bonus' },
@@ -3193,6 +3262,7 @@ const STRINGS = {
     chCorrect:    'Correct!',
     chWrong:      'Answer: ',
     chPlayAgain:  'Play again',
+    chGradeNote:  '⚠ Challenge missed — grade auto-adjusted',
     undoBtn:               '↩ Undo',
     wlNew:     '🆕 Not Yet Learned',
     wlLearn:   '📖 Learning (active + early review)',
@@ -3547,6 +3617,8 @@ new Vue({
             challengeInput:     '',
             challengeAnswered:  false,
             challengeResult:    null,   // 'correct' | 'wrong' | null
+            sessionChallengeTotal:   0, // total challenges this session
+            sessionChallengeCorrect: 0, // correct challenges this session
             // ── Reading overlay ──────────────────────────────────────
             readingOpen:     false,
             readingArticle:  '',
@@ -4221,6 +4293,8 @@ new Vue({
             this.clearChallenge();
             this.extraNewAllowed = 0;
             this.sessionCorrect  = 0;
+            this.sessionChallengeTotal   = 0;
+            this.sessionChallengeCorrect = 0;
             this.loadSaved();
             this.loadWords();
         },
@@ -4253,8 +4327,15 @@ new Vue({
             if (!s || s.stage === 'new') return;   // skip new words
             if (s.stage === 'mastered') return;     // skip mastered
 
-            // Probabilistic trigger — more likely for more advanced stages
-            const prob = (s.stage === 'learning' || s.stage === 'relearn') ? 0.4 : 0.6;
+            // Difficulty-adaptive probability:
+            //   - Difficult words (againCount ≥ 2): 85% chance → drill weak spots
+            //   - Mature/young review:              55% chance → reinforce retention
+            //   - Learning/relearn:                 35% chance → don't overwhelm
+            const again = s.againCount || 0;
+            let prob;
+            if (again >= 2) prob = 0.85;
+            else if (s.stage === 'mature' || s.stage === 'young') prob = 0.55;
+            else prob = 0.35;
             if (Math.random() > prob) return;
 
             // Try generating a challenge (prefer cloze > dictation > spelling)
@@ -4274,7 +4355,6 @@ new Vue({
                     return;
                 }
             }
-            // No challenge could be generated (no example sentences, no audio, etc.)
         },
         clearChallenge() {
             this.challenge = null;
@@ -4287,11 +4367,16 @@ new Vue({
             const input = this.challengeInput.trim().toLowerCase();
             const correct = this.challenge.correct.toLowerCase();
             this.challengeAnswered = true;
+            this.sessionChallengeTotal++;
             if (input === correct) {
                 this.challengeResult = 'correct';
+                this.sessionChallengeCorrect++;
                 this.points += 5;
+                playFeedbackSound('correct');
+                this.showToast(pick(UI.chCorrectMsgs), 'good');
             } else {
                 this.challengeResult = 'wrong';
+                playFeedbackSound('wrong');
                 // Increment againCount as penalty for wrong challenge answer
                 const wordId = this.cur.word;
                 const s = this.state[wordId];
@@ -4302,9 +4387,9 @@ new Vue({
             }
         },
         skipChallenge() {
-            // Skipping counts as a miss — doesn't penalize SRS but no bonus
             this.challengeAnswered = true;
             this.challengeResult = 'wrong';
+            this.sessionChallengeTotal++;
         },
 
         // ── SRS answer ────────────────────────────────────────────────────
