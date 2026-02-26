@@ -176,13 +176,13 @@
             white-space: nowrap;
             flex-shrink: 0;
         }
-        .chip-new    { background: #dbeafe; color: #1d4ed8; }
-        .chip-learn  { background: #fef3c7; color: #92400e; }
-        .chip-review { background: #d1fae5; color: #065f46; }
-        .chip-master { background: #ede9fe; color: #5b21b6; }
-        .chip-difficult { background: #fee2e2; color: #991b1b; }
-        .chip-streak { background: #ffe4e6; color: #be123c; }
-        .chip-daily  { background: #fff7ed; color: #c2410c; }
+        .chip-new    { background: color-mix(in srgb, var(--blue) 18%, var(--surface));   color: var(--blue); }
+        .chip-learn  { background: color-mix(in srgb, var(--amber) 18%, var(--surface));  color: var(--amber); }
+        .chip-review { background: color-mix(in srgb, var(--green) 18%, var(--surface));  color: var(--green); }
+        .chip-master { background: color-mix(in srgb, var(--purple) 18%, var(--surface)); color: var(--purple); }
+        .chip-difficult { background: color-mix(in srgb, var(--red) 18%, var(--surface)); color: var(--red); }
+        .chip-streak { background: color-mix(in srgb, var(--red) 15%, var(--surface));    color: var(--red); }
+        .chip-daily  { background: color-mix(in srgb, var(--amber) 15%, var(--surface));  color: var(--amber); }
         .level-badge {
             font-size: 0.75rem;
             font-weight: 700;
@@ -258,7 +258,7 @@
             flex-shrink: 0;
         }
         .deck-btn:hover { border-color: var(--blue); color: var(--blue); }
-        .deck-btn.active { border-color: var(--blue); color: var(--blue); background: #eff6ff; }
+        .deck-btn.active { border-color: var(--blue); color: var(--blue); background: color-mix(in srgb, var(--blue) 8%, var(--surface)); }
 
         /* ── Loading ─────────────────────────── */
         .loading-scr {
@@ -461,13 +461,13 @@
         .wl-row.open .wl-chevron { transform: rotate(90deg); color: var(--blue); }
         .wl-detail {
             margin-top: 8px; padding: 9px 10px; border-radius: 7px;
-            background: #f0f4f9;
+            background: var(--bg);
             display: flex; flex-wrap: wrap; align-items: center; gap: 5px 10px;
         }
         .wl-ipa { font-family: 'SF Mono', Menlo, monospace; color: var(--muted); font-size: .78rem; }
         .wl-pos-badge {
-            background: #dbeafe; border-radius: 4px;
-            padding: 1px 7px; font-size: .7rem; color: #1d4ed8; font-weight: 600;
+            background: color-mix(in srgb, var(--blue) 15%, var(--surface)); border-radius: 4px;
+            padding: 1px 7px; font-size: .7rem; color: var(--blue); font-weight: 600;
         }
         .wl-zh-full { color: var(--text); font-size: .88rem; width: 100%; margin-top: 2px; font-weight: 500; }
         .wl-example-text { color: var(--muted); font-size: .76rem; font-style: italic; width: 100%; margin-top: 4px; }
@@ -563,7 +563,7 @@
         /* front face elements */
         .pos-tag {
             position: absolute; top: 12px; right: 12px;
-            background: #eef2fb; color: var(--blue);
+            background: color-mix(in srgb, var(--blue) 12%, var(--surface)); color: var(--blue);
             font-size: 0.66rem; font-weight: 700;
             text-transform: uppercase;
             padding: 2px 8px; border-radius: 99px;
@@ -574,17 +574,17 @@
             font-size: 0.62rem; font-weight: 700;
             padding: 2px 7px; border-radius: 99px;
         }
-        .fs-learning{ background: #fef9c3; color: #854d0e; }
-        .fs-young   { background: #dcfce7; color: #14532d; }
-        .fs-mature  { background: #ede9fe; color: #4c1d95; }
-        .fs-relearn { background: #fee2e2; color: #b91c1c; }
+        .fs-learning{ background: color-mix(in srgb, var(--amber) 20%, var(--surface));  color: var(--amber); }
+        .fs-young   { background: color-mix(in srgb, var(--green) 20%, var(--surface));  color: var(--green); }
+        .fs-mature  { background: color-mix(in srgb, var(--purple) 20%, var(--surface)); color: var(--purple); }
+        .fs-relearn { background: color-mix(in srgb, var(--red) 20%, var(--surface));    color: var(--red); }
         .front-word {
             font-size: 2.6rem;
             font-weight: 800;
             letter-spacing: -0.5px;
             text-align: center;
             line-height: 1.1;
-            color: #1a2540;
+            color: var(--text);
         }
         .front-ipa {
             font-size: 0.9rem;
@@ -617,7 +617,7 @@
         .audio-btn.playing {
             border-color: var(--green);
             color: var(--green);
-            background: #f0fdf4;
+            background: color-mix(in srgb, var(--green) 10%, var(--surface));
         }
         .front-hint {
             position: absolute; bottom: 13px;
@@ -755,10 +755,10 @@
         }
         .cb:hover  { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.10); }
         .cb:active { transform: scale(0.93); box-shadow: none; }
-        .cb-again { background: #fee2e2; color: #b91c1c; }
-        .cb-hard  { background: #fef9c3; color: #854d0e; }
-        .cb-good  { background: #dcfce7; color: #14532d; }
-        .cb-easy  { background: #ede9fe; color: #4c1d95; }
+        .cb-again { background: color-mix(in srgb, var(--red) 18%, var(--surface));    color: var(--red); }
+        .cb-hard  { background: color-mix(in srgb, var(--amber) 18%, var(--surface));  color: var(--amber); }
+        .cb-good  { background: color-mix(in srgb, var(--green) 18%, var(--surface));  color: var(--green); }
+        .cb-easy  { background: color-mix(in srgb, var(--purple) 18%, var(--surface)); color: var(--purple); }
         .cb-label    { font-size: 0.9rem; }
         .cb-interval { font-size: 0.68rem; opacity: 0.7; }
 
@@ -919,49 +919,10 @@
                 background: linear-gradient(160deg, #1e293b 0%, #0f1e3c 100%);
                 border-color: rgba(96,165,250,0.12);
             }
-            .front-word { color: #e2e8f0; }
-            .pos-tag    { background: #1e3658; color: #60a5fa; }
-            .fs-learning{ background: #3b2d0a; color: #fbbf24; }
-            .fs-young   { background: #0a2b18; color: #4ade80; }
-            .fs-mature  { background: #221940; color: #a78bfa; }
-            .fs-relearn { background: #3b1212; color: #f87171; }
-            /* Answer buttons */
-            .cb-again { background: #3b1515; color: #f87171; }
-            .cb-hard  { background: #3b2d0a; color: #fbbf24; }
-            .cb-good  { background: #0a2b18; color: #4ade80; }
-            .cb-easy  { background: #1e1040; color: #a78bfa; }
-            /* Header chips */
-            .chip-new    { background: #1a2d4a; color: #93c5fd; }
-            .chip-learn  { background: #3b2d0a; color: #fcd34d; }
-            .chip-review { background: #0a2b18; color: #6ee7b7; }
-            .chip-master { background: #221940; color: #c4b5fd; }
-            .chip-difficult { background: #3b1515; color: #fca5a5; }
-            .chip-streak { background: #3b1520; color: #fda4af; }
-            .chip-daily  { background: #3b200a; color: #fdba74; }
-            /* Practice */
-            .prac-card         { background: #1e293b; border-color: #334155; }
-            .prac-opt          { background: #1e293b; border-color: #334155; color: #e2e8f0; }
-            .prac-opt:hover:not(:disabled) { background: #1e3050; border-color: #60a5fa; }
-            .prac-spell-input  { background: #0f172a; border-color: #334155; color: #e2e8f0; }
-            .prac-tf-btn       { background: #1e293b; border-color: #334155; color: #e2e8f0; }
-            .prac-match-item   { background: #1e293b; border-color: #334155; color: #e2e8f0; }
-            .prac-match-item.sel { background: #1e3258; color: #60a5fa; }
-            /* Done screen */
-            .done-stat         { background: #1e293b; }
-            .done-action-tertiary { background: #1e293b; border-color: #334155; color: #e2e8f0; }
+            /* Practice — shadow adaption only; base styles use CSS vars */
+            .prac-card         { box-shadow: 0 12px 40px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.25); }
             /* Word list */
-            .wl-detail         { background: #0f172a; }
             .wl-row:hover      { background: rgba(96,165,250,.08); }
-            .wl-row.open       { background: #1e293b; }
-            .wl-pos-badge      { background: #1e3658; color: #93c5fd; }
-            /* Reading overlay */
-            .reading-overlay   { background: #0f172a; }
-            .reading-hd        { background: #1e293b; border-bottom-color: #334155; }
-            .reading-key-box   { background: #1e293b; border-color: #334155; }
-            .reading-hist-item { background: #1e293b; border-color: #334155; }
-            /* Footer / header */
-            .hd, .deck-bar, .ft { background: #1e293b; border-color: #334155; }
-            .xp-track          { background: #334155; }
             /* Loading screen */
             .loading-scr       { background: var(--bg); }
         }
@@ -1202,7 +1163,7 @@
         .prac-word {
             font-size: 2.4rem;
             font-weight: 800;
-            color: #1a2540;
+            color: var(--text);
             letter-spacing: -0.5px;
             line-height: 1.1;
         }
@@ -1234,13 +1195,13 @@
             transition: border-color 0.15s, background 0.15s, transform 0.1s;
             line-height: 1.35;
         }
-        .prac-opt:hover:not(:disabled) { border-color: var(--blue); background: #eff6ff; }
+        .prac-opt:hover:not(:disabled) { border-color: var(--blue); background: color-mix(in srgb, var(--blue) 8%, var(--surface)); }
         .prac-opt:active:not(:disabled) { transform: scale(0.98); }
         .prac-opt:disabled { cursor: default; }
         .prac-opt:focus, .prac-opt:focus-visible { outline: none; box-shadow: none; border-color: var(--border); background: var(--surface); }
         .prac-opt { display: flex; justify-content: space-between; align-items: center; -webkit-tap-highlight-color: transparent; }
-        .prac-opt.correct  { border-color: var(--green) !important; background: #f0fdf4 !important; color: #14532d !important; animation: prac-pop 0.32s ease; }
-        .prac-opt.wrong    { border-color: var(--red)   !important; background: #fef2f2 !important; color: #b91c1c !important; animation: prac-shake 0.32s ease; }
+        .prac-opt.correct  { border-color: var(--green) !important; background: color-mix(in srgb, var(--green) 12%, var(--surface)) !important; color: var(--green) !important; animation: prac-pop 0.32s ease; }
+        .prac-opt.wrong    { border-color: var(--red)   !important; background: color-mix(in srgb, var(--red) 12%, var(--surface))   !important; color: var(--red)   !important; animation: prac-shake 0.32s ease; }
         .prac-opt-icon { font-size: 1rem; font-weight: 800; flex-shrink: 0; margin-left: 8px; }
 
         /* True/False buttons */
@@ -1255,15 +1216,15 @@
             cursor: pointer;
             transition: all 0.15s;
         }
-        .prac-tf-true  { color: #14532d; }
-        .prac-tf-false { color: #b91c1c; }
+        .prac-tf-true  { color: var(--green); }
+        .prac-tf-false { color: var(--red); }
         .prac-tf-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.10); }
         .prac-tf-btn:active:not(:disabled){ transform: scale(0.97); }
         .prac-tf-btn:disabled { cursor: default; transform: none; box-shadow: none; }
         .prac-tf-btn:focus, .prac-tf-btn:focus-visible { outline: none; box-shadow: none; border-color: var(--border); background: var(--surface); }
         .prac-tf-btn { display: flex; align-items: center; justify-content: center; gap: 8px; -webkit-tap-highlight-color: transparent; }
-        .prac-tf-btn.correct { border-color: var(--green) !important; background: #f0fdf4 !important; color: #14532d !important; animation: prac-pop 0.32s ease; }
-        .prac-tf-btn.wrong   { border-color: var(--red)   !important; background: #fef2f2 !important; color: #b91c1c !important; animation: prac-shake 0.32s ease; }
+        .prac-tf-btn.correct { border-color: var(--green) !important; background: color-mix(in srgb, var(--green) 12%, var(--surface)) !important; color: var(--green) !important; animation: prac-pop 0.32s ease; }
+        .prac-tf-btn.wrong   { border-color: var(--red)   !important; background: color-mix(in srgb, var(--red) 12%, var(--surface))   !important; color: var(--red)   !important; animation: prac-shake 0.32s ease; }
         /* On touch-only devices, suppress sticky :hover after tap */
         @media (hover: none) {
             .prac-opt:hover:not(:disabled)    { border-color: var(--border); background: var(--surface); }
@@ -1292,8 +1253,8 @@
             font-family: inherit;
         }
         .prac-spell-input:focus  { border-color: var(--blue); }
-        .prac-spell-input.correct{ border-color: var(--green); background: #f0fdf4; }
-        .prac-spell-input.wrong  { border-color: var(--red);   background: #fef2f2; }
+        .prac-spell-input.correct{ border-color: var(--green); background: color-mix(in srgb, var(--green) 10%, var(--surface)); }
+        .prac-spell-input.wrong  { border-color: var(--red);   background: color-mix(in srgb, var(--red) 10%, var(--surface)); }
         .prac-spell-input:disabled { cursor: default; }
         .prac-submit-btn {
             padding: 12px;
@@ -1414,11 +1375,11 @@
             transition: border-color 0.15s, background 0.15s, opacity 0.35s;
             -webkit-tap-highlight-color: transparent;
         }
-        .prac-match-item:hover:not(:disabled)  { border-color: var(--blue); background: #eff6ff; }
+        .prac-match-item:hover:not(:disabled)  { border-color: var(--blue); background: color-mix(in srgb, var(--blue) 8%, var(--surface)); }
         .prac-match-item:focus, .prac-match-item:focus-visible { outline: none; box-shadow: none; }
-        .prac-match-item.sel  { border-color: var(--blue); background: #dbeafe; color: var(--blue); }
-        .prac-match-item.elim { opacity: 0.22; cursor: default; border-color: var(--green); background: #f0fdf4; pointer-events: none; }
-        .prac-match-item.shake { animation: prac-shake 0.35s ease; border-color: var(--red) !important; background: #fef2f2 !important; }
+        .prac-match-item.sel  { border-color: var(--blue); background: color-mix(in srgb, var(--blue) 15%, var(--surface)); color: var(--blue); }
+        .prac-match-item.elim { opacity: 0.22; cursor: default; border-color: var(--green); background: color-mix(in srgb, var(--green) 10%, var(--surface)); pointer-events: none; }
+        .prac-match-item.shake { animation: prac-shake 0.35s ease; border-color: var(--red) !important; background: color-mix(in srgb, var(--red) 12%, var(--surface)) !important; }
 
         /* Practice start button (done screen + header) */
         .btn-practice {
@@ -1962,12 +1923,12 @@
             font-size: 0.68rem; font-weight: 700; padding: 2px 7px;
             border-radius: 99px; flex-shrink: 0; white-space: nowrap;
         }
-        .wl-badge-new     { background: #dbeafe; color: #1d4ed8; }
-        .wl-badge-learning{ background: #fef3c7; color: #92400e; }
-        .wl-badge-relearn { background: #fee2e2; color: #991b1b; }
-        .wl-badge-young   { background: #d1fae5; color: #065f46; }
-        .wl-badge-mature  { background: #bbf7d0; color: #14532d; }
-        .wl-badge-mastered{ background: #ede9fe; color: #5b21b6; }
+        .wl-badge-new     { background: color-mix(in srgb, var(--blue) 15%, var(--surface));   color: var(--blue); }
+        .wl-badge-learning{ background: color-mix(in srgb, var(--amber) 15%, var(--surface));  color: var(--amber); }
+        .wl-badge-relearn { background: color-mix(in srgb, var(--red) 15%, var(--surface));    color: var(--red); }
+        .wl-badge-young   { background: color-mix(in srgb, var(--green) 15%, var(--surface));  color: var(--green); }
+        .wl-badge-mature  { background: color-mix(in srgb, var(--green) 18%, var(--surface));  color: var(--green); }
+        .wl-badge-mastered{ background: color-mix(in srgb, var(--purple) 15%, var(--surface)); color: var(--purple); }
 
     </style>
 </head>
@@ -2208,7 +2169,7 @@
                                 elim:  matchElim.includes(item.key),
                                 shake: matchShakeKeys.includes(item.key),
                             }"
-                            :style="matchSelLeft && !matchElim.includes(item.key) ? 'border-color:var(--blue);background:#eff6ff' : ''"
+                            :style="matchSelLeft && !matchElim.includes(item.key) ? 'border-color:var(--blue);background:color-mix(in srgb, var(--blue) 8%, var(--surface))' : ''"
                             @click="selectMatchRight(item.key)">
                         {{item.label}}
                     </button>
