@@ -190,6 +190,44 @@
       white-space:nowrap}
     .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+    /* ── Learning Report ── */
+    .report-card{margin-top:16px}
+    .report-title{margin:0 0 16px;font-size:1.2rem;font-weight:800;display:flex;align-items:center;gap:8px}
+    .report-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+    .metric{text-align:center;padding:12px 6px;border-radius:14px;
+      background:color-mix(in srgb, var(--pri) 7%, transparent);
+      border:1px solid color-mix(in srgb, var(--pri) 15%, transparent)}
+    .metric-val{font-size:1.5rem;font-weight:900;color:var(--pri);line-height:1.2}
+    .metric-label{font-size:.72rem;color:var(--muted);font-weight:600;margin-top:2px}
+    .report-section{margin-bottom:16px}
+    .report-section h3{margin:0 0 10px;font-size:.95rem;font-weight:700}
+    .deck-row{margin-bottom:10px}
+    .deck-row-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+    .deck-name{font-size:.88rem;font-weight:700}
+    .deck-nums{font-size:.78rem;color:var(--muted)}
+    .bar-bg{height:8px;border-radius:4px;background:var(--line);overflow:hidden;position:relative}
+    .bar-fill{height:100%;border-radius:4px;transition:width .6s cubic-bezier(.4,0,.2,1);min-width:0}
+    .bar-fill.fill-mastered{background:linear-gradient(90deg,#8b5cf6,#a78bfa)}
+    .bar-fill.fill-studied{background:linear-gradient(90deg,var(--pri),#60a5fa)}
+    .stage-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .stage-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+    .stage-name{font-size:.85rem;font-weight:600;width:65px;flex-shrink:0}
+    .stage-bar-bg{flex:1;height:7px;border-radius:3.5px;background:var(--line);overflow:hidden}
+    .stage-bar-fill{height:100%;border-radius:3.5px;transition:width .6s ease}
+    .stage-count{font-size:.78rem;color:var(--muted);width:40px;text-align:right;flex-shrink:0}
+    .diff-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;
+      margin-bottom:6px;background:color-mix(in srgb, var(--err) 6%, transparent);
+      border:1px solid color-mix(in srgb, var(--err) 12%, transparent)}
+    .diff-word{font-weight:800;font-size:.95rem;min-width:90px}
+    .diff-zh{color:var(--muted);font-size:.82rem;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .diff-badge{font-size:.72rem;font-weight:700;color:var(--err);white-space:nowrap}
+    .achieve-grid{display:flex;flex-wrap:wrap;gap:8px}
+    .achieve-pill{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:20px;
+      font-size:.82rem;font-weight:600;
+      background:color-mix(in srgb, var(--ok) 8%, transparent);
+      border:1px solid color-mix(in srgb, var(--ok) 20%, transparent);color:var(--ok)}
+    .report-empty{text-align:center;padding:24px 0;color:var(--muted);font-size:.92rem}
+
     @media (max-width: 520px){
       .wrap{margin:12px auto}
       .card{padding:14px}
@@ -317,6 +355,43 @@
         <div id="msg" class="msg"><span class="msg-icon"></span><span class="msg-text"></span></div>
       </div>
     </div>
+
+    <!-- Learning Report Card -->
+    <div class="card report-card" id="reportCard" style="display:none">
+      <div class="report-title" id="reportTitle">📊 学习报告</div>
+
+      <!-- Key metrics -->
+      <div class="report-metrics">
+        <div class="metric"><div class="metric-val" id="rStudied">0</div><div class="metric-label" id="rStudiedL">已学</div></div>
+        <div class="metric"><div class="metric-val" id="rMastered">0</div><div class="metric-label" id="rMasteredL">已掌握</div></div>
+        <div class="metric"><div class="metric-val" id="rReviewed">0</div><div class="metric-label" id="rReviewedL">总复习</div></div>
+        <div class="metric"><div class="metric-val" id="rStreak">0</div><div class="metric-label" id="rStreakL">连续天</div></div>
+      </div>
+
+      <!-- Deck progress -->
+      <div class="report-section">
+        <h3 id="rDeckTitle">词库进度</h3>
+        <div id="deckBars"></div>
+      </div>
+
+      <!-- Stage distribution -->
+      <div class="report-section">
+        <h3 id="rStageTitle">阶段分布</h3>
+        <div id="stageBars"></div>
+      </div>
+
+      <!-- Difficult words -->
+      <div class="report-section" id="difficultSection" style="display:none">
+        <h3 id="rDiffTitle">⚠️ 困难词 TOP 10</h3>
+        <div id="difficultList"></div>
+      </div>
+
+      <!-- Achievements -->
+      <div class="report-section" id="achieveSection" style="display:none">
+        <h3 id="rAchieveTitle">🏆 成就</h3>
+        <div class="achieve-grid" id="achieveList"></div>
+      </div>
+    </div>
   </div>
 
   <!-- Success overlay -->
@@ -367,7 +442,15 @@
         offlineDesc:'You\'re using VocabLoop as a static page — no server is connected. Your learning data is stored locally in this browser.',
         offlineFeat1:'<strong>All learning features</strong> work normally without an account',
         offlineFeat2:'Use <strong>Export / Import</strong> below to back up or transfer your progress',
-        offlineFeat3:'Deploy with a Node.js backend to enable <strong>cloud sync</strong> across devices'
+        offlineFeat3:'Deploy with a Node.js backend to enable <strong>cloud sync</strong> across devices',
+        /* Report */
+        rptTitle:'📊 Learning Report', rptStudied:'Studied', rptMastered:'Mastered',
+        rptReviewed:'Reviews', rptStreak:'Streak', rptDeckTitle:'Deck Progress',
+        rptStageTitle:'Stage Distribution', rptDiffTitle:'⚠️ Difficult Words TOP 10',
+        rptAchieveTitle:'🏆 Achievements', rptEmpty:'Start learning to see your report!',
+        rptNew:'New', rptLearning:'Learning', rptReview:'Review', rptMasteredStage:'Mastered',
+        rptAgain:(n)=>`Again ×${n}`,
+        rptStudiedOf:(a,b)=>`${a} studied / ${b} mastered`,
       },
       zh: {
         back:'← 返回首页', theme:'🌓 主题', title:'账户',
@@ -404,7 +487,15 @@
         offlineDesc:'当前以静态页面运行，未连接服务端。你的学习数据保存在本地浏览器中。',
         offlineFeat1:'<strong>所有学习功能</strong>无需账号即可正常使用',
         offlineFeat2:'使用下方的<strong>导出/导入</strong>可备份或迁移学习进度',
-        offlineFeat3:'部署 Node.js 后端即可开启<strong>跨设备云同步</strong>'
+        offlineFeat3:'部署 Node.js 后端即可开启<strong>跨设备云同步</strong>',
+        /* Report */
+        rptTitle:'📊 学习报告', rptStudied:'已学', rptMastered:'已掌握',
+        rptReviewed:'总复习', rptStreak:'连续天', rptDeckTitle:'词库进度',
+        rptStageTitle:'阶段分布', rptDiffTitle:'⚠️ 困难词 TOP 10',
+        rptAchieveTitle:'🏆 成就', rptEmpty:'开始学习后即可查看报告！',
+        rptNew:'未学', rptLearning:'学习中', rptReview:'复习中', rptMasteredStage:'已掌握',
+        rptAgain:(n)=>`忘记 ×${n}`,
+        rptStudiedOf:(a,b)=>`已学 ${a} / 掌握 ${b}`,
       }
     };
 
@@ -895,6 +986,199 @@
       $('offlinePanel').style.display = 'block';
     }
 
+    /* ── Learning Report ── */
+    const DECK_META = [
+      { id:'pet',    name:'PET',    file:'data/pet-words-1000.json' },
+      { id:'daily',  name:'Daily',  file:'data/daily-words-1000.json' },
+      { id:'ielts',  name:'IELTS',  file:'data/ielts-words.json' },
+      { id:'crypto', name:'Crypto', file:'data/crypto-words-1000.json' },
+    ];
+    const ACHIEVE_META = {
+      first_review:{emoji:'🎯',en:'First Review',zh:'初次复习'},
+      review_100:  {emoji:'💪',en:'100 Reviews',zh:'100 次复习'},
+      review_500:  {emoji:'🔥',en:'500 Reviews',zh:'500 次复习'},
+      review_1000: {emoji:'⚡',en:'1000 Reviews',zh:'1000 次复习'},
+      master_1:    {emoji:'⭐',en:'First Mastery',zh:'首次掌握'},
+      master_10:   {emoji:'🌟',en:'10 Mastered',zh:'掌握 10 词'},
+      master_100:  {emoji:'🏅',en:'100 Mastered',zh:'掌握 100 词'},
+      streak_3:    {emoji:'📅',en:'3-Day Streak',zh:'连续 3 天'},
+      streak_7:    {emoji:'🗓️',en:'7-Day Streak',zh:'连续 7 天'},
+      streak_30:   {emoji:'👑',en:'30-Day Streak',zh:'连续 30 天'},
+    };
+
+    async function fetchDeckTotals(){
+      const totals = {};
+      await Promise.all(DECK_META.map(async d => {
+        try{
+          const base = window.location.pathname.replace(/account\.html.*$/, '');
+          const r = await fetch(base + d.file);
+          const data = await r.json();
+          totals[d.id] = Array.isArray(data) ? data.length : 0;
+        }catch(e){ totals[d.id] = 0; }
+      }));
+      return totals;
+    }
+
+    function getDeckWords(deckId){
+      try{
+        const raw = localStorage.getItem('srs_'+deckId+'_v1');
+        if(!raw) return {};
+        const parsed = JSON.parse(raw);
+        return parsed.state || {};
+      }catch(e){ return {}; }
+    }
+
+    async function renderReport(){
+      const t = state.t;
+      /* i18n labels */
+      $('reportTitle').textContent = t.rptTitle;
+      $('rStudiedL').textContent = t.rptStudied;
+      $('rMasteredL').textContent = t.rptMastered;
+      $('rReviewedL').textContent = t.rptReviewed;
+      $('rStreakL').textContent = t.rptStreak;
+      $('rDeckTitle').textContent = t.rptDeckTitle;
+      $('rStageTitle').textContent = t.rptStageTitle;
+      $('rDiffTitle').textContent = t.rptDiffTitle;
+      $('rAchieveTitle').textContent = t.rptAchieveTitle;
+
+      /* Global state */
+      let globalState = {};
+      try{ const raw = localStorage.getItem('srs_global_v1'); if(raw) globalState = JSON.parse(raw); }catch(e){}
+
+      /* Collect all words across decks */
+      const totals = await fetchDeckTotals();
+      let allStudied = 0, allMastered = 0;
+      let stageNew = 0, stageLearning = 0, stageReview = 0, stageMastered = 0;
+      const difficultWords = [];
+      const deckStats = [];
+
+      for(const d of DECK_META){
+        const words = getDeckWords(d.id);
+        const total = totals[d.id] || 0;
+        let studied = 0, mastered = 0;
+        for(const [w, s] of Object.entries(words)){
+          if(w.startsWith('_')) continue; // skip milestone markers
+          if(!s || !s.stage) continue;
+          if(s.stage !== 'new') studied++;
+          if(s.stage === 'mastered') mastered++;
+          /* Count stages */
+          if(s.stage === 'new') stageNew++;
+          else if(s.stage === 'learning' || s.stage === 'relearn' || s.stage === 'young') stageLearning++;
+          else if(s.stage === 'mature') stageReview++;
+          else if(s.stage === 'mastered') stageMastered++;
+          /* Difficult words */
+          if((s.againCount || 0) >= 2 && s.stage !== 'mastered'){
+            difficultWords.push({ word: w, zh: '', againCount: s.againCount, deckName: d.name });
+          }
+        }
+        allStudied += studied;
+        allMastered += mastered;
+        /* Unstudied words in this deck count as "new" */
+        const unseenNew = Math.max(0, total - Object.keys(words).filter(k=>!k.startsWith('_')).length);
+        stageNew += unseenNew;
+        deckStats.push({ id: d.id, name: d.name, total, studied, mastered });
+      }
+
+      /* Check if there's any data at all */
+      const hasData = allStudied > 0 || (globalState.totalReviewed || 0) > 0;
+      if(!hasData){
+        $('reportCard').style.display = 'block';
+        $('reportCard').innerHTML = '<div class="report-title" id="reportTitle">' + t.rptTitle + '</div><div class="report-empty">' + t.rptEmpty + '</div>';
+        return;
+      }
+
+      $('reportCard').style.display = 'block';
+
+      /* Key metrics */
+      $('rStudied').textContent = allStudied;
+      $('rMastered').textContent = allMastered;
+      $('rReviewed').textContent = globalState.totalReviewed || 0;
+      $('rStreak').textContent = (globalState.dailyStreak || 0) + 'd';
+
+      /* Deck progress bars */
+      const deckBarsEl = $('deckBars');
+      deckBarsEl.innerHTML = '';
+      for(const ds of deckStats){
+        if(ds.total === 0) continue;
+        const studiedPct = Math.round(ds.studied / ds.total * 100);
+        const masteredPct = Math.round(ds.mastered / ds.total * 100);
+        deckBarsEl.innerHTML += `
+          <div class="deck-row">
+            <div class="deck-row-header">
+              <span class="deck-name">${ds.name}</span>
+              <span class="deck-nums">${t.rptStudiedOf(ds.studied, ds.mastered)} / ${ds.total}</span>
+            </div>
+            <div class="bar-bg">
+              <div class="bar-fill fill-studied" style="width:${studiedPct}%;position:absolute"></div>
+              <div class="bar-fill fill-mastered" style="width:${masteredPct}%"></div>
+            </div>
+          </div>`;
+      }
+
+      /* Stage distribution */
+      const stageBarsEl = $('stageBars');
+      const stageTotal = stageNew + stageLearning + stageReview + stageMastered;
+      const stages = [
+        { name: t.rptNew,           count: stageNew,      color: '#3b82f6' },
+        { name: t.rptLearning,      count: stageLearning,  color: '#f59e0b' },
+        { name: t.rptReview,        count: stageReview,    color: '#10b981' },
+        { name: t.rptMasteredStage, count: stageMastered,  color: '#8b5cf6' },
+      ];
+      stageBarsEl.innerHTML = '';
+      for(const s of stages){
+        const pct = stageTotal > 0 ? Math.round(s.count / stageTotal * 100) : 0;
+        stageBarsEl.innerHTML += `
+          <div class="stage-row">
+            <span class="stage-dot" style="background:${s.color}"></span>
+            <span class="stage-name">${s.name}</span>
+            <div class="stage-bar-bg"><div class="stage-bar-fill" style="width:${pct}%;background:${s.color}"></div></div>
+            <span class="stage-count">${s.count}</span>
+          </div>`;
+      }
+
+      /* Difficult words — fetch word data for zh translation */
+      if(difficultWords.length > 0){
+        difficultWords.sort((a, b) => b.againCount - a.againCount);
+        const top10 = difficultWords.slice(0, 10);
+        /* Try to load zh translations from deck data */
+        const wordMap = {};
+        await Promise.all(DECK_META.map(async d => {
+          try{
+            const base = window.location.pathname.replace(/account\.html.*$/, '');
+            const r = await fetch(base + d.file);
+            const data = await r.json();
+            for(const w of data) wordMap[w.word] = w.zh || '';
+          }catch(e){}
+        }));
+        const listEl = $('difficultList');
+        listEl.innerHTML = '';
+        for(const dw of top10){
+          const zh = wordMap[dw.word] || '';
+          listEl.innerHTML += `
+            <div class="diff-item">
+              <span class="diff-word">${dw.word}</span>
+              <span class="diff-zh">${zh}</span>
+              <span class="diff-badge">${t.rptAgain(dw.againCount)}</span>
+            </div>`;
+        }
+        $('difficultSection').style.display = 'block';
+      }
+
+      /* Achievements */
+      const achievements = globalState.achievements || [];
+      if(achievements.length > 0){
+        const listEl = $('achieveList');
+        listEl.innerHTML = '';
+        for(const id of achievements){
+          const meta = ACHIEVE_META[id];
+          if(!meta) continue;
+          const label = state.lang === 'zh' ? meta.zh : meta.en;
+          listEl.innerHTML += `<span class="achieve-pill">${meta.emoji} ${label}</span>`;
+        }
+        $('achieveSection').style.display = 'block';
+      }
+    }
+
     /* ── Init ── */
     applyTheme(state.theme);
     applyI18n();
@@ -903,16 +1187,18 @@
     checkBackend().then(function(available){
       if(!available){
         showOfflineMode();
-        return;
-      }
-      /* Backend available — normal flow */
-      const existingAuth = getAuth();
-      if(existingAuth && existingAuth.username){
-        showProfile(existingAuth);
       } else {
-        $('authPanel').style.display = 'block';
-        switchTab('register');
+        /* Backend available — normal flow */
+        const existingAuth = getAuth();
+        if(existingAuth && existingAuth.username){
+          showProfile(existingAuth);
+        } else {
+          $('authPanel').style.display = 'block';
+          switchTab('register');
+        }
       }
+      /* Always render learning report (data is local) */
+      renderReport();
     });
   </script>
 </body>

@@ -180,6 +180,7 @@
         .chip-learn  { background: #fef3c7; color: #92400e; }
         .chip-review { background: #d1fae5; color: #065f46; }
         .chip-master { background: #ede9fe; color: #5b21b6; }
+        .chip-difficult { background: #fee2e2; color: #991b1b; }
         .chip-streak { background: #ffe4e6; color: #be123c; }
         .chip-daily  { background: #fff7ed; color: #c2410c; }
         .level-badge {
@@ -913,6 +914,7 @@
             .chip-learn  { background: #3b2d0a; color: #fcd34d; }
             .chip-review { background: #0a2b18; color: #6ee7b7; }
             .chip-master { background: #221940; color: #c4b5fd; }
+            .chip-difficult { background: #3b1515; color: #fca5a5; }
             .chip-streak { background: #3b1520; color: #fda4af; }
             .chip-daily  { background: #3b200a; color: #fdba74; }
             /* Practice */
@@ -1947,6 +1949,8 @@
                     :title="ui.wlReview">🔁 <transition name="chip-num"><span :key="qs.reviewCount">{{qs.reviewCount}}</span></transition></button>
             <button class="chip chip-master chip-btn" @click="showWordList('mastered')"
                     :title="ui.wlMastered">🏆 <transition name="chip-num"><span :key="masteredCount">{{masteredCount}}</span></transition></button>
+            <button class="chip chip-difficult chip-btn" v-if="difficultWords.length > 0" @click="showWordList('difficult')"
+                    :title="ui.wlDifficult">⚠️ <transition name="chip-num"><span :key="difficultWords.length">{{difficultWords.length}}</span></transition></button>
             <span class="chip chip-streak" v-if="streak >= 3">🔥 {{streak}}</span>
             <button class="chip chip-daily chip-btn" v-if="dailyStreak >= 2" @click="openDailyWelcome">📅 {{dailyStreak}}{{ui.dayUnit}}</button>
         </div>
@@ -2075,6 +2079,25 @@
                     <div class="prac-hint">{{ui.practiceHint}}<span class="prac-partial">{{practiceCurrent.partial}}</span></div>
                 </template>
 
+                <!-- cloze: fill in the blank in a sentence -->
+                <template v-else-if="practiceCurrent.type === 'cloze'">
+                    <div class="prac-type-label">{{ui.practiceCloze}}</div>
+                    <div class="prac-zh-hint">{{practiceCurrent.word.zh}}</div>
+                    <div class="prac-example" style="font-size:1.1rem;line-height:1.6;">{{practiceCurrent.sentence}}</div>
+                </template>
+
+                <!-- dictation: listen and type the word -->
+                <template v-else-if="practiceCurrent.type === 'dictation'">
+                    <div class="prac-type-label">{{ui.practiceDictation}}</div>
+                    <div class="prac-audio-prompt">
+                        <button class="audio-btn" :class="{playing: audioPlaying}"
+                                @click="playAudio(practiceCurrent.word.word)">
+                            🔊 {{audioPlaying ? ui.audioPlaying : ui.practicePlayAgain}}
+                        </button>
+                    </div>
+                    <div class="prac-zh-hint">{{practiceCurrent.word.zh}}</div>
+                </template>
+
                 <!-- truefalse: show word = zh pairing, judge correct/wrong -->
                 <template v-else-if="practiceCurrent.type === 'truefalse'">
                     <div class="prac-type-label">{{ui.practiceTrueFalse}}</div>
@@ -2123,7 +2146,7 @@
             </div>
 
             <!-- MC options (shared by mc-word-to-zh, mc-zh-to-word, mc-audio-to-word) -->
-            <div v-if="practiceCurrent.type !== 'spelling' && practiceCurrent.type !== 'truefalse' && practiceCurrent.type !== 'matching'"
+            <div v-if="practiceCurrent.type !== 'spelling' && practiceCurrent.type !== 'cloze' && practiceCurrent.type !== 'dictation' && practiceCurrent.type !== 'truefalse' && practiceCurrent.type !== 'matching'"
                  class="prac-options">
                 <button v-for="opt in practiceCurrent.options" :key="opt.value"
                         class="prac-opt"
@@ -2165,20 +2188,24 @@
                 </button>
             </div>
 
-            <!-- Spelling input -->
-            <div v-else-if="practiceCurrent.type === 'spelling'" class="prac-spell-wrap">
+            <!-- Spelling / Cloze / Dictation input (shared text input pattern) -->
+            <div v-else-if="practiceCurrent.type === 'spelling' || practiceCurrent.type === 'cloze' || practiceCurrent.type === 'dictation'" class="prac-spell-wrap">
                 <input ref="spellInput"
                        v-model="practiceInput"
                        class="prac-spell-input"
                        :class="{correct: practiceResult === 'correct', wrong: practiceResult === 'wrong'}"
                        :placeholder="ui.practiceInputPh"
                        :disabled="practiceAnswered"
+                       autocomplete="off" autocapitalize="off" spellcheck="false"
                        @keydown.enter.prevent="!practiceAnswered && submitPracticeAnswer(practiceInput)" />
                 <button v-if="!practiceAnswered"
                         class="prac-submit-btn"
                         @click="submitPracticeAnswer(practiceInput)">{{ui.practiceSubmit}}</button>
                 <div v-if="practiceAnswered && practiceResult === 'wrong'" class="prac-correct-ans">
                     {{ui.practiceCorrectAns}}<strong>{{practiceCurrent.correct}}</strong>
+                </div>
+                <div v-if="practiceAnswered && practiceResult === 'correct' && practiceCurrent.type === 'cloze'" class="prac-cloze-reveal" style="margin-top:8px;font-size:0.9rem;color:var(--muted);">
+                    {{practiceCurrent.original}}
                 </div>
             </div>
 
@@ -2876,6 +2903,8 @@ const STRINGS = {
     practiceMCZhToWord:    '选出对应的英文单词',
     practiceMCAudioToWord: '听发音，选出对应单词',
     practiceSpelling:      '根据提示补全拼写',
+    practiceCloze:         '填空 · 根据语境填入单词',
+    practiceDictation:     '听写 · 听发音写出单词',
     practiceTrueFalse:     '判断搭配是否正确',
     practiceHint:          '提示：',
     practiceInputPh:       '输入完整单词…',
@@ -2925,6 +2954,7 @@ const STRINGS = {
     wlLearn:   '📖 学习中（学习 + 早期复习）',
     wlReview:  '🔁 深度记忆（间隔 ≥ 21 天）',
     wlMastered:'🏆 已完全掌握',
+    wlDifficult:'⚠️ 困难词（"忘记" ≥ 2 次）',
     wlEmpty:   '暂无单词',
     wlClose:   '关闭',
     readingBtn:      '延伸阅读',
@@ -3037,6 +3067,8 @@ const STRINGS = {
     practiceMCZhToWord:    'Select the correct English word',
     practiceMCAudioToWord: 'Listen and pick the word',
     practiceSpelling:      'Complete the spelling',
+    practiceCloze:         'Fill in the blank',
+    practiceDictation:     'Dictation · listen and type',
     practiceTrueFalse:     'True or False?',
     practiceHint:          'Hint: ',
     practiceInputPh:       'Type the complete word…',
@@ -3086,6 +3118,7 @@ const STRINGS = {
     wlLearn:   '📖 Learning (active + early review)',
     wlReview:  '🔁 Deep Memory (interval ≥ 21 days)',
     wlMastered:'🏆 Fully Mastered',
+    wlDifficult:'⚠️ Difficult ("Again" ≥ 2 times)',
     wlEmpty:   'No words here',
     wlClose:   'Close',
     readingBtn:      'Story',
@@ -3286,6 +3319,36 @@ const Q_GENERATORS = {
             word,
             correct: word.word.toLowerCase(),
             partial: makePartialWord(word.word),
+        };
+    },
+
+    'cloze': function(word) {
+        // Pick a sentence that contains the word (prefer ex, fallback ex2)
+        const w = word.word;
+        const wLow = w.toLowerCase();
+        const ex = [word.ex, word.ex2].find(s => s && s.toLowerCase().includes(wLow));
+        if (!ex) return null;
+        // Mask ALL occurrences of the word (case-insensitive), preserving punctuation
+        const re = new RegExp(w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+        const blanked = ex.replace(re, function(m) { return '_'.repeat(m.length); });
+        if (blanked === ex) return null; // word not found in sentence
+        return {
+            type:    'cloze',
+            word,
+            correct: wLow,
+            sentence: blanked,
+            original: ex,
+        };
+    },
+
+    'dictation': function(word, pool, cache) {
+        // Only generate if audio is available (same check as mc-audio-to-word)
+        const entry = cache && cache[word.word];
+        if (!entry || !entry.audio) return null;
+        return {
+            type:    'dictation',
+            word,
+            correct: word.word.toLowerCase(),
         };
     },
 
@@ -3530,6 +3593,18 @@ new Vue({
                 // mastered counted by masteredCount
             }
             return { newCount, learnCount, reviewCount };
+        },
+        difficultWords() {
+            // Words marked "Again" 2+ times and not yet mastered
+            const result = [];
+            for (const w of this.allWords) {
+                const s = this.state[w.word];
+                if (s && (s.againCount || 0) >= 2 && s.stage !== 'mastered') {
+                    result.push({ word: w, againCount: s.againCount });
+                }
+            }
+            result.sort((a, b) => b.againCount - a.againCount);
+            return result;
         },
         practiceCurrent() {
             return this.practiceQueue[this.practiceIndex] || null;
@@ -4109,6 +4184,11 @@ new Vue({
                 reps: 0, learningStep: 0, next: 0, firstSeen: tdy,
             };
             if (!s.firstSeen) s.firstSeen = tdy;
+
+            // Track difficult words — increment againCount on every "Again" press
+            if (level === 'again') {
+                s.againCount = (s.againCount || 0) + 1;
+            }
 
             // Save pre-answer snapshot for undo (totalReviewed already incremented above)
             const _undoPrev = {
@@ -4789,18 +4869,20 @@ new Vue({
         // ── Word list modal ──────────────────────────────────────────
         showWordList(stageGroup) {
             const STAGE_GROUPS = {
-                new:      s => !s || s.stage === 'new',
-                learn:    s => s && (s.stage === 'learning' || s.stage === 'relearn' || s.stage === 'young'),
-                review:   s => s && s.stage === 'mature',
-                mastered: s => s && s.stage === 'mastered',
+                new:       s => !s || s.stage === 'new',
+                learn:     s => s && (s.stage === 'learning' || s.stage === 'relearn' || s.stage === 'young'),
+                review:    s => s && s.stage === 'mature',
+                mastered:  s => s && s.stage === 'mastered',
+                difficult: s => s && (s.againCount || 0) >= 2 && s.stage !== 'mastered',
             };
             const filter = STAGE_GROUPS[stageGroup];
             const words = this.allWords.filter(w => filter(this.state[w.word]));
             const titles = {
-                new:      this.ui.wlNew,
-                learn:    this.ui.wlLearn,
-                review:   this.ui.wlReview,
-                mastered: this.ui.wlMastered,
+                new:       this.ui.wlNew,
+                learn:     this.ui.wlLearn,
+                review:    this.ui.wlReview,
+                mastered:  this.ui.wlMastered,
+                difficult: this.ui.wlDifficult,
             };
             this.wordListModal = { stageGroup, title: titles[stageGroup], words };
         },
@@ -5043,7 +5125,10 @@ new Vue({
             this.$nextTick(() => {
                 if (q.type === 'mc-audio-to-word') {
                     this.playAudio(q.word.word);
-                } else if (q.type === 'spelling' && this.$refs.spellInput) {
+                } else if (q.type === 'dictation') {
+                    this.playAudio(q.word.word);
+                    if (this.$refs.spellInput) this.$refs.spellInput.focus();
+                } else if ((q.type === 'spelling' || q.type === 'cloze') && this.$refs.spellInput) {
                     this.$refs.spellInput.focus();
                 }
             });
@@ -5069,7 +5154,7 @@ new Vue({
                 }
                 // Active questions (ignore when typing in an input)
                 if (tag === 'INPUT' || tag === 'TEXTAREA') return;
-                const isMC = q.type !== 'spelling' && q.type !== 'truefalse' && q.type !== 'matching';
+                const isMC = q.type !== 'spelling' && q.type !== 'cloze' && q.type !== 'dictation' && q.type !== 'truefalse' && q.type !== 'matching';
                 if (isMC) {
                     const idx = ['Digit1','Digit2','Digit3','Digit4'].indexOf(e.code);
                     if (idx !== -1 && idx < (q.options || []).length) {
