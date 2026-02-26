@@ -3762,7 +3762,7 @@ new Vue({
         // Preload audio for a word into _audioPreloads cache.
         // Called immediately (uses Youdao) and again after fetchDict (upgrades to Free Dict).
         _preloadAudio(word) {
-            if (!word || word.includes(' ')) return;
+            if (!word) return;
             const d = this.dictCache[word];
             const url = (d && d.audio)
                 || `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`;
@@ -3782,9 +3782,18 @@ new Vue({
         _tryAudioUrl(url) {
             return new Promise(resolve => {
                 const a = new Audio(url);
+                let settled = false;
+                const done = (ok) => { if (settled) return; settled = true; if (!ok) { a.pause(); a.src = ''; } resolve(ok); };
+                // Timeout: if audio doesn't start within 3s, give up
+                const timer = setTimeout(() => done(false), 3000);
                 a.onended = () => { this.audioPlaying = false; };
-                a.onerror = () => resolve(false);
-                a.play().then(() => resolve(true)).catch(() => resolve(false));
+                a.onerror = () => { clearTimeout(timer); done(false); };
+                a.play().then(() => {
+                    clearTimeout(timer);
+                    // Youdao returns very short/silent audio for unknown words; treat < 0.5s as failure
+                    if (isFinite(a.duration) && a.duration < 0.5) { done(false); return; }
+                    done(true);
+                }).catch(() => { clearTimeout(timer); done(false); });
             });
         },
 
@@ -3793,16 +3802,27 @@ new Vue({
             if (!word) return;
             this.audioPlaying = true;
             const waitEndEl = (el) => new Promise(resolve => {
+                // Duration check: skip silent/empty audio from Youdao
+                if (isFinite(el.duration) && el.duration < 0.5) { resolve(false); return; }
                 el.currentTime = 0;
                 el.onended = () => { this.audioPlaying = false; resolve(true); };
                 el.onerror = () => resolve(false);
-                el.play().catch(() => resolve(false));
+                el.play().then(() => {
+                    if (isFinite(el.duration) && el.duration < 0.5) { el.pause(); resolve(false); }
+                }).catch(() => resolve(false));
             });
             const waitEnd = (url) => new Promise(resolve => {
                 const a = new Audio(url);
-                a.onended = () => { this.audioPlaying = false; resolve(true); };
-                a.onerror = () => resolve(false);
-                a.play().catch(() => resolve(false));
+                let settled = false;
+                const done = (ok) => { if (settled) return; settled = true; if (!ok) { a.pause(); a.src = ''; } resolve(ok); };
+                const timer = setTimeout(() => done(false), 3000);
+                a.onended = () => { this.audioPlaying = false; clearTimeout(timer); done(true); };
+                a.onerror = () => { clearTimeout(timer); done(false); };
+                a.play().then(() => {
+                    clearTimeout(timer);
+                    if (isFinite(a.duration) && a.duration < 0.5) { done(false); return; }
+                    // Let onended resolve true when playback finishes
+                }).catch(() => { clearTimeout(timer); done(false); });
             });
             // 0. Preloaded audio — play instantly or wait briefly for in-progress preload
             const preloaded = this._audioPreloads && this._audioPreloads[word];
@@ -3906,10 +3926,14 @@ new Vue({
             // 0. Preloaded audio — play instantly or wait briefly for in-progress preload
             const preloaded = this._audioPreloads && this._audioPreloads[word];
             if (preloaded) {
+                const tryPreloaded = async (el) => {
+                    if (isFinite(el.duration) && el.duration < 0.5) return false;
+                    el.currentTime = 0;
+                    el.onended = () => { this.audioPlaying = false; };
+                    try { await el.play(); return !(isFinite(el.duration) && el.duration < 0.5); } catch(e) { return false; }
+                };
                 if (preloaded.readyState >= 2) {
-                    preloaded.currentTime = 0;
-                    preloaded.onended = () => { this.audioPlaying = false; };
-                    try { await preloaded.play(); return; } catch(e) { /* fall through */ }
+                    if (await tryPreloaded(preloaded)) return;
                 } else {
                     // Audio is preloading — wait up to 1.5s for it to buffer, then fall through
                     const ready = await new Promise(r => {
@@ -3918,11 +3942,7 @@ new Vue({
                         preloaded.addEventListener('error', () => r(false), { once: true });
                         setTimeout(() => r(false), 1500);
                     });
-                    if (ready) {
-                        preloaded.currentTime = 0;
-                        preloaded.onended = () => { this.audioPlaying = false; };
-                        try { await preloaded.play(); return; } catch(e) { /* fall through */ }
-                    }
+                    if (ready && await tryPreloaded(preloaded)) return;
                 }
             }
 
