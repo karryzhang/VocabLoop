@@ -3750,10 +3750,34 @@ new Vue({
         // Try playing a URL; resolves true on success, false on failure
         _tryAudioUrl(url) {
             return new Promise(resolve => {
+                // Cancel any previous non-preloaded audio to avoid overlap
+                if (this._currentAudio) {
+                    try { this._currentAudio.pause(); } catch(e) {}
+                }
                 const a = new Audio(url);
-                a.onended = () => { this.audioPlaying = false; };
-                a.onerror = () => resolve(false);
-                a.play().then(() => resolve(true)).catch(() => resolve(false));
+                this._currentAudio = a;
+                let done = false;
+                const ok = () => { if (!done) { done = true; resolve(true); } };
+                const fail = () => {
+                    if (!done) {
+                        done = true;
+                        try { a.src = ''; } catch(e) {}
+                        if (this._currentAudio === a) this._currentAudio = null;
+                        resolve(false);
+                    }
+                };
+                a.onended = () => {
+                    this.audioPlaying = false;
+                    if (this._currentAudio === a) this._currentAudio = null;
+                    ok(); // very short clips may end before timeupdate; count as success
+                };
+                a.onerror = fail;
+                // Resolve true only once we know the audio is valid and can play —
+                // not on play() alone (play() can resolve even for invalid sources).
+                a.oncanplay = ok;
+                a.play().catch(fail);
+                // Safety timeout: if neither canplay nor onerror fires, give up
+                setTimeout(fail, 5000);
             });
         },
 
@@ -3775,7 +3799,7 @@ new Vue({
             });
             // 0. Preloaded audio — play instantly or wait briefly for in-progress preload
             const preloaded = this._audioPreloads && this._audioPreloads[word];
-            if (preloaded) {
+            if (preloaded && !preloaded.error) {  // skip immediately if preload errored
                 if (preloaded.readyState >= 2) {
                     if (await waitEndEl(preloaded)) return;
                 } else {
@@ -3874,7 +3898,7 @@ new Vue({
 
             // 0. Preloaded audio — play instantly or wait briefly for in-progress preload
             const preloaded = this._audioPreloads && this._audioPreloads[word];
-            if (preloaded) {
+            if (preloaded && !preloaded.error) {  // skip immediately if preload errored
                 if (preloaded.readyState >= 2) {
                     preloaded.currentTime = 0;
                     preloaded.onended = () => { this.audioPlaying = false; };
@@ -5089,6 +5113,7 @@ new Vue({
         // Non-reactive caches (avoid Vue reactivity overhead on Audio/timer objects)
         this._audioPreloads  = {};   // word -> preloaded Audio element
         this._prefetchTimers = [];   // pending staggered preload timers
+        this._currentAudio   = null; // currently playing Audio element (holds ref to prevent GC)
         // Restore preferred deck before loading state
         const savedDeckId = localStorage.getItem(DECK_PREF_KEY);
         if (savedDeckId) {
