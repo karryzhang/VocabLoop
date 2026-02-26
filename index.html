@@ -377,17 +377,28 @@
         .btn-hd.sync-ok { border-color: var(--green) !important; color: var(--green) !important; }
         @keyframes syncSpin { to { transform: rotate(360deg); } }
         /* Practice done footer buttons */
-        .prac-done-footer { display: flex; gap: 10px; width: 100%; margin-top: 4px; }
+        .prac-done-footer {
+            display: flex; gap: 10px; width: 100%; margin-top: 4px;
+            animation: pracFadeUp .5s .55s ease both;
+        }
         .prac-foot-share {
-            flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
-            padding: 13px; border-radius: 12px;
+            flex: 0 0 auto; display: flex; align-items: center; justify-content: center; gap: 6px;
+            padding: 13px 16px; border-radius: 12px;
             border: 1.5px solid var(--border); color: var(--muted); background: transparent;
             font-size: 0.9rem; font-weight: 600; cursor: pointer;
             transition: border-color 0.15s, color 0.15s;
         }
         .prac-foot-share:hover { border-color: var(--blue); color: var(--blue); }
+        .prac-foot-retry {
+            flex: 1;
+            padding: 13px; border-radius: 12px;
+            border: 1.5px solid var(--blue); background: transparent; color: var(--blue);
+            font-size: 0.9rem; font-weight: 700; cursor: pointer;
+            transition: .15s;
+        }
+        .prac-foot-retry:hover { background: color-mix(in srgb, var(--blue) 8%, transparent); }
         .prac-foot-back {
-            flex: 2;
+            flex: 1;
             background: linear-gradient(135deg, #3b82f6, #1d4ed8);
             color: #fff; border: none;
             padding: 13px; border-radius: 12px;
@@ -397,6 +408,16 @@
         }
         .prac-foot-back:hover  { box-shadow: 0 6px 22px rgba(59,130,246,0.42); transform: translateY(-1px); }
         .prac-foot-back:active { transform: scale(0.97); box-shadow: none; }
+        /* Confetti burst for perfect score */
+        @keyframes pracConfetti {
+            0%   { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-60px) scale(1.6); }
+        }
+        .prac-confetti {
+            position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+            font-size: 1.8rem; pointer-events: none;
+            animation: pracConfetti 1.2s .3s ease-out both;
+        }
 
         /* ── Card area ───────────────────────── */
         .card-area {
@@ -966,9 +987,10 @@
             .back-example{ font-size: 0.74rem; }
             .done-stat-val { font-size: 1.8rem; }
             /* Practice done responsive */
-            .prac-score-pct { font-size: 2.8rem; }
-            .prac-done-title { font-size: 1.2rem; }
-            .prac-done-tip { font-size: 0.78rem; padding: 8px 12px; }
+            .prac-ring-wrap { width: 110px; height: 110px; }
+            .prac-ring-pct { font-size: 1.8rem; }
+            .prac-done-title { font-size: 1.15rem; }
+            .prac-stat-pill { font-size: 0.75rem; padding: 5px 10px; }
         }
 
         /* ── Regular mobile (391–599px) ──────────────────── */
@@ -993,11 +1015,13 @@
             .done-stat-val { font-size: 2.5rem; }
             .done-title { font-size: 2.1rem; }
             /* Practice done — wider */
-            .prac-score-pct { font-size: 4.2rem; }
+            .prac-ring-wrap { width: 160px; height: 160px; }
+            .prac-ring-pct { font-size: 2.8rem; }
+            .prac-ring-emoji { font-size: 1.5rem; }
             .prac-done-title { font-size: 1.6rem; }
-            .prac-done-tip { max-width: 400px; font-size: 0.9rem; }
+            .prac-done-subtitle { font-size: 0.92rem; }
             .prac-review-section { max-width: 480px; margin: 0 auto; }
-            .prac-done-footer { max-width: 400px; margin: 0 auto; }
+            .prac-done-footer { max-width: 440px; margin: 0 auto; }
         }
 
         /* ── iPad Pro / Desktop (≥ 900px) ────────────────── */
@@ -1311,58 +1335,71 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            gap: 16px;
+            gap: 18px;
             padding: 24px 20px;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
         }
-        /* Practice done — score hero */
-        .prac-done-hero { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
-        .prac-score-display { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .prac-score-pct { font-size: 3.8rem; font-weight: 900; line-height: 1; letter-spacing: -0.03em; }
+        /* Practice done — score ring */
+        .prac-ring-wrap {
+            position: relative;
+            width: 140px; height: 140px;
+            animation: pracFadeUp .5s ease both;
+        }
+        @keyframes pracFadeUp {
+            from { opacity: 0; transform: translateY(18px) scale(0.92); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .prac-ring-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+        .prac-ring-bg { fill: none; stroke: var(--border); stroke-width: 8; }
+        .prac-ring-fill { fill: none; stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1); }
+        .prac-ring-center {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .prac-ring-pct { font-size: 2.4rem; font-weight: 900; line-height: 1; letter-spacing: -0.03em; }
+        .prac-ring-emoji { font-size: 1.2rem; margin-top: 2px; }
         .pct-green { color: var(--green); }
         .pct-amber { color: var(--amber); }
         .pct-red   { color: var(--red);   }
-        .prac-score-emoji { font-size: 1.6rem; }
-        .prac-done-title { font-size: 1.5rem; font-weight: 800; }
-        .prac-done-bar-wrap { width: 100%; max-width: 280px; background: var(--border); border-radius: 99px; height: 8px; overflow: hidden; }
-        .prac-done-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--green), var(--blue)); transition: width 0.9s cubic-bezier(.4,0,.2,1); }
-        .prac-done-chips { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: center; }
-        .pdc { font-size: 0.88rem; font-weight: 700; }
-        .pdc-good  { color: var(--green); }
-        .pdc-bad   { color: var(--red); }
-        .pdc-sep   { color: var(--border); font-weight: 400; }
-        .pdc-total { color: var(--muted); font-weight: 400; font-size: 0.82rem; }
-        /* Practice done — motivational tip */
-        .prac-done-tip {
-            font-size: 0.85rem;
-            color: var(--muted);
-            line-height: 1.5;
-            padding: 10px 16px;
-            background: color-mix(in srgb, var(--blue) 6%, transparent);
-            border: 1px solid color-mix(in srgb, var(--blue) 12%, transparent);
-            border-radius: 12px;
-            text-align: center;
-            width: 100%;
-            max-width: 320px;
+        /* Practice done — title + subtitle */
+        .prac-done-title { font-size: 1.4rem; font-weight: 800; animation: pracFadeUp .5s .15s ease both; }
+        .prac-done-subtitle { font-size: 0.85rem; color: var(--muted); line-height: 1.5; animation: pracFadeUp .5s .25s ease both; }
+        /* Practice done — stat pills */
+        .prac-done-stats { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; animation: pracFadeUp .5s .3s ease both; }
+        .prac-stat-pill {
+            display: flex; align-items: center; gap: 5px;
+            padding: 6px 14px; border-radius: 99px;
+            font-size: 0.82rem; font-weight: 700;
+            border: 1px solid var(--border); background: var(--surface);
         }
-        .prac-srs-note {
-            font-size: 0.75rem;
-            color: var(--muted);
-            text-align: center;
-            opacity: 0.7;
-        }
+        .prac-stat-pill.good { color: var(--green); border-color: color-mix(in srgb, var(--green) 30%, transparent); background: color-mix(in srgb, var(--green) 6%, transparent); }
+        .prac-stat-pill.bad  { color: var(--red);   border-color: color-mix(in srgb, var(--red) 30%, transparent);   background: color-mix(in srgb, var(--red) 6%, transparent); }
+        .prac-stat-pill.srs  { color: var(--blue);  border-color: color-mix(in srgb, var(--blue) 30%, transparent);  background: color-mix(in srgb, var(--blue) 6%, transparent); }
         /* Practice done — review cards */
-        .prac-review-section { width: 100%; text-align: left; border-top: 1px solid var(--border); padding-top: 16px; }
+        .prac-review-section {
+            width: 100%; text-align: left; padding-top: 16px;
+            animation: pracFadeUp .5s .5s ease both;
+        }
         .prac-review-hd { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
         .prac-review-hd-text { font-size: 0.76rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; }
-        .prac-review-hd-count { font-size: 0.76rem; font-weight: 700; background: var(--border); color: var(--muted); padding: 1px 7px; border-radius: 99px; }
-        .prac-review-card { padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 4px; }
-        .prac-review-card:last-child { border-bottom: none; }
-        .prac-review-top { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+        .prac-review-hd-count { font-size: 0.76rem; font-weight: 700; background: color-mix(in srgb, var(--red) 10%, transparent); color: var(--red); padding: 1px 7px; border-radius: 99px; }
+        .prac-review-card {
+            padding: 12px 14px; margin-bottom: 8px;
+            border-radius: 12px; border: 1px solid var(--border);
+            background: var(--surface);
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .prac-review-top { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
         .prac-review-word { font-size: 1rem; font-weight: 700; color: var(--text); }
         .prac-review-pos  { font-size: 0.7rem; color: var(--muted); background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; }
         .prac-review-ipa  { font-size: 0.78rem; color: var(--muted); font-style: italic; }
+        .prac-review-audio {
+            margin-left: auto; border: none; background: none; cursor: pointer;
+            font-size: 1rem; padding: 2px 6px; border-radius: 6px;
+            transition: .15s; color: var(--muted);
+        }
+        .prac-review-audio:hover { color: var(--blue); background: color-mix(in srgb, var(--blue) 8%, transparent); }
         .prac-review-zh   { font-size: 0.88rem; color: var(--blue); }
         .prac-review-ex   { font-size: 0.8rem; color: var(--muted); line-height: 1.5; font-style: italic; }
         /* ── Matching question ─────────────────────────────────────────── */
@@ -1941,33 +1978,36 @@
         <!-- Practice done screen -->
         <div v-if="practiceDone" class="prac-done">
 
-            <!-- Score hero -->
-            <div class="prac-done-hero">
-                <div class="prac-score-display">
-                    <div class="prac-score-pct" :class="pctColorClass">{{pracScorePct}}%</div>
-                    <div class="prac-score-emoji">{{pracScoreEmoji}}</div>
+            <!-- Score ring -->
+            <div class="prac-ring-wrap">
+                <svg class="prac-ring-svg" viewBox="0 0 140 140">
+                    <circle class="prac-ring-bg" cx="70" cy="70" r="58" />
+                    <circle class="prac-ring-fill" cx="70" cy="70" r="58"
+                            :stroke="pracScorePct >= 80 ? 'var(--green)' : pracScorePct >= 50 ? 'var(--amber)' : 'var(--red)'"
+                            :stroke-dasharray="364.4"
+                            :stroke-dashoffset="364.4 - 364.4 * pracScorePct / 100" />
+                </svg>
+                <div class="prac-ring-center">
+                    <div class="prac-ring-pct" :class="pctColorClass">{{pracScorePct}}%</div>
+                    <div class="prac-ring-emoji">{{pracScoreEmoji}}</div>
                 </div>
-                <div class="prac-done-title">{{ui.practiceDoneTitle}}</div>
-                <div class="prac-done-bar-wrap">
-                    <div class="prac-done-bar-fill" :style="{width: pracScorePct + '%'}"></div>
-                </div>
-                <div class="prac-done-chips">
-                    <span class="pdc pdc-good">✓ {{practiceScore}}</span>
-                    <span class="pdc pdc-sep">/</span>
-                    <span class="pdc pdc-bad">✗ {{practiceQueue.length - practiceScore}}</span>
-                    <span class="pdc pdc-total">{{ui.practiceDoneScore(practiceScore, practiceQueue.length)}}</span>
-                </div>
+                <div v-if="pracScorePct === 100" class="prac-confetti">🎉</div>
             </div>
 
-            <!-- Motivational tip -->
-            <div class="prac-done-tip">
+            <!-- Title + subtitle -->
+            <div class="prac-done-title">{{ui.practiceDoneTitle}}</div>
+            <div class="prac-done-subtitle">
                 {{pracScorePct >= 80 ? ui.pracDoneTipGreat : pracScorePct >= 50 ? ui.pracDoneTipGood : ui.pracDoneTipKeepGo}}
             </div>
 
-            <!-- SRS impact note -->
-            <div class="prac-srs-note">{{ui.pracSrsNote}}</div>
+            <!-- Stat pills -->
+            <div class="prac-done-stats">
+                <span class="prac-stat-pill good">✓ {{practiceScore}} {{ui.pracPillCorrect}}</span>
+                <span class="prac-stat-pill bad">✗ {{practiceQueue.length - practiceScore}} {{ui.pracPillWrong}}</span>
+                <span class="prac-stat-pill srs">{{ui.pracSrsNote}}</span>
+            </div>
 
-            <!-- Wrong words with example sentences -->
+            <!-- Wrong words review -->
             <div v-if="practiceWrongWords.length > 0" class="prac-review-section">
                 <div class="prac-review-hd">
                     <span class="prac-review-hd-text">{{ui.practiceWrongTitle}}</span>
@@ -1979,6 +2019,7 @@
                             <span class="prac-review-word">{{w.word}}</span>
                             <span v-if="w.pos" class="prac-review-pos">{{w.pos}}</span>
                             <span v-if="dictCache[w.word] && dictCache[w.word].ipa" class="prac-review-ipa">/{{dictCache[w.word].ipa}}/</span>
+                            <button class="prac-review-audio" @click="playAudio(w.word)" :title="ui.audioPlay">🔊</button>
                         </div>
                         <div class="prac-review-zh">{{w.zh}}</div>
                         <div v-if="dictCache[w.word] && dictCache[w.word].example" class="prac-review-ex">"{{dictCache[w.word].example}}"</div>
@@ -1990,8 +2031,8 @@
             <div class="prac-done-footer">
                 <button class="prac-foot-share" @click="sharePractice">
                     <svg class="share-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-                    {{ui.shareBtn}}
                 </button>
+                <button class="prac-foot-retry" @click="startPractice">{{ui.pracRetry}}</button>
                 <button class="prac-foot-back" @click="exitPractice">{{ui.practiceDoneBack}}</button>
             </div>
         </div>
@@ -2794,7 +2835,10 @@ const STRINGS = {
     pracDoneTipGreat:   '表现优秀！你的词汇正在快速巩固。',
     pracDoneTipGood:    '不错的成绩！错的词会在复习中加强。',
     pracDoneTipKeepGo:  '别灰心！多练几次就会更熟练。',
-    pracSrsNote:        '练习结果已计入复习曲线',
+    pracSrsNote:        '已计入复习曲线',
+    pracPillCorrect:    '答对',
+    pracPillWrong:      '答错',
+    pracRetry:          '再练一次',
     doneStoryHint:     '在真实语境的故事中巩固记忆',
     doneContinueHint:  '继续学习，认识更多新单词',
     doneTomorrow:      (n) => n > 0 ? `📅 明天有 ${n} 个词等你复习` : '今天的词汇已安排到最优复习时间',
@@ -2959,7 +3003,10 @@ const STRINGS = {
     pracDoneTipGreat:   'Excellent work! Your vocabulary is growing fast.',
     pracDoneTipGood:    'Good effort! Missed words will get extra review.',
     pracDoneTipKeepGo:  'Keep going! Practice makes progress.',
-    pracSrsNote:        'Results applied to your review schedule',
+    pracSrsNote:        'Applied to SRS',
+    pracPillCorrect:    'correct',
+    pracPillWrong:      'wrong',
+    pracRetry:          'Practice again',
     doneStoryHint:     'See your words come alive in a real story',
     doneContinueHint:  'Keep going and learn even more new words',
     doneTomorrow:      (n) => n > 0 ? `📅 ${n} cards due tomorrow — come back!` : 'All cards scheduled at optimal intervals',
