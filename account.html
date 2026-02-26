@@ -191,47 +191,180 @@
     .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
     /* ── Learning Report ── */
-    .report-card{margin-top:16px}
-    .report-title{margin:0 0 16px;font-size:1.2rem;font-weight:800;display:flex;align-items:center;gap:8px}
-    .report-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
-    .metric{text-align:center;padding:12px 6px;border-radius:14px;
-      background:color-mix(in srgb, var(--pri) 7%, transparent);
+    .report-card{margin-top:16px;overflow:hidden}
+
+    /* Entrance animations */
+    @keyframes rptFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes rptScaleIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+    @keyframes countUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes ringDraw{from{stroke-dashoffset:var(--ring-circumference)}to{stroke-dashoffset:var(--ring-offset)}}
+    @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+    @keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(37,99,235,.3)}50%{box-shadow:0 0 0 8px rgba(37,99,235,0)}}
+    @keyframes floatBadge{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+
+    .report-title{margin:0 0 20px;font-size:1.25rem;font-weight:800;display:flex;align-items:center;gap:10px;
+      animation:rptFadeUp .5s ease both}
+    .report-title-icon{font-size:1.5rem;display:inline-flex;animation:pulseGlow 2s ease-in-out infinite}
+
+    /* ── Metric cards grid ── */
+    .report-metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:22px}
+    .metric{text-align:center;padding:16px 10px 14px;border-radius:16px;position:relative;overflow:hidden;
+      cursor:default;transition:transform .2s, box-shadow .2s;
+      animation:rptScaleIn .45s ease both}
+    .metric:nth-child(1){animation-delay:.05s}
+    .metric:nth-child(2){animation-delay:.1s}
+    .metric:nth-child(3){animation-delay:.15s}
+    .metric:nth-child(4){animation-delay:.2s}
+    .metric:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+    .metric::before{content:'';position:absolute;inset:0;opacity:.07;border-radius:16px;z-index:0}
+    .metric.m-studied{background:linear-gradient(135deg,rgba(37,99,235,.1),rgba(96,165,250,.06));
+      border:1px solid rgba(37,99,235,.2)}
+    .metric.m-studied::before{background:linear-gradient(135deg,#2563eb,#60a5fa)}
+    .metric.m-mastered{background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(167,139,250,.06));
+      border:1px solid rgba(139,92,246,.2)}
+    .metric.m-mastered::before{background:linear-gradient(135deg,#8b5cf6,#a78bfa)}
+    .metric.m-reviewed{background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(52,211,153,.06));
+      border:1px solid rgba(16,185,129,.2)}
+    .metric.m-reviewed::before{background:linear-gradient(135deg,#10b981,#34d399)}
+    .metric.m-streak{background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(252,211,77,.06));
+      border:1px solid rgba(245,158,11,.2)}
+    .metric.m-streak::before{background:linear-gradient(135deg,#f59e0b,#fcd34d)}
+    .metric-icon{font-size:1.3rem;margin-bottom:4px;position:relative;z-index:1}
+    .metric-val{font-size:1.7rem;font-weight:900;line-height:1.2;position:relative;z-index:1;
+      animation:countUp .5s ease both}
+    .metric.m-studied .metric-val{color:#2563eb}
+    .metric.m-mastered .metric-val{color:#8b5cf6}
+    .metric.m-reviewed .metric-val{color:#10b981}
+    .metric.m-streak .metric-val{color:#f59e0b}
+    [data-theme="dark"] .metric.m-studied .metric-val{color:#60a5fa}
+    [data-theme="dark"] .metric.m-mastered .metric-val{color:#a78bfa}
+    [data-theme="dark"] .metric.m-reviewed .metric-val{color:#34d399}
+    [data-theme="dark"] .metric.m-streak .metric-val{color:#fcd34d}
+    .metric-label{font-size:.76rem;color:var(--muted);font-weight:600;margin-top:3px;position:relative;z-index:1}
+
+    /* ── Collapsible sections ── */
+    .report-section{margin-bottom:16px;animation:rptFadeUp .5s ease both}
+    .report-section:nth-of-type(2){animation-delay:.2s}
+    .report-section:nth-of-type(3){animation-delay:.3s}
+    .report-section:nth-of-type(4){animation-delay:.4s}
+    .report-section:nth-of-type(5){animation-delay:.5s}
+    .section-header{display:flex;align-items:center;justify-content:space-between;cursor:pointer;
+      padding:10px 12px;margin:-2px -4px 10px;border-radius:12px;transition:background .15s;user-select:none}
+    .section-header:hover{background:color-mix(in srgb, var(--pri) 6%, transparent)}
+    .section-header:active{background:color-mix(in srgb, var(--pri) 10%, transparent)}
+    .section-header h3{margin:0;font-size:.95rem;font-weight:700;display:flex;align-items:center;gap:6px}
+    .section-toggle{width:20px;height:20px;transition:transform .25s ease;color:var(--muted);flex-shrink:0}
+    .section-toggle.collapsed{transform:rotate(-90deg)}
+    .section-body{overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1),opacity .25s ease;
+      max-height:800px;opacity:1}
+    .section-body.collapsed{max-height:0;opacity:0}
+
+    /* ── Deck progress bars ── */
+    .deck-row{margin-bottom:12px;padding:10px 12px;border-radius:12px;
+      background:color-mix(in srgb, var(--line) 20%, transparent);
+      border:1px solid color-mix(in srgb, var(--line) 40%, transparent);
+      transition:transform .15s, box-shadow .15s;cursor:default}
+    .deck-row:hover{transform:translateX(3px);box-shadow:0 2px 12px rgba(0,0,0,.06)}
+    .deck-row-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .deck-name{font-size:.9rem;font-weight:700;display:flex;align-items:center;gap:6px}
+    .deck-name-badge{font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:6px;
+      background:linear-gradient(135deg,var(--pri),#60a5fa);color:#fff}
+    .deck-nums{font-size:.78rem;color:var(--muted);font-weight:500}
+    .bar-bg{height:10px;border-radius:5px;background:var(--line);overflow:hidden;position:relative}
+    .bar-fill{height:100%;border-radius:5px;position:absolute;top:0;left:0;
+      transition:width .8s cubic-bezier(.25,.46,.45,.94);min-width:0}
+    .bar-fill.fill-studied{background:linear-gradient(90deg,#2563eb,#60a5fa);z-index:1}
+    .bar-fill.fill-mastered{background:linear-gradient(90deg,#8b5cf6,#c4b5fd);z-index:2}
+    .deck-legend{display:flex;gap:14px;margin-top:6px}
+    .deck-legend-item{display:flex;align-items:center;gap:4px;font-size:.7rem;color:var(--muted)}
+    .deck-legend-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+
+    /* ── Ring chart for stage distribution ── */
+    .stage-chart-wrap{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+    .ring-chart{position:relative;width:120px;height:120px;flex-shrink:0;margin:0 auto 8px}
+    .ring-chart svg{transform:rotate(-90deg);width:120px;height:120px}
+    .ring-chart circle{fill:none;stroke-width:12;transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)}
+    .ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+      justify-content:center;text-align:center}
+    .ring-center-val{font-size:1.4rem;font-weight:900;color:var(--ink);line-height:1}
+    .ring-center-label{font-size:.65rem;color:var(--muted);font-weight:600;margin-top:2px}
+    .stage-legend{flex:1;min-width:140px}
+    .stage-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding:6px 10px;
+      border-radius:10px;transition:background .15s;cursor:default}
+    .stage-row:hover{background:color-mix(in srgb, var(--line) 30%, transparent)}
+    .stage-dot{width:12px;height:12px;border-radius:4px;flex-shrink:0;transition:transform .15s}
+    .stage-row:hover .stage-dot{transform:scale(1.25)}
+    .stage-name{font-size:.85rem;font-weight:600;flex:1}
+    .stage-count{font-size:.82rem;font-weight:700;color:var(--ink)}
+    .stage-pct{font-size:.7rem;color:var(--muted);font-weight:500;margin-left:2px}
+
+    /* ── Difficult words list ── */
+    .diff-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;
+      margin-bottom:8px;transition:transform .15s, box-shadow .15s;cursor:default;position:relative;overflow:hidden}
+    .diff-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:2px}
+    .diff-item:hover{transform:translateX(4px);box-shadow:0 3px 14px rgba(0,0,0,.08)}
+    .diff-item.severity-high{background:color-mix(in srgb, var(--err) 8%, transparent);
+      border:1px solid color-mix(in srgb, var(--err) 18%, transparent)}
+    .diff-item.severity-high::before{background:var(--err)}
+    .diff-item.severity-med{background:color-mix(in srgb, var(--warn) 8%, transparent);
+      border:1px solid color-mix(in srgb, var(--warn) 18%, transparent)}
+    .diff-item.severity-med::before{background:var(--warn)}
+    .diff-item.severity-low{background:color-mix(in srgb, var(--pri) 6%, transparent);
       border:1px solid color-mix(in srgb, var(--pri) 15%, transparent)}
-    .metric-val{font-size:1.5rem;font-weight:900;color:var(--pri);line-height:1.2}
-    .metric-label{font-size:.72rem;color:var(--muted);font-weight:600;margin-top:2px}
-    .report-section{margin-bottom:16px}
-    .report-section h3{margin:0 0 10px;font-size:.95rem;font-weight:700}
-    .deck-row{margin-bottom:10px}
-    .deck-row-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
-    .deck-name{font-size:.88rem;font-weight:700}
-    .deck-nums{font-size:.78rem;color:var(--muted)}
-    .bar-bg{height:8px;border-radius:4px;background:var(--line);overflow:hidden;position:relative}
-    .bar-fill{height:100%;border-radius:4px;transition:width .6s cubic-bezier(.4,0,.2,1);min-width:0}
-    .bar-fill.fill-mastered{background:linear-gradient(90deg,#8b5cf6,#a78bfa)}
-    .bar-fill.fill-studied{background:linear-gradient(90deg,var(--pri),#60a5fa)}
-    .stage-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-    .stage-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-    .stage-name{font-size:.85rem;font-weight:600;width:65px;flex-shrink:0}
-    .stage-bar-bg{flex:1;height:7px;border-radius:3.5px;background:var(--line);overflow:hidden}
-    .stage-bar-fill{height:100%;border-radius:3.5px;transition:width .6s ease}
-    .stage-count{font-size:.78rem;color:var(--muted);width:40px;text-align:right;flex-shrink:0}
-    .diff-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;
-      margin-bottom:6px;background:color-mix(in srgb, var(--err) 6%, transparent);
-      border:1px solid color-mix(in srgb, var(--err) 12%, transparent)}
-    .diff-word{font-weight:800;font-size:.95rem;min-width:90px}
+    .diff-item.severity-low::before{background:var(--pri)}
+    .diff-rank{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+      font-size:.7rem;font-weight:800;color:#fff;flex-shrink:0}
+    .severity-high .diff-rank{background:var(--err)}
+    .severity-med .diff-rank{background:var(--warn)}
+    .severity-low .diff-rank{background:var(--pri)}
+    .diff-word{font-weight:800;font-size:.95rem;min-width:80px}
     .diff-zh{color:var(--muted);font-size:.82rem;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .diff-badge{font-size:.72rem;font-weight:700;color:var(--err);white-space:nowrap}
-    .achieve-grid{display:flex;flex-wrap:wrap;gap:8px}
-    .achieve-pill{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:20px;
-      font-size:.82rem;font-weight:600;
-      background:color-mix(in srgb, var(--ok) 8%, transparent);
-      border:1px solid color-mix(in srgb, var(--ok) 20%, transparent);color:var(--ok)}
-    .report-empty{text-align:center;padding:24px 0;color:var(--muted);font-size:.92rem}
+    .diff-badge{font-size:.72rem;font-weight:700;white-space:nowrap;padding:3px 8px;border-radius:6px}
+    .severity-high .diff-badge{background:color-mix(in srgb, var(--err) 12%, transparent);color:var(--err)}
+    .severity-med .diff-badge{background:color-mix(in srgb, var(--warn) 12%, transparent);color:var(--warn)}
+    .severity-low .diff-badge{background:color-mix(in srgb, var(--pri) 10%, transparent);color:var(--pri)}
+
+    /* ── Achievement pills ── */
+    .achieve-grid{display:flex;flex-wrap:wrap;gap:10px}
+    .achieve-pill{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:24px;
+      font-size:.82rem;font-weight:600;cursor:default;transition:transform .15s, box-shadow .15s;
+      background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(52,211,153,.04));
+      border:1px solid color-mix(in srgb, var(--ok) 22%, transparent);color:var(--ok);
+      animation:rptScaleIn .4s ease both}
+    .achieve-pill:hover{transform:translateY(-2px) scale(1.04);
+      box-shadow:0 4px 16px color-mix(in srgb, var(--ok) 20%, transparent)}
+    .achieve-pill .achieve-emoji{font-size:1.1rem;animation:floatBadge 2s ease-in-out infinite}
+
+    /* ── Empty state ── */
+    .report-empty{text-align:center;padding:36px 16px;color:var(--muted);font-size:.95rem;
+      animation:rptFadeUp .5s ease both}
+    .report-empty-icon{font-size:2.5rem;margin-bottom:10px;opacity:.6}
+    .report-empty-text{line-height:1.5}
+
+    /* ── Overall progress ring at top ── */
+    .overall-progress{display:flex;align-items:center;justify-content:center;gap:16px;
+      margin-bottom:20px;padding:14px;border-radius:14px;
+      background:linear-gradient(135deg,color-mix(in srgb, var(--pri) 5%, transparent),
+        color-mix(in srgb, #8b5cf6 4%, transparent));
+      border:1px solid color-mix(in srgb, var(--pri) 12%, transparent);
+      animation:rptFadeUp .4s ease both}
+    .overall-ring{position:relative;width:64px;height:64px;flex-shrink:0}
+    .overall-ring svg{transform:rotate(-90deg);width:64px;height:64px}
+    .overall-ring circle{fill:none;stroke-width:6}
+    .overall-ring-val{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+      font-size:.95rem;font-weight:900;color:var(--pri)}
+    .overall-info{flex:1}
+    .overall-info-title{font-size:.82rem;font-weight:700;color:var(--ink);margin-bottom:2px}
+    .overall-info-sub{font-size:.75rem;color:var(--muted);line-height:1.4}
 
     @media (max-width: 520px){
       .wrap{margin:12px auto}
       .card{padding:14px}
       h1{font-size:1.3rem}
+      .report-metrics{grid-template-columns:repeat(2,1fr);gap:10px}
+      .ring-chart{width:100px;height:100px}
+      .ring-chart svg{width:100px;height:100px}
+      .stage-chart-wrap{flex-direction:column;align-items:stretch}
     }
   </style>
 </head>
@@ -358,38 +491,99 @@
 
     <!-- Learning Report Card -->
     <div class="card report-card" id="reportCard" style="display:none">
-      <div class="report-title" id="reportTitle">📊 学习报告</div>
+      <div class="report-title"><span class="report-title-icon">📊</span> <span id="reportTitle">学习报告</span></div>
+
+      <!-- Overall mastery ring -->
+      <div class="overall-progress" id="overallProgress" style="display:none">
+        <div class="overall-ring">
+          <svg viewBox="0 0 64 64">
+            <circle cx="32" cy="32" r="28" stroke="var(--line)" stroke-width="6"/>
+            <circle id="overallRingFill" cx="32" cy="32" r="28" stroke="var(--pri)" stroke-width="6"
+              stroke-linecap="round" stroke-dasharray="175.93" stroke-dashoffset="175.93"
+              style="transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1)"/>
+          </svg>
+          <div class="overall-ring-val" id="overallPct">0%</div>
+        </div>
+        <div class="overall-info">
+          <div class="overall-info-title" id="overallTitle">总体进度</div>
+          <div class="overall-info-sub" id="overallSub"></div>
+        </div>
+      </div>
 
       <!-- Key metrics -->
-      <div class="report-metrics">
-        <div class="metric"><div class="metric-val" id="rStudied">0</div><div class="metric-label" id="rStudiedL">已学</div></div>
-        <div class="metric"><div class="metric-val" id="rMastered">0</div><div class="metric-label" id="rMasteredL">已掌握</div></div>
-        <div class="metric"><div class="metric-val" id="rReviewed">0</div><div class="metric-label" id="rReviewedL">总复习</div></div>
-        <div class="metric"><div class="metric-val" id="rStreak">0</div><div class="metric-label" id="rStreakL">连续天</div></div>
+      <div class="report-metrics" id="reportMetrics">
+        <div class="metric m-studied">
+          <div class="metric-icon">📚</div>
+          <div class="metric-val" id="rStudied">0</div>
+          <div class="metric-label" id="rStudiedL">已学</div>
+        </div>
+        <div class="metric m-mastered">
+          <div class="metric-icon">👑</div>
+          <div class="metric-val" id="rMastered">0</div>
+          <div class="metric-label" id="rMasteredL">已掌握</div>
+        </div>
+        <div class="metric m-reviewed">
+          <div class="metric-icon">🔄</div>
+          <div class="metric-val" id="rReviewed">0</div>
+          <div class="metric-label" id="rReviewedL">总复习</div>
+        </div>
+        <div class="metric m-streak">
+          <div class="metric-icon">🔥</div>
+          <div class="metric-val" id="rStreak">0</div>
+          <div class="metric-label" id="rStreakL">连续天</div>
+        </div>
       </div>
 
       <!-- Deck progress -->
-      <div class="report-section">
-        <h3 id="rDeckTitle">词库进度</h3>
-        <div id="deckBars"></div>
+      <div class="report-section" id="deckSection">
+        <div class="section-header" onclick="toggleSection('deckBody','deckToggle')">
+          <h3 id="rDeckTitle">词库进度</h3>
+          <svg class="section-toggle" id="deckToggle" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/>
+          </svg>
+        </div>
+        <div class="section-body" id="deckBody">
+          <div id="deckBars"></div>
+        </div>
       </div>
 
       <!-- Stage distribution -->
-      <div class="report-section">
-        <h3 id="rStageTitle">阶段分布</h3>
-        <div id="stageBars"></div>
+      <div class="report-section" id="stageSection">
+        <div class="section-header" onclick="toggleSection('stageBody','stageToggle')">
+          <h3 id="rStageTitle">阶段分布</h3>
+          <svg class="section-toggle" id="stageToggle" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/>
+          </svg>
+        </div>
+        <div class="section-body" id="stageBody">
+          <div class="stage-chart-wrap" id="stageChartWrap"></div>
+        </div>
       </div>
 
       <!-- Difficult words -->
       <div class="report-section" id="difficultSection" style="display:none">
-        <h3 id="rDiffTitle">⚠️ 困难词 TOP 10</h3>
-        <div id="difficultList"></div>
+        <div class="section-header" onclick="toggleSection('diffBody','diffToggle')">
+          <h3 id="rDiffTitle">⚠️ 困难词 TOP 10</h3>
+          <svg class="section-toggle" id="diffToggle" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/>
+          </svg>
+        </div>
+        <div class="section-body" id="diffBody">
+          <div id="difficultList"></div>
+        </div>
       </div>
 
       <!-- Achievements -->
       <div class="report-section" id="achieveSection" style="display:none">
-        <h3 id="rAchieveTitle">🏆 成就</h3>
-        <div class="achieve-grid" id="achieveList"></div>
+        <div class="section-header" onclick="toggleSection('achieveBody','achieveToggle')">
+          <h3 id="rAchieveTitle">🏆 成就</h3>
+          <svg class="section-toggle" id="achieveToggle" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/>
+          </svg>
+        </div>
+        <div class="section-body" id="achieveBody">
+          <div class="achieve-grid" id="achieveList"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -451,6 +645,8 @@
         rptNew:'New', rptLearning:'Learning', rptReview:'Review', rptMasteredStage:'Mastered',
         rptAgain:(n)=>`Again ×${n}`,
         rptStudiedOf:(a,b)=>`${a} studied / ${b} mastered`,
+        rptOverall:'Overall Progress',
+        rptOverallSub:(studied,total,masteredPct)=>`${studied} / ${total} words studied, ${masteredPct}% mastered`,
       },
       zh: {
         back:'← 返回首页', theme:'🌓 主题', title:'账户',
@@ -496,6 +692,8 @@
         rptNew:'未学', rptLearning:'学习中', rptReview:'复习中', rptMasteredStage:'已掌握',
         rptAgain:(n)=>`忘记 ×${n}`,
         rptStudiedOf:(a,b)=>`已学 ${a} / 掌握 ${b}`,
+        rptOverall:'总体进度',
+        rptOverallSub:(studied,total,masteredPct)=>`已学 ${studied} / ${total} 词，掌握率 ${masteredPct}%`,
       }
     };
 
@@ -987,10 +1185,10 @@
 
     /* ── Learning Report ── */
     const DECK_META = [
-      { id:'pet',    name:'PET',    file:'data/pet-words-1000.json' },
-      { id:'daily',  name:'Daily',  file:'data/daily-words-1000.json' },
-      { id:'ielts',  name:'IELTS',  file:'data/ielts-words.json' },
-      { id:'crypto', name:'Crypto', file:'data/crypto-words-1000.json' },
+      { id:'pet',    name:'PET',    file:'data/pet-words-1000.json',    emoji:'📝' },
+      { id:'daily',  name:'Daily',  file:'data/daily-words-1000.json',  emoji:'💬' },
+      { id:'ielts',  name:'IELTS',  file:'data/ielts-words.json',       emoji:'🎓' },
+      { id:'crypto', name:'Crypto', file:'data/crypto-words-1000.json', emoji:'₿' },
     ];
     const ACHIEVE_META = {
       first_review:{emoji:'🎯',en:'First Review',zh:'初次复习'},
@@ -1004,6 +1202,32 @@
       streak_7:    {emoji:'🗓️',en:'7-Day Streak',zh:'连续 7 天'},
       streak_30:   {emoji:'👑',en:'30-Day Streak',zh:'连续 30 天'},
     };
+
+    /* ── Animated counter ── */
+    function animateCounter(el, target, suffix){
+      suffix = suffix || '';
+      const duration = 800;
+      const start = performance.now();
+      const from = 0;
+      function step(now){
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+        const current = Math.round(from + (target - from) * eased);
+        el.textContent = current + suffix;
+        if(progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    /* ── Toggle collapsible sections ── */
+    function toggleSection(bodyId, toggleId){
+      const body = $(bodyId);
+      const toggle = $(toggleId);
+      const isCollapsed = body.classList.contains('collapsed');
+      body.classList.toggle('collapsed');
+      toggle.classList.toggle('collapsed');
+    }
 
     async function fetchDeckTotals(){
       const totals = {};
@@ -1046,7 +1270,7 @@
 
       /* Collect all words across decks */
       const totals = await fetchDeckTotals();
-      let allStudied = 0, allMastered = 0;
+      let allStudied = 0, allMastered = 0, totalWords = 0;
       let stageNew = 0, stageLearning = 0, stageReview = 0, stageMastered = 0;
       const difficultWords = [];
       const deckStats = [];
@@ -1054,92 +1278,170 @@
       for(const d of DECK_META){
         const words = getDeckWords(d.id);
         const total = totals[d.id] || 0;
+        totalWords += total;
         let studied = 0, mastered = 0;
         for(const [w, s] of Object.entries(words)){
-          if(w.startsWith('_')) continue; // skip milestone markers
+          if(w.startsWith('_')) continue;
           if(!s || !s.stage) continue;
           if(s.stage !== 'new') studied++;
           if(s.stage === 'mastered') mastered++;
-          /* Count stages */
           if(s.stage === 'new') stageNew++;
           else if(s.stage === 'learning' || s.stage === 'relearn' || s.stage === 'young') stageLearning++;
           else if(s.stage === 'mature') stageReview++;
           else if(s.stage === 'mastered') stageMastered++;
-          /* Difficult words */
           if((s.againCount || 0) >= 2 && s.stage !== 'mastered'){
             difficultWords.push({ word: w, zh: '', againCount: s.againCount, deckName: d.name });
           }
         }
         allStudied += studied;
         allMastered += mastered;
-        /* Unstudied words in this deck count as "new" */
         const unseenNew = Math.max(0, total - Object.keys(words).filter(k=>!k.startsWith('_')).length);
         stageNew += unseenNew;
-        deckStats.push({ id: d.id, name: d.name, total, studied, mastered });
+        deckStats.push({ id: d.id, name: d.name, total, studied, mastered, emoji: d.emoji });
       }
 
       /* Check if there's any data at all */
       const hasData = allStudied > 0 || (globalState.totalReviewed || 0) > 0;
       if(!hasData){
         $('reportCard').style.display = 'block';
-        $('reportCard').innerHTML = '<div class="report-title" id="reportTitle">' + t.rptTitle + '</div><div class="report-empty">' + t.rptEmpty + '</div>';
+        $('reportCard').querySelector('.report-title').innerHTML =
+          '<span class="report-title-icon">📊</span> <span id="reportTitle">' + t.rptTitle + '</span>';
+        /* Hide everything except title + empty message */
+        $('overallProgress').style.display = 'none';
+        $('reportMetrics').style.display = 'none';
+        $('deckSection').style.display = 'none';
+        $('stageSection').style.display = 'none';
+        $('difficultSection').style.display = 'none';
+        $('achieveSection').style.display = 'none';
+        /* Insert empty state if not already there */
+        let emptyEl = $('reportEmpty');
+        if(!emptyEl){
+          emptyEl = document.createElement('div');
+          emptyEl.id = 'reportEmpty';
+          emptyEl.className = 'report-empty';
+          emptyEl.innerHTML = '<div class="report-empty-icon">📖</div><div class="report-empty-text">' + t.rptEmpty + '</div>';
+          $('reportCard').appendChild(emptyEl);
+        }
         return;
       }
 
+      /* Remove empty state if present */
+      const emptyEl = $('reportEmpty');
+      if(emptyEl) emptyEl.remove();
+
       $('reportCard').style.display = 'block';
+      $('reportMetrics').style.display = '';
+      $('deckSection').style.display = '';
+      $('stageSection').style.display = '';
 
-      /* Key metrics */
-      $('rStudied').textContent = allStudied;
-      $('rMastered').textContent = allMastered;
-      $('rReviewed').textContent = globalState.totalReviewed || 0;
-      $('rStreak').textContent = (globalState.dailyStreak || 0) + 'd';
+      /* ── Overall progress ring ── */
+      const overallPct = totalWords > 0 ? Math.round(allStudied / totalWords * 100) : 0;
+      $('overallProgress').style.display = 'flex';
+      $('overallTitle').textContent = t.rptOverall;
+      const masteredPctVal = totalWords > 0 ? Math.round(allMastered / totalWords * 100) : 0;
+      $('overallSub').textContent = t.rptOverallSub(allStudied, totalWords, masteredPctVal);
+      const circumference = 2 * Math.PI * 28; // r=28
+      const ringOffset = circumference * (1 - overallPct / 100);
+      requestAnimationFrame(() => {
+        const ringFill = $('overallRingFill');
+        ringFill.style.strokeDashoffset = ringOffset;
+        animateCounter($('overallPct'), overallPct, '%');
+      });
 
-      /* Deck progress bars */
+      /* ── Key metrics with animated counters ── */
+      requestAnimationFrame(() => {
+        animateCounter($('rStudied'), allStudied, '');
+        animateCounter($('rMastered'), allMastered, '');
+        animateCounter($('rReviewed'), globalState.totalReviewed || 0, '');
+        animateCounter($('rStreak'), globalState.dailyStreak || 0, 'd');
+      });
+
+      /* ── Deck progress bars (animated) ── */
       const deckBarsEl = $('deckBars');
       deckBarsEl.innerHTML = '';
       for(const ds of deckStats){
         if(ds.total === 0) continue;
-        const studiedPct = Math.round(ds.studied / ds.total * 100);
-        const masteredPct = Math.round(ds.mastered / ds.total * 100);
+        const studiedL = state.lang === 'zh' ? '已学' : 'studied';
+        const masteredL = state.lang === 'zh' ? '掌握' : 'mastered';
         deckBarsEl.innerHTML += `
           <div class="deck-row">
             <div class="deck-row-header">
-              <span class="deck-name">${ds.name}</span>
-              <span class="deck-nums">${t.rptStudiedOf(ds.studied, ds.mastered)} / ${ds.total}</span>
+              <span class="deck-name">${ds.emoji} ${ds.name} <span class="deck-name-badge">${Math.round(ds.studied/ds.total*100)}%</span></span>
+              <span class="deck-nums">${ds.studied} ${studiedL} / ${ds.total}</span>
             </div>
             <div class="bar-bg">
-              <div class="bar-fill fill-studied" style="width:${studiedPct}%;position:absolute"></div>
-              <div class="bar-fill fill-mastered" style="width:${masteredPct}%"></div>
+              <div class="bar-fill fill-studied" data-pct="${Math.round(ds.studied/ds.total*100)}" style="width:0%"></div>
+              <div class="bar-fill fill-mastered" data-pct="${Math.round(ds.mastered/ds.total*100)}" style="width:0%"></div>
+            </div>
+            <div class="deck-legend">
+              <span class="deck-legend-item"><span class="deck-legend-dot" style="background:linear-gradient(90deg,#2563eb,#60a5fa)"></span> ${ds.studied} ${studiedL}</span>
+              <span class="deck-legend-item"><span class="deck-legend-dot" style="background:linear-gradient(90deg,#8b5cf6,#c4b5fd)"></span> ${ds.mastered} ${masteredL}</span>
             </div>
           </div>`;
       }
+      /* Animate bars after DOM update */
+      requestAnimationFrame(() => {
+        deckBarsEl.querySelectorAll('.bar-fill').forEach(el => {
+          el.style.width = el.dataset.pct + '%';
+        });
+      });
 
-      /* Stage distribution */
-      const stageBarsEl = $('stageBars');
+      /* ── Stage distribution: Ring chart + legend ── */
+      const stageChartEl = $('stageChartWrap');
       const stageTotal = stageNew + stageLearning + stageReview + stageMastered;
       const stages = [
-        { name: t.rptNew,           count: stageNew,      color: '#3b82f6' },
+        { name: t.rptNew,           count: stageNew,       color: '#3b82f6' },
         { name: t.rptLearning,      count: stageLearning,  color: '#f59e0b' },
         { name: t.rptReview,        count: stageReview,    color: '#10b981' },
         { name: t.rptMasteredStage, count: stageMastered,  color: '#8b5cf6' },
       ];
-      stageBarsEl.innerHTML = '';
+
+      /* Build SVG ring chart */
+      const R = 48, cx = 60, cy = 60;
+      const C = 2 * Math.PI * R;
+      let offset = 0;
+      let ringSegments = '';
+      for(const s of stages){
+        const pct = stageTotal > 0 ? s.count / stageTotal : 0;
+        const len = pct * C;
+        if(len > 0){
+          ringSegments += `<circle cx="${cx}" cy="${cy}" r="${R}" stroke="${s.color}" stroke-width="12"
+            stroke-dasharray="${len} ${C - len}" stroke-dashoffset="${-offset}"
+            stroke-linecap="butt" style="transition:stroke-dashoffset .8s ease, stroke-dasharray .8s ease"/>`;
+        }
+        offset += len;
+      }
+
+      let legendHtml = '';
       for(const s of stages){
         const pct = stageTotal > 0 ? Math.round(s.count / stageTotal * 100) : 0;
-        stageBarsEl.innerHTML += `
+        legendHtml += `
           <div class="stage-row">
             <span class="stage-dot" style="background:${s.color}"></span>
             <span class="stage-name">${s.name}</span>
-            <div class="stage-bar-bg"><div class="stage-bar-fill" style="width:${pct}%;background:${s.color}"></div></div>
             <span class="stage-count">${s.count}</span>
+            <span class="stage-pct">${pct}%</span>
           </div>`;
       }
 
-      /* Difficult words — fetch word data for zh translation */
+      const ringCenterLabel = state.lang === 'zh' ? '总词数' : 'Words';
+      stageChartEl.innerHTML = `
+        <div class="ring-chart">
+          <svg viewBox="0 0 120 120">
+            <circle cx="${cx}" cy="${cy}" r="${R}" stroke="var(--line)" stroke-width="12"/>
+            ${ringSegments}
+          </svg>
+          <div class="ring-center">
+            <div class="ring-center-val">${stageTotal}</div>
+            <div class="ring-center-label">${ringCenterLabel}</div>
+          </div>
+        </div>
+        <div class="stage-legend">${legendHtml}</div>`;
+
+      /* ── Difficult words with severity colors ── */
       if(difficultWords.length > 0){
         difficultWords.sort((a, b) => b.againCount - a.againCount);
         const top10 = difficultWords.slice(0, 10);
-        /* Try to load zh translations from deck data */
         const wordMap = {};
         await Promise.all(DECK_META.map(async d => {
           try{
@@ -1151,29 +1453,32 @@
         }));
         const listEl = $('difficultList');
         listEl.innerHTML = '';
-        for(const dw of top10){
+        top10.forEach((dw, i) => {
           const zh = wordMap[dw.word] || '';
+          const severity = dw.againCount >= 5 ? 'high' : dw.againCount >= 3 ? 'med' : 'low';
           listEl.innerHTML += `
-            <div class="diff-item">
+            <div class="diff-item severity-${severity}" style="animation:rptFadeUp .4s ease both;animation-delay:${i * .05}s">
+              <span class="diff-rank">${i + 1}</span>
               <span class="diff-word">${dw.word}</span>
               <span class="diff-zh">${zh}</span>
               <span class="diff-badge">${t.rptAgain(dw.againCount)}</span>
             </div>`;
-        }
+        });
         $('difficultSection').style.display = 'block';
       }
 
-      /* Achievements */
+      /* ── Achievements with staggered animation ── */
       const achievements = globalState.achievements || [];
       if(achievements.length > 0){
         const listEl = $('achieveList');
         listEl.innerHTML = '';
-        for(const id of achievements){
+        achievements.forEach((id, i) => {
           const meta = ACHIEVE_META[id];
-          if(!meta) continue;
+          if(!meta) return;
           const label = state.lang === 'zh' ? meta.zh : meta.en;
-          listEl.innerHTML += `<span class="achieve-pill">${meta.emoji} ${label}</span>`;
-        }
+          listEl.innerHTML += `<span class="achieve-pill" style="animation-delay:${i * .08}s">
+            <span class="achieve-emoji">${meta.emoji}</span> ${label}</span>`;
+        });
         $('achieveSection').style.display = 'block';
       }
     }
