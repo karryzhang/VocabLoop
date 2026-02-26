@@ -7,10 +7,10 @@
  *   merge — Two-way merge: client sends local data, server merges and returns result
  *
  * Auth: HMAC-signed token (see token.js)
- * Storage: SQLite via api/db.js (.data/vocabloop.db)
+ * Storage: Turso (libSQL) via api/db.js
  */
 
-const { stmt } = require('./db');
+const { queryOne, execute } = require('./db');
 const { verifyToken } = require('./token');
 
 /* ── Merge helpers ─────────────────────────────────────────────────── */
@@ -94,14 +94,14 @@ module.exports = async (req, res) => {
 
   try {
     const { action, token, data } = req.body || {};
-    const username = verifyToken(token);
+    const username = await verifyToken(token);
 
     if (!username) {
       return res.status(401).json({ ok: false, message: 'Invalid or expired token.' });
     }
 
     // Verify user actually exists in DB
-    const userExists = stmt('SELECT 1 FROM users WHERE username = ?').get(username);
+    const userExists = await queryOne('SELECT 1 FROM users WHERE username = ?', [username]);
     if (!userExists) {
       return res.status(401).json({ ok: false, message: 'User not found.' });
     }
@@ -112,13 +112,13 @@ module.exports = async (req, res) => {
         return res.status(400).json({ ok: false, message: 'Missing data payload.' });
       }
       const now = Date.now();
-      stmt('INSERT OR REPLACE INTO sync_data (username, data, updated_at) VALUES (?, ?, ?)').run(username, JSON.stringify(data), now);
+      await execute('INSERT OR REPLACE INTO sync_data (username, data, updated_at) VALUES (?, ?, ?)', [username, JSON.stringify(data), now]);
       return res.status(200).json({ ok: true, message: 'Data saved.', updatedAt: now });
     }
 
     // ── PULL ──────────────────────────────────────────────────────────
     if (action === 'pull') {
-      const record = stmt('SELECT data, updated_at FROM sync_data WHERE username = ?').get(username);
+      const record = await queryOne('SELECT data, updated_at FROM sync_data WHERE username = ?', [username]);
       if (!record) {
         return res.status(200).json({ ok: true, data: null, message: 'No cloud data found.' });
       }
@@ -130,11 +130,11 @@ module.exports = async (req, res) => {
       if (!data || typeof data !== 'object') {
         return res.status(400).json({ ok: false, message: 'Missing data payload.' });
       }
-      const record = stmt('SELECT data FROM sync_data WHERE username = ?').get(username);
+      const record = await queryOne('SELECT data FROM sync_data WHERE username = ?', [username]);
       const cloudData = record ? JSON.parse(record.data) : {};
       const merged = mergeAll(data, cloudData);
       const now = Date.now();
-      stmt('INSERT OR REPLACE INTO sync_data (username, data, updated_at) VALUES (?, ?, ?)').run(username, JSON.stringify(merged), now);
+      await execute('INSERT OR REPLACE INTO sync_data (username, data, updated_at) VALUES (?, ?, ?)', [username, JSON.stringify(merged), now]);
       return res.status(200).json({ ok: true, data: merged, updatedAt: now, message: 'Merged successfully.' });
     }
 

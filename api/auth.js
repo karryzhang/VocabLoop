@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const { stmt } = require('./db');
+const { queryOne, execute } = require('./db');
 const { createToken } = require('./token');
 
 /* ── Input validation ──────────────────────────────────────────────────── */
@@ -80,15 +80,15 @@ module.exports = async (req, res) => {
         return res.status(400).json({ ok: false, message: 'Password must be 6–20 digits.' });
       }
 
-      const existing = stmt('SELECT 1 FROM users WHERE username = ?').get(u);
+      const existing = await queryOne('SELECT 1 FROM users WHERE username = ?', [u]);
       if (existing) {
         return res.status(409).json({ ok: false, message: 'Username already exists.' });
       }
 
       const { salt, hash } = hashPassword(password);
-      stmt('INSERT INTO users (username, salt, hash, created_at) VALUES (?, ?, ?, ?)').run(u, salt, hash, Date.now());
+      await execute('INSERT INTO users (username, salt, hash, created_at) VALUES (?, ?, ?, ?)', [u, salt, hash, Date.now()]);
 
-      return res.status(200).json({ ok: true, message: 'Registered successfully.', user: { username: u }, token: createToken(u) });
+      return res.status(200).json({ ok: true, message: 'Registered successfully.', user: { username: u }, token: await createToken(u) });
     }
 
     if (action === 'login') {
@@ -96,12 +96,12 @@ module.exports = async (req, res) => {
         return res.status(400).json({ ok: false, message: 'Username and password are required.' });
       }
 
-      const user = stmt('SELECT salt, hash FROM users WHERE username = ?').get(u);
+      const user = await queryOne('SELECT salt, hash FROM users WHERE username = ?', [u]);
       if (!user || !verifyPassword(password, user.salt, user.hash)) {
         return res.status(401).json({ ok: false, message: 'Invalid credentials.' });
       }
 
-      return res.status(200).json({ ok: true, message: 'Login successful.', user: { username: u }, token: createToken(u) });
+      return res.status(200).json({ ok: true, message: 'Login successful.', user: { username: u }, token: await createToken(u) });
     }
 
     return res.status(400).json({ ok: false, message: 'Unsupported action. Use register or login.' });
