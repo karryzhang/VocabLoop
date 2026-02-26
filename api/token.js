@@ -18,8 +18,8 @@ function sign(payload, secret) {
 }
 
 /** Create a signed token for the given username */
-function createToken(username) {
-  const secret = getSecret();
+async function createToken(username) {
+  const secret = await getSecret();
   const now = Date.now();
   const payload = Buffer.from(JSON.stringify({
     sub: username,
@@ -34,7 +34,7 @@ function createToken(username) {
  * Verify a token and return the username, or null if invalid/expired.
  * Accepts both new HMAC tokens and legacy base64url tokens (for migration).
  */
-function verifyToken(token) {
+async function verifyToken(token) {
   if (!token || typeof token !== 'string') return null;
 
   // New format: payload.signature
@@ -42,7 +42,7 @@ function verifyToken(token) {
   if (dotIdx > 0) {
     const payload = token.slice(0, dotIdx);
     const sig     = token.slice(dotIdx + 1);
-    const secret  = getSecret();
+    const secret  = await getSecret();
     const expected = sign(payload, secret);
     if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return null;
     try {

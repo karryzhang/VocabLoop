@@ -1,85 +1,76 @@
 /**
- * api/db.js — Shared SQLite database for VocabLoop
+ * api/db.js — Database layer for VocabLoop
  *
- * Tables:
- *   users     — username, salt, hash, created_at
- *   sync_data — username (FK → users), data (JSON text), updated_at
- *   config    — key-value store for server config (e.g. token signing secret)
+ * Uses @libsql/client for both remote (Turso) and local (file-based SQLite):
+ *   - Production (Vercel): Set TURSO_DATABASE_URL + TURSO_AUTH_TOKEN env vars
+ *   - Local dev:           Falls back to file:.data/vocabloop.db
  *
- * Database file: .data/vocabloop.db  (gitignored)
+ * Tables: config, users, sync_data
  */
 
 const path   = require('path');
 const fs     = require('fs');
 const crypto = require('crypto');
-const Database = require('better-sqlite3');
+const { createClient } = require('@libsql/client');
 
-// Vercel serverless: project dir is read-only, only /tmp is writable
-const DATA_DIR = process.env.VERCEL
-  ? '/tmp'
-  : path.join(__dirname, '..', '.data');
-if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+// Local dev: ensure .data/ directory exists for SQLite file
+if (!process.env.TURSO_DATABASE_URL) {
+  const dataDir = path.join(__dirname, '..', '.data');
+  if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+}
 
-const DB_PATH = path.join(DATA_DIR, 'vocabloop.db');
+const client = createClient(
+  process.env.TURSO_DATABASE_URL
+    ? { url: process.env.TURSO_DATABASE_URL, authToken: process.env.TURSO_AUTH_TOKEN }
+    : { url: `file:${path.join(__dirname, '..', '.data', 'vocabloop.db')}` }
+);
 
-let _db;
-const _stmts = {};
+let _initialized = false;
 
-function getDb() {
-  if (_db) return _db;
-  _db = new Database(DB_PATH);
-  _db.pragma('journal_mode = WAL');
-  _db.pragma('foreign_keys = ON');
-
-  _db.exec(`
-    CREATE TABLE IF NOT EXISTS config (
+/** Ensure tables exist (runs once per cold start) */
+async function initDb() {
+  if (_initialized) return;
+  await client.batch([
+    `CREATE TABLE IF NOT EXISTS config (
       key   TEXT PRIMARY KEY,
       value TEXT NOT NULL
-    );
-    CREATE TABLE IF NOT EXISTS users (
+    )`,
+    `CREATE TABLE IF NOT EXISTS users (
       username   TEXT PRIMARY KEY COLLATE NOCASE,
       salt       TEXT NOT NULL,
       hash       TEXT NOT NULL,
       created_at INTEGER NOT NULL
-    );
-    CREATE TABLE IF NOT EXISTS sync_data (
+    )`,
+    `CREATE TABLE IF NOT EXISTS sync_data (
       username   TEXT PRIMARY KEY,
       data       TEXT NOT NULL DEFAULT '{}',
       updated_at INTEGER NOT NULL,
       FOREIGN KEY (username) REFERENCES users(username)
-    );
-  `);
-
-  return _db;
+    )`,
+  ], 'write');
+  _initialized = true;
 }
 
-/** Cached prepared statement — avoids re-parsing SQL on every request */
-function stmt(sql) {
-  if (!_stmts[sql]) {
-    _stmts[sql] = getDb().prepare(sql);
-  }
-  return _stmts[sql];
+/** Execute a read query — returns first row or null */
+async function queryOne(sql, args = []) {
+  await initDb();
+  const result = await client.execute({ sql, args });
+  return result.rows[0] || null;
 }
 
-/** Get or create the HMAC signing secret (persisted in config table) */
-function getSecret() {
-  const db = getDb();
-  const row = stmt('SELECT value FROM config WHERE key = ?').get('token_secret');
+/** Execute a write statement (INSERT / UPDATE / DELETE) */
+async function execute(sql, args = []) {
+  await initDb();
+  return client.execute({ sql, args });
+}
+
+/** Get or create the HMAC signing secret */
+async function getSecret() {
+  const row = await queryOne('SELECT value FROM config WHERE key = ?', ['token_secret']);
   if (row) return row.value;
   const secret = crypto.randomBytes(48).toString('hex');
-  stmt('INSERT INTO config (key, value) VALUES (?, ?)').run('token_secret', secret);
+  await execute('INSERT INTO config (key, value) VALUES (?, ?)', ['token_secret', secret]);
   return secret;
 }
 
-/** Graceful shutdown — close DB on process exit */
-function closeDb() {
-  if (_db) {
-    try { _db.close(); } catch (_) {}
-    _db = null;
-  }
-}
-process.on('exit', closeDb);
-process.on('SIGINT',  () => { closeDb(); process.exit(0); });
-process.on('SIGTERM', () => { closeDb(); process.exit(0); });
-
-module.exports = { getDb, stmt, getSecret, closeDb };
+module.exports = { queryOne, execute, getSecret };
