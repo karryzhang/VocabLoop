@@ -107,6 +107,9 @@ module.exports = async (req, res) => {
     return res.status(400).json({ ok: false, message: 'Unsupported action. Use register or login.' });
   } catch (err) {
     console.error('[auth] Error:', err);
-    return res.status(500).json({ ok: false, message: 'Internal server error.' });
+    const msg = (err.message && err.message.includes('TURSO_DATABASE_URL'))
+      ? 'Backend database not configured. Contact the administrator.'
+      : 'Internal server error.';
+    return res.status(500).json({ ok: false, message: msg });
   }
 };
