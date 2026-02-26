@@ -149,39 +149,39 @@
     .check-path{stroke-dasharray:50;stroke-dashoffset:50;animation:drawCheck .4s .3s ease forwards}
     @keyframes drawCheck{to{stroke-dashoffset:0}}
 
-    /* ── Offline mode panel ── */
-    .offline-panel{text-align:center;padding:24px 0}
-    .offline-icon{font-size:2.4rem;margin-bottom:10px}
-    .offline-title{font-size:1.2rem;font-weight:800;margin-bottom:8px}
-    .offline-desc{color:var(--muted);font-size:.92rem;line-height:1.55;margin-bottom:20px}
-    .offline-features{text-align:left;margin:16px 0 20px;padding:14px;
-      background:color-mix(in srgb, var(--pri) 6%, transparent);border-radius:12px;
-      border:1px solid color-mix(in srgb, var(--pri) 15%, transparent)}
-    .offline-features li{color:var(--muted);font-size:.88rem;margin:6px 0;line-height:1.4}
-    .offline-features li strong{color:var(--ink)}
+    /* ── Offline mode panel (compact) ── */
+    .offline-panel{display:flex;align-items:center;gap:14px;padding:4px 0}
+    .offline-icon{font-size:1.6rem;flex-shrink:0}
+    .offline-body{flex:1;min-width:0}
+    .offline-title{font-size:.95rem;font-weight:800;margin-bottom:2px}
+    .offline-desc{color:var(--muted);font-size:.8rem;line-height:1.4}
 
-    /* ── Logged-in profile panel ── */
-    .profile{text-align:center;padding:16px 0}
-    .profile-avatar{width:72px;height:72px;border-radius:50%;
+    /* ── Logged-in profile panel (compact horizontal) ── */
+    .profile{display:flex;align-items:center;gap:14px;padding:4px 0}
+    .profile-avatar{width:44px;height:44px;border-radius:50%;flex-shrink:0;
       background:linear-gradient(135deg,var(--pri),#8b5cf6);
-      display:inline-flex;align-items:center;justify-content:center;
-      font-size:2rem;color:#fff;font-weight:700;margin-bottom:12px}
-    .profile-name{font-size:1.3rem;font-weight:800;margin-bottom:4px}
-    .profile-meta{color:var(--muted);font-size:.88rem;margin-bottom:16px}
-    .btn-logout{border:1px solid var(--err);background:transparent;color:var(--err);border-radius:12px;
-      padding:10px 24px;font-weight:700;cursor:pointer;transition:.15s;font-size:.92rem}
-    .btn-logout:hover{background:color-mix(in srgb, var(--err) 10%, transparent)}
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.2rem;color:#fff;font-weight:700}
+    .profile-body{flex:1;min-width:0}
+    .profile-name{font-size:1rem;font-weight:800;line-height:1.2}
+    .profile-meta{color:var(--muted);font-size:.78rem}
+    .btn-logout{border:1px solid var(--line);background:transparent;color:var(--err);border-radius:10px;
+      padding:7px 14px;font-weight:700;cursor:pointer;transition:.15s;font-size:.82rem;flex-shrink:0}
+    .btn-logout:hover{background:color-mix(in srgb, var(--err) 8%, transparent);border-color:var(--err)}
 
-    /* ── Data management buttons ── */
-    .data-section{margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
-    .data-section h3{margin:0 0 10px;font-size:.95rem;font-weight:700}
+    /* ── Bottom data management card ── */
+    .data-card{margin-top:16px}
+    .data-card-title{margin:0 0 12px;font-size:.95rem;font-weight:700;display:flex;align-items:center;gap:8px}
     .data-btns{display:flex;gap:10px}
-    .btn-data{flex:1;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;
-      padding:10px 14px;font-weight:700;cursor:pointer;transition:.15s;font-size:.88rem;
-      display:flex;align-items:center;justify-content:center;gap:6px}
-    .btn-data:hover{background:color-mix(in srgb, var(--pri) 8%, var(--card));border-color:var(--pri)}
-    .btn-data:active{transform:translateY(1px)}
+    .btn-data{flex:1;border:1px solid var(--line);background:color-mix(in srgb, var(--line) 12%, transparent);
+      color:var(--ink);border-radius:12px;
+      padding:12px 14px;font-weight:700;cursor:pointer;transition:.15s;font-size:.88rem;
+      display:flex;align-items:center;justify-content:center;gap:7px}
+    .btn-data:hover{background:color-mix(in srgb, var(--pri) 8%, var(--card));border-color:var(--pri);
+      transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.06)}
+    .btn-data:active{transform:translateY(1px);box-shadow:none}
     .btn-data svg{width:16px;height:16px;flex-shrink:0}
+    .data-hint{color:var(--muted);font-size:.75rem;margin-top:8px;line-height:1.4;text-align:center}
 
     /* ── Toast ── */
     .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);
@@ -375,58 +375,30 @@
       <button class="ghost" id="themeBtn">🌓 Theme</button>
     </div>
 
-    <div class="card">
-      <!-- Logged-in profile view -->
+    <!-- ① Account section (compact) -->
+    <div class="card" id="accountCard">
+      <!-- Logged-in profile (compact horizontal) -->
       <div id="profilePanel" class="profile" style="display:none">
         <div class="profile-avatar" id="profileAvatar">U</div>
-        <div class="profile-name" id="profileName">username</div>
-        <div class="profile-meta" id="profileMeta">Logged in</div>
-        <div class="data-section">
-          <h3 id="dataTitle">Data</h3>
-          <div class="data-btns">
-            <button class="btn-data" id="exportBtn" onclick="exportProgress()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              <span id="exportLabel">Export</span>
-            </button>
-            <button class="btn-data" id="importBtnEl" onclick="document.getElementById('importFileInput').click()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              <span id="importLabel">Import</span>
-            </button>
-          </div>
+        <div class="profile-body">
+          <div class="profile-name" id="profileName">username</div>
+          <div class="profile-meta" id="profileMeta">Logged in</div>
         </div>
-        <input type="file" id="importFileInput" accept=".json" style="display:none" onchange="handleImportFile(event)">
-        <div style="height:12px"></div>
         <button class="btn-logout" id="logoutBtn">Logout</button>
       </div>
 
-      <!-- Offline mode (no backend) -->
+      <!-- Offline mode (compact) -->
       <div id="offlinePanel" style="display:none">
         <div class="offline-panel">
           <div class="offline-icon">📴</div>
-          <div class="offline-title" id="offlineTitle">Offline Mode</div>
-          <div class="offline-desc" id="offlineDesc">You're using VocabLoop as a static page — no server is connected. Your learning data is stored locally in this browser.</div>
-          <ul class="offline-features" id="offlineFeatures">
-            <li id="offlineFeat1"><strong>All learning features</strong> work normally without an account</li>
-            <li id="offlineFeat2">Use <strong>Export / Import</strong> below to back up or transfer your progress</li>
-            <li id="offlineFeat3">Deploy with a Node.js backend to enable <strong>cloud sync</strong> across devices</li>
-          </ul>
-          <div class="data-section" style="border-top:none;margin-top:0;padding-top:0">
-            <div class="data-btns">
-              <button class="btn-data" onclick="exportProgress()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                <span id="offlineExportLabel">Export</span>
-              </button>
-              <button class="btn-data" onclick="document.getElementById('offlineImportInput').click()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                <span id="offlineImportLabel">Import</span>
-              </button>
-            </div>
+          <div class="offline-body">
+            <div class="offline-title" id="offlineTitle">Offline Mode</div>
+            <div class="offline-desc" id="offlineDesc">Data is stored locally in this browser.</div>
           </div>
-          <input type="file" id="offlineImportInput" accept=".json" style="display:none" onchange="handleImportFile(event)">
         </div>
       </div>
 
-      <!-- Auth form view (hidden until backend detected) -->
+      <!-- Auth form view -->
       <div id="authPanel" style="display:none">
         <h1 id="title">Account</h1>
         <div class="muted" id="subtitle">Create your account or login to continue learning across sessions.</div>
@@ -586,6 +558,23 @@
         </div>
       </div>
     </div>
+
+    <!-- ③ Data Management card (always visible at bottom) -->
+    <div class="card data-card" id="dataCard">
+      <div class="data-card-title" id="dataCardTitle">💾 <span id="dataTitle">Data Management</span></div>
+      <div class="data-btns">
+        <button class="btn-data" onclick="exportProgress()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span id="exportLabel">Export</span>
+        </button>
+        <button class="btn-data" onclick="document.getElementById('importFileInput').click()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <span id="importLabel">Import</span>
+        </button>
+      </div>
+      <input type="file" id="importFileInput" accept=".json" style="display:none" onchange="handleImportFile(event)">
+      <div class="data-hint" id="dataHint">Export your learning progress as JSON backup, or import from a previous backup file.</div>
+    </div>
   </div>
 
   <!-- Success overlay -->
@@ -632,11 +621,10 @@
         importFail:'Import failed: invalid file format',
         importEmpty:'No learning records found in file',
         exportOk:'Export ✓',
+        dataTitle:'Data Management',
+        dataHint:'Export your learning progress as JSON backup, or import from a previous backup file.',
         offlineTitle:'Offline Mode',
-        offlineDesc:'You\'re using VocabLoop as a static page — no server is connected. Your learning data is stored locally in this browser.',
-        offlineFeat1:'<strong>All learning features</strong> work normally without an account',
-        offlineFeat2:'Use <strong>Export / Import</strong> below to back up or transfer your progress',
-        offlineFeat3:'Deploy with a Node.js backend to enable <strong>cloud sync</strong> across devices',
+        offlineDesc:'Data is stored locally in this browser.',
         /* Report */
         rptTitle:'📊 Learning Report', rptStudied:'Studied', rptMastered:'Mastered',
         rptReviewed:'Reviews', rptStreak:'Streak', rptDeckTitle:'Deck Progress',
@@ -679,11 +667,10 @@
         importFail:'导入失败：文件格式不正确',
         importEmpty:'文件中没有找到学习记录',
         exportOk:'导出 ✓',
+        dataTitle:'数据管理',
+        dataHint:'导出学习进度为 JSON 备份，或从备份文件中导入。',
         offlineTitle:'离线模式',
-        offlineDesc:'当前以静态页面运行，未连接服务端。你的学习数据保存在本地浏览器中。',
-        offlineFeat1:'<strong>所有学习功能</strong>无需账号即可正常使用',
-        offlineFeat2:'使用下方的<strong>导出/导入</strong>可备份或迁移学习进度',
-        offlineFeat3:'部署 Node.js 后端即可开启<strong>跨设备云同步</strong>',
+        offlineDesc:'数据保存在本地浏览器中。',
         /* Report */
         rptTitle:'📊 学习报告', rptStudied:'已学', rptMastered:'已掌握',
         rptReviewed:'总复习', rptStreak:'连续天', rptDeckTitle:'词库进度',
@@ -744,17 +731,14 @@
       $('lUser').placeholder = t.loginUser;
       $('lPass').placeholder = t.loginPass;
       $('logoutBtn').textContent = t.logout;
+      /* Bottom data card */
+      $('dataTitle').textContent = t.dataTitle;
       $('exportLabel').textContent = t.exportBtn;
       $('importLabel').textContent = t.importBtn;
-      $('dataTitle').textContent = state.lang === 'zh' ? '数据管理' : 'Data';
+      $('dataHint').textContent = t.dataHint;
       /* Offline panel i18n */
       $('offlineTitle').textContent = t.offlineTitle;
       $('offlineDesc').textContent = t.offlineDesc;
-      $('offlineFeat1').innerHTML = t.offlineFeat1;
-      $('offlineFeat2').innerHTML = t.offlineFeat2;
-      $('offlineFeat3').innerHTML = t.offlineFeat3;
-      $('offlineExportLabel').textContent = t.exportBtn;
-      $('offlineImportLabel').textContent = t.importBtn;
     }
 
     /* ── Tab switching with sliding indicator ── */
@@ -1127,7 +1111,8 @@
     /* ── Logged-in profile view ── */
     function showProfile(auth){
       $('authPanel').style.display = 'none';
-      $('profilePanel').style.display = 'block';
+      $('offlinePanel').style.display = 'none';
+      $('profilePanel').style.display = 'flex';
       const name = auth.username || 'User';
       $('profileAvatar').textContent = name.charAt(0).toUpperCase();
       $('profileName').textContent = name;
@@ -1137,8 +1122,8 @@
     function handleLogout(){
       if(!confirm(state.t.logoutConfirm)) return;
       clearAuth();
-      $('authPanel').style.display = 'block';
       $('profilePanel').style.display = 'none';
+      $('authPanel').style.display = 'block';
       switchTab('login');
     }
 
@@ -1182,6 +1167,7 @@
       $('authPanel').style.display = 'none';
       $('profilePanel').style.display = 'none';
       $('offlinePanel').style.display = 'block';
+      $('accountCard').style.display = 'block';
     }
 
     /* ── Learning Report ── */
