@@ -72,6 +72,12 @@ module.exports = async (req, res) => {
     const { action, username, password } = req.body || {};
     const u = normalizeUsername(username);
 
+    // Health-check probe — does a real DB query to confirm backend is fully operational
+    if (action === 'ping') {
+      await queryOne('SELECT 1');
+      return res.status(200).json({ ok: true, message: 'pong' });
+    }
+
     if (action === 'register') {
       if (!validateUsername(u)) {
         return res.status(400).json({ ok: false, message: 'Username must be 5–30 characters (letters, digits, underscore).' });

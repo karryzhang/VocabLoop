@@ -4296,16 +4296,18 @@ new Vue({
         },
         async checkBackend() {
             try {
+                // Use 'ping' action — does a real DB query to confirm full backend health.
+                // Empty-body probe was misleading: it bypassed the DB and falsely showed
+                // backendAvailable=true even when TURSO_DATABASE_URL was not configured.
                 const res = await fetch('/api/auth', {
                     method: 'POST',
                     headers: { 'content-type': 'application/json' },
-                    body: '{}',
+                    body: JSON.stringify({ action: 'ping' }),
                 });
                 const ct = (res.headers.get('content-type') || '');
                 if (ct.includes('application/json') || ct.includes('text/json')) {
-                    // Verify response body has expected backend signature
                     const data = await res.json();
-                    this.backendAvailable = !!(data && typeof data.ok === 'boolean' && typeof data.message === 'string');
+                    this.backendAvailable = !!(data && data.ok === true && data.message === 'pong');
                 } else {
                     this.backendAvailable = false;
                 }

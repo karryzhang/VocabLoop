@@ -875,14 +875,15 @@
     /* ── Backend detection ── */
     async function checkBackend(){
       try{
-        const res = await fetch(
-          window.location.pathname.replace(/account\.html.*$/, '') + 'api/auth',
-          { method:'POST', headers:{'content-type':'application/json'}, body:'{}' }
-        );
+        const base = window.location.pathname.replace(/account\.html.*$/, '');
+        const res = await fetch(base + 'api/auth', {
+          method:'POST', headers:{'content-type':'application/json'},
+          body: JSON.stringify({ action: 'ping' }),
+        });
         const ct = (res.headers.get('content-type') || '');
         if(ct.includes('application/json') || ct.includes('text/json')){
           const data = await res.json();
-          return !!(data && typeof data.ok === 'boolean' && typeof data.message === 'string');
+          return !!(data && data.ok === true && data.message === 'pong');
         }
       }catch(_){}
       return false;
