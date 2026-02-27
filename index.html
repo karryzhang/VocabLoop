@@ -567,6 +567,45 @@
             text-align: right;
             white-space: nowrap;
         }
+        /* Daily goal row (above progress bar) */
+        .goal-row {
+            display: flex; align-items: center; gap: 10px;
+            width: 100%; margin-bottom: 6px;
+        }
+        .goal-ring-wrap {
+            position: relative; width: 38px; height: 38px; flex-shrink: 0;
+        }
+        .goal-ring-svg { width: 38px; height: 38px; transform: rotate(-90deg); }
+        .goal-ring-bg  { fill: none; stroke: var(--border); stroke-width: 3; }
+        .goal-ring-fill { fill: none; stroke-width: 3; stroke-linecap: round;
+            transition: stroke-dashoffset .6s cubic-bezier(.4,0,.2,1); }
+        .goal-ring-center {
+            position: absolute; inset: 0; display: flex; align-items: center;
+            justify-content: center; font-size: 0.6rem; font-weight: 800; color: var(--text);
+        }
+        .goal-info { flex: 1; display: flex; flex-direction: column; gap: 1px; }
+        .goal-title {
+            font-size: 0.78rem; font-weight: 700; color: var(--text); line-height: 1.2;
+        }
+        .goal-detail {
+            font-size: 0.68rem; color: var(--muted); line-height: 1.2;
+        }
+        .goal-detail strong { color: var(--blue); }
+        /* Done screen: daily goal hero */
+        .done-goal {
+            display: flex; align-items: center; gap: 14px;
+            width: 100%; max-width: 380px;
+            padding: 14px 18px; border-radius: 16px;
+            background: var(--surface); border: 1.5px solid var(--border);
+        }
+        .done-goal-ring { position: relative; width: 56px; height: 56px; flex-shrink: 0; }
+        .done-goal-ring svg { width: 56px; height: 56px; transform: rotate(-90deg); }
+        .done-goal-ring .goal-ring-bg  { stroke-width: 4; }
+        .done-goal-ring .goal-ring-fill { stroke-width: 4; }
+        .done-goal-ring .goal-ring-center { font-size: 0.88rem; }
+        .done-goal-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+        .done-goal-title { font-size: 0.95rem; font-weight: 800; color: var(--text); }
+        .done-goal-sub { font-size: 0.76rem; color: var(--muted); }
 
         /* card wrapper */
         .card-wrap {
@@ -2308,20 +2347,32 @@
             </div>
         </div>
 
+        <!-- Daily goal hero -->
+        <div class="done-goal">
+            <div class="done-goal-ring">
+                <svg viewBox="0 0 56 56">
+                    <circle class="goal-ring-bg" cx="28" cy="28" r="23" />
+                    <circle class="goal-ring-fill" cx="28" cy="28" r="23"
+                            :stroke="dailyGoalPct >= 100 ? 'var(--green)' : 'var(--blue)'"
+                            stroke-dasharray="144.5"
+                            :stroke-dashoffset="144.5 - 144.5 * Math.min(1, dailyGoalPct / 100)" />
+                </svg>
+                <div class="goal-ring-center">{{dailyGoalPct >= 100 ? '✓' : Math.round(dailyGoalPct) + '%'}}</div>
+            </div>
+            <div class="done-goal-info">
+                <div class="done-goal-title">
+                    {{dailyGoalPct >= 100 ? ui.goalComplete : ui.goalTitle}}
+                </div>
+                <div class="done-goal-sub">
+                    {{ui.goalNew}} <strong>{{todayLearnedCount}}</strong>/{{MAX_NEW_DAY}}
+                    · {{ui.goalCorrect}} <strong>{{sessionCorrect}}</strong>
+                    · {{ui.doneMastered}} <strong>{{masteredCount}}</strong>
+                </div>
+            </div>
+        </div>
+
         <!-- Stats grid -->
         <div class="done-stats">
-            <div class="done-stat">
-                <div class="done-stat-val">{{todayLearnedCount}}</div>
-                <div class="done-stat-label">{{ui.doneTodayLearned}}</div>
-            </div>
-            <div class="done-stat">
-                <div class="done-stat-val">{{sessionCorrect}}</div>
-                <div class="done-stat-label">{{ui.doneSessionCorrect}}</div>
-            </div>
-            <div class="done-stat">
-                <div class="done-stat-val">{{masteredCount}}</div>
-                <div class="done-stat-label">{{ui.doneMastered}}</div>
-            </div>
             <div class="done-stat">
                 <div class="done-stat-val">{{dailyStreak}}</div>
                 <div class="done-stat-label">{{ui.doneDailyStreak}}</div>
@@ -2439,7 +2490,25 @@
 
         <!-- Card view -->
         <template v-else>
-        <!-- Progress -->
+        <!-- Daily goal + progress -->
+        <div class="goal-row">
+            <div class="goal-ring-wrap">
+                <svg class="goal-ring-svg" viewBox="0 0 38 38">
+                    <circle class="goal-ring-bg" cx="19" cy="19" r="15" />
+                    <circle class="goal-ring-fill" cx="19" cy="19" r="15"
+                            :stroke="dailyGoalPct >= 100 ? 'var(--green)' : 'var(--blue)'"
+                            stroke-dasharray="94.2"
+                            :stroke-dashoffset="94.2 - 94.2 * Math.min(1, dailyGoalPct / 100)" />
+                </svg>
+                <div class="goal-ring-center">{{Math.min(todayLearnedCount, MAX_NEW_DAY)}}/{{MAX_NEW_DAY}}</div>
+            </div>
+            <div class="goal-info">
+                <div class="goal-title">{{ui.goalTitle}}</div>
+                <div class="goal-detail">
+                    <strong>{{todayLearnedCount}}</strong> {{ui.goalNew}} · <strong>{{sessionCorrect}}</strong> {{ui.goalCorrect}}
+                </div>
+            </div>
+        </div>
         <div class="prog-row">
             <div class="prog-track">
                 <div class="prog-fill" :style="{width: sessionPct + '%'}"></div>
@@ -3061,6 +3130,17 @@ const STRINGS = {
     lpReading:  '阅读',
     lpNextStep: '下一步',
     lpStep3:    '第三步',
+    // Daily goal
+    goalTitle:    '今日目标',
+    goalComplete: '今日目标已达成！',
+    goalNew:      '新学',
+    goalCorrect:  '答对',
+    goalMilestones: {
+        5:  '🌱 已学 5 个新词，加油！',
+        10: '⭐ 已学 10 个新词，半程达成！',
+        15: '🔥 已学 15 个新词，冲刺最后 5 个！',
+        20: '🎉 今日 20 词目标达成！太棒了！',
+    },
     pwaAndroidDesc: '添加到主屏幕，随时随地刷词', pwaAndroidInstall: '安装', pwaAndroidDismiss: '关闭',
     pwaIOSTitle: '添加 VocabLoop 到主屏幕', pwaIOSDesc: '像 App 一样随时打开，无需浏览器',
     pwaIOSStep1: '点击底部工具栏的 <em>分享</em> 按钮',
@@ -3232,6 +3312,17 @@ const STRINGS = {
     lpReading:  'Reading',
     lpNextStep: 'Next',
     lpStep3:    'Step 3',
+    // Daily goal
+    goalTitle:    'Daily Goal',
+    goalComplete: 'Daily goal reached!',
+    goalNew:      'new',
+    goalCorrect:  'correct',
+    goalMilestones: {
+        5:  '🌱 5 new words down, keep going!',
+        10: '⭐ 10 new words — halfway there!',
+        15: '🔥 15 new words — last 5 to go!',
+        20: '🎉 Daily goal of 20 words complete!',
+    },
     pwaAndroidDesc: 'Add to home screen for quick access', pwaAndroidInstall: 'Install', pwaAndroidDismiss: 'Dismiss',
     pwaIOSTitle: 'Add VocabLoop to Home Screen', pwaIOSDesc: 'Open it like an app — no browser needed',
     pwaIOSStep1: 'Tap the <em>Share</em> button in the toolbar',
@@ -3509,6 +3600,7 @@ new Vue({
     el: '#app',
     data() {
         return {
+            MAX_NEW_DAY,
             decks:        DECKS,
             currentDeck:  DECKS[0],
             loading:      true,
@@ -3625,6 +3717,9 @@ new Vue({
         todayLearnedCount() {
             const tdy = today();
             return Object.values(this.state).filter(s => s && s.firstSeen === tdy).length;
+        },
+        dailyGoalPct() {
+            return Math.round(this.todayLearnedCount / MAX_NEW_DAY * 100);
         },
         sessionDone() { return !this.loading && this.queue.length === 0; },
         cur()  { return this.slideshowWord || this.queue[0] || { word: '', zh: '', pos: '' }; },
@@ -4448,6 +4543,15 @@ new Vue({
                 if (!this.state[mKey]) {
                     this.$set(this.state, mKey, 1);
                     setTimeout(() => this.showToast(UI.mastered(mc), 'bonus'), 800);
+                }
+            }
+
+            // Daily goal milestone (only when a new word was just introduced)
+            if (s.firstSeen === tdy && s.reps <= 1) {
+                const lc = this.todayLearnedCount;
+                const goalMsg = UI.goalMilestones && UI.goalMilestones[lc];
+                if (goalMsg) {
+                    setTimeout(() => this.showToast(goalMsg, 'bonus'), 600);
                 }
             }
 
