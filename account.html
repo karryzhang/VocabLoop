@@ -746,6 +746,7 @@
         aiInsightNoChange:'No new progress',
         aiInsightCooldown:(h,m)=>h>0?`Update in ${h}h ${m}m`:`Update in ${m}m`,
         aiInsightLastGen:(s)=>`Generated: ${s}`,
+        aiInsightRetry:'Retry',
       },
       zh: {
         back:'← 返回首页', theme:'🌓 主题', title:'账户',
@@ -807,6 +808,7 @@
         aiInsightNoChange:'进度未变更',
         aiInsightCooldown:(h,m)=>h>0?`${h}h ${m}m 后可更新`:`${m}m 后可更新`,
         aiInsightLastGen:(s)=>`上次生成：${s}`,
+        aiInsightRetry:'重试',
       }
     };
 
@@ -1466,32 +1468,35 @@
       $('aiInsightSuggestTitle').textContent  = t.aiInsightSuggestTitle;
 
       const cache = getInsightCache();
+      btn.style.display = 'none'; // hidden by default; shown only when needed
+
       if (!cache) {
-        $('aiInsightBtnLabel').textContent = t.aiInsightBtn;
-        btn.disabled = false;
+        /* First time — auto-generate */
         statusEl.style.display = 'none';
+        generateInsight();
         return;
       }
-      /* Show cached result */
+
+      /* Always show cached result immediately */
       showInsightResult(cache.summary, cache.suggestions);
+      statusEl.textContent   = t.aiInsightLastGen(fmtTimeAgo(cache.ts));
+      statusEl.style.display = 'block';
 
       const cooldownLeft = INSIGHT_COOLDOWN_MS - (Date.now() - (cache.ts || 0));
       const dataChanged  = _currentInsightHash && _currentInsightHash !== cache.hash;
 
-      statusEl.textContent   = t.aiInsightLastGen(fmtTimeAgo(cache.ts));
-      statusEl.style.display = 'block';
-
       if (!dataChanged) {
-        btn.disabled = true;
-        $('aiInsightBtnLabel').textContent = t.aiInsightNoChange;
+        /* Nothing changed — keep cached result, button stays hidden */
       } else if (cooldownLeft > 0) {
-        btn.disabled = true;
+        /* Data changed but cooldown active — show timer button */
         const h = Math.floor(cooldownLeft / 3600000);
         const m = Math.ceil((cooldownLeft % 3600000) / 60000);
         $('aiInsightBtnLabel').textContent = t.aiInsightCooldown(h, m);
+        btn.disabled = true;
+        btn.style.display = '';
       } else {
-        btn.disabled = false;
-        $('aiInsightBtnLabel').textContent = t.aiInsightBtnRegen;
+        /* Data changed + cooldown expired — auto-regenerate */
+        generateInsight();
       }
     }
 
@@ -1511,7 +1516,8 @@
         if (cooldownLeft > 0) return;
       }
 
-      btn.disabled = true;
+      btn.style.display                   = 'none';
+      btn.disabled                        = true;
       $('aiInsightBody').style.display    = 'block';
       loadEl.style.display                = 'flex';
       $('aiInsightResult').style.display  = 'none';
@@ -1570,9 +1576,8 @@
         saveInsightCache(_currentInsightHash, data.summary, data.suggestions);
         showInsightResult(data.summary, data.suggestions);
 
-        /* After fresh generation: data is now in sync, disable until next change */
-        btn.disabled = true;
-        $('aiInsightBtnLabel').textContent = t.aiInsightNoChange;
+        /* Success — hide button, update status */
+        btn.style.display      = 'none';
         statusEl.textContent   = t.aiInsightLastGen(fmtTimeAgo(Date.now()));
         statusEl.style.display = 'block';
 
@@ -1580,8 +1585,10 @@
         loadEl.style.display = 'none';
         errEl.textContent    = t.aiInsightErr;
         errEl.style.display  = 'block';
+        /* Show retry button */
+        $('aiInsightBtnLabel').textContent = t.aiInsightRetry;
         btn.disabled = false;
-        $('aiInsightBtnLabel').textContent = t.aiInsightBtnRegen;
+        btn.style.display = '';
       }
     }
 
