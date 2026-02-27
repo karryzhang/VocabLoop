@@ -279,6 +279,30 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        /* ── Mini learning path strip (in-study) ─────────────── */
+        .lp-mini-strip {
+            display: flex; align-items: center; justify-content: center;
+            padding: 8px 20px 2px; gap: 0; flex-shrink: 0;
+        }
+        .lp-mini-node { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+        .lp-mini-circ {
+            width: 22px; height: 22px; border-radius: 50%;
+            border: 2px solid var(--border); background: var(--surface);
+            color: var(--muted); font-size: 0.65rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            transition: all .3s;
+        }
+        .lp-mini-lbl { font-size: 0.58rem; font-weight: 600; color: var(--muted); white-space: nowrap; }
+        .lp-mini-node.active .lp-mini-circ {
+            border-color: var(--blue); background: var(--blue); color: #fff;
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 16%, transparent);
+        }
+        .lp-mini-node.active .lp-mini-lbl { color: var(--blue); font-weight: 700; }
+        .lp-mini-seg {
+            flex: 1; height: 2px; background: var(--border); border-radius: 2px;
+            min-width: 44px; max-width: 90px; margin: 0 6px; margin-bottom: 16px;
+        }
+
         /* ── Learning path stepper ────────────── */
         .lp-stepper {
             display: flex; align-items: center; justify-content: center;
@@ -348,20 +372,47 @@
         .reading-stepper .lp-line    { min-width: 28px; max-width: 44px; height: 2px; margin-bottom: 18px; }
 
         /* ── Done screen ─────────────────────── */
+        @keyframes doneEnter {
+            from { opacity:0; transform: translateY(18px) scale(.97); }
+            to   { opacity:1; transform: none; }
+        }
+        @keyframes emojiBounce {
+            0%   { transform: scale(0.4) rotate(-15deg); opacity:0; }
+            55%  { transform: scale(1.18) rotate(6deg);  opacity:1; }
+            75%  { transform: scale(0.92) rotate(-3deg); }
+            90%  { transform: scale(1.04); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        @keyframes badgePop {
+            from { transform: scale(.7); opacity:0; }
+            to   { transform: scale(1); opacity:1; }
+        }
         .done-scr {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            padding: 28px 20px 36px;
-            gap: 18px;
+            padding: 24px 20px 36px;
+            gap: 16px;
             overflow-y: auto;
+            animation: doneEnter .45s cubic-bezier(.22,1,.36,1) both;
         }
         .done-header   { display: flex; flex-direction: column; align-items: center; gap: 5px; }
-        .done-emoji    { font-size: 3.6rem; line-height: 1; }
+        .done-emoji    { font-size: 3.6rem; line-height: 1; animation: emojiBounce .65s cubic-bezier(.22,1,.36,1) both; }
         .done-title    { font-size: 1.65rem; font-weight: 800; }
         .done-subtitle { font-size: 0.84rem; color: var(--muted); margin-top: 2px; }
+        /* Step badge */
+        .done-step-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: linear-gradient(135deg, color-mix(in srgb,var(--green) 14%,var(--surface)),
+                color-mix(in srgb,var(--blue) 8%,var(--surface)));
+            border: 1.5px solid var(--green); border-radius: 99px;
+            padding: 5px 14px; font-size: 0.78rem; font-weight: 700; color: var(--green);
+            animation: badgePop .4s .15s cubic-bezier(.34,1.56,.64,1) both;
+        }
+        /* Primary action glows on enter */
+        .done-action-primary { animation: doneEnter .5s .25s cubic-bezier(.22,1,.36,1) both; }
         .done-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -2040,6 +2091,9 @@
         <!-- Practice done screen -->
         <div v-if="practiceDone" class="prac-done">
 
+            <!-- Step badge -->
+            <div class="done-step-badge">✅ {{ui.lpPractice}} · {{ui.lpStepDone}}</div>
+
             <!-- Learning path stepper -->
             <div class="lp-stepper" style="animation: pracFadeUp .4s ease both">
                 <div class="lp-step done">
@@ -2320,6 +2374,18 @@
     <!-- Session Done -->
     <div v-else-if="sessionDone" class="done-scr">
 
+        <!-- Header: emoji + title + step badge -->
+        <div class="done-header">
+            <div class="done-emoji">🎉</div>
+            <div class="done-title">{{ui.doneTitle}}</div>
+            <div class="done-subtitle">
+                {{dailyStreak >= 3 ? '🔥 ' + dailyStreak + (LANG==='zh' ? ' 天连续学习，太棒了！' : '-day streak, keep it up!') : ui.doneSubtitle}}
+            </div>
+        </div>
+
+        <!-- Step badge: Step 1 complete -->
+        <div class="done-step-badge">✅ {{ui.lpCards}} · {{ui.lpStepDone}}</div>
+
         <!-- Learning path stepper -->
         <div class="lp-stepper">
             <div class="lp-step done">
@@ -2338,13 +2404,35 @@
             </div>
         </div>
 
-        <!-- Header -->
-        <div class="done-header">
-            <div class="done-emoji">🎉</div>
-            <div class="done-title">{{ui.doneTitle}}</div>
-            <div class="done-subtitle">
-                {{dailyStreak >= 3 ? '🔥 ' + dailyStreak + (LANG==='zh' ? ' 天连续学习，太棒了！' : '-day streak, keep it up!') : ui.doneSubtitle}}
-            </div>
+        <!-- Action cards — placed first so practice CTA is immediately visible -->
+        <div class="done-actions">
+            <!-- Primary: Practice (next step) -->
+            <button class="done-action done-action-primary" @click="startPractice">
+                <span class="done-action-icon">✏️</span>
+                <div class="done-action-text">
+                    <span class="done-action-title">{{ui.lpNextStep}} · {{ui.practiceBtn}}</span>
+                    <span class="done-action-hint">{{ui.donePracticeHint}}</span>
+                </div>
+                <span class="done-action-arrow">›</span>
+            </button>
+            <!-- Secondary: Story (step 3 preview) -->
+            <button class="done-action done-action-secondary" @click="openReading">
+                <span class="done-action-icon">📖</span>
+                <div class="done-action-text">
+                    <span class="done-action-title">{{ui.lpStep3}} · {{ui.readingBtn}}</span>
+                    <span class="done-action-hint">{{ui.doneStoryHint}}</span>
+                </div>
+                <span class="done-action-arrow">›</span>
+            </button>
+            <!-- Tertiary: Study more -->
+            <button class="done-action done-action-tertiary" @click="loadMore">
+                <span class="done-action-icon">📚</span>
+                <div class="done-action-text">
+                    <span class="done-action-title">{{ui.doneContinue}}</span>
+                    <span class="done-action-hint">{{ui.doneContinueHint}}</span>
+                </div>
+                <span class="done-action-arrow">›</span>
+            </button>
         </div>
 
         <!-- Daily goal hero -->
@@ -2397,37 +2485,6 @@
 
         <!-- Tomorrow forecast chip -->
         <div class="done-forecast">{{ui.doneTomorrow(tomorrowDueCount)}}</div>
-
-        <!-- Action cards -->
-        <div class="done-actions">
-            <!-- Primary: Practice (next step) -->
-            <button class="done-action done-action-primary" @click="startPractice">
-                <span class="done-action-icon">✏️</span>
-                <div class="done-action-text">
-                    <span class="done-action-title">{{ui.lpNextStep}} · {{ui.practiceBtn}}</span>
-                    <span class="done-action-hint">{{ui.donePracticeHint}}</span>
-                </div>
-                <span class="done-action-arrow">›</span>
-            </button>
-            <!-- Secondary: Story (step 3 preview) -->
-            <button class="done-action done-action-secondary" @click="openReading">
-                <span class="done-action-icon">📖</span>
-                <div class="done-action-text">
-                    <span class="done-action-title">{{ui.lpStep3}} · {{ui.readingBtn}}</span>
-                    <span class="done-action-hint">{{ui.doneStoryHint}}</span>
-                </div>
-                <span class="done-action-arrow">›</span>
-            </button>
-            <!-- Tertiary: Study more -->
-            <button class="done-action done-action-tertiary" @click="loadMore">
-                <span class="done-action-icon">📚</span>
-                <div class="done-action-text">
-                    <span class="done-action-title">{{ui.doneContinue}}</span>
-                    <span class="done-action-hint">{{ui.doneContinueHint}}</span>
-                </div>
-                <span class="done-action-arrow">›</span>
-            </button>
-        </div>
 
         <!-- Share pill — lightweight secondary action -->
         <button class="done-share-pill" @click="shareSession">
@@ -2490,6 +2547,23 @@
 
         <!-- Card view -->
         <template v-else>
+        <!-- Mini learning path: step 1 active during study -->
+        <div class="lp-mini-strip">
+            <div class="lp-mini-node active">
+                <div class="lp-mini-circ">1</div>
+                <div class="lp-mini-lbl">{{ui.lpCards}}</div>
+            </div>
+            <div class="lp-mini-seg"></div>
+            <div class="lp-mini-node">
+                <div class="lp-mini-circ">2</div>
+                <div class="lp-mini-lbl">{{ui.lpPractice}}</div>
+            </div>
+            <div class="lp-mini-seg"></div>
+            <div class="lp-mini-node">
+                <div class="lp-mini-circ">3</div>
+                <div class="lp-mini-lbl">{{ui.lpReading}}</div>
+            </div>
+        </div>
         <!-- Daily goal + progress -->
         <div class="goal-row">
             <div class="goal-ring-wrap">
@@ -3128,6 +3202,7 @@ const STRINGS = {
     lpCards:    '翻卡',
     lpPractice: '练习',
     lpReading:  '阅读',
+    lpStepDone: '完成！',
     lpNextStep: '下一步',
     lpStep3:    '第三步',
     // Daily goal
@@ -3310,6 +3385,7 @@ const STRINGS = {
     lpCards:    'Cards',
     lpPractice: 'Practice',
     lpReading:  'Reading',
+    lpStepDone: 'Done!',
     lpNextStep: 'Next',
     lpStep3:    'Step 3',
     // Daily goal
