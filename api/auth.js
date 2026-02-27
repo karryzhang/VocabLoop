@@ -69,7 +69,7 @@ module.exports = async (req, res) => {
       return res.status(429).json({ ok: false, message: 'Too many requests. Please try again later.' });
     }
 
-    const { action, username, password } = req.body || {};
+    const { action, username, password, idToken } = req.body || {};
     const u = normalizeUsername(username);
 
     // Health-check probe — does a real DB query to confirm backend is fully operational
@@ -108,6 +108,63 @@ module.exports = async (req, res) => {
       }
 
       return res.status(200).json({ ok: true, message: 'Login successful.', user: { username: u }, token: await createToken(u) });
+    }
+
+    if (action === 'google') {
+      if (!idToken) {
+        return res.status(400).json({ ok: false, message: 'Missing Google ID token.' });
+      }
+
+      // Verify the ID token via Google's tokeninfo endpoint (no extra npm package needed)
+      const googleRes = await fetch(
+        `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(idToken)}`
+      );
+      if (!googleRes.ok) {
+        return res.status(401).json({ ok: false, message: 'Invalid Google token.' });
+      }
+      const payload = await googleRes.json();
+
+      // Validate that the token was issued for our app
+      const expectedAud = process.env.GOOGLE_CLIENT_ID;
+      if (expectedAud && payload.aud !== expectedAud) {
+        return res.status(401).json({ ok: false, message: 'Token audience mismatch.' });
+      }
+
+      const googleSub = payload.sub;
+      if (!googleSub) {
+        return res.status(401).json({ ok: false, message: 'Unable to identify Google account.' });
+      }
+
+      // Look up existing user by Google sub
+      const existing = await queryOne('SELECT username FROM users WHERE google_sub = ?', [googleSub]);
+      if (existing) {
+        return res.status(200).json({
+          ok: true, message: 'Login successful.',
+          user: { username: existing.username }, token: await createToken(existing.username),
+        });
+      }
+
+      // New Google user — derive a unique username from their email
+      const email = payload.email || '';
+      let base = email.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '').toLowerCase();
+      if (base.length < 5) base = (base + 'user0').slice(0, 8);
+      if (base.length > 25) base = base.slice(0, 25);
+
+      let candidate = base;
+      for (let i = 1; i <= 999; i++) {
+        const taken = await queryOne('SELECT 1 FROM users WHERE username = ?', [candidate]);
+        if (!taken) break;
+        candidate = base + i;
+      }
+
+      await execute(
+        'INSERT INTO users (username, salt, hash, google_sub, created_at) VALUES (?, ?, ?, ?, ?)',
+        [candidate, 'google', '', googleSub, Date.now()]
+      );
+      return res.status(200).json({
+        ok: true, message: 'Account created via Google.',
+        user: { username: candidate }, token: await createToken(candidate),
+      });
     }
 
     return res.status(400).json({ ok: false, message: 'Unsupported action. Use register or login.' });

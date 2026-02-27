@@ -60,8 +60,9 @@ async function initDb() {
     )`,
     `CREATE TABLE IF NOT EXISTS users (
       username   TEXT PRIMARY KEY COLLATE NOCASE,
-      salt       TEXT NOT NULL,
-      hash       TEXT NOT NULL,
+      salt       TEXT NOT NULL DEFAULT '',
+      hash       TEXT NOT NULL DEFAULT '',
+      google_sub TEXT,
       created_at INTEGER NOT NULL
     )`,
     `CREATE TABLE IF NOT EXISTS sync_data (
@@ -71,6 +72,10 @@ async function initDb() {
       FOREIGN KEY (username) REFERENCES users(username)
     )`,
   ], 'write');
+  // Migration: add google_sub to existing databases (no-op if already present)
+  try {
+    await getClient().execute('ALTER TABLE users ADD COLUMN google_sub TEXT');
+  } catch (_) { /* column already exists — ignore */ }
   _initialized = true;
 }
 

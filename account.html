@@ -90,6 +90,11 @@
     }
     .toggle-eye:hover{color:var(--ink)}
 
+    /* ── Google Sign-In divider + button ── */
+    .g-divider{display:flex;align-items:center;gap:10px;margin:18px 0 14px;color:var(--muted);font-size:0.8rem}
+    .g-divider::before,.g-divider::after{content:'';flex:1;height:1px;background:var(--line)}
+    .g-btn-wrap{display:flex;justify-content:center;min-height:44px}
+
     /* ── Password strength meter ── */
     .strength-bar{height:4px;border-radius:2px;background:var(--line);margin-top:6px;overflow:hidden}
     .strength-fill{height:100%;width:0;border-radius:2px;transition:width .3s ease,background .3s ease}
@@ -422,6 +427,7 @@
       .stage-chart-wrap{flex-direction:column;align-items:stretch}
     }
   </style>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
   <div class="wrap">
@@ -511,6 +517,10 @@
             </form>
           </div>
         </div>
+
+        <!-- Google Sign-In (shared — works for both register & login) -->
+        <div class="g-divider"><span id="orText">or</span></div>
+        <div class="g-btn-wrap" id="googleBtnWrap"></div>
 
         <div id="msg" class="msg"><span class="msg-icon"></span><span class="msg-text"></span></div>
       </div>
@@ -704,6 +714,8 @@
         registerOk:'Account created. You are now logged in!',
         registerTaken:'This username is already taken. Try another one, or login directly.',
         registerFail:'Register failed. Please try again.',
+        orContinue:'or continue with',
+        googleFail:'Google sign-in failed. Please try again.',
         loginOk:(u)=>`Welcome back, ${u}!`,
         loginFail:'Login failed. Please check username/password and try again.',
         network:'Network issue. Please retry in a moment.',
@@ -766,6 +778,8 @@
         registerOk:'注册成功，已自动登录！',
         registerTaken:'该用户名已存在，建议更换或直接登录。',
         registerFail:'注册失败，请稍后重试。',
+        orContinue:'或使用以下方式继续',
+        googleFail:'Google 登录失败，请重试。',
         loginOk:(u)=>`欢迎回来，${u}！`,
         loginFail:'登录失败，请检查用户名或密码。',
         network:'网络异常，请稍后重试。',
@@ -858,6 +872,8 @@
       rUser.placeholder = t.phUser; rPass.placeholder = t.phPass; rPass2.placeholder = t.phPass2;
       $('lUser').placeholder = t.loginUser;
       $('lPass').placeholder = t.loginPass;
+      $('orText').textContent = t.orContinue;
+      renderGoogleBtn();
       $('logoutBtn').textContent = t.logout;
       /* Bottom data card */
       $('dataTitle').textContent = t.dataTitle;
@@ -1189,6 +1205,52 @@
         method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(payload)
       });
       return r.json();
+    }
+
+    /* ── Google Sign-In ── */
+    const GOOGLE_CLIENT_ID = '305846841480-tr0fkjuhc9ohpto289vgsnlgg7qe81ea.apps.googleusercontent.com';
+
+    function renderGoogleBtn() {
+      const wrap = $('googleBtnWrap');
+      if (!wrap || !window.google) return;
+      wrap.innerHTML = '';
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleGoogleCredential,
+        auto_select: false,
+        cancel_on_tap_outside: true,
+      });
+      google.accounts.id.renderButton(wrap, {
+        theme: isDark ? 'filled_black' : 'outline',
+        size: 'large',
+        width: 300,
+        text: 'continue_with',
+      });
+    }
+
+    async function handleGoogleCredential(response) {
+      setMsg('', '');
+      try {
+        const data = await callAuth({ action: 'google', idToken: response.credential });
+        if (data.ok) {
+          saveAuth(data.user, data.token);
+          setMsg(state.t.loginOk(data.user?.username || 'user'), 'ok');
+          showSuccessAndRedirect();
+        } else {
+          setMsg(data.message || state.t.googleFail, 'err');
+        }
+      } catch (_) {
+        setMsg(state.t.network, 'err');
+      }
+    }
+
+    // Initialise once the GIS script has loaded
+    if (window.google) {
+      renderGoogleBtn();
+    } else {
+      const gisScript = document.querySelector('script[src*="accounts.google.com/gsi"]');
+      if (gisScript) gisScript.addEventListener('load', renderGoogleBtn);
     }
 
     /* ── Register ── */
