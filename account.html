@@ -357,6 +357,37 @@
     .overall-info-title{font-size:.82rem;font-weight:700;color:var(--ink);margin-bottom:2px}
     .overall-info-sub{font-size:.75rem;color:var(--muted);line-height:1.4}
 
+    /* ── AI Insight section ─────────────────────────────────── */
+    .ai-insight-section{margin-top:16px;border-radius:16px;overflow:hidden;
+      border:1.5px solid color-mix(in srgb, var(--pri) 28%, var(--line));
+      animation:rptFadeUp .5s .45s ease both}
+    .ai-insight-header{display:flex;align-items:center;justify-content:space-between;
+      padding:14px 16px;
+      background:linear-gradient(135deg,color-mix(in srgb, var(--pri) 7%,transparent),
+        color-mix(in srgb,#8b5cf6 5%,transparent))}
+    .ai-insight-title{font-size:.9rem;font-weight:800;color:var(--pri);display:flex;align-items:center;gap:6px}
+    .ai-insight-btn{border:1.5px solid var(--pri);background:var(--pri);color:#fff;border-radius:99px;
+      padding:7px 16px;font-size:.8rem;font-weight:700;cursor:pointer;transition:opacity .15s,transform .1s;
+      white-space:nowrap}
+    .ai-insight-btn:hover{opacity:.85;transform:scale(1.03)}
+    .ai-insight-btn:active{transform:scale(.96)}
+    .ai-insight-btn:disabled{opacity:.5;cursor:default;transform:none}
+    .ai-insight-body{padding:0 16px 16px}
+    .ai-insight-loading{display:flex;align-items:center;gap:8px;font-size:.84rem;color:var(--muted);padding:12px 0}
+    .ai-insight-spinner{width:16px;height:16px;border:2px solid var(--line);border-top-color:var(--pri);
+      border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0}
+    .ai-insight-summary{font-size:.88rem;line-height:1.7;color:var(--ink);margin:12px 0 14px;
+      padding:12px 14px;border-radius:12px;
+      background:color-mix(in srgb, var(--pri) 5%, transparent);
+      border-left:3px solid color-mix(in srgb, var(--pri) 60%, transparent)}
+    .ai-insight-suggest-title{font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+      color:var(--muted);margin-bottom:8px}
+    .ai-insight-suggest-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+    .ai-insight-suggest-list li{display:flex;align-items:flex-start;gap:8px;font-size:.86rem;
+      line-height:1.55;color:var(--ink)}
+    .ai-insight-suggest-list li::before{content:'→';color:var(--pri);font-weight:800;flex-shrink:0;margin-top:1px}
+    .ai-insight-err{color:var(--err);font-size:.83rem;padding:10px 0}
+
     /* ── Share progress banner ─────────────────────────────────── */
     .share-progress{margin-top:20px;padding-top:18px;border-top:1px solid var(--line);
       display:flex;flex-direction:column;align-items:center;gap:14px;
@@ -581,6 +612,28 @@
         </div>
       </div>
 
+      <!-- AI Learning Insights -->
+      <div class="ai-insight-section" id="aiInsightSection" style="display:none">
+        <div class="ai-insight-header">
+          <div class="ai-insight-title">✨ <span id="aiInsightTitle">AI 学习洞察</span></div>
+          <button class="ai-insight-btn" id="aiInsightBtn" onclick="generateInsight()">
+            <span id="aiInsightBtnLabel">生成建议</span>
+          </button>
+        </div>
+        <div class="ai-insight-body" id="aiInsightBody" style="display:none">
+          <div class="ai-insight-loading" id="aiInsightLoading" style="display:none">
+            <div class="ai-insight-spinner"></div>
+            <span id="aiInsightLoadingText">AI 分析中…</span>
+          </div>
+          <div id="aiInsightResult" style="display:none">
+            <div class="ai-insight-summary" id="aiInsightSummary"></div>
+            <div class="ai-insight-suggest-title" id="aiInsightSuggestTitle">学习建议</div>
+            <ul class="ai-insight-suggest-list" id="aiInsightSuggestions"></ul>
+          </div>
+          <div class="ai-insight-err" id="aiInsightErr" style="display:none"></div>
+        </div>
+      </div>
+
       <!-- Share progress banner -->
       <div class="share-progress" id="shareProgress" style="display:none">
         <div style="width:100%">
@@ -681,6 +734,13 @@
         shareHint:'Show your progress to friends ✨',
         shareCopied:'Copied ✓',
         shareCopyFallback:'Copy to share:',
+        /* AI Insight */
+        aiInsightTitle:'AI Learning Insights',
+        aiInsightBtn:'Generate Insights',
+        aiInsightBtnRegen:'Regenerate',
+        aiInsightLoading:'Analyzing your progress…',
+        aiInsightSuggestTitle:'Study Tips',
+        aiInsightErr:'Failed to generate insights. Please try again.',
       },
       zh: {
         back:'← 返回首页', theme:'🌓 主题', title:'账户',
@@ -732,6 +792,13 @@
         shareHint:'让朋友见证你的成长 ✨',
         shareCopied:'已复制 ✓',
         shareCopyFallback:'复制以下内容分享：',
+        /* AI Insight */
+        aiInsightTitle:'AI 学习洞察',
+        aiInsightBtn:'生成建议',
+        aiInsightBtnRegen:'重新生成',
+        aiInsightLoading:'AI 分析中…',
+        aiInsightSuggestTitle:'学习建议',
+        aiInsightErr:'生成失败，请重试。',
       }
     };
 
@@ -1348,6 +1415,103 @@
       }
     }
 
+    /* ── AI Learning Insights ── */
+    let _insightGenerated = false;
+
+    async function generateInsight() {
+      const t = state.t;
+      const btn   = $('aiInsightBtn');
+      const body  = $('aiInsightBody');
+      const loadEl = $('aiInsightLoading');
+      const result = $('aiInsightResult');
+      const errEl  = $('aiInsightErr');
+
+      btn.disabled = true;
+      body.style.display = 'block';
+      loadEl.style.display = 'flex';
+      result.style.display = 'none';
+      errEl.style.display  = 'none';
+
+      try {
+        /* Collect the same stats as renderReport() */
+        const globalState = (() => {
+          try { return JSON.parse(localStorage.getItem('srs_global_v1') || '{}'); } catch(e) { return {}; }
+        })();
+        const totals = await fetchDeckTotals();
+        const decks = [];
+        const stages = { new: 0, learning: 0, review: 0, mastered: 0 };
+        const difficultWords = [];
+        let allStudied = 0, allMastered = 0, totalWords = 0;
+
+        for (const d of DECK_META) {
+          const words = getDeckWords(d.id);
+          const total = totals[d.id] || 0;
+          totalWords += total;
+          let studied = 0, mastered = 0;
+          for (const [w, s] of Object.entries(words)) {
+            if (w.startsWith('_')) continue;
+            if (!s || !s.stage) continue;
+            if (s.stage !== 'new') studied++;
+            if (s.stage === 'mastered') mastered++;
+            if (s.stage === 'new') stages.new++;
+            else if (s.stage === 'learning' || s.stage === 'relearn' || s.stage === 'young') stages.learning++;
+            else if (s.stage === 'mature') stages.review++;
+            else if (s.stage === 'mastered') stages.mastered++;
+            if ((s.againCount || 0) >= 2 && s.stage !== 'mastered') {
+              difficultWords.push({ word: w, againCount: s.againCount });
+            }
+          }
+          allStudied  += studied;
+          allMastered += mastered;
+          const unseenNew = Math.max(0, total - Object.keys(words).filter(k => !k.startsWith('_')).length);
+          stages.new += unseenNew;
+          decks.push({ name: d.name, total, studied, mastered });
+        }
+        difficultWords.sort((a, b) => b.againCount - a.againCount);
+
+        const base = window.location.pathname.replace(/account\.html.*$/, '');
+        const res = await fetch(base + 'api/insight', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            lang:          state.lang,
+            studied:       allStudied,
+            mastered:      allMastered,
+            total:         totalWords,
+            streak:        globalState.dailyStreak   || 0,
+            reviewedTotal: globalState.totalReviewed || 0,
+            decks,
+            stages,
+            difficultWords: difficultWords.slice(0, 5),
+          })
+        });
+
+        loadEl.style.display = 'none';
+
+        if (!res.ok) throw new Error('API error');
+        const data = await res.json();
+
+        $('aiInsightSummary').textContent = data.summary || '';
+        const ul = $('aiInsightSuggestions');
+        ul.innerHTML = '';
+        (data.suggestions || []).forEach(s => {
+          const li = document.createElement('li');
+          li.textContent = s;
+          ul.appendChild(li);
+        });
+        result.style.display = 'block';
+
+        $('aiInsightBtnLabel').textContent = t.aiInsightBtnRegen;
+        _insightGenerated = true;
+      } catch(e) {
+        loadEl.style.display = 'none';
+        errEl.textContent    = t.aiInsightErr;
+        errEl.style.display  = 'block';
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
     async function renderReport(){
       const t = state.t;
       /* i18n labels */
@@ -1410,6 +1574,7 @@
         $('stageSection').style.display = 'none';
         $('difficultSection').style.display = 'none';
         $('achieveSection').style.display = 'none';
+        $('aiInsightSection').style.display = 'none';
         /* Insert empty state if not already there */
         let emptyEl = $('reportEmpty');
         if(!emptyEl){
@@ -1592,6 +1757,13 @@
       };
       updateShareBanner();
       $('shareProgress').style.display = '';
+
+      /* ── AI Insight section ── */
+      $('aiInsightSection').style.display = '';
+      $('aiInsightTitle').textContent     = t.aiInsightTitle;
+      $('aiInsightBtnLabel').textContent  = _insightGenerated ? t.aiInsightBtnRegen : t.aiInsightBtn;
+      $('aiInsightLoadingText').textContent = t.aiInsightLoading;
+      $('aiInsightSuggestTitle').textContent = t.aiInsightSuggestTitle;
     }
 
     /* ── Init ── */
