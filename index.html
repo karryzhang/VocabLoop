@@ -1496,6 +1496,19 @@
         .prac-cmp-correct-text { font-size: 1.3rem; font-weight: 800; letter-spacing: 0.04em; }
         .prac-cmp-ch-ok  { color: var(--green); }
         .prac-cmp-ch-bad { color: var(--red); text-decoration: underline; text-decoration-style: wavy; }
+        .prac-cmp-sentence {
+            font-size: 0.84rem; color: var(--text); opacity: 0.75; line-height: 1.55;
+            font-style: italic; padding-top: 8px; margin-top: 2px;
+            border-top: 1px solid color-mix(in srgb, var(--red) 15%, transparent);
+        }
+        .prac-cmp-next-btn {
+            margin-top: 4px; width: 100%; padding: 10px 16px; border-radius: 12px;
+            border: none; cursor: pointer; background: var(--blue); color: #fff;
+            font-size: 0.9rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            transition: transform 0.1s, opacity 0.15s;
+        }
+        .prac-cmp-next-btn:active { transform: scale(0.98); opacity: 0.85; }
 
         /* Card slide transition */
         .prac-q-enter-active { transition: opacity 0.22s ease, transform 0.22s ease; }
@@ -2444,11 +2457,11 @@
                 <button v-if="!practiceAnswered"
                         class="prac-submit-btn"
                         @click="submitPracticeAnswer(practiceInput)">{{ui.practiceSubmit}}</button>
-                <!-- Enhanced wrong-answer comparison: your answer ↔ correct spelling with char diff -->
+                <!-- Wrong-answer comparison: your answer ↔ correct spelling with char diff -->
                 <div v-if="practiceAnswered && practiceResult === 'wrong'" class="prac-spell-cmp">
                     <div class="prac-cmp-row">
                         <span class="prac-cmp-label">{{ui.practiceYourAns}}</span>
-                        <span class="prac-cmp-wrong-text">{{practiceInput}}</span>
+                        <span class="prac-cmp-wrong-text">{{practiceInput || '—'}}</span>
                     </div>
                     <div class="prac-cmp-row">
                         <span class="prac-cmp-label">{{ui.practiceCorrectAns}}</span>
@@ -2456,6 +2469,14 @@
                             <span v-for="(c, i) in pracCorrectDiff" :key="i" :class="c.cls">{{c.char}}</span>
                         </span>
                     </div>
+                    <!-- Cloze: show the full correct sentence so user sees word in context -->
+                    <div v-if="practiceCurrent.type === 'cloze'" class="prac-cmp-sentence">
+                        {{practiceCurrent.original}}
+                    </div>
+                    <!-- No auto-advance: user must tap to continue -->
+                    <button class="prac-cmp-next-btn" @click="nextPracticeQuestion()">
+                        {{ui.practiceGotIt}} ›
+                    </button>
                 </div>
                 <div v-if="practiceAnswered && practiceResult === 'correct' && practiceCurrent.type === 'cloze'" class="prac-cloze-reveal" style="margin-top:8px;font-size:0.9rem;color:var(--muted);">
                     {{practiceCurrent.original}}
@@ -3244,6 +3265,7 @@ const STRINGS = {
     practiceWrong:         '✗ 错误',
     practiceYourAns:       '你答：',
     practiceCorrectAns:    '正确答案：',
+    practiceGotIt:         '明白了，下一题',
     practiceDoneTitle:     '练习完成！',
     practiceDoneScore:     (c, t) => `答对 ${c} / ${t} 题`,
     practiceDoneBack:      '返回',
@@ -3429,6 +3451,7 @@ const STRINGS = {
     practiceWrong:         '✗ Wrong',
     practiceYourAns:       'Yours:',
     practiceCorrectAns:    'Correct: ',
+    practiceGotIt:         'Got it, Next',
     practiceDoneTitle:     'Practice Complete!',
     practiceDoneScore:     (c, t) => `${c} / ${t} correct`,
     practiceDoneBack:      'Back',
@@ -5538,10 +5561,14 @@ new Vue({
                 }
                 playFeedbackSound('wrong');
             }
-            // Auto-advance: correct 1.4s; wrong MC/TF 2.6s; wrong spelling/cloze/dictation 4s (needs time to study char diff)
+            // Auto-advance: correct 1.4s; wrong MC/TF 2.6s; wrong spelling/cloze/dictation → no timer, user taps "Next"
             const isTypingType = ['spelling', 'cloze', 'dictation'].includes(this.practiceCurrent.type);
             clearTimeout(this._practiceTimer);
-            this._practiceTimer = setTimeout(() => this.nextPracticeQuestion(), isCorrect ? 1400 : (isTypingType ? 4000 : 2600));
+            if (isCorrect) {
+                this._practiceTimer = setTimeout(() => this.nextPracticeQuestion(), 1400);
+            } else if (!isTypingType) {
+                this._practiceTimer = setTimeout(() => this.nextPracticeQuestion(), 2600);
+            }
         },
 
         nextPracticeQuestion() {
