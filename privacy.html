@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy · VocabLoop</title>
+  <style>
+    :root {
+      --bg: #f8fafc; --card: #fff; --ink: #0f172a; --muted: #64748b;
+      --border: #e2e8f0; --blue: #2563eb; --r: 14px;
+      --shadow: 0 4px 24px rgba(0,0,0,.07);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a; --card: #1e293b; --ink: #f1f5f9; --muted: #94a3b8;
+        --border: #334155; --blue: #60a5fa;
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg); color: var(--ink);
+      line-height: 1.75; font-size: 16px;
+      padding: 40px 16px 80px;
+    }
+    .wrap { max-width: 720px; margin: 0 auto; }
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 1.3rem; font-weight: 800; margin-bottom: 36px;
+      text-decoration: none; color: var(--ink);
+    }
+    .logo span { font-size: 1.6rem; }
+    h1 { font-size: 2rem; font-weight: 800; margin-bottom: 6px; }
+    .meta { color: var(--muted); font-size: 0.9rem; margin-bottom: 40px; }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 32px;
+      box-shadow: var(--shadow); margin-bottom: 20px;
+    }
+    h2 {
+      font-size: 1.1rem; font-weight: 700; margin-bottom: 12px;
+      color: var(--blue);
+    }
+    p { color: var(--muted); margin-bottom: 12px; }
+    p:last-child { margin-bottom: 0; }
+    ul { color: var(--muted); padding-left: 20px; margin-bottom: 12px; }
+    li { margin-bottom: 6px; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .footer {
+      text-align: center; color: var(--muted); font-size: 0.85rem;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="logo" href="index.html"><span>📖</span> VocabLoop</a>
+
+    <h1>Privacy Policy</h1>
+    <div class="meta">Last updated: February 27, 2026 &nbsp;·&nbsp; Effective immediately</div>
+
+    <div class="card">
+      <h2>1. Overview</h2>
+      <p>VocabLoop ("we", "our", "the app") is a vocabulary learning app that helps users master English words using spaced repetition. We take your privacy seriously and collect only what is necessary to provide the service.</p>
+    </div>
+
+    <div class="card">
+      <h2>2. Information We Collect</h2>
+      <p><strong>Account information</strong> — when you register, we collect a username and hashed password (we never store your plain-text password). If you sign in with Google, we receive your Google account ID and email address.</p>
+      <p><strong>Learning data</strong> — your vocabulary progress, review history, streaks, and achievements are stored locally in your browser and optionally synced to our servers so you can continue learning across devices.</p>
+      <p><strong>Usage data</strong> — we do not collect analytics, tracking cookies, or advertising identifiers.</p>
+    </div>
+
+    <div class="card">
+      <h2>3. How We Use Your Information</h2>
+      <ul>
+        <li>To create and authenticate your account</li>
+        <li>To sync your learning progress across devices</li>
+        <li>To generate personalised reading articles (using AI) based on words you've studied</li>
+      </ul>
+      <p>We do not sell, rent, or share your personal information with third parties for marketing purposes.</p>
+    </div>
+
+    <div class="card">
+      <h2>4. Third-Party Services</h2>
+      <p>VocabLoop uses the following third-party services:</p>
+      <ul>
+        <li><strong>Google Sign-In</strong> — optional authentication via <a href="https://policies.google.com/privacy" target="_blank">Google's Identity Services</a>. If you use this option, Google's privacy policy applies to that interaction.</li>
+        <li><strong>Free Dictionary API</strong> (<a href="https://dictionaryapi.dev" target="_blank">dictionaryapi.dev</a>) — used to fetch word definitions and pronunciation audio. No personal data is sent.</li>
+        <li><strong>Google Gemini / Anthropic Claude</strong> — used to generate reading articles. Only the list of vocabulary words (no personal data) is sent to generate content.</li>
+        <li><strong>Turso (SQLite cloud)</strong> — stores account and sync data. Data is encrypted at rest.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>5. Data Storage &amp; Security</h2>
+      <p>Learning data is primarily stored in your browser's <code>localStorage</code> on your device. If you create an account, your data is also backed up to our database hosted on Turso (SQLite cloud). Passwords are hashed using PBKDF2-SHA512 with 120,000 iterations before storage — we cannot recover your password.</p>
+      <p>We use HTTPS for all data in transit.</p>
+    </div>
+
+    <div class="card">
+      <h2>6. Data Retention &amp; Deletion</h2>
+      <p>Your learning data is retained as long as your account is active. To delete your account and all associated data, please contact us at the email below. Local data stored in your browser can be cleared at any time through your browser's settings.</p>
+    </div>
+
+    <div class="card">
+      <h2>7. Children's Privacy</h2>
+      <p>VocabLoop is not directed at children under 13. We do not knowingly collect personal information from children under 13. If you believe we have inadvertently collected such information, please contact us immediately.</p>
+    </div>
+
+    <div class="card">
+      <h2>8. Changes to This Policy</h2>
+      <p>We may update this policy from time to time. Changes will be posted on this page with an updated date. Continued use of the app after changes constitutes acceptance of the revised policy.</p>
+    </div>
+
+    <div class="card">
+      <h2>9. Contact</h2>
+      <p>If you have questions or requests regarding this privacy policy or your personal data, please open an issue at <a href="https://github.com/karryzhang/VocabLoop/issues" target="_blank">github.com/karryzhang/VocabLoop</a>.</p>
+    </div>
+
+    <div class="footer">
+      © 2026 VocabLoop · <a href="index.html">Back to App</a>
+    </div>
+  </div>
+</body>
+</html>
