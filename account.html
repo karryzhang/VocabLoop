@@ -387,6 +387,7 @@
       line-height:1.55;color:var(--ink)}
     .ai-insight-suggest-list li::before{content:'→';color:var(--pri);font-weight:800;flex-shrink:0;margin-top:1px}
     .ai-insight-err{color:var(--err);font-size:.83rem;padding:10px 0}
+    .ai-insight-status{font-size:.74rem;color:var(--muted);padding:2px 16px 8px;line-height:1.4}
 
     /* ── Share progress banner ─────────────────────────────────── */
     .share-progress{margin-top:20px;padding-top:18px;border-top:1px solid var(--line);
@@ -620,6 +621,7 @@
             <span id="aiInsightBtnLabel">生成建议</span>
           </button>
         </div>
+        <div class="ai-insight-status" id="aiInsightStatus" style="display:none"></div>
         <div class="ai-insight-body" id="aiInsightBody" style="display:none">
           <div class="ai-insight-loading" id="aiInsightLoading" style="display:none">
             <div class="ai-insight-spinner"></div>
@@ -741,6 +743,9 @@
         aiInsightLoading:'Analyzing your progress…',
         aiInsightSuggestTitle:'Study Tips',
         aiInsightErr:'Failed to generate insights. Please try again.',
+        aiInsightNoChange:'No new progress',
+        aiInsightCooldown:(h,m)=>h>0?`Update in ${h}h ${m}m`:`Update in ${m}m`,
+        aiInsightLastGen:(s)=>`Generated: ${s}`,
       },
       zh: {
         back:'← 返回首页', theme:'🌓 主题', title:'账户',
@@ -799,6 +804,9 @@
         aiInsightLoading:'AI 分析中…',
         aiInsightSuggestTitle:'学习建议',
         aiInsightErr:'生成失败，请重试。',
+        aiInsightNoChange:'进度未变更',
+        aiInsightCooldown:(h,m)=>h>0?`${h}h ${m}m 后可更新`:`${m}m 后可更新`,
+        aiInsightLastGen:(s)=>`上次生成：${s}`,
       }
     };
 
@@ -1415,32 +1423,109 @@
       }
     }
 
-    /* ── AI Learning Insights ── */
-    let _insightGenerated = false;
+    /* ── AI Learning Insights — cache + rate limit ── */
+    const INSIGHT_CACHE_KEY  = 'vocabloop_insight_v1';
+    const INSIGHT_COOLDOWN_MS = 12 * 60 * 60 * 1000; // 12 h
+    let _currentInsightHash = null;
+
+    function getInsightCache() {
+      try { return JSON.parse(localStorage.getItem(INSIGHT_CACHE_KEY) || 'null'); } catch(e) { return null; }
+    }
+    function saveInsightCache(hash, summary, suggestions) {
+      localStorage.setItem(INSIGHT_CACHE_KEY, JSON.stringify({ ts: Date.now(), hash, summary, suggestions }));
+    }
+    function fmtTimeAgo(ts) {
+      const diff = Date.now() - ts;
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      return state.lang === 'zh'
+        ? (h > 0 ? `${h} 小时前` : (m > 0 ? `${m} 分钟前` : '刚刚'))
+        : (h > 0 ? `${h}h ago`  : (m > 0 ? `${m}m ago`  : 'just now'));
+    }
+    function showInsightResult(summary, suggestions) {
+      $('aiInsightSummary').textContent = summary || '';
+      const ul = $('aiInsightSuggestions');
+      ul.innerHTML = '';
+      (suggestions || []).forEach(s => {
+        const li = document.createElement('li');
+        li.textContent = s;
+        ul.appendChild(li);
+      });
+      $('aiInsightBody').style.display   = 'block';
+      $('aiInsightResult').style.display = 'block';
+      $('aiInsightLoading').style.display = 'none';
+      $('aiInsightErr').style.display    = 'none';
+    }
+    function initInsightSection() {
+      const t  = state.t;
+      const btn = $('aiInsightBtn');
+      const statusEl = $('aiInsightStatus');
+      $('aiInsightSection').style.display     = '';
+      $('aiInsightTitle').textContent         = t.aiInsightTitle;
+      $('aiInsightLoadingText').textContent   = t.aiInsightLoading;
+      $('aiInsightSuggestTitle').textContent  = t.aiInsightSuggestTitle;
+
+      const cache = getInsightCache();
+      if (!cache) {
+        $('aiInsightBtnLabel').textContent = t.aiInsightBtn;
+        btn.disabled = false;
+        statusEl.style.display = 'none';
+        return;
+      }
+      /* Show cached result */
+      showInsightResult(cache.summary, cache.suggestions);
+
+      const cooldownLeft = INSIGHT_COOLDOWN_MS - (Date.now() - (cache.ts || 0));
+      const dataChanged  = _currentInsightHash && _currentInsightHash !== cache.hash;
+
+      statusEl.textContent   = t.aiInsightLastGen(fmtTimeAgo(cache.ts));
+      statusEl.style.display = 'block';
+
+      if (!dataChanged) {
+        btn.disabled = true;
+        $('aiInsightBtnLabel').textContent = t.aiInsightNoChange;
+      } else if (cooldownLeft > 0) {
+        btn.disabled = true;
+        const h = Math.floor(cooldownLeft / 3600000);
+        const m = Math.ceil((cooldownLeft % 3600000) / 60000);
+        $('aiInsightBtnLabel').textContent = t.aiInsightCooldown(h, m);
+      } else {
+        btn.disabled = false;
+        $('aiInsightBtnLabel').textContent = t.aiInsightBtnRegen;
+      }
+    }
 
     async function generateInsight() {
       const t = state.t;
-      const btn   = $('aiInsightBtn');
-      const body  = $('aiInsightBody');
-      const loadEl = $('aiInsightLoading');
-      const result = $('aiInsightResult');
-      const errEl  = $('aiInsightErr');
+      const btn      = $('aiInsightBtn');
+      const loadEl   = $('aiInsightLoading');
+      const errEl    = $('aiInsightErr');
+      const statusEl = $('aiInsightStatus');
+
+      /* Guard: honour rate-limit and no-change rule */
+      const cache = getInsightCache();
+      if (cache) {
+        const cooldownLeft = INSIGHT_COOLDOWN_MS - (Date.now() - (cache.ts || 0));
+        const dataChanged  = _currentInsightHash && _currentInsightHash !== cache.hash;
+        if (!dataChanged) return;
+        if (cooldownLeft > 0) return;
+      }
 
       btn.disabled = true;
-      body.style.display = 'block';
-      loadEl.style.display = 'flex';
-      result.style.display = 'none';
-      errEl.style.display  = 'none';
+      $('aiInsightBody').style.display    = 'block';
+      loadEl.style.display                = 'flex';
+      $('aiInsightResult').style.display  = 'none';
+      errEl.style.display                 = 'none';
+      statusEl.style.display              = 'none';
 
       try {
-        /* Collect the same stats as renderReport() */
+        /* Collect stats (mirrors renderReport stats loop) */
         const globalState = (() => {
           try { return JSON.parse(localStorage.getItem('srs_global_v1') || '{}'); } catch(e) { return {}; }
         })();
         const totals = await fetchDeckTotals();
-        const decks = [];
+        const decks = [], difficultWords = [];
         const stages = { new: 0, learning: 0, review: 0, mastered: 0 };
-        const difficultWords = [];
         let allStudied = 0, allMastered = 0, totalWords = 0;
 
         for (const d of DECK_META) {
@@ -1449,22 +1534,19 @@
           totalWords += total;
           let studied = 0, mastered = 0;
           for (const [w, s] of Object.entries(words)) {
-            if (w.startsWith('_')) continue;
-            if (!s || !s.stage) continue;
+            if (w.startsWith('_') || !s || !s.stage) continue;
             if (s.stage !== 'new') studied++;
             if (s.stage === 'mastered') mastered++;
-            if (s.stage === 'new') stages.new++;
+            if      (s.stage === 'new')     stages.new++;
             else if (s.stage === 'learning' || s.stage === 'relearn' || s.stage === 'young') stages.learning++;
-            else if (s.stage === 'mature') stages.review++;
+            else if (s.stage === 'mature')  stages.review++;
             else if (s.stage === 'mastered') stages.mastered++;
-            if ((s.againCount || 0) >= 2 && s.stage !== 'mastered') {
+            if ((s.againCount || 0) >= 2 && s.stage !== 'mastered')
               difficultWords.push({ word: w, againCount: s.againCount });
-            }
           }
           allStudied  += studied;
           allMastered += mastered;
-          const unseenNew = Math.max(0, total - Object.keys(words).filter(k => !k.startsWith('_')).length);
-          stages.new += unseenNew;
+          stages.new  += Math.max(0, total - Object.keys(words).filter(k => !k.startsWith('_')).length);
           decks.push({ name: d.name, total, studied, mastered });
         }
         difficultWords.sort((a, b) => b.againCount - a.againCount);
@@ -1474,41 +1556,32 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            lang:          state.lang,
-            studied:       allStudied,
-            mastered:      allMastered,
-            total:         totalWords,
-            streak:        globalState.dailyStreak   || 0,
+            lang: state.lang, studied: allStudied, mastered: allMastered,
+            total: totalWords, streak: globalState.dailyStreak || 0,
             reviewedTotal: globalState.totalReviewed || 0,
-            decks,
-            stages,
-            difficultWords: difficultWords.slice(0, 5),
+            decks, stages, difficultWords: difficultWords.slice(0, 5),
           })
         });
 
         loadEl.style.display = 'none';
-
         if (!res.ok) throw new Error('API error');
         const data = await res.json();
 
-        $('aiInsightSummary').textContent = data.summary || '';
-        const ul = $('aiInsightSuggestions');
-        ul.innerHTML = '';
-        (data.suggestions || []).forEach(s => {
-          const li = document.createElement('li');
-          li.textContent = s;
-          ul.appendChild(li);
-        });
-        result.style.display = 'block';
+        saveInsightCache(_currentInsightHash, data.summary, data.suggestions);
+        showInsightResult(data.summary, data.suggestions);
 
-        $('aiInsightBtnLabel').textContent = t.aiInsightBtnRegen;
-        _insightGenerated = true;
+        /* After fresh generation: data is now in sync, disable until next change */
+        btn.disabled = true;
+        $('aiInsightBtnLabel').textContent = t.aiInsightNoChange;
+        statusEl.textContent   = t.aiInsightLastGen(fmtTimeAgo(Date.now()));
+        statusEl.style.display = 'block';
+
       } catch(e) {
         loadEl.style.display = 'none';
         errEl.textContent    = t.aiInsightErr;
         errEl.style.display  = 'block';
-      } finally {
         btn.disabled = false;
+        $('aiInsightBtnLabel').textContent = t.aiInsightBtnRegen;
       }
     }
 
@@ -1560,6 +1633,9 @@
         stageNew += unseenNew;
         deckStats.push({ id: d.id, name: d.name, total, studied, mastered, emoji: d.emoji });
       }
+
+      /* Data fingerprint for AI insight change detection */
+      _currentInsightHash = `${allStudied}:${allMastered}:${totalWords}:${globalState.totalReviewed || 0}`;
 
       /* Check if there's any data at all */
       const hasData = allStudied > 0 || (globalState.totalReviewed || 0) > 0;
@@ -1759,11 +1835,7 @@
       $('shareProgress').style.display = '';
 
       /* ── AI Insight section ── */
-      $('aiInsightSection').style.display = '';
-      $('aiInsightTitle').textContent     = t.aiInsightTitle;
-      $('aiInsightBtnLabel').textContent  = _insightGenerated ? t.aiInsightBtnRegen : t.aiInsightBtn;
-      $('aiInsightLoadingText').textContent = t.aiInsightLoading;
-      $('aiInsightSuggestTitle').textContent = t.aiInsightSuggestTitle;
+      initInsightSection();
     }
 
     /* ── Init ── */
