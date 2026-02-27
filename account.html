@@ -473,7 +473,7 @@
 
               <label for="rPass"><span id="labelPass">Password</span> <span class="tiny" id="rulePass">digits only, min 6</span></label>
               <div class="input-wrap">
-                <input id="rPass" type="password" inputmode="numeric" placeholder="At least 6 digits" autocomplete="new-password" />
+                <input id="rPass" type="password" placeholder="At least 6 characters" autocomplete="new-password" />
                 <button type="button" class="toggle-eye" data-target="rPass">👁️</button>
               </div>
               <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
@@ -481,7 +481,7 @@
 
               <label for="rPass2" id="labelPass2">Confirm Password</label>
               <div class="input-wrap">
-                <input id="rPass2" type="password" inputmode="numeric" placeholder="Re-enter your password" autocomplete="new-password" />
+                <input id="rPass2" type="password" placeholder="Re-enter your password" autocomplete="new-password" />
                 <button type="button" class="toggle-eye" data-target="rPass2">👁️</button>
               </div>
               <div id="rPass2Hint" class="inline"></div>
@@ -500,7 +500,7 @@
 
               <label for="lPass" id="lPassLabel">Password</label>
               <div class="input-wrap">
-                <input id="lPass" type="password" inputmode="numeric" placeholder="Your password" autocomplete="current-password" />
+                <input id="lPass" type="password" placeholder="Your password" autocomplete="current-password" />
                 <button type="button" class="toggle-eye" data-target="lPass">👁️</button>
               </div>
 
@@ -691,14 +691,14 @@
         subtitle:'Create your account or login to continue learning across sessions.',
         register:'Register', login:'Login',
         username:'Username', userRule:'min 5 chars',
-        password:'Password', passRule:'digits only, min 6',
+        password:'Password', passRule:'min 6 characters',
         confirm:'Confirm Password',
-        phUser:'At least 5 characters', phPass:'At least 6 digits', phPass2:'Re-enter your password',
+        phUser:'At least 5 characters', phPass:'At least 6 characters', phPass2:'Re-enter your password',
         loginUser:'Your username', loginPass:'Your password',
         create:'Create Account', creating:'Creating...',
         loginBtn:'Login', logging:'Logging in...',
         hUserOk:'Looks good.', hUserBad:'Username must be at least 5 characters.',
-        hPassOk:'Password format is valid.', hPassBad:'Use digits only, at least 6 numbers.',
+        hPassOk:'Password looks good.', hPassBad:'Password must be at least 6 characters.',
         hPass2Ok:'Passwords match.', hPass2Bad:'Passwords do not match yet.',
         fixFields:'Please fix the highlighted fields, then try again.',
         registerOk:'Account created. You are now logged in!',
@@ -753,14 +753,14 @@
         subtitle:'创建新账号或登录，继续你的学习进度。',
         register:'注册', login:'登录',
         username:'用户名', userRule:'至少5个字符',
-        password:'密码', passRule:'仅数字，至少6位',
+        password:'密码', passRule:'6位以上，字母/数字/符号均可',
         confirm:'确认密码',
-        phUser:'至少5个字符', phPass:'至少6位数字', phPass2:'再次输入密码',
+        phUser:'至少5个字符', phPass:'至少6位', phPass2:'再次输入密码',
         loginUser:'请输入用户名', loginPass:'请输入密码',
         create:'创建账号', creating:'创建中...',
         loginBtn:'登录', logging:'登录中...',
         hUserOk:'用户名可用。', hUserBad:'用户名至少需要5个字符。',
-        hPassOk:'密码格式正确。', hPassBad:'密码需为至少6位数字。',
+        hPassOk:'密码格式正确。', hPassBad:'密码至少需要6位。',
         hPass2Ok:'两次密码一致。', hPass2Bad:'两次密码暂未一致。',
         fixFields:'请先修正高亮字段后再提交。',
         registerOk:'注册成功，已自动登录！',
@@ -1126,11 +1126,15 @@
     function updateStrength(val){
       const fill = $('strengthFill');
       fill.className = 'strength-fill';
-      if(!val){ return; }
-      const digits = val.replace(/\D/g, '');
-      if(digits.length >= 10) fill.classList.add('s3');
-      else if(digits.length >= 6) fill.classList.add('s2');
-      else if(digits.length >= 1) fill.classList.add('s1');
+      if(!val || val.length < 1){ return; }
+      const hasLower   = /[a-z]/.test(val);
+      const hasUpper   = /[A-Z]/.test(val);
+      const hasDigit   = /\d/.test(val);
+      const hasSpecial = /[^a-zA-Z0-9]/.test(val);
+      const types = [hasLower || hasUpper, hasDigit, hasSpecial].filter(Boolean).length;
+      if(val.length >= 10 && types >= 3) fill.classList.add('s3');
+      else if(val.length >= 8 && types >= 2) fill.classList.add('s2');
+      else fill.classList.add('s1');
     }
 
     /* ── Register validation (only validates touched fields) ── */
@@ -1152,12 +1156,12 @@
 
       /* Password */
       if(state.touched.rPass || submitAttempt){
-        if(/^\d{6,}$/.test(p)){
+        if(p.length >= 6){
           setInline('rPassHint',t.hPassOk,'ok'); rPass.classList.add('valid'); rPass.classList.remove('invalid');
         } else {
           ok = false; setInline('rPassHint',t.hPassBad,'warn'); rPass.classList.add('invalid'); rPass.classList.remove('valid');
         }
-      } else if(!/^\d{6,}$/.test(p)) ok = false;
+      } else if(p.length < 6) ok = false;
 
       /* Confirm password */
       if(state.touched.rPass2 || submitAttempt){

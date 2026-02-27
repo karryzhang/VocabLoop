@@ -13,7 +13,7 @@ function validateUsername(u) {
   return typeof u === 'string' && u.length >= 5 && u.length <= 30 && USERNAME_RE.test(u);
 }
 function validatePassword(p) {
-  return typeof p === 'string' && /^\d{6,20}$/.test(p);
+  return typeof p === 'string' && p.length >= 6 && p.length <= 128;
 }
 
 /* ── Password hashing (PBKDF2-SHA512, 120k iterations) ─────────────── */
@@ -83,7 +83,7 @@ module.exports = async (req, res) => {
         return res.status(400).json({ ok: false, message: 'Username must be 5–30 characters (letters, digits, underscore).' });
       }
       if (!validatePassword(password)) {
-        return res.status(400).json({ ok: false, message: 'Password must be 6–20 digits.' });
+        return res.status(400).json({ ok: false, message: 'Password must be 6–128 characters.' });
       }
 
       const existing = await queryOne('SELECT 1 FROM users WHERE username = ?', [u]);
