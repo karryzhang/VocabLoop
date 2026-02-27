@@ -1733,6 +1733,21 @@
             color: var(--blue); background: none; border-radius: 12px;
             font-weight: 700; cursor: pointer; font-size: 0.9rem;
         }
+        .reading-done-btn {
+            width: 100%; padding: 14px 18px; border-radius: 14px; border: none;
+            cursor: pointer; background: var(--green); color: #fff;
+            display: flex; align-items: center; gap: 12px; text-align: left;
+            transition: transform 0.1s, box-shadow 0.15s;
+            box-shadow: 0 4px 16px rgba(16,185,129,.28);
+        }
+        .reading-done-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 26px rgba(16,185,129,.44); }
+        .reading-done-btn:active { transform: scale(0.98); box-shadow: none; }
+        .reading-done-btn-icon  { font-size: 1.45rem; flex-shrink: 0; line-height: 1; }
+        .reading-done-btn-text  { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+        .reading-done-btn-title { font-size: 0.95rem; font-weight: 700; line-height: 1.2; }
+        .reading-done-btn-hint  { font-size: 0.73rem; opacity: 0.85; line-height: 1.3; }
+        .reading-done-btn-arrow { font-size: 1.2rem; flex-shrink: 0; opacity: 0.85; transition: transform 0.15s; }
+        .reading-done-btn:hover .reading-done-btn-arrow { transform: translateX(3px); }
         .btn-reading {
             width: 100%; padding: 14px;
             background: linear-gradient(135deg, #059669, #047857);
@@ -2957,6 +2972,15 @@
                     </span>
                 </div>
                 <button class="reading-regen" @click="generateReading">🔄 {{ui.readingRegen}}</button>
+                <!-- Complete reading → start new round -->
+                <button class="reading-done-btn" @click="closeReading(); loadMore()">
+                    <span class="reading-done-btn-icon">✅</span>
+                    <div class="reading-done-btn-text">
+                        <span class="reading-done-btn-title">{{ui.readingDoneBtn}}</span>
+                        <span class="reading-done-btn-hint">{{ui.readingDoneHint}}</span>
+                    </div>
+                    <span class="reading-done-btn-arrow">›</span>
+                </button>
             </template>
         </div>
     </div>
@@ -3317,6 +3341,8 @@ const STRINGS = {
     readingErrTime:  '请求超时，请重试',
     readingErrUnavail: '阅读服务暂未开通，请稍后再试',
     readingRegen:    '重新生成',
+    readingDoneBtn:  '完成阅读，开始新一轮',
+    readingDoneHint: '将今日词汇带入下一轮翻卡复习',
     readingWordList:     '本篇涵盖词汇：',
     readingHistory:      '历史',
     readingHistoryEmpty: '暂无历史文章',
@@ -3503,6 +3529,8 @@ const STRINGS = {
     readingErrTime:  'Request timed out — please retry',
     readingErrUnavail: 'Reading service is not available yet — please try later',
     readingRegen:    'Regenerate',
+    readingDoneBtn:  'Complete Reading → New Round',
+    readingDoneHint: 'Continue with today\'s vocabulary in the next card round',
     readingWordList:     'Words covered:',
     readingHistory:      'History',
     readingHistoryEmpty: 'No stories yet',
