@@ -5617,7 +5617,10 @@ new Vue({
                 if (!q) return;
                 // After answering: Enter / Space / arrow advances to next question
                 if (this.practiceAnswered) {
-                    if (['Enter','Space','ArrowRight'].includes(e.code)) {
+                    // Wrong input-type answers require the on-screen button — keyboard must not auto-advance.
+                    // (The same Enter keypress that submits would otherwise immediately jump to next question.)
+                    const isTypingWrong = ['spelling', 'cloze', 'dictation'].includes(q.type) && this.practiceResult === 'wrong';
+                    if (!isTypingWrong && ['Enter','Space','ArrowRight'].includes(e.code)) {
                         e.preventDefault();
                         clearTimeout(this._practiceTimer);
                         this.nextPracticeQuestion();
