@@ -5074,9 +5074,6 @@ new Vue({
             if (selected.length === 0)
                 selected = this.getTodayPracticeWords().slice(0, MAX_READING_WORDS);
             this.readingWordObjs = selected.slice(0, MAX_READING_WORDS);
-            const wordList = this.readingWordObjs
-                .map(w => `${w.word} (${w.zh})`).join(', ');
-            const prompt = `You are a creative writing tutor crafting a short story to help an intermediate English learner remember new vocabulary.\n\nRequirements:\n- Length: 180–220 words.\n- Weave ALL of the vocabulary words below naturally into the story — they should feel essential, not forced.\n- Literary quality: give the story a clear arc (setup → tension → resolution), a vivid scene, and at least one moment of emotion or surprise that makes it memorable.\n- Vocabulary level: keep all OTHER words at roughly the same difficulty as the given list — don't simplify to beginner level, but avoid obscure words the learner hasn't seen.\n- Tone: warm, imaginative, slightly literary — think short-story rather than textbook exercise.\n- Return only the story text. No title, no commentary, no word list.\n\nVocabulary: ${wordList}`;
 
             this.readingLoading = true;
             this.readingArticle = '';
@@ -5089,7 +5086,9 @@ new Vue({
                     method:  'POST',
                     headers: { 'Content-Type': 'application/json' },
                     signal:  controller.signal,
-                    body: JSON.stringify({ prompt })
+                    body: JSON.stringify({
+                        words: this.readingWordObjs.map(w => ({ word: w.word, zh: w.zh }))
+                    })
                 });
                 clearTimeout(timeoutId);
                 if (!res.ok) {

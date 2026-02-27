@@ -1,11 +1,42 @@
 /**
- * api/reading.js — Proxy endpoint for AI-generated reading stories
+ * api/reading.js — AI-generated reading stories for VocabLoop
  *
- * Proxies requests to Google Gemini API using a server-stored API key,
- * so users don't need to provide their own key.
+ * Client sends a word list; server builds the prompt, calls Gemini,
+ * and returns the story. The API key never leaves the server.
  *
  * Env: GEMINI_API_KEY — Google Gemini API key
+ *
+ * Request:  POST { words: [{ word: "accept", zh: "接受" }, ...] }
+ * Response: { text: "Once upon a time..." }
  */
+
+/* ── Prompt template (server-only) ─────────────────────────────────── */
+
+function buildPrompt(words) {
+  const wordList = words.map(w => `${w.word} (${w.zh})`).join(', ');
+  return [
+    'You are a creative writing tutor crafting a short story to help',
+    'an intermediate English learner remember new vocabulary.',
+    '',
+    'Requirements:',
+    '- Length: 180–220 words.',
+    '- Weave ALL of the vocabulary words below naturally into the story',
+    '  — they should feel essential, not forced.',
+    '- Literary quality: give the story a clear arc',
+    '  (setup → tension → resolution), a vivid scene, and at least one',
+    '  moment of emotion or surprise that makes it memorable.',
+    '- Vocabulary level: keep all OTHER words at roughly the same',
+    '  difficulty as the given list — don\'t simplify to beginner level,',
+    '  but avoid obscure words the learner hasn\'t seen.',
+    '- Tone: warm, imaginative, slightly literary — think short-story',
+    '  rather than textbook exercise.',
+    '- Return only the story text. No title, no commentary, no word list.',
+    '',
+    `Vocabulary: ${wordList}`,
+  ].join('\n');
+}
+
+/* ── Handler ───────────────────────────────────────────────────────── */
 
 module.exports = async function handler(req, res) {
   // CORS
@@ -21,13 +52,25 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const { prompt, generationConfig } = req.body || {};
-    if (!prompt || typeof prompt !== 'string') {
-      return res.status(400).json({ error: 'Missing prompt' });
+    const { words } = req.body || {};
+
+    // Validate: words must be a non-empty array of {word, zh} objects
+    if (!Array.isArray(words) || words.length === 0) {
+      return res.status(400).json({ error: 'Missing or empty words array' });
     }
-    if (prompt.length > 5000) {
-      return res.status(400).json({ error: 'Prompt too long' });
+    if (words.length > 30) {
+      return res.status(400).json({ error: 'Too many words (max 30)' });
     }
+    const valid = words.every(w =>
+      w && typeof w.word === 'string' && w.word.length > 0 &&
+      typeof w.zh === 'string' && w.zh.length > 0
+    );
+    if (!valid) {
+      return res.status(400).json({ error: 'Each word must have { word, zh }' });
+    }
+
+    // Build prompt server-side — API key and prompt never sent to client
+    const prompt = buildPrompt(words);
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 20000);
@@ -40,7 +83,7 @@ module.exports = async function handler(req, res) {
         signal: controller.signal,
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: generationConfig || {
+          generationConfig: {
             maxOutputTokens: 800,
             temperature: 0.9,
             thinkingConfig: { thinkingBudget: 0 }
