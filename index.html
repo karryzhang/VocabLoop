@@ -5594,16 +5594,22 @@ new Vue({
         _afterPracticeQuestion() {
             const q = this.practiceCurrent;
             if (!q) return;
+            // Audio can fire on the next tick (no DOM ref needed)
             this.$nextTick(() => {
-                if (q.type === 'mc-audio-to-word') {
+                if (q.type === 'mc-audio-to-word' || q.type === 'dictation') {
                     this.playAudio(q.word.word);
-                } else if (q.type === 'dictation') {
-                    this.playAudio(q.word.word);
-                    if (this.$refs.spellInput) this.$refs.spellInput.focus();
-                } else if ((q.type === 'spelling' || q.type === 'cloze') && this.$refs.spellInput) {
-                    this.$refs.spellInput.focus();
                 }
             });
+            // Focus needs a small delay: $nextTick alone isn't enough because
+            // the prac-q enter-transition is still running, and startPractice()
+            // sets practiceMode=true just before calling this, so the input
+            // isn't in the DOM yet at $nextTick time.
+            const isTyping = q.type === 'spelling' || q.type === 'cloze' || q.type === 'dictation';
+            if (isTyping) {
+                setTimeout(() => {
+                    if (this.$refs.spellInput) this.$refs.spellInput.focus();
+                }, 80);
+            }
         },
 
         // ── Keyboard ─────────────────────────────────────────────────────
