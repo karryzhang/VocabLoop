@@ -5046,7 +5046,10 @@ new Vue({
             if (!word) return;
             const wobj = this.readingWordObjs.find(w =>
                 w.word.toLowerCase() === word.toLowerCase());
-            if (wobj) this.showToast(`${wobj.word}：${wobj.zh}`, 'good');
+            if (wobj) {
+                this.showToast(`${wobj.word}：${wobj.zh}`, 'good');
+                this.playAudio(wobj.word);
+            }
         },
         async generateReading() {
             const tdy = today();
