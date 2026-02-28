@@ -57,12 +57,31 @@ function buildPrompt(words) {
 
 /* ── Response parser ────────────────────────────────────────────────── */
 
+function extractJSON(raw) {
+  // Strategy 1: direct parse (clean JSON)
+  try { return JSON.parse(raw.trim()); } catch (_) {}
+
+  // Strategy 2: strip markdown code fences (```json ... ```)
+  const fenceRe = /```(?:json)?\s*\n?([\s\S]*?)\n?\s*```/;
+  const fenceMatch = raw.match(fenceRe);
+  if (fenceMatch) {
+    try { return JSON.parse(fenceMatch[1].trim()); } catch (_) {}
+  }
+
+  // Strategy 3: find the outermost { ... } brace pair
+  const first = raw.indexOf('{');
+  const last  = raw.lastIndexOf('}');
+  if (first !== -1 && last > first) {
+    try { return JSON.parse(raw.slice(first, last + 1)); } catch (_) {}
+  }
+
+  return null;
+}
+
 function parseResponse(raw) {
-  // Try to parse as JSON (the expected format)
-  try {
-    // Strip markdown code fences if present
-    const cleaned = raw.replace(/^```(?:json)?\s*/m, '').replace(/\s*```\s*$/m, '').trim();
-    const parsed = JSON.parse(cleaned);
+  const parsed = extractJSON(raw);
+
+  if (parsed && typeof parsed === 'object') {
     const text = (parsed.story || parsed.text || '').trim();
     if (text) {
       return {
@@ -78,12 +97,10 @@ function parseResponse(raw) {
           : {},
       };
     }
-    // Fallback if JSON has unexpected shape
-    return { title: '', text: raw.trim(), sentences: [], glosses: {} };
-  } catch (_) {
-    // Not valid JSON — treat as plain text (backwards compat)
-    return { title: '', text: raw.trim(), sentences: [], glosses: {} };
   }
+
+  // Not valid JSON or no story field — treat as plain text (backwards compat)
+  return { title: '', text: raw.trim(), sentences: [], glosses: {} };
 }
 
 /* ── Handler ───────────────────────────────────────────────────────── */
@@ -154,7 +171,14 @@ module.exports = async function handler(req, res) {
     }
 
     const data = await apiRes.json();
-    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    // Gemini 2.5 thinking models may return multiple parts; use the last
+    // non-thought text part (thought parts have `thought: true`).
+    const parts = data.candidates?.[0]?.content?.parts || [];
+    let raw = '';
+    for (let i = parts.length - 1; i >= 0; i--) {
+      if (parts[i].text && !parts[i].thought) { raw = parts[i].text; break; }
+    }
+    if (!raw && parts.length) raw = parts[parts.length - 1].text || '';
     if (!raw) {
       return res.status(502).json({ error: 'Empty response from AI' });
     }

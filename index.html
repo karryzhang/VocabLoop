@@ -1811,7 +1811,7 @@
         /* Story title */
         .reading-story-title {
             font-size: 1.25rem; font-weight: 800; color: var(--text);
-            line-height: 1.3; margin: 0;
+            line-height: 1.3; margin: 0 0 12px 0;
             padding-bottom: 10px;
             border-bottom: 2px solid var(--blue);
             font-style: italic;
@@ -4369,16 +4369,32 @@ new Vue({
         },
         highlightedArticle() {
             if (!this.readingArticle) return '';
+
+            // Strip title from article body if the AI duplicated it at the start
+            let articleText = this.readingArticle;
+            if (this.readingStoryTitle) {
+                const t = this.readingStoryTitle.trim();
+                const escaped = t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                articleText = articleText.replace(new RegExp('^\\s*' + escaped + '\\s*\\n+', 'i'), '');
+            }
+
             // Bilingual mode: render EN+ZH sentence pairs (needs sentences data)
             if (this.readingBilingual && this.readingSentences.length) {
-                return this.readingSentences.map(s => {
+                let sentences = this.readingSentences;
+                // Skip first sentence if it is just the title
+                if (this.readingStoryTitle && sentences.length > 0) {
+                    const titleLower = this.readingStoryTitle.toLowerCase().trim();
+                    const firstEn = sentences[0].en.toLowerCase().trim().replace(/[.!?]+$/, '');
+                    if (firstEn === titleLower) sentences = sentences.slice(1);
+                }
+                return sentences.map(s => {
                     const enHtml = this._tokenizeForReading(s.en);
                     const zhSafe = s.zh.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
                     return `<div class="rd-bi-pair"><p class="rd-bi-en">${enHtml}</p><p class="rd-bi-zh">${zhSafe}</p></div>`;
                 }).join('');
             }
-            // English-only mode: tokenize full article into clickable words
-            return this._tokenizeForReading(this.readingArticle);
+            // English-only mode: tokenize article body into clickable words
+            return this._tokenizeForReading(articleText);
         },
     },
 
@@ -4507,6 +4523,33 @@ new Vue({
             }).join('');
         },
 
+        // Guard: if text looks like raw JSON, extract the story from it.
+        // Handles legacy cached entries or server-side parse failures.
+        _sanitizeReadingText(text) {
+            if (!text || typeof text !== 'string') return text;
+            const trimmed = text.trim();
+            // Quick check: does it start with { and end with }?
+            if (trimmed.charAt(0) === '{' && trimmed.charAt(trimmed.length - 1) === '}') {
+                try {
+                    const obj = JSON.parse(trimmed);
+                    const story = (obj.story || obj.text || '').trim();
+                    if (story) {
+                        // Also recover title/sentences/glosses if available
+                        if (obj.title && !this.readingStoryTitle) this.readingStoryTitle = obj.title;
+                        if (Array.isArray(obj.sentences) && !this.readingSentences.length) {
+                            this.readingSentences = obj.sentences
+                                .filter(s => s && typeof s.en === 'string' && typeof s.zh === 'string')
+                                .map(s => ({ en: s.en.trim(), zh: s.zh.trim() }));
+                        }
+                        if (obj.glosses && typeof obj.glosses === 'object' && !Object.keys(this.readingGlosses).length) {
+                            this.readingGlosses = obj.glosses;
+                        }
+                        return story;
+                    }
+                } catch (_) {}
+            }
+            return text;
+        },
         // Show the bottom word-reveal panel for a tapped word in the reading article.
         _showReadingPopup(word, meaning, isVocab) {
             this.readingPopup = { word, meaning, isVocab };
@@ -5752,10 +5795,10 @@ new Vue({
             if (cached) {
                 this.readingWordObjs  = cached.words.map(
                     w => this.allWords.find(aw => aw.word === w.word) || w);
-                this.readingArticle   = cached.text;
                 this.readingSentences = cached.sentences || [];
                 this.readingStoryTitle = cached.title || '';
                 this.readingGlosses   = cached.glosses || {};
+                this.readingArticle   = this._sanitizeReadingText(cached.text);
             } else {
                 this.readingArticle   = '';
                 this.readingSentences = [];
@@ -5778,10 +5821,10 @@ new Vue({
         openHistoryItem(entry) {
             this.readingWordObjs    = entry.words.map(
                 w => this.allWords.find(aw => aw.word === w.word) || w);
-            this.readingArticle     = entry.text;
             this.readingSentences   = entry.sentences || [];
             this.readingStoryTitle  = entry.title || '';
             this.readingGlosses     = entry.glosses || {};
+            this.readingArticle     = this._sanitizeReadingText(entry.text);
             this.readingHistoryOpen = false;
             this.readingError       = '';
             this.readingPopup       = null;
@@ -5923,11 +5966,11 @@ new Vue({
                 const sentences = Array.isArray(data.sentences) ? data.sentences : [];
                 const title     = typeof data.title === 'string' ? data.title.trim() : '';
                 const glosses   = (data.glosses && typeof data.glosses === 'object') ? data.glosses : {};
-                this.readingArticle   = text.trim();
                 this.readingSentences = sentences;
                 this.readingStoryTitle = title;
                 this.readingGlosses   = glosses;
-                this.saveReadingHistory(text.trim(), sentences, title, glosses);
+                this.readingArticle   = this._sanitizeReadingText(text.trim());
+                this.saveReadingHistory(this.readingArticle, this.readingSentences, this.readingStoryTitle, this.readingGlosses);
             } catch (e) {
                 clearTimeout(timeoutId);
                 if (e.name === 'AbortError') {
