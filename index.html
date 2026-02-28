@@ -4675,6 +4675,10 @@ new Vue({
             if (done && this.backendAvailable && window.__vocabSync) {
                 window.__vocabSync.doSync();
             }
+            // Prompt PWA install after first round completion
+            if (done && this.todayRounds === 1 && typeof window.__pwaPromptShow === 'function') {
+                window.__pwaPromptShow();
+            }
         },
     },
 
@@ -6515,7 +6519,9 @@ new Vue({
     document.getElementById('pwa-step3').innerHTML          = UI.pwaIOSStep3;
     document.getElementById('pwa-dismiss-ios').textContent  = UI.pwaIOSDismiss;
 
-    const SHOWN_KEY = 'pwa_prompt_shown_v1';
+    const PROMPT_KEY = 'pwa_prompt_v2';
+    // Reminder intervals after each dismiss: 3d, 7d, 30d, then stop
+    const REMIND_INTERVALS_MS = [3*86400000, 7*86400000, 30*86400000];
 
     // ── Helper: is this already running as a standalone PWA? ──────────────
     function isStandalone() {
@@ -6525,71 +6531,123 @@ new Vue({
 
     if (isStandalone()) return;   // already installed → skip everything
 
+    // ── Read / write prompt state ─────────────────────────────────────────
+    // { dismissCount, lastDismiss, installed, visitCount }
+    function getPromptState() {
+        try { return JSON.parse(localStorage.getItem(PROMPT_KEY)) || {}; } catch(e) { return {}; }
+    }
+    function savePromptState(s) {
+        localStorage.setItem(PROMPT_KEY, JSON.stringify(s));
+    }
+
+    // Track page visits
+    var ps = getPromptState();
+    ps.visitCount = (ps.visitCount || 0) + 1;
+    savePromptState(ps);
+    var isReturnVisit = ps.visitCount >= 2;   // user came back → interested
+
+    // Check whether enough time has passed since last dismiss
+    function shouldRemind() {
+        var s = getPromptState();
+        if (s.installed) return false;
+        if (!s.dismissCount) return true;  // never dismissed
+        if (s.dismissCount > REMIND_INTERVALS_MS.length) return false; // max reminders reached
+        var idx = Math.min(s.dismissCount - 1, REMIND_INTERVALS_MS.length - 1);
+        var elapsed = Date.now() - (s.lastDismiss || 0);
+        return elapsed >= REMIND_INTERVALS_MS[idx];
+    }
+
+    function recordDismiss() {
+        var s = getPromptState();
+        s.dismissCount = (s.dismissCount || 0) + 1;
+        s.lastDismiss  = Date.now();
+        savePromptState(s);
+    }
+
+    function recordInstall() {
+        var s = getPromptState();
+        s.installed = true;
+        savePromptState(s);
+    }
+
     // ── Detect platform ───────────────────────────────────────────────────
-    const ua  = navigator.userAgent;
-    const isIOS     = /iphone|ipad|ipod/i.test(ua);
-    const isSafari  = /safari/i.test(ua) && !/chrome|crios|fxios/i.test(ua);
-    const isAndroid = /android/i.test(ua);
+    var ua  = navigator.userAgent;
+    var isIOS     = /iphone|ipad|ipod/i.test(ua);
+    var isSafari  = /safari/i.test(ua) && !/chrome|crios|fxios/i.test(ua);
 
-    // ── iOS: show guide after a 2 s delay on first visit ─────────────────
-    if (isIOS && isSafari && !localStorage.getItem(SHOWN_KEY)) {
-        const overlay  = document.getElementById('pwa-ios');
-        const dismissBtn = document.getElementById('pwa-dismiss-ios');
+    // ── iOS: show guide on return visit or after first study round ────────
+    if (isIOS && isSafari) {
+        var overlay    = document.getElementById('pwa-ios');
+        var iosDismiss = document.getElementById('pwa-dismiss-ios');
 
-        setTimeout(function () {
-            overlay.classList.add('show');
-        }, 2000);
+        function showIOSGuide() {
+            if (!shouldRemind()) return;
+            if (overlay.classList.contains('show')) return;
+            setTimeout(function () { overlay.classList.add('show'); }, 800);
+        }
 
-        dismissBtn.addEventListener('click', function () {
+        iosDismiss.addEventListener('click', function () {
             overlay.classList.remove('show');
-            localStorage.setItem(SHOWN_KEY, '1');
+            recordDismiss();
         });
-
-        // Also dismiss on backdrop tap
         overlay.addEventListener('click', function (e) {
             if (e.target === overlay) {
                 overlay.classList.remove('show');
-                localStorage.setItem(SHOWN_KEY, '1');
+                recordDismiss();
             }
         });
+
+        // Return visit → show on page load (user came back, guide to install)
+        if (isReturnVisit) showIOSGuide();
+
+        // Expose trigger for Vue sessionDone watcher (first visit)
+        window.__pwaPromptShow = showIOSGuide;
         return;
     }
 
-    // ── Android / Chrome: capture beforeinstallprompt ─────────────────────
-    let deferredPrompt = null;
-    const banner     = document.getElementById('pwa-android');
-    const installBtn = document.getElementById('pwa-install-btn');
-    const dismissBtn = document.getElementById('pwa-dismiss-android');
+    // ── Android / Chrome: capture beforeinstallprompt, show after study ───
+    var deferredPrompt = null;
+    var banner     = document.getElementById('pwa-android');
+    var installBtn = document.getElementById('pwa-install-btn');
+    var dismissBtn = document.getElementById('pwa-dismiss-android');
 
     window.addEventListener('beforeinstallprompt', function (e) {
         e.preventDefault();
         deferredPrompt = e;
-
-        if (localStorage.getItem(SHOWN_KEY)) return;   // dismissed before
-
-        setTimeout(function () {
-            banner.classList.add('show');
-        }, 2500);
+        // Return visit → show on page load (user came back, guide to install)
+        if (isReturnVisit && shouldRemind()) {
+            setTimeout(function () { banner.classList.add('show'); }, 2000);
+        }
     });
+
+    function showAndroidBanner() {
+        if (!deferredPrompt) return;
+        if (!shouldRemind()) return;
+        if (banner.classList.contains('show')) return;
+        setTimeout(function () { banner.classList.add('show'); }, 800);
+    }
 
     installBtn.addEventListener('click', async function () {
         if (!deferredPrompt) return;
         deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
+        var choice = await deferredPrompt.userChoice;
         deferredPrompt = null;
         banner.classList.remove('show');
-        localStorage.setItem(SHOWN_KEY, '1');
+        recordInstall();
     });
 
     dismissBtn.addEventListener('click', function () {
         banner.classList.remove('show');
-        localStorage.setItem(SHOWN_KEY, '1');
+        recordDismiss();
     });
 
-    // Hide banner once installed
     window.addEventListener('appinstalled', function () {
         banner.classList.remove('show');
+        recordInstall();
     });
+
+    // Expose trigger for Vue sessionDone watcher (first visit)
+    window.__pwaPromptShow = showAndroidBanner;
 })();
 </script>
 
