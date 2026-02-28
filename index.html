@@ -624,6 +624,14 @@
 
         /* ── List view ───────────────────────── */
         .wl-wrap { width: 100%; overflow-y: auto; flex: 1; }
+        .wl-summary {
+            display: flex; gap: 8px; align-items: center; justify-content: center;
+            padding: 10px 12px; margin-bottom: 12px;
+            background: color-mix(in srgb, var(--blue) 6%, var(--surface));
+            border-radius: var(--r); font-size: 0.82rem; color: var(--muted);
+        }
+        .wl-summary strong { color: var(--text); font-weight: 700; }
+        .wl-summary-divider { color: var(--border); }
         .wl-section { margin-bottom: 20px; }
         .wl-section-title {
             font-size: .69rem; font-weight: 700; color: var(--muted);
@@ -1301,6 +1309,14 @@
         #pwa-dismiss-android {
             background: none; border: none; font-size: 1.3rem; cursor: pointer;
             color: #94a3b8; padding: 4px 6px; flex-shrink: 0;
+        }
+        /* Desktop: floating card instead of full-width bottom bar */
+        @media (min-width: 768px) {
+            #pwa-android {
+                left: auto; right: 24px; bottom: 24px;
+                border-radius: 16px; max-width: 380px;
+                box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+            }
         }
 
         /* iOS guide overlay (full-screen) */
@@ -3042,6 +3058,13 @@
         <!-- List view -->
         <template v-if="viewMode === 'list'">
             <div class="wl-wrap">
+                <div class="wl-summary">
+                    <span>{{ui.sessionTask}} <strong>{{sessionTotal}}</strong></span>
+                    <span class="wl-summary-divider">|</span>
+                    <span>{{ui.sessionDoneOf}} <strong>{{sessionAnsweredCount}}</strong></span>
+                    <span class="wl-summary-divider">|</span>
+                    <span>{{ui.remaining}} <strong>{{sessionRemainingCount}}</strong></span>
+                </div>
                 <div class="wl-section" v-if="listLearnItems.length">
                     <div class="wl-section-title">{{ui.listToLearn}} · {{listLearnItems.length}}</div>
                     <div class="wl-row" :class="{open: expandedWords[w.word]}"
@@ -3130,7 +3153,7 @@
             <div class="prog-track">
                 <div class="prog-fill" :style="{width: sessionPct + '%'}"></div>
             </div>
-            <div class="prog-text">{{queue.length}} {{ui.remaining}}</div>
+            <div class="prog-text">{{sessionAnsweredCount}}/{{sessionTotal}} {{ui.sessionDoneOf}}</div>
         </div>
 
         <!-- Card -->
@@ -3716,6 +3739,9 @@ const STRINGS = {
     keyHint: '空格翻转 &nbsp;·&nbsp; 翻转后：← 忘了 &nbsp; ↓ 模糊 &nbsp; → 记住 &nbsp; ↑ 很熟',
     ftPoints: '积分', ftStreak: '连击', ftMastered: '掌握',
     ftTotalReviewed: '总复习', ftMaxLevel: '👑 满级', remaining: '剩余',
+    sessionDoneOf: '已完成', sessionTask: '今日任务',
+    modeSwitchPractice: '已进入练习模式', modeSwitchReading: '已进入阅读模式',
+    modeSwitchCard: '已切到卡片模式', modeSwitchList: '已切到列表模式',
     now: '现在', min: ' 分钟', day: ' 天',
     graduated:  '🎓 初步掌握！',
     mastered:   (n) => `🏆 已掌握 ${n} 个单词！`,
@@ -3915,6 +3941,9 @@ const STRINGS = {
     keyHint: 'Space: flip &nbsp;·&nbsp; After flip: ← Again &nbsp; ↓ Hard &nbsp; → Good &nbsp; ↑ Easy',
     ftPoints: 'Points', ftStreak: 'Streak', ftMastered: 'Mastered',
     ftTotalReviewed: 'Reviews', ftMaxLevel: '👑 Max level', remaining: 'left',
+    sessionDoneOf: 'done', sessionTask: 'Today\'s task',
+    modeSwitchPractice: 'Practice mode', modeSwitchReading: 'Reading mode',
+    modeSwitchCard: 'Switched to cards', modeSwitchList: 'Switched to list',
     now: 'now', min: ' min', day: 'd',
     graduated:  '🎓 Graduated!',
     mastered:   (n) => `🏆 Mastered ${n} word${n === 1 ? '' : 's'}!`,
@@ -4403,6 +4432,7 @@ new Vue({
             // ── Session ───────────────────────────────────────────────────
             extraNewAllowed:  0,  // cumulative extra new cards from loadMore
             sessionCorrect:   0,  // all correct answers this session (incl. learning)
+            sessionSeenMap:   {},  // { wordId: true } — unique words answered this session
             stageLabel:  Object.assign({}, UI.stages),
             ui:          UI,      // exposes all i18n strings to the template
             // ── Practice Mode ──────────────────────────────────────────────
@@ -4526,7 +4556,13 @@ new Vue({
         },
         sessionPct() {
             if (!this.sessionTotal) return 100;
-            return Math.round((1 - this.queue.length / this.sessionTotal) * 100);
+            return Math.round(Object.keys(this.sessionSeenMap).length / this.sessionTotal * 100);
+        },
+        sessionAnsweredCount() {
+            return Object.keys(this.sessionSeenMap).length;
+        },
+        sessionRemainingCount() {
+            return Math.max(0, this.sessionTotal - Object.keys(this.sessionSeenMap).length);
         },
         listLearnItems() {
             return this.sessionQueue.filter(w => {
@@ -5155,6 +5191,7 @@ new Vue({
         toggleView() {
             this.stopSlideshow();
             this.viewMode = this.viewMode === 'card' ? 'list' : 'card';
+            this.showToast(this.viewMode === 'list' ? this.ui.modeSwitchList : this.ui.modeSwitchCard, 'good');
         },
         toggleSlideshow() {
             this.slideshowMode ? this.stopSlideshow() : this.startSlideshow();
@@ -5407,6 +5444,7 @@ new Vue({
             this.queue        = q;
             this.sessionTotal = q.length || 1;
             // Maintain sessionQueue: reset on fresh build (extraNew=0), extend on loadMore
+            this.sessionSeenMap = {};
             if (extraNew === 0) {
                 this.sessionQueue = [...q];
             } else {
@@ -5458,6 +5496,12 @@ new Vue({
             };
             if (!s.firstSeen) s.firstSeen = tdy;
 
+            // Track unique words answered this session (for progress display)
+            const _wasInSession = !!this.sessionSeenMap[wordId];
+            if (!_wasInSession) {
+                this.$set(this.sessionSeenMap, wordId, true);
+            }
+
             // Track difficult words — increment againCount on every "Again" press
             if (level === 'again') {
                 s.againCount = (s.againCount || 0) + 1;
@@ -5471,6 +5515,7 @@ new Vue({
                 streak:         this.streak,
                 totalReviewed:  this.totalReviewed - 1,
                 sessionCorrect: this.sessionCorrect,
+                wasNewToSession: !_wasInSession,
             };
 
             let nextMs;
@@ -5848,6 +5893,7 @@ new Vue({
                 return;
             }
             this.sessionCorrect  = 0;
+            this.sessionSeenMap  = {};
             this.queue           = shuffle([...todayWords]);
             this.sessionTotal    = this.queue.length;
             const seenTR = new Set(this.sessionQueue.map(w => w.word));
@@ -6109,6 +6155,8 @@ new Vue({
             this.practiceDone       = false;
             this.practiceWrongWords = [];
             this.practiceMode       = true;
+            this.viewMode           = 'card';  // ensure list mode is exited when returning
+            this.showToast(this.ui.modeSwitchPractice, 'good');
             this._afterPracticeQuestion();
         },
 
@@ -6142,6 +6190,10 @@ new Vue({
             this.streak         = snap.streak;
             this.totalReviewed  = snap.totalReviewed;
             this.sessionCorrect = snap.sessionCorrect;
+            // Restore session progress tracking
+            if (snap.wasNewToSession) {
+                this.$delete(this.sessionSeenMap, snap.wordId);
+            }
             // Put card back at front of queue
             const card = this.allWords.find(w => w.word === snap.wordId);
             if (card) {
@@ -6183,6 +6235,7 @@ new Vue({
             this.readingHistoryOpen = false;
             this.readingError       = '';
             this.readingOpen        = true;
+            this.showToast(this.ui.modeSwitchReading, 'good');
             // Serve cached article for today + current deck without re-generating
             const tdy    = today();
             const cached = this.readingHistory.find(
@@ -6630,7 +6683,7 @@ new Vue({
 
     const PROMPT_KEY = 'pwa_prompt_v2';
     // Reminder intervals after each dismiss: 3d, 7d, 30d, then stop
-    const REMIND_INTERVALS_MS = [3*86400000, 7*86400000, 30*86400000];
+    const REMIND_INTERVALS_MS = [7*86400000, 14*86400000];
 
     // ── Helper: is this already running as a standalone PWA? ──────────────
     function isStandalone() {
