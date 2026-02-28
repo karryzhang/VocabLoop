@@ -295,36 +295,43 @@
         /* ── Mini learning path strip (in-study) ─────────────── */
         .lp-mini-strip {
             display: flex; align-items: center; justify-content: center;
-            padding: 0 16px; gap: 0; flex-shrink: 0;
+            padding: 0 20px; gap: 0; flex-shrink: 0;
         }
-        .lp-mini-node { display: flex; flex-direction: column; align-items: center; gap: 1px; }
+        .lp-mini-node { display: flex; flex-direction: column; align-items: center; gap: 2px; }
         .lp-mini-circ {
-            width: 18px; height: 18px; border-radius: 50%;
-            border: 1.5px solid var(--border); background: var(--surface);
-            color: var(--muted); font-size: 0.58rem; font-weight: 700;
+            width: 22px; height: 22px; border-radius: 50%;
+            border: 1.5px solid color-mix(in srgb, var(--border) 80%, transparent);
+            background: var(--surface);
+            color: var(--muted); font-size: 0.6rem; font-weight: 600;
             display: flex; align-items: center; justify-content: center;
-            transition: all .3s;
+            transition: all .35s cubic-bezier(.4,0,.2,1);
         }
-        .lp-mini-lbl { font-size: 0.52rem; font-weight: 600; color: var(--muted); white-space: nowrap; }
+        .lp-mini-lbl {
+            font-size: 0.54rem; font-weight: 500; color: var(--muted);
+            white-space: nowrap; letter-spacing: 0.01em;
+            transition: color .3s;
+        }
         .lp-mini-node.active .lp-mini-circ {
             border-color: var(--blue); background: var(--blue); color: #fff;
-            box-shadow: 0 0 0 2px color-mix(in srgb, var(--blue) 15%, transparent);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 12%, transparent);
         }
-        .lp-mini-node.active .lp-mini-lbl { color: var(--blue); font-weight: 700; }
+        .lp-mini-node.active .lp-mini-lbl { color: var(--blue); font-weight: 600; }
         .lp-mini-seg {
-            flex: 1; height: 1px; background: var(--border); border-radius: 2px;
-            min-width: 24px; max-width: 52px; margin: 0 4px; margin-bottom: 12px;
+            flex: 1; height: 2px; background: color-mix(in srgb, var(--border) 60%, transparent);
+            border-radius: 99px;
+            min-width: 28px; max-width: 56px; margin: 0 5px; margin-bottom: 14px;
+            transition: background .35s;
         }
         .lp-mini-seg.filled { background: var(--green); }
         .lp-round-label {
-            text-align: center; font-size: 0.6rem; font-weight: 700;
-            color: var(--blue); letter-spacing: 0.06em;
-            padding: 2px 0 0; opacity: 0.75;
+            text-align: center; font-size: 0.62rem; font-weight: 600;
+            color: var(--blue); letter-spacing: 0.04em;
+            padding: 2px 0 1px;
         }
         .lp-mini-node.done .lp-mini-circ {
             border-color: var(--green); background: var(--green); color: #fff;
         }
-        .lp-mini-node.done .lp-mini-lbl { color: var(--green); font-weight: 700; }
+        .lp-mini-node.done .lp-mini-lbl { color: var(--green); font-weight: 600; }
 
         /* ── Learning path stepper ────────────── */
         .lp-stepper {
@@ -459,12 +466,12 @@
         .done-subtitle { font-size: 0.84rem; color: var(--muted); margin-top: 2px; line-height: 1.45; }
         /* Step badge — compact */
         .done-step-badge {
-            display: inline-flex; align-items: center; gap: 5px;
-            background: color-mix(in srgb, var(--green) 7%, var(--surface));
-            border: 1px solid color-mix(in srgb, var(--green) 20%, transparent);
+            display: inline-flex; align-items: center; gap: 6px;
+            background: color-mix(in srgb, var(--green) 8%, var(--surface));
+            border: 1px solid color-mix(in srgb, var(--green) 15%, transparent);
             border-radius: 99px;
-            padding: 5px 14px; font-size: 0.7rem; font-weight: 600; color: var(--green);
-            animation: badgePop .4s .15s cubic-bezier(.34,1.56,.64,1) both;
+            padding: 6px 16px; font-size: 0.7rem; font-weight: 600; color: var(--green);
+            animation: badgePop .45s .15s cubic-bezier(.34,1.56,.64,1) both;
             letter-spacing: 0.02em;
         }
         /* Primary action glows on enter */
@@ -664,8 +671,8 @@
             margin-bottom: 8px;
         }
         .prog-track {
-            flex: 1; height: 5px;
-            background: color-mix(in srgb, var(--border) 60%, transparent);
+            flex: 1; height: 4px;
+            background: color-mix(in srgb, var(--border) 45%, transparent);
             border-radius: 99px;
             overflow: hidden;
         }
@@ -673,39 +680,42 @@
             height: 100%;
             background: linear-gradient(90deg, var(--green) 0%, var(--blue) 100%);
             border-radius: 99px;
-            transition: width 0.5s cubic-bezier(.4,0,.2,1);
+            transition: width 0.6s cubic-bezier(.25,.46,.45,.94);
         }
         .prog-text {
-            font-size: 0.74rem;
+            font-size: 0.72rem;
+            font-weight: 500;
             color: var(--muted);
             min-width: 44px;
             text-align: right;
             white-space: nowrap;
+            font-variant-numeric: tabular-nums;
         }
         /* Daily goal row (above progress bar) */
         .goal-row {
-            display: flex; align-items: center; gap: 10px;
-            width: 100%; margin-bottom: 4px;
+            display: flex; align-items: center; gap: 12px;
+            width: 100%; margin-bottom: 6px;
         }
         .goal-ring-wrap {
-            position: relative; width: 38px; height: 38px; flex-shrink: 0;
+            position: relative; width: 40px; height: 40px; flex-shrink: 0;
         }
-        .goal-ring-svg { width: 38px; height: 38px; transform: rotate(-90deg); }
-        .goal-ring-bg  { fill: none; stroke: var(--border); stroke-width: 3; }
-        .goal-ring-fill { fill: none; stroke-width: 3; stroke-linecap: round;
-            transition: stroke-dashoffset .6s cubic-bezier(.4,0,.2,1); }
+        .goal-ring-svg { width: 40px; height: 40px; transform: rotate(-90deg); }
+        .goal-ring-bg  { fill: none; stroke: color-mix(in srgb, var(--border) 50%, transparent); stroke-width: 2.5; }
+        .goal-ring-fill { fill: none; stroke-width: 2.5; stroke-linecap: round;
+            transition: stroke-dashoffset .7s cubic-bezier(.25,.46,.45,.94); }
         .goal-ring-center {
             position: absolute; inset: 0; display: flex; align-items: center;
-            justify-content: center; font-size: 0.6rem; font-weight: 800; color: var(--text);
+            justify-content: center; font-size: 0.6rem; font-weight: 700; color: var(--text);
+            font-variant-numeric: tabular-nums;
         }
-        .goal-info { flex: 1; display: flex; flex-direction: column; gap: 1px; }
+        .goal-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
         .goal-title {
-            font-size: 0.78rem; font-weight: 700; color: var(--text); line-height: 1.2;
+            font-size: 0.78rem; font-weight: 600; color: var(--text); line-height: 1.25;
         }
         .goal-detail {
-            font-size: 0.68rem; color: var(--muted); line-height: 1.2;
+            font-size: 0.68rem; color: var(--muted); line-height: 1.25;
         }
-        .goal-detail strong { color: var(--blue); }
+        .goal-detail strong { color: var(--blue); font-weight: 600; }
         /* Done screen: daily goal hero */
         .done-goal {
             display: flex; align-items: center; gap: 14px;
@@ -1383,12 +1393,12 @@
         .prac-progress {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             width: 100%;
         }
         .prac-prog-track {
             flex: 1; height: 4px;
-            background: color-mix(in srgb, var(--border) 50%, transparent);
+            background: color-mix(in srgb, var(--border) 45%, transparent);
             border-radius: 99px;
             overflow: hidden;
         }
@@ -1396,10 +1406,18 @@
             height: 100%;
             background: linear-gradient(90deg, var(--blue), var(--purple));
             border-radius: 99px;
-            transition: width 0.5s cubic-bezier(.4,0,.2,1);
+            transition: width 0.6s cubic-bezier(.25,.46,.45,.94);
         }
-        .prac-prog-text { font-size: 0.72rem; color: var(--muted); min-width: 38px; text-align: right; white-space: nowrap; letter-spacing: 0.02em; }
-        .prac-score     { font-size: 0.74rem; font-weight: 800; color: var(--purple); min-width: 36px; text-align: right; white-space: nowrap; }
+        .prac-prog-text {
+            font-size: 0.72rem; font-weight: 500; color: var(--muted);
+            min-width: 38px; text-align: right; white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+        }
+        .prac-score {
+            font-size: 0.74rem; font-weight: 700; color: var(--purple);
+            min-width: 36px; text-align: right; white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+        }
 
         /* Question card */
         .prac-card {
@@ -2118,14 +2136,17 @@
 
         /* ── Practice exit button (in progress row) ─────────────────────── */
         .prac-exit-btn {
-            background: none; border: none; cursor: pointer;
-            color: var(--muted); font-size: 1rem; padding: 6px 8px;
-            line-height: 1; flex-shrink: 0; border-radius: 8px;
-            transition: color 0.15s, background 0.15s;
+            background: color-mix(in srgb, var(--muted) 8%, transparent);
+            border: none; cursor: pointer;
+            color: var(--muted); font-size: 0.82rem; padding: 5px 7px;
+            line-height: 1; flex-shrink: 0; border-radius: 50%;
+            width: 26px; height: 26px;
+            display: flex; align-items: center; justify-content: center;
+            transition: color 0.2s, background 0.2s, transform 0.15s;
             -webkit-tap-highlight-color: transparent;
         }
-        .prac-exit-btn:hover { color: var(--red); background: color-mix(in srgb, var(--red) 8%, transparent); }
-        .prac-exit-btn:active { transform: scale(0.92); }
+        .prac-exit-btn:hover { color: var(--red); background: color-mix(in srgb, var(--red) 10%, transparent); }
+        .prac-exit-btn:active { transform: scale(0.9); }
 
         /* ── Clickable chips ─────────────────────────────────────────────── */
         .chip-btn {
@@ -4322,7 +4343,7 @@ new Vue({
             readingPopup:        null,  // { word, meaning, isVocab } — word-tap reveal panel
             readingStoryTitle:   '',    // AI-generated story title
             readingGlosses:      {},    // { word: "中文释义" } — AI-provided glosses for any word
-            readingHistory:      JSON.parse(localStorage.getItem('reading_history') || '[]'),
+            readingHistory:      (() => { try { const _rh = JSON.parse(localStorage.getItem('reading_history') || '[]'); return Array.isArray(_rh) ? _rh.filter(e => e && typeof e.text === 'string' && Array.isArray(e.words)) : []; } catch(e) { localStorage.removeItem('reading_history'); return []; } })(),
             readingHistoryOpen:  false,
             // ── Undo ────────────────────────────────────────────────────
             undoSnap:  null,   // pre-answer snapshot
@@ -4814,11 +4835,13 @@ new Vue({
 
         // ── Audio ─────────────────────────────────────────────────────────
         // Try playing a URL; resolves true on success, false on failure
-        _tryAudioUrl(url) {
+        _tryAudioUrl(url, gen) {
             return new Promise(resolve => {
+                // Bail out immediately if a newer playAudio call superseded this one
+                if (gen !== undefined && gen !== this._audioGen) { resolve(false); return; }
                 // Cancel any previous non-preloaded audio to avoid overlap
                 if (this._currentAudio) {
-                    try { this._currentAudio.pause(); } catch(e) {}
+                    try { this._currentAudio.pause(); this._currentAudio.src = ''; } catch(e) {}
                 }
                 const a = new Audio(url);
                 this._currentAudio = a;
@@ -4835,7 +4858,7 @@ new Vue({
                 // Timeout: if audio doesn't become playable in time, fail fast
                 const timer = setTimeout(() => done(false), 5000);
                 a.onended = () => {
-                    this.audioPlaying = false;
+                    if (gen === undefined || gen === this._audioGen) this.audioPlaying = false;
                     if (this._currentAudio === a) this._currentAudio = null;
                 };
                 a.onerror = () => { clearTimeout(timer); done(false); };
@@ -4984,18 +5007,30 @@ new Vue({
 
         async playAudio(word) {
             if (!word) return;
+
+            // ── Abort previous playback immediately on rapid flip ──
+            const gen = ++this._audioGen;
+            // Stop any currently playing audio right away
+            if (this._currentAudio) {
+                try { this._currentAudio.pause(); this._currentAudio.src = ''; } catch(e) {}
+                this._currentAudio = null;
+            }
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+
             this.audioPlaying = true;
             // Safety watchdog: if onended never fires (network drop, browser quirk),
             // reset audioPlaying after 20s so the UI never stays permanently stuck.
             if (this._audioSafetyTimer) clearTimeout(this._audioSafetyTimer);
             this._audioSafetyTimer = setTimeout(() => { this.audioPlaying = false; }, 20000);
 
+            const stale = () => gen !== this._audioGen;
+
             // 0. Preloaded audio — play instantly or wait briefly for in-progress preload
             const preloaded = this._audioPreloads && this._audioPreloads[word];
             if (preloaded && !preloaded.error) {  // skip immediately if preload errored
                 const tryPreloaded = async (el) => {
+                    if (stale()) return false;
                     if (isFinite(el.duration) && el.duration < 0.5) return false;
-                    // Cancel any non-preloaded audio that may still be playing
                     if (this._currentAudio && this._currentAudio !== el) {
                         try { this._currentAudio.pause(); } catch(e) {}
                         this._currentAudio = null;
@@ -5003,7 +5038,7 @@ new Vue({
                     this._currentAudio = el;
                     el.currentTime = 0;
                     el.onended = () => {
-                        this.audioPlaying = false;
+                        if (gen === this._audioGen) this.audioPlaying = false;
                         if (this._currentAudio === el) this._currentAudio = null;
                     };
                     try { await el.play(); return !(isFinite(el.duration) && el.duration < 0.5); } catch(e) { return false; }
@@ -5018,23 +5053,29 @@ new Vue({
                         preloaded.addEventListener('error', () => r(false), { once: true });
                         setTimeout(() => r(false), 1500);
                     });
+                    if (stale()) { this.audioPlaying = false; return; }
                     if (ready && await tryPreloaded(preloaded)) return;
                 }
             }
 
+            if (stale()) { this.audioPlaying = false; return; }
+
             // 1. Free Dictionary API — human recordings for common words
             const d = this.dictCache[word];
             if (d && d.audio) {
-                if (await this._tryAudioUrl(d.audio)) return;
+                if (await this._tryAudioUrl(d.audio, gen)) return;
+                if (stale()) { this.audioPlaying = false; return; }
             }
 
             // 2. Youdao Dictionary — professional TTS for single words; phrases go straight to TTS
             if (!word.includes(' ')) {
                 const youdao = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=2`;
-                if (await this._tryAudioUrl(youdao)) return;
+                if (await this._tryAudioUrl(youdao, gen)) return;
+                if (stale()) { this.audioPlaying = false; return; }
             }
 
             // 3. Browser TTS — handles both single words and multi-word phrases naturally
+            if (stale()) { this.audioPlaying = false; return; }
             this.audioPlaying = false;
             this.tts(word);
         },
@@ -5794,13 +5835,15 @@ new Vue({
                 this.saveGlobal();
             }
 
-            // Merge reading history
+            // Merge reading history (validate entries to skip corrupt data)
             if (Array.isArray(data.readingHistory) && data.readingHistory.length > 0) {
                 let existing = [];
-                try { const raw = localStorage.getItem('reading_history'); if (raw) existing = JSON.parse(raw); } catch (e) {}
+                try { const raw = localStorage.getItem('reading_history'); if (raw) { const p = JSON.parse(raw); if (Array.isArray(p)) existing = p; } } catch (e) {}
+                const isValid = e => e && typeof e.text === 'string' && Array.isArray(e.words);
                 const seen = new Set();
                 const merged = [];
                 for (const item of [...existing, ...data.readingHistory]) {
+                    if (!isValid(item)) continue;
                     const key = JSON.stringify(item);
                     if (!seen.has(key)) { seen.add(key); merged.push(item); }
                 }
@@ -6334,6 +6377,7 @@ new Vue({
         this._prefetchTimers  = [];   // pending staggered preload timers
         this._currentAudio    = null; // currently playing Audio element (holds ref to prevent GC)
         this._audioSafetyTimer = null; // watchdog: auto-reset audioPlaying after max duration
+        this._audioGen        = 0;    // generation counter: abort stale playAudio calls on rapid flip
         // Restore preferred deck before loading state
         const savedDeckId = localStorage.getItem(DECK_PREF_KEY);
         if (savedDeckId) {
@@ -6583,8 +6627,11 @@ new Vue({
     let readingHistory = [];
     try{
       const raw = localStorage.getItem('reading_history');
-      if(raw) readingHistory = JSON.parse(raw);
-    } catch(e){}
+      if(raw) {
+        const parsed = JSON.parse(raw);
+        readingHistory = Array.isArray(parsed) ? parsed.filter(e => e && typeof e.text === 'string' && Array.isArray(e.words)) : [];
+      }
+    } catch(e){ localStorage.removeItem('reading_history'); }
 
     return {
       decks:          decks,
@@ -6617,9 +6664,10 @@ new Vue({
       try{ localStorage.setItem(DECK_PREF, data.preferredDeck); } catch(e){}
     }
 
-    // Write reading history
+    // Write reading history (validate entries before writing)
     if(Array.isArray(data.readingHistory)){
-      try{ localStorage.setItem('reading_history', JSON.stringify(data.readingHistory)); } catch(e){}
+      const validHistory = data.readingHistory.filter(e => e && typeof e.text === 'string' && Array.isArray(e.words));
+      try{ localStorage.setItem('reading_history', JSON.stringify(validHistory)); } catch(e){}
     }
 
     // Record sync timestamp
