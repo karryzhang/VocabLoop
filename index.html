@@ -1769,21 +1769,35 @@
         }
         .reading-error-icon { font-size: 2.2rem; line-height: 1; }
         .reading-error-msg  { font-size: 0.9rem; color: var(--red); line-height: 1.5; max-width: 280px; }
+        .reading-regen {
+            padding: 10px 20px; border: 1.5px solid var(--border);
+            color: var(--muted); background: none; border-radius: 10px;
+            font-weight: 600; cursor: pointer; font-size: 0.85rem;
+            transition: border-color 0.18s, color 0.15s;
+        }
+        .reading-regen:hover { border-color: var(--blue); color: var(--blue); }
         /* Header button row */
         .reading-hd-btns { display: flex; align-items: center; gap: 6px; }
+        /* Bilingual toggle bar (below title) */
+        .reading-bilingual-bar {
+            display: flex; justify-content: flex-start; margin-bottom: 10px;
+        }
         /* Bilingual toggle button */
         .reading-bilingual-btn {
-            display: flex; align-items: center; gap: 4px;
+            display: inline-flex; align-items: center; gap: 6px;
             background: var(--surface); border: 1.5px solid var(--border);
-            border-radius: 8px; padding: 5px 10px; cursor: pointer;
-            color: var(--text); font-size: 0.8rem; font-weight: 600;
-            transition: border-color 0.15s, background 0.15s;
+            border-radius: 20px; padding: 6px 14px; cursor: pointer;
+            color: var(--muted); font-size: 0.82rem; font-weight: 600;
+            transition: border-color 0.2s, background 0.2s, color 0.2s, box-shadow 0.2s;
             white-space: nowrap;
         }
-        .reading-bilingual-btn:hover  { border-color: var(--blue); }
-        .reading-bilingual-btn.active { border-color: var(--blue); background: rgba(59,130,246,.1); color: var(--blue); }
-        .rdb-icon  { font-size: 1rem; line-height: 1; }
-        .rdb-label { font-size: 0.75rem; }
+        .reading-bilingual-btn:hover  { border-color: var(--blue); color: var(--text); }
+        .reading-bilingual-btn.active {
+            border-color: var(--blue); background: rgba(59,130,246,.1);
+            color: var(--blue); box-shadow: 0 2px 8px rgba(59,130,246,.12);
+        }
+        .rdb-icon  { font-size: 1.05rem; line-height: 1; }
+        .rdb-label { font-size: 0.78rem; }
         /* Article text */
         .reading-article {
             font-size: 1.02rem; line-height: 2.0; color: var(--text);
@@ -1861,15 +1875,6 @@
         .reading-actions {
             display: flex; flex-direction: column; gap: 10px;
         }
-        .reading-regen {
-            width: 100%; padding: 13px; border: 1.5px solid var(--border);
-            color: var(--muted); background: none; border-radius: 12px;
-            font-weight: 600; cursor: pointer; font-size: 0.88rem;
-            transition: border-color 0.18s, color 0.15s, transform 0.12s;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .reading-regen:hover { border-color: var(--blue); color: var(--blue); }
-        .reading-regen:active { transform: scale(0.98); }
         .reading-done-btn {
             width: 100%; padding: 15px 18px; border-radius: 16px; border: none;
             cursor: pointer; background: var(--green); color: #fff;
@@ -1935,7 +1940,7 @@
             .reading-article    { font-size: 0.95rem; line-height: 1.9; }
             .rd-bi-en           { font-size: 0.93rem; }
             .rd-bi-zh           { font-size: 0.82rem; }
-            .reading-bilingual-btn { padding: 4px 8px; }
+            .reading-bilingual-btn { padding: 5px 10px; }
             .rdb-label          { display: none; }  /* show icon only on tiny screens */
         }
         /* ── Reading: desktop / wide screen ─────────────────── */
@@ -3107,15 +3112,6 @@
         <div class="reading-hd">
             <span class="reading-hd-title">📖 {{ui.readingTitle}}</span>
             <div class="reading-hd-btns">
-                <!-- Bilingual toggle — only shown when sentences data is available -->
-                <button v-if="readingArticle && readingSentences.length"
-                        class="reading-bilingual-btn"
-                        :class="{active: readingBilingual}"
-                        @click="readingBilingual = !readingBilingual; readingPopup = null"
-                        :title="ui.readingBilingualTip">
-                    <span class="rdb-icon">{{ readingBilingual ? '🇨🇳' : '🇺🇸' }}</span>
-                    <span class="rdb-label">{{ readingBilingual ? ui.readingBilingualOff : ui.readingBilingualOn }}</span>
-                </button>
                 <button class="reading-hist-btn"
                         :class="{active: readingHistoryOpen}"
                         @click="readingHistoryOpen = !readingHistoryOpen; readingPopup = null">
@@ -3181,6 +3177,16 @@
             <template v-else-if="readingArticle">
                 <!-- Story title -->
                 <h2 v-if="readingStoryTitle" class="reading-story-title">{{readingStoryTitle}}</h2>
+                <!-- Bilingual toggle — below title -->
+                <div v-if="readingSentences.length" class="reading-bilingual-bar">
+                    <button class="reading-bilingual-btn"
+                            :class="{active: readingBilingual}"
+                            @click="readingBilingual = !readingBilingual; readingPopup = null"
+                            :title="ui.readingBilingualTip">
+                        <span class="rdb-icon">{{ readingBilingual ? '🇨🇳' : '🇺🇸' }}</span>
+                        <span class="rdb-label">{{ readingBilingual ? ui.readingBilingualOff : ui.readingBilingualOn }}</span>
+                    </button>
+                </div>
                 <!-- Click hint -->
                 <div class="reading-tap-hint">
                     <span>{{ui.readingTapHint}}</span>
@@ -3198,11 +3204,8 @@
                         </span>
                     </div>
                 </div>
-                <!-- Actions row: regen + done -->
+                <!-- Actions row -->
                 <div class="reading-actions">
-                    <button class="reading-regen" @click="generateReading; readingPopup = null">
-                        🔄 {{ui.readingRegen}}
-                    </button>
                     <button class="reading-done-btn" @click="closeReading(); loadMore()">
                         <span class="reading-done-btn-icon">✅</span>
                         <div class="reading-done-btn-text">
