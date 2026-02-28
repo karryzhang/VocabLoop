@@ -4523,6 +4523,33 @@ new Vue({
             }).join('');
         },
 
+        // Guard: if text looks like raw JSON, extract the story from it.
+        // Handles legacy cached entries or server-side parse failures.
+        _sanitizeReadingText(text) {
+            if (!text || typeof text !== 'string') return text;
+            const trimmed = text.trim();
+            // Quick check: does it start with { and end with }?
+            if (trimmed.charAt(0) === '{' && trimmed.charAt(trimmed.length - 1) === '}') {
+                try {
+                    const obj = JSON.parse(trimmed);
+                    const story = (obj.story || obj.text || '').trim();
+                    if (story) {
+                        // Also recover title/sentences/glosses if available
+                        if (obj.title && !this.readingStoryTitle) this.readingStoryTitle = obj.title;
+                        if (Array.isArray(obj.sentences) && !this.readingSentences.length) {
+                            this.readingSentences = obj.sentences
+                                .filter(s => s && typeof s.en === 'string' && typeof s.zh === 'string')
+                                .map(s => ({ en: s.en.trim(), zh: s.zh.trim() }));
+                        }
+                        if (obj.glosses && typeof obj.glosses === 'object' && !Object.keys(this.readingGlosses).length) {
+                            this.readingGlosses = obj.glosses;
+                        }
+                        return story;
+                    }
+                } catch (_) {}
+            }
+            return text;
+        },
         // Show the bottom word-reveal panel for a tapped word in the reading article.
         _showReadingPopup(word, meaning, isVocab) {
             this.readingPopup = { word, meaning, isVocab };
@@ -5768,10 +5795,10 @@ new Vue({
             if (cached) {
                 this.readingWordObjs  = cached.words.map(
                     w => this.allWords.find(aw => aw.word === w.word) || w);
-                this.readingArticle   = cached.text;
                 this.readingSentences = cached.sentences || [];
                 this.readingStoryTitle = cached.title || '';
                 this.readingGlosses   = cached.glosses || {};
+                this.readingArticle   = this._sanitizeReadingText(cached.text);
             } else {
                 this.readingArticle   = '';
                 this.readingSentences = [];
@@ -5794,10 +5821,10 @@ new Vue({
         openHistoryItem(entry) {
             this.readingWordObjs    = entry.words.map(
                 w => this.allWords.find(aw => aw.word === w.word) || w);
-            this.readingArticle     = entry.text;
             this.readingSentences   = entry.sentences || [];
             this.readingStoryTitle  = entry.title || '';
             this.readingGlosses     = entry.glosses || {};
+            this.readingArticle     = this._sanitizeReadingText(entry.text);
             this.readingHistoryOpen = false;
             this.readingError       = '';
             this.readingPopup       = null;
@@ -5939,11 +5966,11 @@ new Vue({
                 const sentences = Array.isArray(data.sentences) ? data.sentences : [];
                 const title     = typeof data.title === 'string' ? data.title.trim() : '';
                 const glosses   = (data.glosses && typeof data.glosses === 'object') ? data.glosses : {};
-                this.readingArticle   = text.trim();
                 this.readingSentences = sentences;
                 this.readingStoryTitle = title;
                 this.readingGlosses   = glosses;
-                this.saveReadingHistory(text.trim(), sentences, title, glosses);
+                this.readingArticle   = this._sanitizeReadingText(text.trim());
+                this.saveReadingHistory(this.readingArticle, this.readingSentences, this.readingStoryTitle, this.readingGlosses);
             } catch (e) {
                 clearTimeout(timeoutId);
                 if (e.name === 'AbortError') {
