@@ -22,6 +22,7 @@
     <meta name="apple-mobile-web-app-title" content="VocabLoop">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
     <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 
     <!-- ── Open Graph (Facebook / WeChat / Slack 等预览) ─────────────── -->
@@ -7110,6 +7111,13 @@ new Vue({
   }
 
 })();
+
+// ── Service Worker registration ──────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('sw.js').catch(function() {});
+  });
+}
 </script>
 </body>
 </html>
