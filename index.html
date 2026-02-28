@@ -4703,8 +4703,11 @@ new Vue({
             // After dict fetch completes, upgrade current card to Free Dict audio if available
             this.fetchDict(newWord).then(() => this._preloadAudio(newWord));
             this.prefetchAhead();
+            // Cancel any pending auto-play timer from a previous card to avoid
+            // cascading _audioGen increments that make the current card's audio stale
+            if (this._autoPlayTimer) { clearTimeout(this._autoPlayTimer); this._autoPlayTimer = null; }
             if (this.autoPlay) {
-                setTimeout(() => this.playAudio(newWord), 200);
+                this._autoPlayTimer = setTimeout(() => { this._autoPlayTimer = null; this.playAudio(newWord); }, 200);
             }
         },
         // Silent full sync when study session completes
@@ -5065,6 +5068,7 @@ new Vue({
             a.preload = 'auto';
             a.src = url;
             a._preloadSrc = url;
+            a._isPreloaded = true;
             a.load();
             this._audioPreloads[word] = a;
         },
@@ -5075,9 +5079,9 @@ new Vue({
             return new Promise(resolve => {
                 // Bail out immediately if a newer playAudio call superseded this one
                 if (gen !== undefined && gen !== this._audioGen) { resolve(false); return; }
-                // Cancel any previous non-preloaded audio to avoid overlap
+                // Cancel any previous audio to avoid overlap
                 if (this._currentAudio) {
-                    try { this._currentAudio.pause(); this._currentAudio.src = ''; } catch(e) {}
+                    try { this._currentAudio.pause(); if (!this._currentAudio._isPreloaded) this._currentAudio.src = ''; } catch(e) {}
                 }
                 const a = new Audio(url);
                 this._currentAudio = a;
@@ -5249,7 +5253,7 @@ new Vue({
             const gen = ++this._audioGen;
             // Stop any currently playing audio right away
             if (this._currentAudio) {
-                try { this._currentAudio.pause(); this._currentAudio.src = ''; } catch(e) {}
+                try { this._currentAudio.pause(); if (!this._currentAudio._isPreloaded) this._currentAudio.src = ''; } catch(e) {}
                 this._currentAudio = null;
             }
             if ('speechSynthesis' in window) window.speechSynthesis.cancel();
@@ -6631,6 +6635,7 @@ new Vue({
         this._currentAudio    = null; // currently playing Audio element (holds ref to prevent GC)
         this._audioSafetyTimer = null; // watchdog: auto-reset audioPlaying after max duration
         this._audioGen        = 0;    // generation counter: abort stale playAudio calls on rapid flip
+        this._autoPlayTimer   = null; // pending auto-play timer (cancelled on rapid card change)
         // Restore preferred deck before loading state
         const savedDeckId = localStorage.getItem(DECK_PREF_KEY);
         if (savedDeckId) {
@@ -6989,7 +6994,8 @@ new Vue({
       vm.loadSaved();
       vm.loadGlobal();
       // Don't rebuild the study queue while the user is mid-practice session
-      if(!vm.practiceMode) vm.buildQueue();
+      // or when the session is done (to avoid overwriting the done screen with new due cards)
+      if(!vm.practiceMode && !vm.sessionDone) vm.buildQueue();
     }
   }
 
