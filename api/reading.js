@@ -19,7 +19,8 @@ function buildPrompt(words) {
     'master vocabulary through immersive, enjoyable reading.',
     '',
     'Write an engaging short story that weaves ALL the vocabulary words below',
-    'naturally into the narrative. Then provide a sentence-by-sentence Chinese translation.',
+    'naturally into the narrative. Then provide sentence-by-sentence Chinese translations',
+    'and brief Chinese glosses for other key words.',
     '',
     'Story requirements:',
     '- Length: 260–320 English words (rich and immersive, NOT a list of example sentences)',
@@ -29,18 +30,26 @@ function buildPrompt(words) {
     '- Depth: sensory details, character inner thoughts, one unexpected or touching moment',
     '- Language: rich B1–B2 level — literary and engaging, NOT a textbook exercise',
     '- Format the story into 3–4 paragraphs (use actual blank lines between paragraphs)',
+    '- Give the story a short, imaginative, evocative title (4–8 words)',
     '',
     'Return ONLY valid JSON — no markdown, no code fences, no extra text:',
     '{',
+    '  "title": "A Short Evocative Title",',
     '  "story": "Paragraph 1.\\n\\nParagraph 2.\\n\\nParagraph 3.",',
     '  "sentences": [',
     '    { "en": "First sentence.", "zh": "第一句中文翻译。" },',
     '    { "en": "Second sentence.", "zh": "第二句中文翻译。" }',
-    '  ]',
+    '  ],',
+    '  "glosses": {',
+    '    "hesitated": "犹豫",',
+    '    "gleaming": "闪闪发光的"',
+    '  }',
     '}',
     '',
-    'The sentences array must contain every sentence of the story in order,',
-    'each with an accurate Chinese translation.',
+    'Rules for sentences: include every sentence of the story in order, each with an accurate Chinese translation.',
+    'Rules for glosses: include 15–25 non-trivial words from the story that a Chinese learner at B1–B2 level',
+    'might not know. Skip the vocabulary list words (already known) and very common words (the, is, go, etc.).',
+    'Keep each gloss to 2–5 Chinese characters — concise and useful.',
     '',
     `Vocabulary: ${wordList}`,
   ].join('\n');
@@ -54,20 +63,26 @@ function parseResponse(raw) {
     // Strip markdown code fences if present
     const cleaned = raw.replace(/^```(?:json)?\s*/m, '').replace(/\s*```\s*$/m, '').trim();
     const parsed = JSON.parse(cleaned);
-    if (parsed.story && Array.isArray(parsed.sentences)) {
+    const text = (parsed.story || parsed.text || '').trim();
+    if (text) {
       return {
-        text: parsed.story.trim(),
-        sentences: parsed.sentences
-          .filter(s => s && typeof s.en === 'string' && typeof s.zh === 'string')
-          .map(s => ({ en: s.en.trim(), zh: s.zh.trim() })),
+        title: typeof parsed.title === 'string' ? parsed.title.trim() : '',
+        text,
+        sentences: Array.isArray(parsed.sentences)
+          ? parsed.sentences
+              .filter(s => s && typeof s.en === 'string' && typeof s.zh === 'string')
+              .map(s => ({ en: s.en.trim(), zh: s.zh.trim() }))
+          : [],
+        glosses: (parsed.glosses && typeof parsed.glosses === 'object' && !Array.isArray(parsed.glosses))
+          ? parsed.glosses
+          : {},
       };
     }
     // Fallback if JSON has unexpected shape
-    const text = parsed.story || parsed.text || raw.trim();
-    return { text, sentences: [] };
+    return { title: '', text: raw.trim(), sentences: [], glosses: {} };
   } catch (_) {
     // Not valid JSON — treat as plain text (backwards compat)
-    return { text: raw.trim(), sentences: [] };
+    return { title: '', text: raw.trim(), sentences: [], glosses: {} };
   }
 }
 
@@ -144,12 +159,12 @@ module.exports = async function handler(req, res) {
       return res.status(502).json({ error: 'Empty response from AI' });
     }
 
-    const { text, sentences } = parseResponse(raw);
+    const { title, text, sentences, glosses } = parseResponse(raw);
     if (!text) {
       return res.status(502).json({ error: 'Could not extract story from AI response' });
     }
 
-    return res.status(200).json({ text, sentences });
+    return res.status(200).json({ title, text, sentences, glosses });
   } catch (e) {
     if (e.name === 'AbortError') {
       return res.status(504).json({ error: 'timeout' });
