@@ -4675,6 +4675,10 @@ new Vue({
             if (done && this.backendAvailable && window.__vocabSync) {
                 window.__vocabSync.doSync();
             }
+            // Prompt PWA install after first round completion
+            if (done && this.todayRounds === 1 && typeof window.__pwaPromptShow === 'function') {
+                window.__pwaPromptShow();
+            }
         },
     },
 
@@ -6515,7 +6519,9 @@ new Vue({
     document.getElementById('pwa-step3').innerHTML          = UI.pwaIOSStep3;
     document.getElementById('pwa-dismiss-ios').textContent  = UI.pwaIOSDismiss;
 
-    const SHOWN_KEY = 'pwa_prompt_shown_v1';
+    const PROMPT_KEY = 'pwa_prompt_v2';
+    // Reminder intervals after each dismiss: 3d, 7d, 30d, then stop
+    const REMIND_INTERVALS_MS = [3*86400000, 7*86400000, 30*86400000];
 
     // ── Helper: is this already running as a standalone PWA? ──────────────
     function isStandalone() {
@@ -6525,37 +6531,71 @@ new Vue({
 
     if (isStandalone()) return;   // already installed → skip everything
 
+    // ── Read / write prompt state ─────────────────────────────────────────
+    // { dismissCount: number, lastDismiss: timestamp, installed: bool }
+    function getPromptState() {
+        try { return JSON.parse(localStorage.getItem(PROMPT_KEY)) || {}; } catch(e) { return {}; }
+    }
+    function savePromptState(s) {
+        localStorage.setItem(PROMPT_KEY, JSON.stringify(s));
+    }
+
+    // Check whether enough time has passed since last dismiss
+    function shouldRemind() {
+        const s = getPromptState();
+        if (s.installed) return false;
+        if (!s.dismissCount) return true;  // never dismissed
+        const idx = Math.min(s.dismissCount - 1, REMIND_INTERVALS_MS.length - 1);
+        if (s.dismissCount > REMIND_INTERVALS_MS.length) return false; // max reminders reached
+        const elapsed = Date.now() - (s.lastDismiss || 0);
+        return elapsed >= REMIND_INTERVALS_MS[idx];
+    }
+
+    function recordDismiss() {
+        const s = getPromptState();
+        s.dismissCount = (s.dismissCount || 0) + 1;
+        s.lastDismiss  = Date.now();
+        savePromptState(s);
+    }
+
+    function recordInstall() {
+        const s = getPromptState();
+        s.installed = true;
+        savePromptState(s);
+    }
+
     // ── Detect platform ───────────────────────────────────────────────────
     const ua  = navigator.userAgent;
     const isIOS     = /iphone|ipad|ipod/i.test(ua);
     const isSafari  = /safari/i.test(ua) && !/chrome|crios|fxios/i.test(ua);
-    const isAndroid = /android/i.test(ua);
 
-    // ── iOS: show guide after a 2 s delay on first visit ─────────────────
-    if (isIOS && isSafari && !localStorage.getItem(SHOWN_KEY)) {
-        const overlay  = document.getElementById('pwa-ios');
+    // ── iOS: show guide when first study round completes ──────────────────
+    if (isIOS && isSafari) {
+        const overlay    = document.getElementById('pwa-ios');
         const dismissBtn = document.getElementById('pwa-dismiss-ios');
 
-        setTimeout(function () {
-            overlay.classList.add('show');
-        }, 2000);
+        function showIOSGuide() {
+            if (!shouldRemind()) return;
+            setTimeout(function () { overlay.classList.add('show'); }, 800);
+        }
 
         dismissBtn.addEventListener('click', function () {
             overlay.classList.remove('show');
-            localStorage.setItem(SHOWN_KEY, '1');
+            recordDismiss();
         });
-
-        // Also dismiss on backdrop tap
         overlay.addEventListener('click', function (e) {
             if (e.target === overlay) {
                 overlay.classList.remove('show');
-                localStorage.setItem(SHOWN_KEY, '1');
+                recordDismiss();
             }
         });
+
+        // Expose trigger for Vue sessionDone watcher
+        window.__pwaPromptShow = showIOSGuide;
         return;
     }
 
-    // ── Android / Chrome: capture beforeinstallprompt ─────────────────────
+    // ── Android / Chrome: capture beforeinstallprompt, show after study ───
     let deferredPrompt = null;
     const banner     = document.getElementById('pwa-android');
     const installBtn = document.getElementById('pwa-install-btn');
@@ -6564,13 +6604,14 @@ new Vue({
     window.addEventListener('beforeinstallprompt', function (e) {
         e.preventDefault();
         deferredPrompt = e;
-
-        if (localStorage.getItem(SHOWN_KEY)) return;   // dismissed before
-
-        setTimeout(function () {
-            banner.classList.add('show');
-        }, 2500);
+        // Don't show immediately — wait for session completion trigger
     });
+
+    function showAndroidBanner() {
+        if (!deferredPrompt) return;
+        if (!shouldRemind()) return;
+        setTimeout(function () { banner.classList.add('show'); }, 800);
+    }
 
     installBtn.addEventListener('click', async function () {
         if (!deferredPrompt) return;
@@ -6578,18 +6619,21 @@ new Vue({
         const { outcome } = await deferredPrompt.userChoice;
         deferredPrompt = null;
         banner.classList.remove('show');
-        localStorage.setItem(SHOWN_KEY, '1');
+        recordInstall();
     });
 
     dismissBtn.addEventListener('click', function () {
         banner.classList.remove('show');
-        localStorage.setItem(SHOWN_KEY, '1');
+        recordDismiss();
     });
 
-    // Hide banner once installed
     window.addEventListener('appinstalled', function () {
         banner.classList.remove('show');
+        recordInstall();
     });
+
+    // Expose trigger for Vue sessionDone watcher
+    window.__pwaPromptShow = showAndroidBanner;
 })();
 </script>
 
