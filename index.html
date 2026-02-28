@@ -2186,42 +2186,110 @@
         .ob-body {
             flex: 1; overflow-y: auto; padding: 0 20px 20px;
             -webkit-overflow-scrolling: touch;
-            display: flex; flex-direction: column; gap: 28px;
+            display: flex; flex-direction: column; gap: 24px;
         }
         .ob-hero {
             display: flex; flex-direction: column; align-items: center;
-            text-align: center; gap: 8px; padding: 16px 0 8px;
+            text-align: center; gap: 6px; padding: 8px 0 0;
         }
-        .ob-logo    { width: 80px; height: 80px; border-radius: 20px; object-fit: cover; box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
-        .ob-brand   { font-size: 2rem; font-weight: 900; color: var(--text); letter-spacing: -0.02em; }
-        .ob-tagline { font-size: 0.85rem; color: var(--muted); }
-        .ob-section { display: flex; flex-direction: column; gap: 12px; }
-        .ob-section-title {
-            font-size: 1rem; font-weight: 800; color: var(--text);
-            padding-bottom: 6px; border-bottom: 2px solid var(--border);
-        }
-        .ob-section-body { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
-        .ob-decks { display: flex; flex-direction: column; gap: 10px; }
-        .ob-deck {
+        .ob-logo    { width: 64px; height: 64px; border-radius: 16px; object-fit: cover; box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+        .ob-brand   { font-size: 1.8rem; font-weight: 900; color: var(--text); letter-spacing: -0.02em; }
+        .ob-tagline { font-size: 0.82rem; color: var(--muted); max-width: 280px; }
+
+        /* ── Three-phase learning pipeline ─────────────────────────────── */
+        .ob-pipeline { display: flex; flex-direction: column; gap: 0; }
+        .ob-phase {
             display: flex; align-items: flex-start; gap: 14px;
+            padding: 14px 16px;
             background: var(--surface); border: 1px solid var(--border);
-            border-radius: 16px; padding: 16px 18px;
+            position: relative;
         }
-        .ob-deck-icon { font-size: 1.6rem; line-height: 1; flex-shrink: 0; margin-top: 2px; }
-        .ob-deck-name { font-size: 0.95rem; font-weight: 700; color: var(--text); }
-        .ob-deck-desc { font-size: 0.8rem; color: var(--muted); margin-top: 3px; line-height: 1.5; }
-        .ob-steps { display: flex; flex-direction: column; gap: 12px; }
-        .ob-step  {
+        .ob-phase:first-child { border-radius: 16px 16px 0 0; }
+        .ob-phase:last-child  { border-radius: 0 0 16px 16px; }
+        .ob-phase:not(:last-child) { border-bottom: none; }
+        .ob-phase-icon {
+            width: 40px; height: 40px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; flex-shrink: 0;
+        }
+        .ob-phase-icon.phase1 { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+        .ob-phase-icon.phase2 { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+        .ob-phase-icon.phase3 { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+        [data-theme="dark"] .ob-phase-icon.phase1 { background: linear-gradient(135deg, #1e3a5f, #1e40af40); }
+        [data-theme="dark"] .ob-phase-icon.phase2 { background: linear-gradient(135deg, #78350f60, #92400e40); }
+        [data-theme="dark"] .ob-phase-icon.phase3 { background: linear-gradient(135deg, #064e3b60, #065f4640); }
+        .ob-phase-text { flex: 1; min-width: 0; }
+        .ob-phase-title {
+            font-size: 0.92rem; font-weight: 700; color: var(--text);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .ob-phase-num {
+            font-size: 0.65rem; font-weight: 800; color: var(--blue);
+            background: var(--blue-bg, rgba(99,102,241,0.1));
+            padding: 1px 6px; border-radius: 4px;
+        }
+        .ob-phase-desc {
+            font-size: 0.8rem; color: var(--muted); margin-top: 3px; line-height: 1.5;
+        }
+        .ob-phase-arrow {
+            display: flex; justify-content: center;
+            color: var(--muted); font-size: 0.7rem; opacity: 0.5;
+            margin: -1px 0; position: relative; z-index: 1;
+        }
+
+        /* ── Learning curve SVG ─────────────────────────────────────────── */
+        .ob-curve-wrap {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 16px; padding: 16px 16px 12px; text-align: center;
+        }
+        .ob-curve-title {
+            font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 10px;
+        }
+        .ob-curve-svg { width: 100%; max-width: 340px; height: auto; }
+        .ob-curve-legend {
+            display: flex; justify-content: center; gap: 18px; margin-top: 8px;
+            font-size: 0.72rem; color: var(--muted);
+        }
+        .ob-curve-legend span { display: flex; align-items: center; gap: 5px; }
+        .ob-curve-legend i {
+            display: inline-block; width: 16px; height: 3px; border-radius: 2px;
+        }
+        .ob-curve-legend i.forget { background: #ef4444; opacity: 0.7; }
+        .ob-curve-legend i.srs    { background: #8b6cf6; }
+
+        /* ── AI guide section ──────────────────────────────────────────── */
+        .ob-ai {
             display: flex; align-items: flex-start; gap: 12px;
-            font-size: 0.88rem; color: var(--muted); line-height: 1.55;
+            background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(99,102,241,0.06));
+            border: 1px solid rgba(139,92,246,0.18);
+            border-radius: 16px; padding: 14px 16px;
         }
-        .ob-step-num {
-            width: 22px; height: 22px; border-radius: 50%;
-            background: var(--blue); color: #fff;
-            font-size: 0.75rem; font-weight: 700;
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-            margin-top: 1px;
+        [data-theme="dark"] .ob-ai {
+            background: linear-gradient(135deg, rgba(139,92,246,0.12), rgba(99,102,241,0.08));
+            border-color: rgba(139,92,246,0.25);
         }
+        .ob-ai-icon {
+            font-size: 1.4rem; flex-shrink: 0; margin-top: 1px;
+        }
+        .ob-ai-text { flex: 1; }
+        .ob-ai-title {
+            font-size: 0.88rem; font-weight: 700; color: var(--text);
+        }
+        .ob-ai-desc {
+            font-size: 0.78rem; color: var(--muted); margin-top: 3px; line-height: 1.55;
+        }
+        .ob-ai-chips {
+            display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;
+        }
+        .ob-ai-chip {
+            font-size: 0.7rem; font-weight: 600;
+            color: #7c3aed; background: rgba(139,92,246,0.1);
+            padding: 3px 8px; border-radius: 6px;
+        }
+        [data-theme="dark"] .ob-ai-chip {
+            color: #c4b5fd; background: rgba(139,92,246,0.18);
+        }
+
         .ob-footer {
             flex-shrink: 0;
             padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
@@ -2237,12 +2305,10 @@
         }
         .ob-cta:hover  { transform: translateY(-1px); box-shadow: 0 6px 26px rgba(139,92,246,0.32); }
         .ob-cta:active { transform: scale(0.98); box-shadow: none; }
-        /* ob-panel fills overlay on mobile */
         .ob-panel {
             display: flex; flex-direction: column;
             flex: 1; width: 100%; overflow: hidden;
         }
-        /* Large screen: centered card modal */
         @media (min-width: 700px) {
             .ob-overlay {
                 align-items: center; justify-content: center;
@@ -2254,7 +2320,7 @@
             }
             .ob-panel {
                 flex: none;
-                width: 100%; max-width: 560px;
+                width: 100%; max-width: 520px;
                 max-height: 85vh;
                 background: var(--bg);
                 border-radius: 24px;
@@ -2262,18 +2328,7 @@
                 box-shadow: 0 24px 64px rgba(0,0,0,0.28);
                 animation: rdSlideUp 0.32s cubic-bezier(.32,.72,0,1);
             }
-            .ob-footer {
-                padding-bottom: 20px;
-            }
-            .ob-decks {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-            .ob-deck {
-                flex-direction: column; gap: 8px;
-                align-items: flex-start;
-            }
+            .ob-footer { padding-bottom: 20px; }
         }
 
         /* ── Daily Welcome ───────────────────────────────────────────────── */
@@ -3410,69 +3465,91 @@
         <!-- Scrollable body -->
         <div class="ob-body">
 
-            <!-- Hero -->
+            <!-- Hero (compact) -->
             <div class="ob-hero">
                 <img class="ob-logo" src="icons/apple-touch-icon.png" alt="VocabLoop">
                 <div class="ob-brand">VocabLoop</div>
                 <div class="ob-tagline">{{ui.obTagline}}</div>
             </div>
 
-            <!-- SRS -->
-            <div class="ob-section">
-                <div class="ob-section-title">{{ui.obSrsTitle}}</div>
-                <div class="ob-section-body">{{ui.obSrsDesc}}</div>
-            </div>
-
-            <!-- Decks -->
-            <div class="ob-section">
-                <div class="ob-section-title">{{ui.obDecksTitle}}</div>
-                <div class="ob-decks">
-                    <div class="ob-deck">
-                        <span class="ob-deck-icon">📚</span>
-                        <div>
-                            <div class="ob-deck-name">{{ui.deckPET}}</div>
-                            <div class="ob-deck-desc">{{ui.obDeckPetDesc}}</div>
-                        </div>
+            <!-- Three-phase learning pipeline -->
+            <div class="ob-pipeline">
+                <div class="ob-phase">
+                    <div class="ob-phase-icon phase1">🃏</div>
+                    <div class="ob-phase-text">
+                        <div class="ob-phase-title"><span class="ob-phase-num">1</span> {{ui.obPhase1Title}}</div>
+                        <div class="ob-phase-desc">{{ui.obPhase1Desc}}</div>
                     </div>
-                    <div class="ob-deck">
-                        <span class="ob-deck-icon">💬</span>
-                        <div>
-                            <div class="ob-deck-name">{{ui.deckDaily}}</div>
-                            <div class="ob-deck-desc">{{ui.obDeckDailyDesc}}</div>
-                        </div>
+                </div>
+                <div class="ob-phase">
+                    <div class="ob-phase-icon phase2">✍️</div>
+                    <div class="ob-phase-text">
+                        <div class="ob-phase-title"><span class="ob-phase-num">2</span> {{ui.obPhase2Title}}</div>
+                        <div class="ob-phase-desc">{{ui.obPhase2Desc}}</div>
                     </div>
-                    <div class="ob-deck">
-                        <span class="ob-deck-icon">🎓</span>
-                        <div>
-                            <div class="ob-deck-name">{{ui.deckIELTS}}</div>
-                            <div class="ob-deck-desc">{{ui.obDeckIeltsDesc}}</div>
-                        </div>
-                    </div>
-                    <div class="ob-deck">
-                        <span class="ob-deck-icon">₿</span>
-                        <div>
-                            <div class="ob-deck-name">{{ui.deckCrypto}}</div>
-                            <div class="ob-deck-desc">{{ui.obDeckCryptoDesc}}</div>
-                        </div>
+                </div>
+                <div class="ob-phase">
+                    <div class="ob-phase-icon phase3">📖</div>
+                    <div class="ob-phase-text">
+                        <div class="ob-phase-title"><span class="ob-phase-num">3</span> {{ui.obPhase3Title}}</div>
+                        <div class="ob-phase-desc">{{ui.obPhase3Desc}}</div>
                     </div>
                 </div>
             </div>
 
-            <!-- How to use -->
-            <div class="ob-section">
-                <div class="ob-section-title">{{ui.obHowTitle}}</div>
-                <div class="ob-steps">
-                    <div class="ob-step">
-                        <span class="ob-step-num">1</span>
-                        <span>{{ui.obStep1}}</span>
-                    </div>
-                    <div class="ob-step">
-                        <span class="ob-step-num">2</span>
-                        <span>{{ui.obStep2}}</span>
-                    </div>
-                    <div class="ob-step">
-                        <span class="ob-step-num">3</span>
-                        <span>{{ui.obStep3}}</span>
+            <!-- Learning curve (SRS vs forgetting) -->
+            <div class="ob-curve-wrap">
+                <div class="ob-curve-title">{{ui.obCurveTitle}}</div>
+                <svg class="ob-curve-svg" viewBox="0 0 320 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Grid lines -->
+                    <line x1="40" y1="20"  x2="300" y2="20"  stroke="var(--border)" stroke-width="0.5"/>
+                    <line x1="40" y1="50"  x2="300" y2="50"  stroke="var(--border)" stroke-width="0.5"/>
+                    <line x1="40" y1="80"  x2="300" y2="80"  stroke="var(--border)" stroke-width="0.5"/>
+                    <line x1="40" y1="110" x2="300" y2="110" stroke="var(--border)" stroke-width="0.5"/>
+                    <!-- Axes -->
+                    <line x1="40" y1="15" x2="40"  y2="115" stroke="var(--muted)" stroke-width="1" opacity="0.4"/>
+                    <line x1="40" y1="110" x2="305" y2="110" stroke="var(--muted)" stroke-width="1" opacity="0.4"/>
+                    <!-- Y-axis label -->
+                    <text x="8" y="65" fill="var(--muted)" font-size="9" text-anchor="middle" transform="rotate(-90,8,65)">{{ui.obCurveY}}</text>
+                    <!-- X-axis label -->
+                    <text x="170" y="132" fill="var(--muted)" font-size="9" text-anchor="middle">{{ui.obCurveX}}</text>
+                    <!-- Forgetting curve (red, dashed) — steep exponential decay -->
+                    <path d="M40,22 C70,28 100,55 140,78 C180,95 230,105 300,108"
+                          stroke="#ef4444" stroke-width="2" stroke-dasharray="6,4" fill="none" opacity="0.7">
+                        <animate attributeName="stroke-dashoffset" from="40" to="0" dur="1.2s" fill="freeze"/>
+                    </path>
+                    <!-- SRS review markers (purple dots on timeline) -->
+                    <circle cx="72"  cy="110" r="3" fill="#8b6cf6" opacity="0.5"/>
+                    <circle cx="100" cy="110" r="3" fill="#8b6cf6" opacity="0.5"/>
+                    <circle cx="148" cy="110" r="3" fill="#8b6cf6" opacity="0.5"/>
+                    <circle cx="220" cy="110" r="3" fill="#8b6cf6" opacity="0.5"/>
+                    <!-- SRS curve (purple, solid) — sawtooth with rising floor -->
+                    <path d="M40,22 C50,25 60,32 72,40 L72,24 C82,28 90,36 100,44 L100,25 C115,30 132,40 148,48 L148,27 C170,32 195,40 220,46 L220,28 C250,32 275,36 300,38"
+                          stroke="#8b6cf6" stroke-width="2.5" fill="none" stroke-linejoin="round">
+                        <animate attributeName="stroke-dasharray" from="0,600" to="600,0" dur="1.5s" fill="freeze"/>
+                    </path>
+                    <!-- Y tick labels -->
+                    <text x="36" y="24"  fill="var(--muted)" font-size="8" text-anchor="end">100%</text>
+                    <text x="36" y="54"  fill="var(--muted)" font-size="8" text-anchor="end">70%</text>
+                    <text x="36" y="84"  fill="var(--muted)" font-size="8" text-anchor="end">40%</text>
+                    <text x="36" y="114" fill="var(--muted)" font-size="8" text-anchor="end">0%</text>
+                </svg>
+                <div class="ob-curve-legend">
+                    <span><i class="forget"></i> {{ui.obCurveForget}}</span>
+                    <span><i class="srs"></i> {{ui.obCurveSrs}}</span>
+                </div>
+            </div>
+
+            <!-- AI smart guide -->
+            <div class="ob-ai">
+                <div class="ob-ai-icon">🤖</div>
+                <div class="ob-ai-text">
+                    <div class="ob-ai-title">{{ui.obAiTitle}}</div>
+                    <div class="ob-ai-desc">{{ui.obAiDesc}}</div>
+                    <div class="ob-ai-chips">
+                        <span class="ob-ai-chip">{{ui.obAiChip1}}</span>
+                        <span class="ob-ai-chip">{{ui.obAiChip2}}</span>
+                        <span class="ob-ai-chip">{{ui.obAiChip3}}</span>
                     </div>
                 </div>
             </div>
@@ -3714,18 +3791,23 @@ const STRINGS = {
     sharePanelTitle:       '分享',
     shareCopyText:         '复制文案',
     shareCopyLink:         '复制链接',
-    obTagline:       '间隔重复英语词汇 · 科学记忆',
-    obSrsTitle:      '🧠 科学记忆原理',
-    obSrsDesc:       '基于间隔重复算法（SRS）——刚学的词频繁出现，记熟的词逐渐拉长间隔。系统在最该复习的时刻推送单词，用最少时间记最多词。',
-    obDecksTitle:    '📚 四大词库',
-    obDeckPetDesc:   '剑桥 PET 考试核心词汇，夯实英语基础',
-    obDeckDailyDesc: '职场口语 · 网络缩写 · 日常高频短语',
-    obDeckIeltsDesc: '雅思考试学术词汇 · B2–C1 高频核心词',
-    obDeckCryptoDesc:'区块链 · DeFi · Web3 专业术语',
-    obHowTitle:      '🃏 如何使用',
-    obStep1:         '看到单词，回忆含义，点击卡片翻开',
-    obStep2:         '按记忆程度评分：忘了 / 模糊 / 记住了 / 很熟',
-    obStep3:         '每天坚持，系统安排最优复习时间',
+    obTagline:       '三步闭环，科学记住每个词',
+    obPhase1Title:   '翻卡认识',
+    obPhase1Desc:    '看单词、翻卡片、听发音，快速建立初始记忆',
+    obPhase2Title:   '练习强化',
+    obPhase2Desc:    '听写、拼写、选择题多维训练，巩固薄弱词汇',
+    obPhase3Title:   '阅读应用',
+    obPhase3Desc:    'AI 生成含学过单词的短文，在语境中真正学会使用',
+    obCurveTitle:    '为什么间隔重复有效？',
+    obCurveY:        '记忆保持',
+    obCurveX:        '时间',
+    obCurveForget:   '自然遗忘',
+    obCurveSrs:      'VocabLoop 复习',
+    obAiTitle:       'AI 智能学习引导',
+    obAiDesc:        '系统实时分析你的记忆状态，在最佳时刻安排复习，自动识别薄弱词汇并针对性强化',
+    obAiChip1:       '学习状态分析',
+    obAiChip2:       '智能复习安排',
+    obAiChip3:       '薄弱词自动强化',
     obCta:           '开始学习 →',
     obSkip:          '跳过',
     dwStreakEmoji:   n => n >= 30 ? '🏆' : n >= 14 ? '🔥' : n >= 7 ? '✨' : '🌱',
@@ -3908,18 +3990,23 @@ const STRINGS = {
     sharePanelTitle:       'Share',
     shareCopyText:         'Copy Text',
     shareCopyLink:         'Copy Link',
-    obTagline:       'Spaced Repetition Vocabulary · Science-backed',
-    obSrsTitle:      '🧠 Science of Memory',
-    obSrsDesc:       'Built on Spaced Repetition (SRS) — new words appear often, mastered words at longer intervals. The system shows each word at the perfect moment, so you retain more with less effort.',
-    obDecksTitle:    '📚 Four Vocabulary Decks',
-    obDeckPetDesc:   'Cambridge PET exam core vocabulary',
-    obDeckDailyDesc: 'Business phrases · Internet slang · Daily expressions',
-    obDeckIeltsDesc: 'IELTS academic vocabulary · B2–C1 core words',
-    obDeckCryptoDesc:'Blockchain · DeFi · Web3 terminology',
-    obHowTitle:      '🃏 How to Use',
-    obStep1:         'See a word, recall its meaning, tap to flip',
-    obStep2:         'Rate yourself: Again / Hard / Good / Easy',
-    obStep3:         'Study daily — the system schedules optimal reviews',
+    obTagline:       'Three-step loop to master every word',
+    obPhase1Title:   'Flashcard Recognition',
+    obPhase1Desc:    'See the word, flip the card, hear pronunciation — build initial memory',
+    obPhase2Title:   'Practice & Reinforce',
+    obPhase2Desc:    'Dictation, spelling, quizzes — strengthen weak spots through active recall',
+    obPhase3Title:   'Read & Apply',
+    obPhase3Desc:    'AI-generated articles using your words — learn to use them in real context',
+    obCurveTitle:    'Why spaced repetition works',
+    obCurveY:        'Retention',
+    obCurveX:        'Time',
+    obCurveForget:   'Natural forgetting',
+    obCurveSrs:      'VocabLoop reviews',
+    obAiTitle:       'AI-Powered Smart Learning',
+    obAiDesc:        'The system analyzes your memory in real time, schedules reviews at the optimal moment, and auto-targets weak words',
+    obAiChip1:       'Learning Analytics',
+    obAiChip2:       'Smart Scheduling',
+    obAiChip3:       'Weak Word Targeting',
     obCta:           'Start Learning →',
     obSkip:          'Skip',
     dwStreakEmoji:   n => n >= 30 ? '🏆' : n >= 14 ? '🔥' : n >= 7 ? '✨' : '🌱',
