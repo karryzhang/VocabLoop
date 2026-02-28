@@ -369,28 +369,58 @@
         .lp-line.filled { background: var(--green); }
         /* Next-step CTA on practice done */
         .prac-next-step {
-            display: flex; align-items: center; gap: 14px;
-            width: 100%; max-width: 380px;
-            padding: 16px 20px; border-radius: 16px; border: none;
-            background: linear-gradient(135deg, #22c55e, #16a34a);
+            display: flex; align-items: center; gap: 16px;
+            width: 100%; max-width: 400px;
+            padding: 18px 22px; border-radius: 20px; border: none;
+            background: linear-gradient(135deg, #34d058 0%, #22c55e 40%, #16a34a 100%);
             color: #fff; cursor: pointer; text-align: left;
-            box-shadow: 0 4px 16px rgba(34,197,94,0.22);
-            transition: transform 0.12s, box-shadow 0.18s;
-            animation: pracFadeUp .5s .5s ease both;
+            box-shadow: 0 4px 20px rgba(34,197,94,0.25), 0 1px 3px rgba(0,0,0,0.06);
+            transition: transform 0.2s cubic-bezier(.32,.72,0,1), box-shadow 0.25s;
+            animation: pracFadeUp .5s .5s ease both, pracNextGlow 2.5s 1.5s ease-in-out 3;
             -webkit-tap-highlight-color: transparent;
+            position: relative;
+            overflow: hidden;
         }
-        .prac-next-step:hover  { box-shadow: 0 6px 24px rgba(34,197,94,0.32); transform: translateY(-2px); }
-        .prac-next-step:active { transform: scale(0.98); box-shadow: none; }
-        .prac-next-step-icon { font-size: 1.4rem; flex-shrink: 0; line-height: 1; }
-        .prac-next-step-text { flex: 1; display: flex; flex-direction: column; gap: 3px; }
-        .prac-next-step-title { font-size: 0.92rem; font-weight: 700; line-height: 1.25; }
-        .prac-next-step-hint  { font-size: 0.72rem; opacity: 0.8; line-height: 1.3; }
-        .prac-next-step-arrow { font-size: 1.1rem; flex-shrink: 0; opacity: 0.7; transition: transform 0.15s; }
-        .prac-next-step:hover .prac-next-step-arrow { transform: translateX(3px); }
+        .prac-next-step::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+            transform: translateX(-100%);
+            animation: pracNextShimmer 2s 2s ease-in-out 2;
+        }
+        @keyframes pracNextShimmer {
+            to { transform: translateX(100%); }
+        }
+        @keyframes pracNextGlow {
+            0%, 100% { box-shadow: 0 4px 20px rgba(34,197,94,0.25), 0 1px 3px rgba(0,0,0,0.06); }
+            50% { box-shadow: 0 6px 32px rgba(34,197,94,0.4), 0 2px 6px rgba(0,0,0,0.08); }
+        }
+        .prac-next-step:hover  { box-shadow: 0 8px 32px rgba(34,197,94,0.38); transform: translateY(-2px); }
+        .prac-next-step:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(34,197,94,0.2); }
+        .prac-next-step-icon { font-size: 1.6rem; flex-shrink: 0; line-height: 1; }
+        .prac-next-step-text { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+        .prac-next-step-title { font-size: 0.95rem; font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; }
+        .prac-next-step-hint  { font-size: 0.74rem; opacity: 0.85; line-height: 1.35; }
+        .prac-next-step-arrow { font-size: 1.2rem; flex-shrink: 0; opacity: 0.8; transition: transform 0.2s cubic-bezier(.32,.72,0,1); }
+        .prac-next-step:hover .prac-next-step-arrow { transform: translateX(4px); }
+        .prac-reading-cta-wrap {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 10px; width: 100%; animation: pracFadeUp .5s .45s ease both;
+        }
+        .prac-reading-cta-label {
+            font-size: 0.72rem; font-weight: 600; color: var(--green);
+            text-transform: uppercase; letter-spacing: 0.06em;
+            opacity: 0.9;
+        }
         /* Reading overlay step bar */
+        .reading-lp-wrap {
+            padding: 8px 20px 2px;
+            background: color-mix(in srgb, var(--surface) 50%, var(--bg));
+            border-bottom: 0.5px solid color-mix(in srgb, var(--border) 40%, transparent);
+        }
         .reading-stepper {
             display: flex; align-items: center; justify-content: center;
-            gap: 0; padding: 10px 0 6px;
+            gap: 0; padding: 8px 0 8px;
         }
         .reading-stepper .lp-circle  { width: 28px; height: 28px; font-size: 0.72rem; border-width: 2px; }
         .reading-stepper .lp-label   { font-size: 0.62rem; }
@@ -1153,6 +1183,14 @@
             .loading-scr       { background: var(--bg); }
             /* Deck bar */
             .deck-btn          { box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+            /* Reading overlay */
+            .reading-hd        { background: color-mix(in srgb, var(--bg) 88%, transparent); }
+            .reading-lp-wrap   { background: color-mix(in srgb, var(--surface) 60%, var(--bg)); }
+            .rd-popup          { background: color-mix(in srgb, var(--surface) 95%, transparent); box-shadow: 0 -4px 24px rgba(0,0,0,.25); }
+            .reading-done-btn  { box-shadow: 0 4px 18px rgba(0,0,0,0.3); }
+            .prac-next-step    { box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+            .reading-hist-item { box-shadow: none; }
+            .reading-hist-item:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
         }
 
         /* ── Small mobile (≤ 390px) ──────────────────────── */
@@ -1701,252 +1739,346 @@
             display: flex; flex-direction: column;
             padding-top: env(safe-area-inset-top);
             padding-bottom: env(safe-area-inset-bottom);
-            animation: rdSlideUp 0.28s cubic-bezier(.32,.72,0,1);
+            animation: rdSlideUp 0.35s cubic-bezier(.32,.72,0,1);
         }
         @keyframes rdSlideUp {
-            from { transform: translateY(60px); opacity: 0; }
+            from { transform: translateY(40px); opacity: 0; }
             to   { transform: translateY(0);    opacity: 1; }
         }
         .reading-hd {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 14px 20px; border-bottom: none; box-shadow: 0 1px 0 var(--border); flex-shrink: 0;
+            padding: 16px 20px; flex-shrink: 0;
+            background: color-mix(in srgb, var(--bg) 85%, transparent);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 0.5px solid color-mix(in srgb, var(--border) 60%, transparent);
+            position: sticky; top: 0; z-index: 10;
         }
-        .reading-hd-title { font-size: 1rem; font-weight: 600; }
+        .reading-hd-title { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; }
         .reading-close {
-            background: none; border: none; font-size: 1.35rem;
-            cursor: pointer; color: var(--muted); padding: 4px 8px; line-height: 1;
+            background: color-mix(in srgb, var(--muted) 12%, transparent);
+            border: none; font-size: 1rem; width: 30px; height: 30px;
+            border-radius: 50%; cursor: pointer; color: var(--muted);
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.15s, color 0.15s;
+            line-height: 1;
         }
+        .reading-close:hover { background: color-mix(in srgb, var(--muted) 18%, transparent); color: var(--text); }
         .reading-body {
-            flex: 1; overflow-y: auto; padding: 20px 18px 28px;
+            flex: 1; overflow-y: auto; padding: 24px 20px 36px;
             -webkit-overflow-scrolling: touch;
-            display: flex; flex-direction: column; gap: 18px;
+            display: flex; flex-direction: column; gap: 20px;
+            scroll-behavior: smooth;
         }
         .reading-loading {
             display: flex; flex-direction: column; align-items: center;
-            gap: 10px; padding: 48px 0; text-align: center;
+            gap: 14px; padding: 72px 0 48px; text-align: center;
+            animation: rdContentFadeIn .4s ease both;
+        }
+        @keyframes rdContentFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
         .reading-spinner {
-            width: 28px; height: 28px; border: 3px solid var(--border);
+            width: 32px; height: 32px; border: 2.5px solid var(--border);
             border-top-color: var(--blue); border-radius: 50%;
-            animation: spin 0.7s linear infinite; margin-bottom: 4px;
+            animation: spin 0.8s cubic-bezier(.4,.15,.6,.85) infinite; margin-bottom: 4px;
         }
-        .reading-loading-main { font-size: 0.95rem; font-weight: 600; color: var(--text); }
-        .reading-loading-sub  { font-size: 0.82rem; color: var(--muted); }
+        .reading-loading-icon-wrap {
+            width: 56px; height: 56px;
+            background: color-mix(in srgb, var(--blue) 8%, var(--surface));
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 4px;
+        }
+        .reading-loading-main { font-size: 1rem; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+        .reading-loading-sub  { font-size: 0.82rem; color: var(--muted); line-height: 1.4; }
+        .reading-loading-preview {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+            max-width: 320px; margin-top: 8px;
+        }
+        .reading-loading-chip {
+            display: inline-block;
+            font-size: 0.72rem; font-weight: 600; color: var(--blue);
+            background: color-mix(in srgb, var(--blue) 8%, var(--surface));
+            padding: 3px 10px; border-radius: 12px;
+            animation: rdChipAppear .3s ease both;
+        }
+        .reading-loading-more {
+            color: var(--muted);
+            background: var(--surface);
+        }
+        @keyframes rdChipAppear {
+            from { opacity: 0; transform: scale(0.8); }
+            to   { opacity: 1; transform: scale(1); }
+        }
         /* History */
         .reading-hist-btn {
             background: none; border: none; cursor: pointer;
-            color: var(--muted); font-size: 0.8rem; padding: 4px 9px;
-            border-radius: 6px; white-space: nowrap;
+            color: var(--muted); font-size: 0.8rem; padding: 6px 12px;
+            border-radius: 8px; white-space: nowrap;
+            transition: background 0.15s, color 0.15s;
         }
-        .reading-hist-btn:hover  { background: var(--surface); color: var(--text); }
-        .reading-hist-btn.active { color: var(--blue); }
+        .reading-hist-btn:hover  { background: color-mix(in srgb, var(--muted) 10%, transparent); color: var(--text); }
+        .reading-hist-btn.active { color: var(--blue); background: color-mix(in srgb, var(--blue) 8%, transparent); }
         .reading-hist-empty {
-            text-align: center; color: var(--muted); font-size: 0.88rem; padding: 48px 0;
+            text-align: center; color: var(--muted); font-size: 0.88rem; padding: 64px 0;
+            line-height: 1.6;
         }
         .reading-hist-item {
             background: var(--surface); border: 1px solid var(--border);
-            border-radius: 14px; padding: 14px 18px; cursor: pointer;
-            transition: border-color 0.18s, box-shadow 0.18s;
+            border-radius: 16px; padding: 16px 18px; cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
         }
-        .reading-hist-item:hover { border-color: color-mix(in srgb, var(--blue) 40%, var(--border)); box-shadow: var(--shadow-sm); }
+        .reading-hist-item:hover { border-color: color-mix(in srgb, var(--blue) 40%, var(--border)); box-shadow: 0 2px 12px rgba(0,0,0,0.06); transform: translateY(-1px); }
+        .reading-hist-item:active { transform: scale(0.98); }
         .reading-hist-meta {
-            display: flex; align-items: center; gap: 7px; margin-bottom: 7px;
+            display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
         }
-        .reading-hist-date   { font-size: 0.77rem; color: var(--muted); }
+        .reading-hist-date   { font-size: 0.77rem; color: var(--muted); font-variant-numeric: tabular-nums; }
         .reading-hist-deck   {
-            font-size: 0.7rem; background: var(--blue); color: #fff;
-            padding: 1px 7px; border-radius: 20px; font-weight: 700;
+            font-size: 0.68rem; background: var(--blue); color: #fff;
+            padding: 2px 8px; border-radius: 20px; font-weight: 700; letter-spacing: 0.01em;
         }
         .reading-hist-wcount { font-size: 0.77rem; color: var(--muted); margin-left: auto; }
         .reading-hist-preview {
-            font-size: 0.85rem; color: var(--text); line-height: 1.55;
+            font-size: 0.85rem; color: var(--text); line-height: 1.6;
             overflow: hidden; display: -webkit-box;
             -webkit-line-clamp: 2; -webkit-box-orient: vertical;
         }
         .reading-error {
             display: flex; flex-direction: column; align-items: center;
-            gap: 8px; padding: 40px 0; text-align: center;
+            gap: 12px; padding: 56px 0; text-align: center;
+            animation: rdContentFadeIn .4s ease both;
         }
-        .reading-error-icon { font-size: 2.2rem; line-height: 1; }
-        .reading-error-msg  { font-size: 0.9rem; color: var(--red); line-height: 1.5; max-width: 280px; }
+        .reading-error-icon { font-size: 2.4rem; line-height: 1; }
+        .reading-error-msg  { font-size: 0.9rem; color: var(--red); line-height: 1.6; max-width: 280px; }
+        .reading-regen {
+            padding: 11px 24px; border: 1.5px solid var(--border);
+            color: var(--muted); background: var(--surface); border-radius: 12px;
+            font-weight: 600; cursor: pointer; font-size: 0.85rem;
+            transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.15s;
+        }
+        .reading-regen:hover { border-color: var(--blue); color: var(--blue); background: color-mix(in srgb, var(--blue) 5%, var(--surface)); }
+        .reading-regen:active { transform: scale(0.96); }
         /* Header button row */
-        .reading-hd-btns { display: flex; align-items: center; gap: 6px; }
+        .reading-hd-btns { display: flex; align-items: center; gap: 8px; }
+        /* Bilingual toggle bar (below title) */
+        .reading-bilingual-bar {
+            display: flex; justify-content: flex-start;
+        }
         /* Bilingual toggle button */
         .reading-bilingual-btn {
-            display: flex; align-items: center; gap: 4px;
+            display: inline-flex; align-items: center; gap: 6px;
             background: var(--surface); border: 1.5px solid var(--border);
-            border-radius: 8px; padding: 5px 10px; cursor: pointer;
-            color: var(--text); font-size: 0.8rem; font-weight: 600;
-            transition: border-color 0.15s, background 0.15s;
+            border-radius: 20px; padding: 7px 16px; cursor: pointer;
+            color: var(--muted); font-size: 0.82rem; font-weight: 600;
+            transition: border-color 0.2s, background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s;
             white-space: nowrap;
+            -webkit-tap-highlight-color: transparent;
         }
-        .reading-bilingual-btn:hover  { border-color: var(--blue); }
-        .reading-bilingual-btn.active { border-color: var(--blue); background: rgba(59,130,246,.1); color: var(--blue); }
-        .rdb-icon  { font-size: 1rem; line-height: 1; }
-        .rdb-label { font-size: 0.75rem; }
+        .reading-bilingual-btn:hover  { border-color: var(--blue); color: var(--text); }
+        .reading-bilingual-btn:active { transform: scale(0.95); }
+        .reading-bilingual-btn.active {
+            border-color: var(--blue); background: color-mix(in srgb, var(--blue) 10%, var(--surface));
+            color: var(--blue); box-shadow: 0 2px 10px color-mix(in srgb, var(--blue) 15%, transparent);
+        }
+        .rdb-icon  { font-size: 1.05rem; line-height: 1; }
+        .rdb-label { font-size: 0.78rem; }
         /* Article text */
         .reading-article {
-            font-size: 1.02rem; line-height: 2.0; color: var(--text);
+            font-size: 1.05rem; line-height: 2.05; color: var(--text);
+            letter-spacing: 0.005em;
+            animation: rdContentFadeIn .5s .1s ease both;
         }
-        .rd-para { margin-bottom: 1em; }
+        .rd-para { margin-bottom: 1.15em; }
         .rd-para:last-child { margin-bottom: 0; }
         /* All words are subtly interactive */
         .rd-word {
-            cursor: pointer; border-radius: 2px;
-            transition: background 0.12s;
+            cursor: pointer; border-radius: 3px;
+            transition: background 0.15s, color 0.15s;
+            padding: 0 1px;
         }
-        .rd-word:hover { background: rgba(59,130,246,.1); }
+        .rd-word:hover { background: color-mix(in srgb, var(--blue) 10%, transparent); }
+        .rd-word:active { background: color-mix(in srgb, var(--blue) 18%, transparent); }
         /* Key vocab words — highlighted */
         .vocab-hl {
             font-weight: 700;
             color: var(--blue);
             font-style: normal;
             cursor: pointer;
-            text-decoration: underline;
-            text-decoration-style: dotted;
-            text-underline-offset: 3px;
-            text-decoration-color: color-mix(in srgb, var(--blue) 40%, transparent);
+            text-decoration: none;
+            background: color-mix(in srgb, var(--blue) 8%, transparent);
+            border-radius: 4px;
+            padding: 1px 3px;
+            margin: 0 -1px;
+            transition: background 0.15s, box-shadow 0.15s;
         }
-        .vocab-hl:hover { background: rgba(59,130,246,.15); }
+        .vocab-hl:hover { background: color-mix(in srgb, var(--blue) 16%, transparent); box-shadow: 0 1px 4px color-mix(in srgb, var(--blue) 15%, transparent); }
+        .vocab-hl:active { background: color-mix(in srgb, var(--blue) 22%, transparent); }
         /* Story title */
         .reading-story-title {
-            font-size: 1.25rem; font-weight: 800; color: var(--text);
-            line-height: 1.3; margin: 0 0 12px 0;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--blue);
+            font-size: 1.3rem; font-weight: 800; color: var(--text);
+            line-height: 1.35; margin: 0 0 4px 0;
+            padding-bottom: 14px;
+            border-bottom: none;
             font-style: italic;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.015em;
+            position: relative;
+            animation: rdContentFadeIn .4s ease both;
+        }
+        .reading-story-title::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0;
+            width: 48px; height: 3px;
+            background: linear-gradient(90deg, var(--blue), color-mix(in srgb, var(--blue) 30%, transparent));
+            border-radius: 2px;
         }
         /* Click hint bar */
         .reading-tap-hint {
-            font-size: 0.75rem; color: var(--muted); text-align: center;
-            padding: 4px 8px; background: var(--surface);
-            border-radius: 8px; border: 1px solid var(--border);
+            font-size: 0.74rem; color: var(--muted); text-align: center;
+            padding: 8px 12px; background: color-mix(in srgb, var(--blue) 4%, var(--surface));
+            border-radius: 10px; border: 1px solid color-mix(in srgb, var(--blue) 12%, var(--border));
+            line-height: 1.4;
         }
         /* Bilingual view */
         .rd-bi-pair {
-            display: flex; flex-direction: column; gap: 4px;
-            padding: 10px 14px; border-radius: 10px;
+            display: flex; flex-direction: column; gap: 6px;
+            padding: 14px 16px; border-radius: 14px;
             border-left: 3px solid var(--blue);
             background: var(--surface);
             margin-bottom: 10px;
+            transition: box-shadow 0.2s;
         }
+        .rd-bi-pair:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
         .rd-bi-en {
-            font-size: 1rem; line-height: 1.7; color: var(--text);
-            margin: 0;
+            font-size: 1.02rem; line-height: 1.75; color: var(--text);
+            margin: 0; letter-spacing: 0.005em;
         }
         .rd-bi-zh {
-            font-size: 0.88rem; line-height: 1.55; color: var(--muted);
+            font-size: 0.86rem; line-height: 1.55; color: var(--muted);
             margin: 0; font-style: normal;
         }
         /* Word list chips */
         .reading-word-list {
-            padding-top: 14px; border-top: 1px solid var(--border);
+            padding-top: 18px; border-top: 1px solid var(--border);
+            animation: rdContentFadeIn .5s .2s ease both;
         }
         .reading-wl-label {
-            font-size: 0.78rem; font-weight: 600; color: var(--muted);
-            margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em;
+            font-size: 0.72rem; font-weight: 700; color: var(--muted);
+            margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.06em;
         }
         .reading-wl-chips {
-            display: flex; flex-wrap: wrap; gap: 6px;
+            display: flex; flex-wrap: wrap; gap: 8px;
         }
         .reading-wl-chip {
-            display: inline-flex; align-items: baseline; gap: 3px;
+            display: inline-flex; align-items: baseline; gap: 4px;
             background: var(--surface); border: 1px solid var(--border);
-            border-radius: 20px; padding: 3px 10px; font-size: 0.8rem;
+            border-radius: 20px; padding: 5px 12px; font-size: 0.8rem;
+            transition: border-color 0.15s, box-shadow 0.15s;
         }
+        .reading-wl-chip:hover { border-color: color-mix(in srgb, var(--blue) 30%, var(--border)); box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
         .reading-wl-chip strong { color: var(--blue); font-weight: 700; }
         .reading-wl-chip span   { color: var(--muted); }
         /* Actions row (regen + done) */
         .reading-actions {
             display: flex; flex-direction: column; gap: 10px;
+            animation: rdContentFadeIn .5s .3s ease both;
         }
-        .reading-regen {
-            width: 100%; padding: 13px; border: 1.5px solid var(--border);
-            color: var(--muted); background: none; border-radius: 12px;
-            font-weight: 600; cursor: pointer; font-size: 0.88rem;
-            transition: border-color 0.18s, color 0.15s, transform 0.12s;
+        .reading-done-btn {
+            width: 100%; padding: 17px 20px; border-radius: 18px; border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #34d058 0%, #22c55e 40%, #16a34a 100%);
+            color: #fff;
+            display: flex; align-items: center; gap: 14px; text-align: left;
+            transition: transform 0.2s cubic-bezier(.32,.72,0,1), box-shadow 0.25s;
+            box-shadow: 0 4px 18px color-mix(in srgb, var(--green) 25%, transparent);
             -webkit-tap-highlight-color: transparent;
         }
-        .reading-regen:hover { border-color: var(--blue); color: var(--blue); }
-        .reading-regen:active { transform: scale(0.98); }
-        .reading-done-btn {
-            width: 100%; padding: 15px 18px; border-radius: 16px; border: none;
-            cursor: pointer; background: var(--green); color: #fff;
-            display: flex; align-items: center; gap: 12px; text-align: left;
-            transition: transform 0.12s, box-shadow 0.18s;
-            box-shadow: 0 4px 16px color-mix(in srgb, var(--green) 22%, transparent);
-        }
-        .reading-done-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px color-mix(in srgb, var(--green) 30%, transparent); }
-        .reading-done-btn:active { transform: scale(0.98); box-shadow: none; }
-        .reading-done-btn-icon  { font-size: 1.45rem; flex-shrink: 0; line-height: 1; }
-        .reading-done-btn-text  { flex: 1; display: flex; flex-direction: column; gap: 2px; }
-        .reading-done-btn-title { font-size: 0.95rem; font-weight: 700; line-height: 1.2; }
-        .reading-done-btn-hint  { font-size: 0.73rem; opacity: 0.85; line-height: 1.3; }
-        .reading-done-btn-arrow { font-size: 1.2rem; flex-shrink: 0; opacity: 0.85; transition: transform 0.15s; }
-        .reading-done-btn:hover .reading-done-btn-arrow { transform: translateX(3px); }
+        .reading-done-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px color-mix(in srgb, var(--green) 35%, transparent); }
+        .reading-done-btn:active { transform: scale(0.97); box-shadow: 0 2px 8px color-mix(in srgb, var(--green) 18%, transparent); }
+        .reading-done-btn-icon  { font-size: 1.5rem; flex-shrink: 0; line-height: 1; }
+        .reading-done-btn-text  { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+        .reading-done-btn-title { font-size: 0.95rem; font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; }
+        .reading-done-btn-hint  { font-size: 0.73rem; opacity: 0.88; line-height: 1.35; }
+        .reading-done-btn-arrow { font-size: 1.2rem; flex-shrink: 0; opacity: 0.85; transition: transform 0.2s cubic-bezier(.32,.72,0,1); }
+        .reading-done-btn:hover .reading-done-btn-arrow { transform: translateX(4px); }
         /* ── Word reveal panel (bottom of reading overlay) ─────── */
         .rd-popup {
             flex-shrink: 0;
-            display: flex; align-items: center; gap: 10px;
-            padding: 12px 16px;
-            background: var(--surface);
-            border-top: 2px solid var(--blue);
-            box-shadow: 0 -4px 20px rgba(0,0,0,.12);
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px 18px;
+            padding-bottom: calc(14px + env(safe-area-inset-bottom));
+            background: color-mix(in srgb, var(--surface) 92%, transparent);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-top: 0.5px solid color-mix(in srgb, var(--blue) 30%, var(--border));
+            box-shadow: 0 -4px 24px rgba(0,0,0,.08);
         }
         .rd-popup-word {
-            font-weight: 700; font-size: 0.95rem; color: var(--text);
-            flex-shrink: 0; min-width: 0;
+            font-weight: 800; font-size: 1rem; color: var(--text);
+            flex-shrink: 0; min-width: 0; letter-spacing: -0.01em;
         }
         .rd-popup-word.rd-popup-vocab { color: var(--blue); }
         .rd-popup-meaning {
             flex: 1; font-size: 0.88rem; color: var(--muted);
-            line-height: 1.4; min-width: 0;
+            line-height: 1.45; min-width: 0;
         }
         .rd-popup-audio {
-            background: none; border: none; cursor: pointer;
-            font-size: 1.1rem; padding: 4px 6px; flex-shrink: 0;
-            border-radius: 6px; transition: background 0.12s;
+            background: color-mix(in srgb, var(--blue) 10%, transparent);
+            border: none; cursor: pointer;
+            font-size: 1.05rem; padding: 6px 8px; flex-shrink: 0;
+            border-radius: 8px; transition: background 0.15s, transform 0.12s;
         }
-        .rd-popup-audio:hover { background: var(--border); }
+        .rd-popup-audio:hover { background: color-mix(in srgb, var(--blue) 18%, transparent); }
+        .rd-popup-audio:active { transform: scale(0.9); }
         .rd-popup-close {
-            background: none; border: none; cursor: pointer;
-            color: var(--muted); font-size: 1rem; padding: 4px 8px;
-            flex-shrink: 0; border-radius: 6px; transition: background 0.12s;
+            background: color-mix(in srgb, var(--muted) 10%, transparent);
+            border: none; cursor: pointer;
+            color: var(--muted); font-size: 0.9rem; padding: 6px 8px; width: 28px; height: 28px;
+            flex-shrink: 0; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.15s, color 0.15s;
         }
-        .rd-popup-close:hover { background: var(--border); }
+        .rd-popup-close:hover { background: color-mix(in srgb, var(--muted) 18%, transparent); color: var(--text); }
         /* Transition for popup */
-        .rd-popup-enter-active, .rd-popup-leave-active { transition: transform 0.18s ease, opacity 0.18s; }
+        .rd-popup-enter-active, .rd-popup-leave-active { transition: transform 0.22s cubic-bezier(.32,.72,0,1), opacity 0.22s; }
         .rd-popup-enter, .rd-popup-leave-to { transform: translateY(100%); opacity: 0; }
         .btn-reading {
-            width: 100%; padding: 14px;
-            background: linear-gradient(135deg, #16a34a, #15803d);
-            color: #fff; border: none; border-radius: 14px;
-            font-size: 0.95rem; font-weight: 600; cursor: pointer; margin-top: 4px;
-            box-shadow: 0 4px 16px rgba(22,163,74,0.22);
-            transition: box-shadow 0.18s, transform 0.12s;
+            width: 100%; padding: 15px;
+            background: linear-gradient(135deg, #34d058, #16a34a);
+            color: #fff; border: none; border-radius: 16px;
+            font-size: 0.95rem; font-weight: 700; cursor: pointer; margin-top: 4px;
+            box-shadow: 0 4px 18px rgba(22,163,74,0.22);
+            transition: box-shadow 0.25s, transform 0.2s cubic-bezier(.32,.72,0,1);
+            -webkit-tap-highlight-color: transparent;
+            letter-spacing: -0.01em;
         }
-        .btn-reading:hover  { box-shadow: 0 6px 22px rgba(22,163,74,0.32); transform: translateY(-1px); }
-        .btn-reading:active { transform: scale(0.97); box-shadow: none; }
+        .btn-reading:hover  { box-shadow: 0 8px 28px rgba(22,163,74,0.35); transform: translateY(-2px); }
+        .btn-reading:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(22,163,74,0.15); }
 
         /* ── Reading: small screen ────────────────────────────── */
         @media (max-width: 390px) {
-            .reading-body       { padding: 14px 14px 24px; }
-            .reading-article    { font-size: 0.95rem; line-height: 1.9; }
+            .reading-body       { padding: 16px 16px 28px; }
+            .reading-article    { font-size: 0.95rem; line-height: 1.95; }
             .rd-bi-en           { font-size: 0.93rem; }
             .rd-bi-zh           { font-size: 0.82rem; }
-            .reading-bilingual-btn { padding: 4px 8px; }
+            .reading-bilingual-btn { padding: 5px 10px; }
             .rdb-label          { display: none; }  /* show icon only on tiny screens */
+            .reading-story-title { font-size: 1.15rem; }
+            .reading-wl-chips { gap: 6px; }
+            .reading-wl-chip { padding: 4px 10px; font-size: 0.76rem; }
         }
         /* ── Reading: desktop / wide screen ─────────────────── */
         @media (min-width: 680px) {
-            .reading-body       { max-width: 680px; margin: 0 auto; padding: 24px 32px 36px; }
-            .reading-article    { font-size: 1.08rem; line-height: 2.1; }
-            .rd-bi-pair         { padding: 12px 18px; }
+            .reading-body       { max-width: 680px; margin: 0 auto; padding: 28px 36px 44px; }
+            .reading-article    { font-size: 1.1rem; line-height: 2.15; }
+            .rd-bi-pair         { padding: 14px 20px; border-radius: 16px; }
             .rd-bi-en           { font-size: 1.05rem; }
             .rd-bi-zh           { font-size: 0.93rem; }
             .reading-hd         { max-width: 680px; margin: 0 auto; }
             .reading-stepper    { max-width: 680px; margin: 0 auto; }
+            .reading-story-title { font-size: 1.4rem; }
         }
         /* ── Responsive adjustments for practice ─────────────── */
         @media (max-width: 390px) {
@@ -2433,14 +2565,17 @@
             </div>
 
             <!-- Next step: Reading -->
-            <button class="prac-next-step" @click="exitPractice(); openReading()">
-                <span class="prac-next-step-icon">📖</span>
-                <div class="prac-next-step-text">
-                    <span class="prac-next-step-title">{{ui.lpNextStep}} · {{ui.readingBtn}}</span>
-                    <span class="prac-next-step-hint">{{ui.doneStoryHint}}</span>
-                </div>
-                <span class="prac-next-step-arrow">›</span>
-            </button>
+            <div class="prac-reading-cta-wrap">
+                <div class="prac-reading-cta-label">{{ui.pracReadingCtaLabel}}</div>
+                <button class="prac-next-step" @click="exitPractice(); openReading()">
+                    <span class="prac-next-step-icon">📖</span>
+                    <div class="prac-next-step-text">
+                        <span class="prac-next-step-title">{{ui.lpNextStep}} · {{ui.readingBtn}}</span>
+                        <span class="prac-next-step-hint">{{ui.doneStoryHint}}</span>
+                    </div>
+                    <span class="prac-next-step-arrow">›</span>
+                </button>
+            </div>
 
             <!-- Wrong words review -->
             <div v-if="practiceWrongWords.length > 0" class="prac-review-section">
@@ -3107,14 +3242,9 @@
         <div class="reading-hd">
             <span class="reading-hd-title">📖 {{ui.readingTitle}}</span>
             <div class="reading-hd-btns">
-                <!-- Bilingual toggle — only shown when sentences data is available -->
-                <button v-if="readingArticle && readingSentences.length"
-                        class="reading-bilingual-btn"
-                        :class="{active: readingBilingual}"
-                        @click="readingBilingual = !readingBilingual; readingPopup = null"
-                        :title="ui.readingBilingualTip">
-                    <span class="rdb-icon">{{ readingBilingual ? '🇨🇳' : '🇺🇸' }}</span>
-                    <span class="rdb-label">{{ readingBilingual ? ui.readingBilingualOff : ui.readingBilingualOn }}</span>
+                <button v-if="readingArticle && !readingLoading && !readingError"
+                        class="reading-hist-btn" @click="generateReading" :title="ui.readingRegen">
+                    🔄
                 </button>
                 <button class="reading-hist-btn"
                         :class="{active: readingHistoryOpen}"
@@ -3126,21 +3256,23 @@
         </div>
 
         <!-- ── Learning path stepper ─────────────────────────────────── -->
-        <div class="lp-round-label" style="padding-bottom:4px">{{ui.lpRound(todayRounds)}}</div>
-        <div class="reading-stepper">
-            <div class="lp-step done">
-                <div class="lp-circle">✓</div>
-                <div class="lp-label">{{ui.lpCards}}</div>
-            </div>
-            <div class="lp-line filled"></div>
-            <div class="lp-step done">
-                <div class="lp-circle">✓</div>
-                <div class="lp-label">{{ui.lpPractice}}</div>
-            </div>
-            <div class="lp-line filled"></div>
-            <div class="lp-step active">
-                <div class="lp-circle">3</div>
-                <div class="lp-label">{{ui.lpReading}}</div>
+        <div class="reading-lp-wrap">
+            <div class="lp-round-label" style="padding-bottom:4px">{{ui.lpRound(todayRounds)}}</div>
+            <div class="reading-stepper">
+                <div class="lp-step done">
+                    <div class="lp-circle">✓</div>
+                    <div class="lp-label">{{ui.lpCards}}</div>
+                </div>
+                <div class="lp-line filled"></div>
+                <div class="lp-step done">
+                    <div class="lp-circle">✓</div>
+                    <div class="lp-label">{{ui.lpPractice}}</div>
+                </div>
+                <div class="lp-line filled"></div>
+                <div class="lp-step active">
+                    <div class="lp-circle">3</div>
+                    <div class="lp-label">{{ui.lpReading}}</div>
+                </div>
             </div>
         </div>
 
@@ -3165,9 +3297,18 @@
 
             <!-- Loading -->
             <div v-else-if="readingLoading" class="reading-loading">
-                <div class="reading-spinner"></div>
+                <div class="reading-loading-icon-wrap">
+                    <div class="reading-spinner"></div>
+                </div>
                 <span class="reading-loading-main">{{ui.readingLoading}}</span>
-                <span class="reading-loading-sub">✨ {{readingWordObjs.length > 0 ? readingWordObjs.length + (LANG === 'zh' ? ' 个词汇' : ' words') : ''}}</span>
+                <span class="reading-loading-sub">{{readingWordObjs.length > 0 ? ui.readingLoadingSub(readingWordObjs.length) : ''}}</span>
+                <div v-if="readingWordObjs.length > 0" class="reading-loading-preview">
+                    <span v-for="(w, i) in readingWordObjs.slice(0, 8)" :key="w.word"
+                          class="reading-loading-chip" :style="{animationDelay: (i * 0.08) + 's'}">
+                        {{w.word}}
+                    </span>
+                    <span v-if="readingWordObjs.length > 8" class="reading-loading-chip reading-loading-more">+{{readingWordObjs.length - 8}}</span>
+                </div>
             </div>
 
             <!-- Error -->
@@ -3181,6 +3322,16 @@
             <template v-else-if="readingArticle">
                 <!-- Story title -->
                 <h2 v-if="readingStoryTitle" class="reading-story-title">{{readingStoryTitle}}</h2>
+                <!-- Bilingual toggle — below title -->
+                <div v-if="readingSentences.length" class="reading-bilingual-bar">
+                    <button class="reading-bilingual-btn"
+                            :class="{active: readingBilingual}"
+                            @click="readingBilingual = !readingBilingual; readingPopup = null"
+                            :title="ui.readingBilingualTip">
+                        <span class="rdb-icon">{{ readingBilingual ? '🇨🇳' : '🇺🇸' }}</span>
+                        <span class="rdb-label">{{ readingBilingual ? ui.readingBilingualOff : ui.readingBilingualOn }}</span>
+                    </button>
+                </div>
                 <!-- Click hint -->
                 <div class="reading-tap-hint">
                     <span>{{ui.readingTapHint}}</span>
@@ -3198,11 +3349,8 @@
                         </span>
                     </div>
                 </div>
-                <!-- Actions row: regen + done -->
+                <!-- Actions row -->
                 <div class="reading-actions">
-                    <button class="reading-regen" @click="generateReading; readingPopup = null">
-                        🔄 {{ui.readingRegen}}
-                    </button>
                     <button class="reading-done-btn" @click="closeReading(); loadMore()">
                         <span class="reading-done-btn-icon">✅</span>
                         <div class="reading-done-btn-text">
@@ -3575,10 +3723,12 @@ const STRINGS = {
     wlDifficult:'⚠️ 困难词（"忘记" ≥ 2 次）',
     wlEmpty:   '暂无单词',
     wlClose:   '关闭',
+    pracReadingCtaLabel: '最后一步',
     readingBtn:      '延伸阅读',
     readingTitle:    '今日词汇文章',
     readingClose:    '关闭',
     readingLoading:  'AI 正在写作中…',
+    readingLoadingSub: (n) => `✨ 正在用 ${n} 个词汇编织故事`,
     readingError:    '生成失败，请重试',
     readingErr429:   '请求太频繁，请稍等1分钟后再试 🕐',
     readingErrNet:   '网络连接失败，请检查网络后重试',
@@ -3767,10 +3917,12 @@ const STRINGS = {
     wlDifficult:'⚠️ Difficult ("Again" ≥ 2 times)',
     wlEmpty:   'No words here',
     wlClose:   'Close',
+    pracReadingCtaLabel: 'Final step',
     readingBtn:      'Story',
     readingTitle:    "Today's Vocab Story",
     readingClose:    'Close',
     readingLoading:  'AI is writing…',
+    readingLoadingSub: (n) => `✨ Weaving a story with ${n} words`,
     readingError:    'Generation failed, please retry',
     readingErr429:   'Too many requests — please wait a minute and try again 🕐',
     readingErrNet:   'Network error — please check your connection',
