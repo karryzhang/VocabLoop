@@ -22,6 +22,7 @@
     <meta name="apple-mobile-web-app-title" content="VocabLoop">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
     <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 
     <!-- ── Open Graph (Facebook / WeChat / Slack 等预览) ─────────────── -->
@@ -4788,31 +4789,139 @@ new Vue({
         },
 
         // Guard: if text looks like raw JSON, extract the story from it.
-        // Handles legacy cached entries or server-side parse failures.
+        // Handles legacy cached entries, server-side parse failures, and
+        // various Gemini output quirks (code fences, unexpected field names, etc.).
         _sanitizeReadingText(text) {
             if (!text || typeof text !== 'string') return text;
-            const trimmed = text.trim();
-            // Quick check: does it start with { and end with }?
-            if (trimmed.charAt(0) === '{' && trimmed.charAt(trimmed.length - 1) === '}') {
-                try {
-                    const obj = JSON.parse(trimmed);
-                    const story = (obj.story || obj.text || '').trim();
-                    if (story) {
-                        // Also recover title/sentences/glosses if available
-                        if (obj.title && !this.readingStoryTitle) this.readingStoryTitle = obj.title;
-                        if (Array.isArray(obj.sentences) && !this.readingSentences.length) {
-                            this.readingSentences = obj.sentences
-                                .filter(s => s && typeof s.en === 'string' && typeof s.zh === 'string')
-                                .map(s => ({ en: s.en.trim(), zh: s.zh.trim() }));
-                        }
-                        if (obj.glosses && typeof obj.glosses === 'object' && !Object.keys(this.readingGlosses).length) {
-                            this.readingGlosses = obj.glosses;
-                        }
-                        return story;
+            let trimmed = text.trim();
+
+            // Step 1: strip markdown code fences (```json ... ```)
+            const fenceRe = /^```(?:json)?\s*\n?([\s\S]*?)\n?\s*```$/;
+            const fenceMatch = trimmed.match(fenceRe);
+            if (fenceMatch) trimmed = fenceMatch[1].trim();
+
+            // Helper: try JSON.parse, also fixing trailing commas (common LLM issue)
+            const tryParse = (s) => {
+                try { return JSON.parse(s); } catch (_) {}
+                try { return JSON.parse(s.replace(/,\s*([\]}])/g, '$1')); } catch (_) {}
+                return null;
+            };
+
+            // Step 2: detect JSON-like content
+            const startsWithBrace = trimmed.charAt(0) === '{' || trimmed.charAt(0) === '[';
+            if (startsWithBrace) {
+                // Try direct parse
+                const direct = tryParse(trimmed);
+                if (direct) {
+                    const extracted = this._extractStoryFromJson(direct);
+                    if (extracted) return extracted;
+                }
+                // Try finding outermost { ... }
+                const first = trimmed.indexOf('{');
+                const last  = trimmed.lastIndexOf('}');
+                if (first !== -1 && last > first) {
+                    const braced = tryParse(trimmed.slice(first, last + 1));
+                    if (braced) {
+                        const extracted = this._extractStoryFromJson(braced);
+                        if (extracted) return extracted;
                     }
-                } catch (_) {}
+                }
+                // JSON-like but couldn't extract story — strip noise as last resort
+                return this._stripJsonNoise(trimmed);
             }
+
+            // Step 3: check for embedded JSON in otherwise normal text
+            if (trimmed.includes('"story"') || trimmed.includes('"text"')) {
+                const first = trimmed.indexOf('{');
+                const last  = trimmed.lastIndexOf('}');
+                if (first !== -1 && last > first) {
+                    const embedded = tryParse(trimmed.slice(first, last + 1));
+                    if (embedded) {
+                        const extracted = this._extractStoryFromJson(embedded);
+                        if (extracted) return extracted;
+                    }
+                }
+            }
+
             return text;
+        },
+
+        // Extract story text from a parsed JSON object, trying multiple field names.
+        // Also recovers title/sentences/glosses metadata when available.
+        _extractStoryFromJson(obj) {
+            if (!obj || typeof obj !== 'object') return null;
+            // Handle array: try first element or join strings
+            if (Array.isArray(obj)) {
+                if (obj.length > 0 && typeof obj[0] === 'object') return this._extractStoryFromJson(obj[0]);
+                if (obj.length > 0 && typeof obj[0] === 'string') return obj.join('\n\n');
+                return null;
+            }
+            // Try common field names for the story text
+            const fields = ['story', 'text', 'content', 'article', 'body', 'narrative'];
+            let storyText = '';
+            for (const f of fields) {
+                if (typeof obj[f] === 'string' && obj[f].trim().length > 20) {
+                    storyText = obj[f].trim();
+                    break;
+                }
+            }
+            // Fallback: find the longest string value (likely the story)
+            if (!storyText) {
+                let best = '', bestLen = 0;
+                for (const [k, v] of Object.entries(obj)) {
+                    if (typeof v === 'string' && v.length > bestLen && k !== 'title') {
+                        best = v; bestLen = v.length;
+                    }
+                }
+                if (bestLen > 50) storyText = best.trim();
+            }
+            // Handle array of paragraph strings (e.g., "paragraphs": ["p1","p2"])
+            if (!storyText) {
+                for (const v of Object.values(obj)) {
+                    if (Array.isArray(v) && v.length > 0 && typeof v[0] === 'string' && v[0].length > 20) {
+                        storyText = v.join('\n\n').trim();
+                        break;
+                    }
+                }
+            }
+            if (!storyText) return null;
+            // Recover metadata if available
+            if (typeof obj.title === 'string' && obj.title.trim() && !this.readingStoryTitle) {
+                this.readingStoryTitle = obj.title.trim();
+            }
+            if (Array.isArray(obj.sentences) && !this.readingSentences.length) {
+                this.readingSentences = obj.sentences
+                    .filter(s => s && typeof s.en === 'string' && typeof s.zh === 'string')
+                    .map(s => ({ en: s.en.trim(), zh: s.zh.trim() }));
+            }
+            if (obj.glosses && typeof obj.glosses === 'object' && !Object.keys(this.readingGlosses || {}).length) {
+                this.readingGlosses = obj.glosses;
+            }
+            return storyText;
+        },
+
+        // Last resort: extract readable text from malformed/unparseable JSON.
+        _stripJsonNoise(text) {
+            // Try to find the longest quoted string — very likely the story content
+            const quoteMatches = [];
+            const re = /"((?:[^"\\]|\\.)*)"/g;
+            let m;
+            while ((m = re.exec(text)) !== null) {
+                const val = m[1].replace(/\\n/g, '\n').replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+                if (val.length > 30) quoteMatches.push(val);
+            }
+            if (quoteMatches.length > 0) {
+                // Return the longest quoted string (most likely the story)
+                quoteMatches.sort((a, b) => b.length - a.length);
+                return quoteMatches[0].trim();
+            }
+            // Absolute fallback: strip JSON structural characters
+            let cleaned = text;
+            cleaned = cleaned.replace(/^\s*[\[{]\s*/, '').replace(/\s*[\]}]\s*$/, '');
+            cleaned = cleaned.replace(/"(?:story|text|title|sentences|glosses|en|zh)":\s*/g, '');
+            cleaned = cleaned.replace(/[{}\[\]]/g, ' ').replace(/"\s*,\s*/g, '\n').replace(/^"|"$/gm, '');
+            cleaned = cleaned.replace(/\s{2,}/g, ' ').trim();
+            return cleaned || text;
         },
         // Show the bottom word-reveal panel for a tapped word in the reading article.
         _showReadingPopup(word, meaning, isVocab) {
@@ -7002,6 +7111,13 @@ new Vue({
   }
 
 })();
+
+// ── Service Worker registration ──────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('sw.js').catch(function() {});
+  });
+}
 </script>
 </body>
 </html>

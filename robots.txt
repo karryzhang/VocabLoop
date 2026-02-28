@@ -1,0 +1,5 @@
+# VocabLoop – robots.txt
+User-agent: *
+Allow: /
+
+Sitemap: https://karryzhang.github.io/VocabLoop/sitemap.xml
