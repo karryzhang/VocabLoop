@@ -57,32 +57,69 @@ function buildPrompt(words) {
 
 /* ── Response parser ────────────────────────────────────────────────── */
 
+function tryParseJSON(str) {
+  try { return JSON.parse(str); } catch (_) {}
+  // Fix trailing commas (common LLM output issue): ,] → ] and ,} → }
+  const fixed = str.replace(/,\s*([\]}])/g, '$1');
+  try { return JSON.parse(fixed); } catch (_) {}
+  return null;
+}
+
 function extractJSON(raw) {
   // Strategy 1: direct parse (clean JSON)
-  try { return JSON.parse(raw.trim()); } catch (_) {}
+  const direct = tryParseJSON(raw.trim());
+  if (direct) return direct;
 
   // Strategy 2: strip markdown code fences (```json ... ```)
   const fenceRe = /```(?:json)?\s*\n?([\s\S]*?)\n?\s*```/;
   const fenceMatch = raw.match(fenceRe);
   if (fenceMatch) {
-    try { return JSON.parse(fenceMatch[1].trim()); } catch (_) {}
+    const fenced = tryParseJSON(fenceMatch[1].trim());
+    if (fenced) return fenced;
   }
 
   // Strategy 3: find the outermost { ... } brace pair
   const first = raw.indexOf('{');
   const last  = raw.lastIndexOf('}');
   if (first !== -1 && last > first) {
-    try { return JSON.parse(raw.slice(first, last + 1)); } catch (_) {}
+    const braced = tryParseJSON(raw.slice(first, last + 1));
+    if (braced) return braced;
   }
 
   return null;
 }
 
+function extractStoryText(obj) {
+  if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return '';
+  // Try common field names for the story text
+  const textFields = ['story', 'text', 'content', 'article', 'body', 'narrative'];
+  for (const field of textFields) {
+    if (typeof obj[field] === 'string' && obj[field].trim().length > 20) {
+      return obj[field].trim();
+    }
+  }
+  // Fallback: find the longest string value (likely the story)
+  let best = '';
+  for (const [key, val] of Object.entries(obj)) {
+    if (typeof val === 'string' && val.length > best.length && key !== 'title') {
+      best = val;
+    }
+  }
+  if (best.length > 50) return best.trim();
+  // Handle array of paragraph strings (e.g. "paragraphs": ["p1", "p2"])
+  for (const val of Object.values(obj)) {
+    if (Array.isArray(val) && val.length > 0 && typeof val[0] === 'string' && val[0].length > 20) {
+      return val.join('\n\n').trim();
+    }
+  }
+  return '';
+}
+
 function parseResponse(raw) {
   const parsed = extractJSON(raw);
 
-  if (parsed && typeof parsed === 'object') {
-    const text = (parsed.story || parsed.text || '').trim();
+  if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+    const text = extractStoryText(parsed);
     if (text) {
       return {
         title: typeof parsed.title === 'string' ? parsed.title.trim() : '',
@@ -99,8 +136,16 @@ function parseResponse(raw) {
     }
   }
 
-  // Not valid JSON or no story field — treat as plain text (backwards compat)
-  return { title: '', text: raw.trim(), sentences: [], glosses: {} };
+  // Could not parse structured JSON — clean up raw text as fallback
+  let fallback = raw.trim();
+  // Strip markdown code fences
+  fallback = fallback.replace(/^```(?:json)?\s*\n?/i, '').replace(/\n?\s*```\s*$/i, '');
+  // If it still looks like raw JSON, do NOT return it as article text
+  const stripped = fallback.trim();
+  if (stripped.charAt(0) === '{' || stripped.charAt(0) === '[') {
+    return { title: '', text: '', sentences: [], glosses: {} };
+  }
+  return { title: '', text: fallback, sentences: [], glosses: {} };
 }
 
 /* ── Handler ───────────────────────────────────────────────────────── */
