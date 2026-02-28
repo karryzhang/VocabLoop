@@ -926,6 +926,16 @@
             text-align: center; margin-top: 4px;
             padding: 0 12px; line-height: 1.4;
         }
+        /* Target-word highlight inside example sentences (SLA: noticing) */
+        .ex-hl {
+            font-weight: 700;
+            color: #fff;
+            font-style: normal;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            text-decoration-thickness: 1px;
+            text-decoration-color: rgba(255,255,255,.55);
+        }
 
         /* controls */
         .controls {
@@ -1759,9 +1769,34 @@
         }
         .reading-error-icon { font-size: 2.2rem; line-height: 1; }
         .reading-error-msg  { font-size: 0.9rem; color: var(--red); line-height: 1.5; max-width: 280px; }
-        .reading-article {
-            font-size: 1rem; line-height: 1.95; color: var(--text); white-space: pre-wrap;
+        /* Header button row */
+        .reading-hd-btns { display: flex; align-items: center; gap: 6px; }
+        /* Bilingual toggle button */
+        .reading-bilingual-btn {
+            display: flex; align-items: center; gap: 4px;
+            background: var(--surface); border: 1.5px solid var(--border);
+            border-radius: 8px; padding: 5px 10px; cursor: pointer;
+            color: var(--text); font-size: 0.8rem; font-weight: 600;
+            transition: border-color 0.15s, background 0.15s;
+            white-space: nowrap;
         }
+        .reading-bilingual-btn:hover  { border-color: var(--blue); }
+        .reading-bilingual-btn.active { border-color: var(--blue); background: rgba(59,130,246,.1); color: var(--blue); }
+        .rdb-icon  { font-size: 1rem; line-height: 1; }
+        .rdb-label { font-size: 0.75rem; }
+        /* Article text */
+        .reading-article {
+            font-size: 1.02rem; line-height: 2.0; color: var(--text);
+        }
+        .rd-para { margin-bottom: 1em; }
+        .rd-para:last-child { margin-bottom: 0; }
+        /* All words are subtly interactive */
+        .rd-word {
+            cursor: pointer; border-radius: 2px;
+            transition: background 0.12s;
+        }
+        .rd-word:hover { background: rgba(59,130,246,.1); }
+        /* Key vocab words — highlighted */
         .vocab-hl {
             font-weight: 700;
             color: var(--blue);
@@ -1772,22 +1807,62 @@
             text-underline-offset: 3px;
             text-decoration-color: color-mix(in srgb, var(--blue) 40%, transparent);
         }
-        .reading-word-list {
-            padding-top: 16px; border-top: 1px solid var(--border);
-            font-size: 0.82rem; color: var(--muted); line-height: 1.9;
+        .vocab-hl:hover { background: rgba(59,130,246,.15); }
+        /* Click hint bar */
+        .reading-tap-hint {
+            font-size: 0.75rem; color: var(--muted); text-align: center;
+            padding: 4px 8px; background: var(--surface);
+            border-radius: 8px; border: 1px solid var(--border);
         }
-        .reading-word-list strong { color: var(--text); }
+        /* Bilingual view */
+        .rd-bi-pair {
+            display: flex; flex-direction: column; gap: 4px;
+            padding: 10px 14px; border-radius: 10px;
+            border-left: 3px solid var(--blue);
+            background: var(--surface);
+            margin-bottom: 10px;
+        }
+        .rd-bi-en {
+            font-size: 1rem; line-height: 1.7; color: var(--text);
+            margin: 0;
+        }
+        .rd-bi-zh {
+            font-size: 0.88rem; line-height: 1.55; color: var(--muted);
+            margin: 0; font-style: normal;
+        }
+        /* Word list chips */
+        .reading-word-list {
+            padding-top: 14px; border-top: 1px solid var(--border);
+        }
+        .reading-wl-label {
+            font-size: 0.78rem; font-weight: 600; color: var(--muted);
+            margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em;
+        }
+        .reading-wl-chips {
+            display: flex; flex-wrap: wrap; gap: 6px;
+        }
+        .reading-wl-chip {
+            display: inline-flex; align-items: baseline; gap: 3px;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 20px; padding: 3px 10px; font-size: 0.8rem;
+        }
+        .reading-wl-chip strong { color: var(--blue); font-weight: 700; }
+        .reading-wl-chip span   { color: var(--muted); }
+        /* Actions row (regen + done) */
+        .reading-actions {
+            display: flex; flex-direction: column; gap: 10px;
+        }
         .reading-regen {
-            width: 100%; padding: 14px; border: 1.5px solid var(--blue);
-            color: var(--blue); background: none; border-radius: 14px;
-            font-weight: 600; cursor: pointer; font-size: 0.9rem;
-            transition: background 0.18s, transform 0.12s;
+            width: 100%; padding: 13px; border: 1.5px solid var(--border);
+            color: var(--muted); background: none; border-radius: 12px;
+            font-weight: 600; cursor: pointer; font-size: 0.88rem;
+            transition: border-color 0.18s, color 0.15s, transform 0.12s;
             -webkit-tap-highlight-color: transparent;
         }
-        .reading-regen:hover { background: color-mix(in srgb, var(--blue) 6%, transparent); }
+        .reading-regen:hover { border-color: var(--blue); color: var(--blue); }
         .reading-regen:active { transform: scale(0.98); }
         .reading-done-btn {
-            width: 100%; padding: 14px 18px; border-radius: 16px; border: none;
+            width: 100%; padding: 15px 18px; border-radius: 16px; border: none;
             cursor: pointer; background: var(--green); color: #fff;
             display: flex; align-items: center; gap: 12px; text-align: left;
             transition: transform 0.12s, box-shadow 0.18s;
@@ -1801,6 +1876,39 @@
         .reading-done-btn-hint  { font-size: 0.73rem; opacity: 0.85; line-height: 1.3; }
         .reading-done-btn-arrow { font-size: 1.2rem; flex-shrink: 0; opacity: 0.85; transition: transform 0.15s; }
         .reading-done-btn:hover .reading-done-btn-arrow { transform: translateX(3px); }
+        /* ── Word reveal panel (bottom of reading overlay) ─────── */
+        .rd-popup {
+            flex-shrink: 0;
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px 16px;
+            background: var(--surface);
+            border-top: 2px solid var(--blue);
+            box-shadow: 0 -4px 20px rgba(0,0,0,.12);
+        }
+        .rd-popup-word {
+            font-weight: 700; font-size: 0.95rem; color: var(--text);
+            flex-shrink: 0; min-width: 0;
+        }
+        .rd-popup-word.rd-popup-vocab { color: var(--blue); }
+        .rd-popup-meaning {
+            flex: 1; font-size: 0.88rem; color: var(--muted);
+            line-height: 1.4; min-width: 0;
+        }
+        .rd-popup-audio {
+            background: none; border: none; cursor: pointer;
+            font-size: 1.1rem; padding: 4px 6px; flex-shrink: 0;
+            border-radius: 6px; transition: background 0.12s;
+        }
+        .rd-popup-audio:hover { background: var(--border); }
+        .rd-popup-close {
+            background: none; border: none; cursor: pointer;
+            color: var(--muted); font-size: 1rem; padding: 4px 8px;
+            flex-shrink: 0; border-radius: 6px; transition: background 0.12s;
+        }
+        .rd-popup-close:hover { background: var(--border); }
+        /* Transition for popup */
+        .rd-popup-enter-active, .rd-popup-leave-active { transition: transform 0.18s ease, opacity 0.18s; }
+        .rd-popup-enter, .rd-popup-leave-to { transform: translateY(100%); opacity: 0; }
         .btn-reading {
             width: 100%; padding: 14px;
             background: linear-gradient(135deg, #16a34a, #15803d);
@@ -1812,6 +1920,25 @@
         .btn-reading:hover  { box-shadow: 0 6px 22px rgba(22,163,74,0.32); transform: translateY(-1px); }
         .btn-reading:active { transform: scale(0.97); box-shadow: none; }
 
+        /* ── Reading: small screen ────────────────────────────── */
+        @media (max-width: 390px) {
+            .reading-body       { padding: 14px 14px 24px; }
+            .reading-article    { font-size: 0.95rem; line-height: 1.9; }
+            .rd-bi-en           { font-size: 0.93rem; }
+            .rd-bi-zh           { font-size: 0.82rem; }
+            .reading-bilingual-btn { padding: 4px 8px; }
+            .rdb-label          { display: none; }  /* show icon only on tiny screens */
+        }
+        /* ── Reading: desktop / wide screen ─────────────────── */
+        @media (min-width: 680px) {
+            .reading-body       { max-width: 680px; margin: 0 auto; padding: 24px 32px 36px; }
+            .reading-article    { font-size: 1.08rem; line-height: 2.1; }
+            .rd-bi-pair         { padding: 12px 18px; }
+            .rd-bi-en           { font-size: 1.05rem; }
+            .rd-bi-zh           { font-size: 0.93rem; }
+            .reading-hd         { max-width: 680px; margin: 0 auto; }
+            .reading-stepper    { max-width: 680px; margin: 0 auto; }
+        }
         /* ── Responsive adjustments for practice ─────────────── */
         @media (max-width: 390px) {
             .prac-area     { padding: 14px 16px 16px; gap: 12px; }
@@ -2799,8 +2926,8 @@
                          v-if="curStage && curStage !== 'new' && curStage !== 'mastered'">
                         {{stageLabel[curStage]}}
                     </div>
-                    <div class="pos-tag" v-if="curDict && curDict.pos">
-                        {{posZh(curDict.pos)}}
+                    <div class="pos-tag" v-if="curPos">
+                        {{posZh(curPos)}}
                     </div>
                     <div class="front-word">{{cur.word}}</div>
                     <div class="front-ipa"
@@ -2829,14 +2956,18 @@
                     <!-- ③ Chinese meaning — hero -->
                     <div class="back-zh">{{curZhParts.zh}}</div>
                     <!-- ④ pos + English definition -->
-                    <div class="back-def-row" v-if="(curDict && curDict.pos) || (curDict && curDict.definition)">
-                        <span class="back-pos" v-if="curDict && curDict.pos">{{posZh(curDict.pos)}}</span>
+                    <div class="back-def-row" v-if="curPos || (curDict && curDict.definition)">
+                        <span class="back-pos" v-if="curPos">{{posZh(curPos)}}</span>
                         <span class="back-def" v-if="curDict && curDict.definition">{{curDict.definition}}</span>
                     </div>
                     <!-- ⑤ example sentences with separator -->
                     <div class="back-examples" v-if="curExample || curExample2">
-                        <div class="back-example" v-if="curExample">"{{curExample.text}}"</div>
-                        <div class="back-example2" v-if="curExample2">"{{curExample2}}"</div>
+                        <div class="back-example" v-if="curExample">
+                            "<span v-html="curExampleHtml"></span>"
+                        </div>
+                        <div class="back-example2" v-if="curExample2">
+                            "<span v-html="curExample2Html"></span>"
+                        </div>
                     </div>
                     <div class="back-note" v-if="curNote">{{curNote}}</div>
                 </div>
@@ -2963,18 +3094,29 @@
 
     <!-- ── Reading overlay ─────────────────────────────────────────── -->
     <div v-if="readingOpen" class="reading-overlay">
+        <!-- ── Header ───────────────────────────────────────────────── -->
         <div class="reading-hd">
             <span class="reading-hd-title">📖 {{ui.readingTitle}}</span>
-            <div style="display:flex;gap:6px;align-items:center">
+            <div class="reading-hd-btns">
+                <!-- Bilingual toggle — only shown when sentences data is available -->
+                <button v-if="readingArticle && readingSentences.length"
+                        class="reading-bilingual-btn"
+                        :class="{active: readingBilingual}"
+                        @click="readingBilingual = !readingBilingual; readingPopup = null"
+                        :title="ui.readingBilingualTip">
+                    <span class="rdb-icon">{{ readingBilingual ? '🇨🇳' : '🇺🇸' }}</span>
+                    <span class="rdb-label">{{ readingBilingual ? ui.readingBilingualOff : ui.readingBilingualOn }}</span>
+                </button>
                 <button class="reading-hist-btn"
                         :class="{active: readingHistoryOpen}"
-                        @click="readingHistoryOpen = !readingHistoryOpen">
+                        @click="readingHistoryOpen = !readingHistoryOpen; readingPopup = null">
                     📋 {{ui.readingHistory}}
                 </button>
                 <button class="reading-close" @click="closeReading">✕</button>
             </div>
         </div>
-        <!-- Learning path stepper inside reading -->
+
+        <!-- ── Learning path stepper ─────────────────────────────────── -->
         <div class="lp-round-label" style="padding-bottom:4px">{{ui.lpRound(todayRounds)}}</div>
         <div class="reading-stepper">
             <div class="lp-step done">
@@ -2992,14 +3134,17 @@
                 <div class="lp-label">{{ui.lpReading}}</div>
             </div>
         </div>
-        <div class="reading-body">
+
+        <!-- ── Scrollable body ───────────────────────────────────────── -->
+        <div class="reading-body" @click="readingPopup = null">
+
             <!-- History list -->
             <template v-if="readingHistoryOpen">
                 <div v-if="readingHistory.length === 0" class="reading-hist-empty">
                     {{ui.readingHistoryEmpty}}
                 </div>
                 <div v-for="entry in readingHistory" :key="entry.id"
-                     class="reading-hist-item" @click="openHistoryItem(entry)">
+                     class="reading-hist-item" @click.stop="openHistoryItem(entry)">
                     <div class="reading-hist-meta">
                         <span class="reading-hist-date">{{entry.date}}</span>
                         <span class="reading-hist-deck">{{entry.deckId}}</span>
@@ -3025,25 +3170,52 @@
 
             <!-- Article -->
             <template v-else-if="readingArticle">
-                <div class="reading-article" v-html="highlightedArticle" @click="onVocabHlClick"></div>
-                <div class="reading-word-list">
-                    <span style="font-weight:600;color:var(--text)">{{ui.readingWordList}}</span>
-                    <span v-for="(w, i) in readingWordObjs" :key="w.word">
-                        <strong style="color:var(--blue)">{{w.word}}</strong><span style="color:var(--muted)"> {{w.zh}}</span><span v-if="i < readingWordObjs.length - 1"> · </span>
-                    </span>
+                <!-- Click hint (first time) -->
+                <div class="reading-tap-hint">
+                    <span>{{ui.readingTapHint}}</span>
                 </div>
-                <button class="reading-regen" @click="generateReading">🔄 {{ui.readingRegen}}</button>
-                <!-- Complete reading → start new round -->
-                <button class="reading-done-btn" @click="closeReading(); loadMore()">
-                    <span class="reading-done-btn-icon">✅</span>
-                    <div class="reading-done-btn-text">
-                        <span class="reading-done-btn-title">{{ui.readingDoneBtn}}</span>
-                        <span class="reading-done-btn-hint">{{ui.readingDoneHint}}</span>
+                <!-- Article text — all words are clickable spans -->
+                <div class="reading-article"
+                     v-html="highlightedArticle"
+                     @click.stop="onReadingWordClick"></div>
+                <!-- Vocab word list -->
+                <div class="reading-word-list">
+                    <div class="reading-wl-label">{{ui.readingWordList}}</div>
+                    <div class="reading-wl-chips">
+                        <span v-for="w in readingWordObjs" :key="w.word" class="reading-wl-chip">
+                            <strong>{{w.word}}</strong> <span>{{w.zh}}</span>
+                        </span>
                     </div>
-                    <span class="reading-done-btn-arrow">›</span>
-                </button>
+                </div>
+                <!-- Actions row: regen + done -->
+                <div class="reading-actions">
+                    <button class="reading-regen" @click="generateReading; readingPopup = null">
+                        🔄 {{ui.readingRegen}}
+                    </button>
+                    <button class="reading-done-btn" @click="closeReading(); loadMore()">
+                        <span class="reading-done-btn-icon">✅</span>
+                        <div class="reading-done-btn-text">
+                            <span class="reading-done-btn-title">{{ui.readingDoneBtn}}</span>
+                            <span class="reading-done-btn-hint">{{ui.readingDoneHint}}</span>
+                        </div>
+                        <span class="reading-done-btn-arrow">›</span>
+                    </button>
+                </div>
             </template>
         </div>
+
+        <!-- ── Word reveal panel (bottom bar, slides up on word tap) ── -->
+        <transition name="rd-popup">
+            <div v-if="readingPopup" class="rd-popup" @click.stop>
+                <div class="rd-popup-word" :class="{'rd-popup-vocab': readingPopup.isVocab}">
+                    {{readingPopup.word}}
+                </div>
+                <div class="rd-popup-meaning">{{readingPopup.meaning}}</div>
+                <button v-if="readingPopup.isVocab"
+                        class="rd-popup-audio" @click="playAudio(readingPopup.word)">🔊</button>
+                <button class="rd-popup-close" @click="readingPopup = null">✕</button>
+            </div>
+        </transition>
     </div>
 
     <!-- ── Onboarding overlay (new user) ───────────────────────────── -->
@@ -3404,9 +3576,13 @@ const STRINGS = {
     readingRegen:    '重新生成',
     readingDoneBtn:  '完成阅读，开始新一轮',
     readingDoneHint: '将今日词汇带入下一轮翻卡复习',
-    readingWordList:     '本篇涵盖词汇：',
+    readingWordList:     '本篇涵盖词汇',
     readingHistory:      '历史',
     readingHistoryEmpty: '暂无历史文章',
+    readingBilingualOn:  '双语',
+    readingBilingualOff: '英文',
+    readingBilingualTip: '切换中英文对照',
+    readingTapHint:      '💡 点击任意单词查看含义，蓝色词为本轮重点',
     // Learning path
     lpCards:    '翻卡',
     lpPractice: '练习',
@@ -3592,9 +3768,13 @@ const STRINGS = {
     readingRegen:    'Regenerate',
     readingDoneBtn:  'Complete Reading → New Round',
     readingDoneHint: 'Continue with today\'s vocabulary in the next card round',
-    readingWordList:     'Words covered:',
+    readingWordList:     'Words covered',
     readingHistory:      'History',
     readingHistoryEmpty: 'No stories yet',
+    readingBilingualOn:  'Bilingual',
+    readingBilingualOff: 'English',
+    readingBilingualTip: 'Toggle EN / EN+ZH view',
+    readingTapHint:      '💡 Tap any word to see its meaning — blue words are this session\'s vocab',
     // Learning path
     lpCards:    'Cards',
     lpPractice: 'Practice',
@@ -3674,11 +3854,26 @@ function fmtMs(ms) {
 }
 
 const POS_ZH = {
+    // Full forms (from Dictionary API)
     noun: '名词', verb: '动词', adjective: '形容词',
     adverb: '副词', pronoun: '代词', preposition: '介词',
     conjunction: '连词', interjection: '感叹词', exclamation: '感叹词',
     article: '冠词', determiner: '限定词', number: '数词',
-    abbreviation: '缩写',
+    abbreviation: '缩写', phrase: '短语',
+    // Abbreviated forms (from vocab JSON: n., v., adj., phr.v., etc.)
+    'n': '名词', 'n.': '名词',
+    'v': '动词', 'v.': '动词',
+    'adj': '形容词', 'adj.': '形容词',
+    'adv': '副词', 'adv.': '副词',
+    'prep': '介词', 'prep.': '介词',
+    'conj': '连词', 'conj.': '连词',
+    'pron': '代词', 'pron.': '代词',
+    'int': '感叹词', 'int.': '感叹词',
+    'phr': '短语', 'phr.': '短语',
+    'phr.v': '短语动词', 'phr.v.': '短语动词',
+    'abbr': '缩写', 'abbr.': '缩写',
+    'num': '数词', 'num.': '数词',
+    'art': '冠词', 'art.': '冠词',
 };
 
 const LEVELS         = UI.levels;
@@ -3959,6 +4154,9 @@ new Vue({
             readingLoading:  false,
             readingError:    '',
             readingWordObjs: [],
+            readingSentences:    [],   // [{ en, zh }] sentence pairs for bilingual mode
+            readingBilingual:    false, // toggle: English-only vs EN+ZH parallel
+            readingPopup:        null,  // { word, meaning, isVocab } — word-tap reveal panel
             readingHistory:      JSON.parse(localStorage.getItem('reading_history') || '[]'),
             readingHistoryOpen:  false,
             // ── Undo ────────────────────────────────────────────────────
@@ -4000,6 +4198,15 @@ new Vue({
             if (this.cur && this.cur.ex2) return this.cur.ex2;
             return null;
         },
+        // Example sentences with target word highlighted (bold + underline)
+        curExampleHtml() {
+            if (!this.curExample) return '';
+            return this._hlWord(this.curExample.text, this.cur.word);
+        },
+        curExample2Html() {
+            if (!this.curExample2) return '';
+            return this._hlWord(this.curExample2, this.cur.word);
+        },
         // Abbreviation/acronym note (e.g. "short for Decentralized Finance")
         curNote() {
             if (this.cur && this.cur.note) return this.cur.note;
@@ -4038,6 +4245,10 @@ new Vue({
             if (!this.cur.word) return undefined;
             const v = this.dictCache[this.cur.word];
             return v !== undefined ? v : undefined;
+        },
+        // Best available part of speech: API (full form) > JSON (abbreviated)
+        curPos() {
+            return (this.curDict && this.curDict.pos) || this.cur.pos || '';
         },
         sessionPct() {
             if (!this.sessionTotal) return 100;
@@ -4145,17 +4356,16 @@ new Vue({
         },
         highlightedArticle() {
             if (!this.readingArticle) return '';
-            // Escape HTML first
-            let html = this.readingArticle
-                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            // Sort words longest-first to avoid partial replacements
-            const words = [...this.readingWordObjs].sort((a, b) => b.word.length - a.word.length);
-            for (const w of words) {
-                const esc = w.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                html = html.replace(new RegExp(`\\b(${esc})\\b`, 'gi'),
-                    `<strong class="vocab-hl" data-word="${w.word}">$1</strong>`);
+            // Bilingual mode: render EN+ZH sentence pairs (needs sentences data)
+            if (this.readingBilingual && this.readingSentences.length) {
+                return this.readingSentences.map(s => {
+                    const enHtml = this._tokenizeForReading(s.en);
+                    const zhSafe = s.zh.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                    return `<div class="rd-bi-pair"><p class="rd-bi-en">${enHtml}</p><p class="rd-bi-zh">${zhSafe}</p></div>`;
+                }).join('');
             }
-            return html;
+            // English-only mode: tokenize full article into clickable words
+            return this._tokenizeForReading(this.readingArticle);
         },
     },
 
@@ -4212,9 +4422,81 @@ new Vue({
 
         posZh(pos) {
             if (!pos) return '';
-            if (LANG === 'zh') return POS_ZH[pos.toLowerCase()] || pos;
-            // English: capitalise first letter of full API words, pass abbreviations through
-            return pos.length > 4 ? pos.charAt(0).toUpperCase() + pos.slice(1) : pos;
+            if (LANG !== 'zh') {
+                // English: capitalise first letter of full API words, pass abbreviations through
+                return pos.length > 4 ? pos.charAt(0).toUpperCase() + pos.slice(1) : pos;
+            }
+            // Handle compound pos like "n./v." or "adj./n."
+            if (pos.includes('/')) {
+                return pos.split('/').map(p => POS_ZH[p.trim().toLowerCase()] || p.trim()).join(' / ');
+            }
+            return POS_ZH[pos.trim().toLowerCase()] || pos;
+        },
+        // Highlight the target word (and common inflections) in an example sentence.
+        // Returns safe HTML — text is escaped before the bold tag is injected.
+        _hlWord(text, word) {
+            if (!text) return '';
+            // HTML-escape raw text first (prevent XSS via example data)
+            const safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            if (!word) return safe;
+            const stem = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            // Match the base word + common English suffixes (covers inflections)
+            const re = new RegExp(`\\b(${stem}(?:s|es|ed|ing|er|est|ly|tion|ness|ment|ful|less)?)\\b`, 'gi');
+            return safe.replace(re, '<strong class="ex-hl">$1</strong>');
+        },
+
+        // Tokenize a text string into clickable <span class="rd-word"> elements.
+        // Vocabulary words from this session get the additional "vocab-hl" class.
+        // Non-word characters (punctuation, spaces, newlines) are kept as-is so
+        // the layout renders naturally with no extra whitespace trickery.
+        _tokenizeForReading(text) {
+            if (!text) return '';
+            // Build a lookup: lowercased base word → original vocab word obj
+            const vocabMap = new Map();
+            for (const w of this.readingWordObjs) {
+                vocabMap.set(w.word.toLowerCase(), w.word);
+            }
+
+            // Split into paragraphs first (preserve paragraph breaks)
+            const paragraphs = text.split(/\n\n+/);
+            return paragraphs.map(para => {
+                // Within each paragraph, tokenize into words and non-words
+                const tokenized = para.replace(/([a-zA-Z']+)|([^a-zA-Z']+)/g, (match, word, nonword) => {
+                    if (nonword !== undefined) {
+                        // Escape HTML in punctuation/spaces, convert single \n to space
+                        return nonword
+                            .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                            .replace(/\n/g, ' ');
+                    }
+                    const lower = word.toLowerCase();
+                    // Check if this word is a key vocab word (exact or common inflection)
+                    let vocabKey = vocabMap.has(lower) ? lower : null;
+                    if (!vocabKey) {
+                        // Check inflections: strip suffix to find base form in vocabMap
+                        for (const base of vocabMap.keys()) {
+                            if (lower !== base && lower.startsWith(base)) {
+                                const suffix = lower.slice(base.length);
+                                if (/^(s|es|ed|ing|er|ers|est|ly|tion|ness|ment|ful|less|ise|ize|ized|ises)$/.test(suffix)) {
+                                    vocabKey = base;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    const safeWord = word.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                    if (vocabKey) {
+                        const origWord = vocabMap.get(vocabKey);
+                        return `<strong class="rd-word vocab-hl" data-word="${origWord}">${safeWord}</strong>`;
+                    }
+                    return `<span class="rd-word" data-word="${lower}">${safeWord}</span>`;
+                });
+                return `<p class="rd-para">${tokenized}</p>`;
+            }).join('');
+        },
+
+        // Show the bottom word-reveal panel for a tapped word in the reading article.
+        _showReadingPopup(word, meaning, isVocab) {
+            this.readingPopup = { word, meaning, isVocab };
         },
         achIcon(id) {
             const a = ACHIEVEMENTS.find(x => x.id === id);
@@ -5455,12 +5737,14 @@ new Vue({
             const cached = this.readingHistory.find(
                 e => e.date === tdy && e.deckId === this.currentDeck.id && (e.round || 0) >= this.todayRounds);
             if (cached) {
-                this.readingWordObjs = cached.words.map(
+                this.readingWordObjs  = cached.words.map(
                     w => this.allWords.find(aw => aw.word === w.word) || w);
-                this.readingArticle  = cached.text;
+                this.readingArticle   = cached.text;
+                this.readingSentences = cached.sentences || [];
             } else {
-                this.readingArticle = '';
-                this.readingLoading = true;
+                this.readingArticle   = '';
+                this.readingSentences = [];
+                this.readingLoading   = true;
                 this.generateReading();
             }
         },
@@ -5470,15 +5754,20 @@ new Vue({
             this.readingError       = '';
             this.readingLoading     = false;
             this.readingHistoryOpen = false;
+            this.readingSentences   = [];
+            this.readingBilingual   = false;
+            this.readingPopup       = null;
         },
         openHistoryItem(entry) {
             this.readingWordObjs    = entry.words.map(
                 w => this.allWords.find(aw => aw.word === w.word) || w);
             this.readingArticle     = entry.text;
+            this.readingSentences   = entry.sentences || [];
             this.readingHistoryOpen = false;
             this.readingError       = '';
+            this.readingPopup       = null;
         },
-        saveReadingHistory(text) {
+        saveReadingHistory(text, sentences) {
             const entry = {
                 id:     Date.now(),
                 date:   today(),
@@ -5486,6 +5775,7 @@ new Vue({
                 round:  this.todayRounds,
                 words:  this.readingWordObjs.map(w => ({ word: w.word, zh: w.zh })),
                 text,
+                sentences: sentences || [],
             };
             this.readingHistory.unshift(entry);
             if (this.readingHistory.length > 30)
@@ -5494,16 +5784,54 @@ new Vue({
             // Silent sync reading history to cloud
             if (window.__vocabSync && window.__vocabSync.push) window.__vocabSync.push();
         },
-        // Tap on a highlighted vocab word → show its Chinese meaning as a toast
-        onVocabHlClick(e) {
+        // Tap any word in the reading article → show meaning in the bottom panel.
+        // Vocab-highlight words additionally play audio.
+        onReadingWordClick(e) {
+            // Close popup if tapping outside a word span
+            if (!e.target.classList.contains('rd-word') && !e.target.classList.contains('vocab-hl')) {
+                this.readingPopup = null;
+                return;
+            }
             const word = e.target.dataset && e.target.dataset.word;
             if (!word) return;
-            const wobj = this.readingWordObjs.find(w =>
-                w.word.toLowerCase() === word.toLowerCase());
-            if (wobj) {
-                this.showToast(`${wobj.word}：${wobj.zh}`, 'good');
-                this.playAudio(wobj.word);
+
+            const lower = word.toLowerCase();
+
+            // 1. Session vocab word (highlighted) → Chinese from vocab JSON + audio
+            const vocabObj = this.readingWordObjs.find(w => w.word.toLowerCase() === lower);
+            if (vocabObj) {
+                this.playAudio(vocabObj.word);
+                this._showReadingPopup(vocabObj.word, vocabObj.zh, true);
+                return;
             }
+
+            // 2. Any other studied word in current deck → Chinese from allWords
+            const deckWord = this.allWords.find(w => w.word.toLowerCase() === lower);
+            if (deckWord && deckWord.zh) {
+                this._showReadingPopup(word, deckWord.zh, false);
+                return;
+            }
+
+            // 3. Check dictionary cache for English definition
+            const cached = this.dictCache[lower] || this.dictCache[word];
+            if (cached && cached.definition) {
+                this._showReadingPopup(word, cached.definition, false);
+                return;
+            }
+
+            // 4. Fetch from dictionary API on demand
+            this._showReadingPopup(word, '…', false);
+            this.fetchDict(lower).then(() => {
+                if (this.readingPopup && this.readingPopup.word === word) {
+                    const d = this.dictCache[lower] || this.dictCache[word];
+                    const def = d && (d.definition || '');
+                    this.readingPopup = { ...this.readingPopup, meaning: def || '—' };
+                }
+            }).catch(() => {
+                if (this.readingPopup && this.readingPopup.word === word) {
+                    this.readingPopup = { ...this.readingPopup, meaning: '—' };
+                }
+            });
         },
         async generateReading() {
             const tdy = today();
@@ -5532,12 +5860,14 @@ new Vue({
                 selected = this.getTodayPracticeWords().slice(0, MAX_READING_WORDS);
             this.readingWordObjs = selected.slice(0, MAX_READING_WORDS);
 
-            this.readingLoading = true;
-            this.readingArticle = '';
-            this.readingError   = '';
+            this.readingLoading   = true;
+            this.readingArticle   = '';
+            this.readingSentences = [];
+            this.readingError     = '';
+            this.readingPopup     = null;
 
             const controller = new AbortController();
-            const timeoutId  = setTimeout(() => controller.abort(), 22000);
+            const timeoutId  = setTimeout(() => controller.abort(), 30000);
             try {
                 const res = await fetch('/api/reading', {
                     method:  'POST',
@@ -5559,8 +5889,10 @@ new Vue({
                 const data = await res.json();
                 const text = data.text || '';
                 if (!text) throw { _type: 'generic' };
-                this.readingArticle = text.trim();
-                this.saveReadingHistory(text.trim());
+                const sentences = Array.isArray(data.sentences) ? data.sentences : [];
+                this.readingArticle   = text.trim();
+                this.readingSentences = sentences;
+                this.saveReadingHistory(text.trim(), sentences);
             } catch (e) {
                 clearTimeout(timeoutId);
                 if (e.name === 'AbortError') {

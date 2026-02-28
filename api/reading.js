@@ -2,12 +2,12 @@
  * api/reading.js — AI-generated reading stories for VocabLoop
  *
  * Client sends a word list; server builds the prompt, calls Gemini,
- * and returns the story. The API key never leaves the server.
+ * and returns the story text + sentence-level bilingual translations.
  *
  * Env: GEMINI_API_KEY — Google Gemini API key
  *
  * Request:  POST { words: [{ word: "accept", zh: "接受" }, ...] }
- * Response: { text: "Once upon a time..." }
+ * Response: { text: "Full story...", sentences: [{ en: "...", zh: "..." }] }
  */
 
 /* ── Prompt template (server-only) ─────────────────────────────────── */
@@ -15,25 +15,60 @@
 function buildPrompt(words) {
   const wordList = words.map(w => `${w.word} (${w.zh})`).join(', ');
   return [
-    'You are a creative writing tutor crafting a short story to help',
-    'an intermediate English learner remember new vocabulary.',
+    'You are a creative writing teacher helping an intermediate English learner',
+    'master vocabulary through immersive, enjoyable reading.',
     '',
-    'Requirements:',
-    '- Length: 180–220 words.',
-    '- Weave ALL of the vocabulary words below naturally into the story',
-    '  — they should feel essential, not forced.',
-    '- Literary quality: give the story a clear arc',
-    '  (setup → tension → resolution), a vivid scene, and at least one',
-    '  moment of emotion or surprise that makes it memorable.',
-    '- Vocabulary level: keep all OTHER words at roughly the same',
-    '  difficulty as the given list — don\'t simplify to beginner level,',
-    '  but avoid obscure words the learner hasn\'t seen.',
-    '- Tone: warm, imaginative, slightly literary — think short-story',
-    '  rather than textbook exercise.',
-    '- Return only the story text. No title, no commentary, no word list.',
+    'Write an engaging short story that weaves ALL the vocabulary words below',
+    'naturally into the narrative. Then provide a sentence-by-sentence Chinese translation.',
+    '',
+    'Story requirements:',
+    '- Length: 260–320 English words (rich and immersive, NOT a list of example sentences)',
+    '- Every vocabulary word must appear naturally — essential to the story, not forced',
+    '- Structure: a named character in a specific vivid setting → rising tension or dilemma',
+    '  → emotionally satisfying resolution',
+    '- Depth: sensory details, character inner thoughts, one unexpected or touching moment',
+    '- Language: rich B1–B2 level — literary and engaging, NOT a textbook exercise',
+    '- Format the story into 3–4 paragraphs (use actual blank lines between paragraphs)',
+    '',
+    'Return ONLY valid JSON — no markdown, no code fences, no extra text:',
+    '{',
+    '  "story": "Paragraph 1.\\n\\nParagraph 2.\\n\\nParagraph 3.",',
+    '  "sentences": [',
+    '    { "en": "First sentence.", "zh": "第一句中文翻译。" },',
+    '    { "en": "Second sentence.", "zh": "第二句中文翻译。" }',
+    '  ]',
+    '}',
+    '',
+    'The sentences array must contain every sentence of the story in order,',
+    'each with an accurate Chinese translation.',
     '',
     `Vocabulary: ${wordList}`,
   ].join('\n');
+}
+
+/* ── Response parser ────────────────────────────────────────────────── */
+
+function parseResponse(raw) {
+  // Try to parse as JSON (the expected format)
+  try {
+    // Strip markdown code fences if present
+    const cleaned = raw.replace(/^```(?:json)?\s*/m, '').replace(/\s*```\s*$/m, '').trim();
+    const parsed = JSON.parse(cleaned);
+    if (parsed.story && Array.isArray(parsed.sentences)) {
+      return {
+        text: parsed.story.trim(),
+        sentences: parsed.sentences
+          .filter(s => s && typeof s.en === 'string' && typeof s.zh === 'string')
+          .map(s => ({ en: s.en.trim(), zh: s.zh.trim() })),
+      };
+    }
+    // Fallback if JSON has unexpected shape
+    const text = parsed.story || parsed.text || raw.trim();
+    return { text, sentences: [] };
+  } catch (_) {
+    // Not valid JSON — treat as plain text (backwards compat)
+    return { text: raw.trim(), sentences: [] };
+  }
 }
 
 /* ── Handler ───────────────────────────────────────────────────────── */
@@ -73,7 +108,7 @@ module.exports = async function handler(req, res) {
     const prompt = buildPrompt(words);
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 20000);
+    const timeoutId = setTimeout(() => controller.abort(), 28000);
 
     const apiRes = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
@@ -84,9 +119,9 @@ module.exports = async function handler(req, res) {
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: {
-            maxOutputTokens: 800,
-            temperature: 0.9,
-            thinkingConfig: { thinkingBudget: 0 }
+            maxOutputTokens: 1500,
+            temperature: 0.88,
+            thinkingConfig: { thinkingBudget: 0 },
           }
         })
       }
@@ -104,12 +139,17 @@ module.exports = async function handler(req, res) {
     }
 
     const data = await apiRes.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    if (!text) {
+    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    if (!raw) {
       return res.status(502).json({ error: 'Empty response from AI' });
     }
 
-    return res.status(200).json({ text: text.trim() });
+    const { text, sentences } = parseResponse(raw);
+    if (!text) {
+      return res.status(502).json({ error: 'Could not extract story from AI response' });
+    }
+
+    return res.status(200).json({ text, sentences });
   } catch (e) {
     if (e.name === 'AbortError') {
       return res.status(504).json({ error: 'timeout' });
