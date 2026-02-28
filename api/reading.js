@@ -86,7 +86,42 @@ function extractJSON(raw) {
     if (braced) return braced;
   }
 
+  // Strategy 4: repair truncated JSON (output cut off by token limit)
+  if (first !== -1) {
+    const repaired = repairTruncatedJSON(raw.slice(first));
+    if (repaired) return repaired;
+  }
+
   return null;
+}
+
+/**
+ * Attempt to repair truncated JSON by closing open strings, arrays, objects.
+ * Handles the common case where maxOutputTokens cuts the response mid-JSON.
+ */
+function repairTruncatedJSON(str) {
+  // Remove any trailing incomplete string value (cut mid-sentence)
+  let s = str.replace(/,\s*"[^"]*$/s, '');        // trailing incomplete key or value
+  s = s.replace(/:\s*"[^"]*$/s, ': ""');           // truncated string value
+  s = s.replace(/,\s*\{[^}]*$/s, '');              // trailing incomplete object in array
+  // Count unclosed brackets / braces
+  let braces = 0, brackets = 0, inString = false, escape = false;
+  for (const ch of s) {
+    if (escape) { escape = false; continue; }
+    if (ch === '\\') { escape = true; continue; }
+    if (ch === '"') { inString = !inString; continue; }
+    if (inString) continue;
+    if (ch === '{') braces++;
+    if (ch === '}') braces--;
+    if (ch === '[') brackets++;
+    if (ch === ']') brackets--;
+  }
+  // Close any open string
+  if (inString) s += '"';
+  // Close open brackets then braces
+  while (brackets > 0) { s += ']'; brackets--; }
+  while (braces > 0)   { s += '}'; braces--; }
+  return tryParseJSON(s);
 }
 
 function extractStoryText(obj) {
@@ -196,8 +231,9 @@ module.exports = async function handler(req, res) {
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: {
-            maxOutputTokens: 1500,
+            maxOutputTokens: 8192,
             temperature: 0.88,
+            responseMimeType: 'application/json',
             thinkingConfig: { thinkingBudget: 0 },
           }
         })
