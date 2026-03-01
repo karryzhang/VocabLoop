@@ -1932,7 +1932,10 @@
         .rd-word {
             cursor: pointer; border-radius: 3px;
             transition: background 0.15s, color 0.15s;
-            padding: 0 1px;
+            /* Vertical padding expands tap target on large-screen / touch devices
+               where line-height is tall and words are easy to miss */
+            padding: 3px 2px; margin: -3px 0;
+            display: inline-block;
         }
         .rd-word:hover { background: color-mix(in srgb, var(--blue) 10%, transparent); }
         .rd-word:active { background: color-mix(in srgb, var(--blue) 18%, transparent); }
@@ -6403,7 +6406,10 @@ new Vue({
             // Find the nearest ancestor with a data-word attribute (handles mobile touch targets)
             const el = e.target.closest('[data-word]');
             if (!el) {
-                this.readingPopup = null;
+                // Don't dismiss popup when tap lands on whitespace — on large screens (iPad)
+                // line-height is 2.15 so there's significant gap between lines, and regular
+                // word spans have tiny vertical tap areas. Popup is dismissed by ✕ button or
+                // tapping outside the article (handled by .reading-body @click).
                 return;
             }
             const word = el.dataset.word;
