@@ -4229,7 +4229,7 @@ function playFeedbackSound(type) {
 }
 
 // ── Practice Mode utilities ───────────────────────────────────────────────────
-const MAX_PRACTICE = 20;
+const MAX_PRACTICE = 40;
 
 /** Return up to n random words from pool that are not target */
 function getDistractors(target, pool, n) {
@@ -4383,30 +4383,47 @@ const Q_GENERATORS = {
 
 /**
  * Build a practice session from todayWords.
- * Uses allWords as the distractor pool to ensure enough options even for small today-sets.
- * Generates 1–2 question types per word, shuffles all questions, caps at MAX_PRACTICE.
+ * Phase 1: guarantee every word gets exactly 1 question (random eligible type).
+ * Phase 2: fill remaining slots (up to MAX_PRACTICE - 1) with a 2nd question per word.
+ * Phase 3: one matching round if pool is large enough.
+ * Result is shuffled but NOT sliced — coverage is guaranteed within the cap.
  */
 function buildPracticeSession(todayWords, allWords, dictCache, state) {
     if (todayWords.length < 2) return [];
-    const pool       = allWords.length >= 8 ? allWords : todayWords;
+    const pool        = allWords.length >= 8 ? allWords : todayWords;
     const singleTypes = Object.keys(Q_GENERATORS).filter(t => t !== 'matching');
-    const questions  = [];
 
+    // Phase 1: guaranteed coverage — one question per word
+    const guaranteed = [];
+    const usedType   = {};   // word → type already used in phase 1
     for (const w of todayWords) {
-        const quota  = todayWords.length > 5 ? 2 : 1;
-        const picked = shuffle([...singleTypes]).slice(0, quota);
-        for (const t of picked) {
+        for (const t of shuffle([...singleTypes])) {
             const q = Q_GENERATORS[t](w, pool, dictCache, state);
-            if (q) questions.push(q);
+            if (q) { guaranteed.push(q); usedType[w.word] = t; break; }
         }
     }
-    // Add one matching round if the pool is large enough (needs 5 distractors)
-    if (pool.length >= 6) {
-        const anchor = shuffle([...todayWords])[0];
-        const mq = Q_GENERATORS['matching'](anchor, pool, dictCache, state);
-        if (mq) questions.push(mq);
+
+    // Phase 2: extra questions (2nd pass) to use remaining budget
+    const extras   = [];
+    const budget   = MAX_PRACTICE - guaranteed.length - 1; // reserve 1 slot for matching
+    if (budget > 0) {
+        for (const w of shuffle([...todayWords])) {
+            if (extras.length >= budget) break;
+            for (const t of shuffle(singleTypes.filter(t => t !== usedType[w.word]))) {
+                const q = Q_GENERATORS[t](w, pool, dictCache, state);
+                if (q) { extras.push(q); break; }
+            }
+        }
     }
-    return shuffle(questions).slice(0, MAX_PRACTICE);
+
+    // Phase 3: one matching round
+    const matchQ = [];
+    if (pool.length >= 6 && guaranteed.length + extras.length < MAX_PRACTICE) {
+        const mq = Q_GENERATORS['matching'](shuffle([...todayWords])[0], pool, dictCache, state);
+        if (mq) matchQ.push(mq);
+    }
+
+    return shuffle([...guaranteed, ...extras, ...matchQ]);
 }
 
 // ── Vue instance ────────────────────────────────────────────────────────────
@@ -6516,6 +6533,7 @@ new Vue({
                 if (wobj && !this.practiceWrongWords.some(w => w.word === wobj.word)) {
                     this.practiceWrongWords.push(wobj);
                 }
+                if (wobj) this._enqueueRetry(wobj, 'matching');
                 this.matchSelLeft = null;
                 playFeedbackSound('wrong');
             }
@@ -6559,6 +6577,8 @@ new Vue({
                     this.practiceWrongWords.push(wobj);
                 }
                 playFeedbackSound('wrong');
+                // Re-queue wrong word with a different question type (until answered correctly)
+                this._enqueueRetry(wobj, this.practiceCurrent.type);
             }
             // Auto-advance: correct 1.4s; wrong MC/TF 2.6s; wrong spelling/cloze/dictation → no timer, user taps "Next"
             const isTypingType = ['spelling', 'cloze', 'dictation'].includes(this.practiceCurrent.type);
@@ -6567,6 +6587,28 @@ new Vue({
                 this._practiceTimer = setTimeout(() => this.nextPracticeQuestion(), 1400);
             } else if (!isTypingType) {
                 this._practiceTimer = setTimeout(() => this.nextPracticeQuestion(), 2600);
+            }
+        },
+
+        /**
+         * Append a retry question for a wrong word to the end of the queue.
+         * Picks a different question type; skips if the word is already pending
+         * in the remaining queue or the 40-question cap has been reached.
+         */
+        _enqueueRetry(wordObj, usedType) {
+            if (this.practiceQueue.length >= MAX_PRACTICE) return;
+            // Don't add a duplicate retry if the word is already waiting ahead
+            const remaining = this.practiceQueue.slice(this.practiceIndex + 1);
+            if (remaining.some(q => q.word && q.word.word === wordObj.word)) return;
+            const pool = this.allWords.filter(w => {
+                const s = this.state[w.word]; return !s || s.stage !== 'mastered';
+            });
+            const candidates = shuffle(
+                Object.keys(Q_GENERATORS).filter(t => t !== 'matching' && t !== usedType)
+            );
+            for (const t of candidates) {
+                const q = Q_GENERATORS[t](wordObj, pool, this.dictCache, this.state);
+                if (q) { this.practiceQueue = [...this.practiceQueue, q]; break; }
             }
         },
 
