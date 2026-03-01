@@ -4397,31 +4397,32 @@ const Q_GENERATORS = {
 
 /**
  * Build a practice session from todayWords.
- * Phase 1: guarantee every word gets exactly 1 question (random eligible type).
- * Phase 2: fill remaining slots (up to MAX_PRACTICE - 1) with a 2nd question per word.
- * Phase 3: one matching round if pool is large enough.
- * Result is shuffled but NOT sliced — coverage is guaranteed within the cap.
+ * Phase 1: one question per word, capped at MAX_PRACTICE-1 to always leave a matching slot.
+ * Phase 2: fill remaining budget with a 2nd question per word.
+ * Phase 3: one matching round — always added when pool ≥ 6 (not gated on total count).
+ * Result is shuffled so question types are interleaved.
  */
 function buildPracticeSession(todayWords, allWords, dictCache, state) {
     if (todayWords.length < 2) return [];
     const pool        = allWords.length >= 8 ? allWords : todayWords;
     const singleTypes = Object.keys(Q_GENERATORS).filter(t => t !== 'matching');
 
-    // Phase 1: guaranteed coverage — one question per word
-    const guaranteed = [];
-    const usedType   = {};   // word → type already used in phase 1
-    for (const w of todayWords) {
+    // Phase 1: guaranteed coverage — one question per word (cap to reserve matching slot)
+    const phase1Words = todayWords.slice(0, MAX_PRACTICE - 1);
+    const guaranteed  = [];
+    const usedType    = {};   // word → type already used in phase 1
+    for (const w of phase1Words) {
         for (const t of shuffle([...singleTypes])) {
             const q = Q_GENERATORS[t](w, pool, dictCache, state);
             if (q) { guaranteed.push(q); usedType[w.word] = t; break; }
         }
     }
 
-    // Phase 2: extra questions (2nd pass) to use remaining budget
-    const extras   = [];
-    const budget   = MAX_PRACTICE - guaranteed.length - 1; // reserve 1 slot for matching
+    // Phase 2: extra questions (2nd pass) — harder words (front of todayWords) get more reps
+    const extras  = [];
+    const budget  = MAX_PRACTICE - guaranteed.length - 1; // always reserve 1 slot for matching
     if (budget > 0) {
-        for (const w of shuffle([...todayWords])) {
+        for (const w of shuffle([...phase1Words])) {
             if (extras.length >= budget) break;
             for (const t of shuffle(singleTypes.filter(t => t !== usedType[w.word]))) {
                 const q = Q_GENERATORS[t](w, pool, dictCache, state);
@@ -4430,10 +4431,11 @@ function buildPracticeSession(todayWords, allWords, dictCache, state) {
         }
     }
 
-    // Phase 3: one matching round
+    // Phase 3: one matching round — always included if pool is large enough
+    // Use the highest-priority word (todayWords[0] = most troublesome) as the pivot
     const matchQ = [];
-    if (pool.length >= 6 && guaranteed.length + extras.length < MAX_PRACTICE) {
-        const mq = Q_GENERATORS['matching'](shuffle([...todayWords])[0], pool, dictCache, state);
+    if (pool.length >= 6) {
+        const mq = Q_GENERATORS['matching'](todayWords[0], pool, dictCache, state);
         if (mq) matchQ.push(mq);
     }
 
@@ -6219,28 +6221,28 @@ new Vue({
         },
 
         // ── Practice Mode ─────────────────────────────────────────────────
-        /** Return today's learned words; fallback to recently reviewed if too few */
+        /** Return words for practice, prioritising difficult and lower-proficiency words. */
         getTodayPracticeWords() {
-            const tdy = today();
-            // Tier 1: graduated today (young/mature) — already reviewed at least once
-            const graduatedToday = this.allWords.filter(w => {
+            // Include all in-progress words: learning, relearn, young, mature (not new / mastered)
+            const stageRank = { relearn: 0, learning: 1, young: 2, mature: 3 };
+            const active = this.allWords.filter(w => {
                 const s = this.state[w.word];
-                return s && s.firstSeen === tdy && (s.stage === 'young' || s.stage === 'mature');
+                return s && s.stage !== 'new' && s.stage !== 'mastered';
             });
-            // Tier 2: graduated previous days (young/mature) — well-established
-            const graduatedPrev = shuffle(this.allWords.filter(w => {
-                const s = this.state[w.word];
-                return s && s.firstSeen !== tdy && (s.stage === 'young' || s.stage === 'mature');
-            }));
-            // Tier 3: still in learning phase today — included only to reach minimum
-            const learningToday = this.allWords.filter(w => {
-                const s = this.state[w.word];
-                return s && s.firstSeen === tdy && s.stage === 'learning';
+            if (active.length < 2) return active;
+
+            // Shuffle first so equal-priority words vary each session
+            const list = shuffle(active);
+            // Then stable-sort: high againCount first, then lower stage (relearn before mature)
+            list.sort((a, b) => {
+                const sa = this.state[a.word], sb = this.state[b.word];
+                const agDiff = (sb.againCount || 0) - (sa.againCount || 0);
+                if (agDiff !== 0) return agDiff;
+                return (stageRank[sa.stage] ?? 4) - (stageRank[sb.stage] ?? 4);
             });
-            // Build list: graduated words first, then fill to min-8 with learning words
-            const primary = [...graduatedToday, ...graduatedPrev];
-            const needed  = Math.max(0, 8 - primary.length);
-            return [...primary, ...learningToday.slice(0, needed)];
+
+            // Cap at 25 — Phase 1 + extras stay within MAX_PRACTICE, leaving room for matching
+            return list.slice(0, 25);
         },
 
         startPractice() {
