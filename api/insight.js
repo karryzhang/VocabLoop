@@ -16,113 +16,120 @@
 function buildPrompt(d) {
   const isZh = d.lang === 'zh';
 
-  /* ── Derived metrics ── */
-  const coveragePct    = d.total > 0 ? Math.round(d.studied  / d.total   * 100) : 0;
-  const masteredPct    = d.total > 0 ? Math.round(d.mastered / d.total   * 100) : 0;
+  /* ── Derived metrics (no coverage — user learns what they choose) ── */
   const retentionRate  = d.studied > 0 ? Math.round(d.mastered / d.studied * 100) : 0;
-  const velocity       = d.streak > 1  ? (d.studied / d.streak).toFixed(1) : null;
   const avgReviews     = d.studied > 0 ? (d.reviewedTotal / d.studied).toFixed(1) : 0;
   const activePct      = d.studied > 0
     ? Math.round((d.stages.learning + d.stages.review) / d.studied * 100) : 0;
 
-  const deckLines = (d.decks || []).map(dk => {
-    const dp  = dk.total > 0 ? Math.round(dk.studied  / dk.total   * 100) : 0;
-    const mp  = dk.studied > 0 ? Math.round(dk.mastered / dk.studied * 100) : 0;
-    return `  • ${dk.name}: coverage ${dp}% (${dk.studied}/${dk.total}), retention ${mp}% (${dk.mastered} mastered)`;
-  }).join('\n');
+  // Only include decks the user has actually started
+  const studiedDecks = (d.decks || []).filter(dk => dk.studied > 0);
+  const deckLines = studiedDecks.length > 0
+    ? studiedDecks.map(dk => {
+        const mp = dk.studied > 0 ? Math.round(dk.mastered / dk.studied * 100) : 0;
+        return isZh
+          ? `  • ${dk.name}：已学 ${dk.studied} 词，已掌握 ${dk.mastered} 词（巩固率 ${mp}%）`
+          : `  • ${dk.name}: ${dk.studied} studied, ${dk.mastered} mastered (${mp}% consolidated)`;
+      }).join('\n')
+    : (isZh ? '  暂未开始任何词库' : '  No decks started yet');
 
   const hardWords = (d.difficultWords || []).slice(0, 5)
     .map(w => `${w.word}(×${w.againCount})`)
     .join(', ') || (isZh ? '暂无' : 'none');
 
-  /* ── Risk flags for the model to reason about ── */
-  const flags = [];
-  if (retentionRate < 40 && d.studied > 20) flags.push(isZh ? '记忆巩固率偏低（<40%）' : 'Low retention rate (<40%) — too many words introduced before consolidation');
-  if (activePct > 70) flags.push(isZh ? '学习中/复习中词汇占比过高（>70%）——可能超出工作记忆负荷' : 'High active-SRS load (>70%) — working memory may be overloaded');
-  if (d.streak < 3 && d.studied > 0) flags.push(isZh ? '连续学习天数不足——习惯尚未形成' : 'Streak < 3 days — habit not yet established');
-  if (coveragePct < 20 && d.total > 200) flags.push(isZh ? '词汇覆盖率低——建议系统性推进' : 'Low coverage (<20%) — systematic progression recommended');
-  if (d.stages.learning > d.stages.mastered * 2 && d.studied > 30) flags.push(isZh ? '学习中词汇远多于已掌握词汇——间隔复习效率待提升' : 'Learning-stage words greatly outnumber mastered — SRS review cadence needs attention');
+  /* ── Situation notes (conversational, not alarm-style) ── */
+  const notes = [];
+  if (retentionRate < 40 && d.studied > 20) notes.push(isZh
+    ? '巩固率偏低——近期可能学得比较快，让复习稍稍追一追'
+    : 'Retention is a bit low — you might be adding words faster than your reviews can keep up');
+  if (activePct > 70) notes.push(isZh
+    ? '正在活跃复习的词比较多——SRS 在帮你密集巩固，坚持每天来就好'
+    : 'Lots of words in active rotation — SRS is consolidating hard, just keep showing up daily');
+  if (d.streak < 3 && d.studied > 0) notes.push(isZh
+    ? '最近学习节奏有点断——哪怕每天只翻几张卡，也比隔天大量学效果好'
+    : 'Study has been a bit irregular lately — even a few cards a day beats cramming occasionally');
+  if (d.stages.learning > d.stages.mastered * 2 && d.studied > 30) notes.push(isZh
+    ? '学习中的词比已掌握的多——这很正常，每天坚持复习这些词很快会毕业'
+    : 'More words in learning than mastered — totally normal, keep reviewing and they\'ll graduate soon');
+  if ((d.difficultWords || []).length >= 3) notes.push(isZh
+    ? `有几个词在反复考验你——${hardWords}`
+    : `A few words keep testing you — ${hardWords}`);
 
   if (isZh) {
-    return `你是一位应用语言学专家，专注于第二语言词汇习得与间隔重复学习系统（SRS）的研究与实践。
-请依据下方学习者数据，从语言习得科学的角度给出专业评估报告。
+    return `你是用户的学习伙伴，语气像朋友一样轻松，了解词汇记忆的规律。
+请根据下方数据，给用户一个贴合当前状态的小结和实用建议。
 
-━━ 学习者数据 ━━
+重要原则：
+- 不要提词库覆盖率或"还有多少词没学"——用户学自己想学的内容，这本来就是个性化的，不需要学完全部
+- 语气轻松自然，可以鼓励，但要真实，不要空洞夸奖
+- 建议要针对当前数据，具体可操作
 
-【基础指标】
-• 词库总量：${d.total} 词，已接触：${d.studied} 词（覆盖率 ${coveragePct}%）
-• 已掌握：${d.mastered} 词（占总量 ${masteredPct}%，保留率 ${retentionRate}%）
-• 总复习次数：${d.reviewedTotal}，人均复习轮次：${avgReviews} 次/词
+━━ 学习数据 ━━
 
-【学习连续性】
-• 当前连续学习：${d.streak} 天${velocity ? `，平均习得速度：${velocity} 词/天` : ''}
+【当前状态】
+• 已学词汇：${d.studied} 词，其中已掌握 ${d.mastered} 词（巩固率 ${retentionRate}%）
+• 正在学习中：${d.stages.learning} 词 | 复习阶段：${d.stages.review} 词
+• 平均每词复习次数：${avgReviews} 次
+• 连续学习：${d.streak} 天
 
-【SRS 阶段分布】
-• 未学：${d.stages.new} 词 | 学习中：${d.stages.learning} 词 | 复习中：${d.stages.review} 词 | 已掌握：${d.stages.mastered} 词
-• 活跃 SRS 词汇占已学词汇：${activePct}%
-
-【词库分项进度】
+【词库情况】（仅已开始的）
 ${deckLines}
 
-【高遗忘风险词汇】（忘记次数最多）
+【反复记不住的词】
 ${hardWords}
 
-【系统检测到的风险信号】
-${flags.length > 0 ? flags.map(f => '⚠ ' + f).join('\n') : '✓ 暂无明显风险信号'}
+【值得注意的点】
+${notes.length > 0 ? notes.join('\n') : '学习状态不错，没发现明显问题！'}
 
-━━ 输出要求 ━━
+━━ 输出格式 ━━
 
-请输出以下 JSON（严格格式，不含任何 markdown 或多余文字）：
+请输出以下 JSON，不含任何 markdown 或多余文字：
 {
-  "summary": "3~4句专业诊断：指出学习者当前所处的习得阶段、最突出的优势、最需关注的风险点，以及核心结论。语言需专业但易于理解。",
+  "summary": "2~3句话，轻松聊一聊现在的学习状态，结合具体数字，有鼓励也要真实。",
   "suggestions": [
-    "建议1（以动词开头，结合具体数据，说明为什么这样做及预期效果，不超过60字）",
+    "建议1（针对当前情况，具体可操作，40字以内）",
     "建议2",
     "建议3",
-    "建议4",
-    "建议5（可选）"
+    "建议4（可选，仅在有额外值得说的内容时添加）"
   ]
 }`;
   }
 
-  return `You are an applied linguist and SRS learning specialist with expertise in second-language vocabulary acquisition. Your assessments are grounded in research on spaced repetition, lexical retention curves, and evidence-based vocabulary instruction.
+  return `You're the user's friendly study buddy — casual, warm, and knowledgeable about vocabulary learning.
+Based on the data below, give them a quick honest take on how things are going and some practical tips.
 
-Analyse the learner data below and produce a professional diagnostic report.
+Important principles:
+- Do NOT mention coverage rates or how many words they haven't studied — users learn what they choose, and that's the whole point of personalised learning
+- Keep the tone casual and genuine; encouragement is fine but skip hollow praise
+- Make suggestions specific to their actual data, not generic advice
 
-━━ LEARNER DATA ━━
+━━ STUDY DATA ━━
 
-[Core metrics]
-• Vocabulary coverage: ${d.studied}/${d.total} words studied (${coveragePct}%)
-• Mastery: ${d.mastered} words mastered (${masteredPct}% of total, ${retentionRate}% retention rate)
-• Total review events: ${d.reviewedTotal} (avg ${avgReviews} reviews/word studied)
+[Current state]
+• Studied: ${d.studied} words, ${d.mastered} mastered (${retentionRate}% consolidation rate)
+• In learning: ${d.stages.learning} words | In review: ${d.stages.review} words
+• Avg reviews per word: ${avgReviews}
+• Current streak: ${d.streak} days
 
-[Learning consistency]
-• Current streak: ${d.streak} days${velocity ? ` | Acquisition velocity: ${velocity} words/day` : ''}
-
-[SRS stage distribution]
-• Unseen: ${d.stages.new} | Learning: ${d.stages.learning} | Review: ${d.stages.review} | Mastered: ${d.stages.mastered}
-• Active SRS load: ${activePct}% of studied words are in active rotation
-
-[Deck-level progress]
+[Active decks only]
 ${deckLines}
 
-[High-risk vocabulary] (most frequently forgotten)
+[Words that keep slipping]
 ${hardWords}
 
-[System-detected risk flags]
-${flags.length > 0 ? flags.map(f => '⚠ ' + f).join('\n') : '✓ No critical risk signals detected'}
+[Things worth noting]
+${notes.length > 0 ? notes.join('\n') : 'Things look solid — no obvious issues!'}
 
 ━━ OUTPUT FORMAT ━━
 
 Return ONLY this JSON (no markdown, no extra text):
 {
-  "summary": "3–4 sentence professional diagnosis: identify the learner's current acquisition phase, their most notable strength, the most critical risk, and a clear overall verdict. Be specific — cite numbers.",
+  "summary": "2–3 casual, friendly sentences about how things are going. Reference specific numbers. Be real, not just cheerful.",
   "suggestions": [
-    "Tip 1 (start with an action verb; cite specific data; state the evidence-based rationale; ≤ 50 words)",
+    "Tip 1 (specific to their data, actionable, ≤ 35 words)",
     "Tip 2",
     "Tip 3",
-    "Tip 4",
-    "Tip 5 (optional)"
+    "Tip 4 (optional — only if there's something genuinely extra to say)"
   ]
 }`;
 }
