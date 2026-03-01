@@ -5599,11 +5599,12 @@ new Vue({
                         reinsert = nextMs <= SESSION_MINS * 60000;
                         this.points += 5; this.sessionCorrect++;
                     }
-                } else { // easy — fully mastered, never show again
-                    s.stage    = 'mastered';
-                    s.interval = 9999;
+                } else { // easy — confident; skip remaining steps, graduate to young (4-day interval)
+                    s.ef       = Math.min(3.0, (s.ef || 2.5) + 0.15);
+                    s.stage    = 'young';
+                    s.interval = EASY_INT;   // 4 days
                     s.reps     = 1;
-                    nextMs     = 9999 * 86400000;
+                    nextMs     = EASY_INT * 86400000;
                     this.points += 20; this.sessionCorrect++;
                     newGraduated = true;
                 }
@@ -5614,9 +5615,14 @@ new Vue({
                     reinsert = true;
                     this.streak = 0;
                 } else if (level === 'easy') {
-                    s.stage    = 'mastered';
-                    s.interval = 9999;
-                    nextMs     = 9999 * 86400000;
+                    // Lapsed but immediately recalled — restore original interval with ef boost
+                    s.ef       = Math.min(3.0, (s.ef || 2.5) + 0.15);
+                    s.interval = Math.min(MAX_INTERVAL, Math.max(1, s.interval));
+                    s.stage    = s.interval >= 21 ? 'mature' : 'young';
+                    nextMs     = s.interval * 86400000;
+                    if (s.interval >= MAX_INTERVAL) {
+                        s.stage = 'mastered'; s.interval = 9999; nextMs = 9999 * 86400000;
+                    }
                 } else {
                     s.interval = Math.max(1, Math.round(s.interval * 0.5));
                     s.stage    = s.interval >= 21 ? 'mature' : 'young';
@@ -5626,6 +5632,7 @@ new Vue({
             } else {
                 // young / mature
                 if (level === 'again') {
+                    s.ef     = Math.max(1.3, (s.ef || 2.5) - 0.20); // SM-2: lapse penalty
                     s.stage  = 'relearn';
                     s.reps   = 0;
                     nextMs   = 10 * 60000;
@@ -5633,10 +5640,17 @@ new Vue({
                     this.streak = 0;
                 } else {
                     if (level === 'easy') {
-                        s.stage    = 'mastered';
-                        s.interval = 9999;
+                        // ef boost + large interval; only mastered once interval exceeds cap
+                        const ef = s.ef || 2.5;
+                        s.ef       = Math.min(3.0, ef + 0.15);
+                        s.interval = Math.min(MAX_INTERVAL, Math.max(1, Math.round(s.interval * s.ef)));
                         s.reps     = (s.reps || 0) + 1;
-                        nextMs     = 9999 * 86400000;
+                        if (s.interval >= MAX_INTERVAL) {
+                            s.stage = 'mastered'; s.interval = 9999; nextMs = 9999 * 86400000;
+                        } else {
+                            s.stage = s.interval >= 21 ? 'mature' : 'young';
+                            nextMs  = s.interval * 86400000;
+                        }
                         this.points += 30;
                         this.streak += 1;
                         this.sessionCorrect++;
@@ -6158,21 +6172,25 @@ new Vue({
         /** Return today's learned words; fallback to recently reviewed if too few */
         getTodayPracticeWords() {
             const tdy = today();
-            // Today's words first (prioritised in practice session)
-            const todayWords = this.allWords.filter(w => {
+            // Tier 1: graduated today (young/mature) — already reviewed at least once
+            const graduatedToday = this.allWords.filter(w => {
                 const s = this.state[w.word];
-                return s && s.firstSeen === tdy && s.stage !== 'mastered';
+                return s && s.firstSeen === tdy && (s.stage === 'young' || s.stage === 'mature');
             });
-            // All other seen words as supplementary pool
-            const otherWords = shuffle(
-                this.allWords.filter(w => {
-                    const s = this.state[w.word];
-                    return s && s.firstSeen !== tdy && s.stage !== 'mastered';
-                })
-            );
-            // Combine: today's words + enough others to reach at least 8 total
-            const needed = Math.max(0, 8 - todayWords.length);
-            return [...todayWords, ...otherWords.slice(0, needed)];
+            // Tier 2: graduated previous days (young/mature) — well-established
+            const graduatedPrev = shuffle(this.allWords.filter(w => {
+                const s = this.state[w.word];
+                return s && s.firstSeen !== tdy && (s.stage === 'young' || s.stage === 'mature');
+            }));
+            // Tier 3: still in learning phase today — included only to reach minimum
+            const learningToday = this.allWords.filter(w => {
+                const s = this.state[w.word];
+                return s && s.firstSeen === tdy && s.stage === 'learning';
+            });
+            // Build list: graduated words first, then fill to min-8 with learning words
+            const primary = [...graduatedToday, ...graduatedPrev];
+            const needed  = Math.max(0, 8 - primary.length);
+            return [...primary, ...learningToday.slice(0, needed)];
         },
 
         startPractice() {
@@ -6427,26 +6445,33 @@ new Vue({
         async generateReading() {
             const tdy = today();
             const MAX_READING_WORDS = 20;
-            // Priority 1: words first seen today (newly entered learning)
-            const newToday = this.allWords.filter(w => {
+            // Priority 1: graduated today (young/mature) — words already reviewed at least once
+            const graduatedToday = this.allWords.filter(w => {
                 const s = this.state[w.word];
-                return s && s.firstSeen === tdy;
+                return s && s.firstSeen === tdy && (s.stage === 'young' || s.stage === 'mature');
             });
-            // Priority 2: Young stage (interval established but still fresh)
-            const youngWords = this.allWords.filter(w => {
+            // Priority 2: young from other days (freshest intervals first — most in need of reinforcement)
+            const youngPrev = this.allWords.filter(w => {
                 const s = this.state[w.word];
                 return s && s.stage === 'young' && s.firstSeen !== tdy;
             }).sort((a, b) => (this.state[a.word].interval || 0) - (this.state[b.word].interval || 0));
-            // Priority 3: Learning stage
-            const learningWords = this.allWords.filter(w => {
+            // Priority 3: still learning today (introduced but not yet graduated)
+            const learningToday = this.allWords.filter(w => {
                 const s = this.state[w.word];
-                return s && s.stage === 'learning' && s.firstSeen !== tdy;
+                return s && s.firstSeen === tdy && s.stage === 'learning';
             });
-            let selected = [...newToday];
+            // Priority 4: mature from other days
+            const maturePrev = shuffle(this.allWords.filter(w => {
+                const s = this.state[w.word];
+                return s && s.stage === 'mature' && s.firstSeen !== tdy;
+            }));
+            let selected = [...graduatedToday];
             if (selected.length < MAX_READING_WORDS)
-                selected = [...selected, ...youngWords].slice(0, MAX_READING_WORDS);
+                selected = [...selected, ...youngPrev].slice(0, MAX_READING_WORDS);
             if (selected.length < MAX_READING_WORDS)
-                selected = [...selected, ...learningWords].slice(0, MAX_READING_WORDS);
+                selected = [...selected, ...learningToday].slice(0, MAX_READING_WORDS);
+            if (selected.length < MAX_READING_WORDS)
+                selected = [...selected, ...maturePrev].slice(0, MAX_READING_WORDS);
             if (selected.length === 0)
                 selected = this.getTodayPracticeWords().slice(0, MAX_READING_WORDS);
             this.readingWordObjs = selected.slice(0, MAX_READING_WORDS);
