@@ -35,6 +35,7 @@ function buildPrompt(words) {
     '  getting lost in other unfamiliar vocabulary. Engaging and vivid, but not dense.',
     '- Format the story into 3–4 paragraphs (use actual blank lines between paragraphs)',
     '- Give the story a short, imaginative, evocative title (4–8 words)',
+    '- Plain prose only — do NOT use markdown symbols (**, *, _, ##) inside the story text',
     '',
     'Return ONLY valid JSON — no markdown, no code fences, no extra text:',
     '{',

@@ -4847,13 +4847,25 @@ new Vue({
             // Split into paragraphs first (preserve paragraph breaks)
             const paragraphs = text.split(/\n\n+/);
             return paragraphs.map(para => {
+                // Pre-process markdown bold/italic into sentinel chars BEFORE word tokenization.
+                // Sentinels are non-letter control chars, so they land in the nonword branch
+                // below and get swapped for real HTML tags. This keeps vocab highlighting intact
+                // while correctly rendering **bold** and *italic* spans from AI output.
+                const B1='\x01',B2='\x02',EM1='\x03',EM2='\x04';
+                const mdPara = para
+                    .replace(/\*\*([^*\n]+)\*\*/g, (_,c) => B1+c+B2)
+                    .replace(/\*([^*\n]+)\*/g,      (_,c) => EM1+c+EM2);
+
                 // Within each paragraph, tokenize into words and non-words
-                const tokenized = para.replace(/([a-zA-Z']+)|([^a-zA-Z']+)/g, (match, word, nonword) => {
+                const tokenized = mdPara.replace(/([a-zA-Z']+)|([^a-zA-Z']+)/g, (match, word, nonword) => {
                     if (nonword !== undefined) {
-                        // Escape HTML in punctuation/spaces, convert single \n to space
+                        // Escape HTML in punctuation/spaces, convert single \n to space,
+                        // then resolve sentinel markers into bold/italic HTML tags
                         return nonword
                             .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-                            .replace(/\n/g, ' ');
+                            .replace(/\n/g, ' ')
+                            .replace(/\x01/g,'<b>').replace(/\x02/g,'</b>')
+                            .replace(/\x03/g,'<em>').replace(/\x04/g,'</em>');
                     }
                     const lower = word.toLowerCase();
                     // Check if this word is a key vocab word (exact or common inflection)
