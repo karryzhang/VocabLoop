@@ -160,13 +160,14 @@
             text-overflow: ellipsis;
             letter-spacing: -0.01em;
         }
-        /* Row 2: stats chips — always one line, scrollable */
+        /* Row 3: stats chips — always one line, scrollable */
         .chips {
             display: flex;
             gap: 6px;
             overflow-x: auto;
             flex-wrap: nowrap;
-            padding: 4px 0 12px;
+            padding: 8px 0 12px;
+            border-top: 1px solid var(--border);
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
         }
@@ -244,10 +245,10 @@
             box-shadow: 0 2px 8px rgba(139,92,246,.10);
         }
 
-        /* ── Deck selector bar ───────────────── */
+        /* ── Deck selector bar (inside .hd — inherits 18px horizontal padding) ─ */
         .deck-bar {
             background: transparent;
-            padding: 10px 18px 6px;
+            padding: 2px 0 8px;
             display: flex;
             gap: 8px;
             overflow-x: auto;
@@ -2562,7 +2563,7 @@
     <div class="hd">
         <!-- Row 1: title + action buttons -->
         <div class="hd-top">
-            <div class="hd-title">{{currentDeck.icon}} {{currentDeck.name}}</div>
+            <div class="hd-title">VocabLoop</div>
             <div class="hd-btns">
                 <button class="btn-hd" :class="{active: autoPlay}" @click="autoPlay = !autoPlay"
                         :title="autoPlay ? ui.autoPlayOn : ui.autoPlayOff">🔊</button>
@@ -2581,7 +2582,16 @@
                 <button id="accountBtn" class="btn-hd" onclick="window.location.href='account.html'" title="Account">👤</button>
             </div>
         </div>
-        <!-- Row 2: stats chips (horizontal scroll, always one line) -->
+        <!-- Row 2: deck selector -->
+        <div class="deck-bar">
+            <button v-for="d in decks" :key="d.id"
+                    class="deck-btn"
+                    :class="{active: d.id === currentDeck.id}"
+                    @click="switchDeck(d)">
+                {{d.icon}} {{d.name}}
+            </button>
+        </div>
+        <!-- Row 3: stats chips (horizontal scroll, always one line) -->
         <div class="chips">
             <button class="chip chip-new chip-btn"   @click="showWordList('new')"
                     :title="ui.wlNew">🆕 <transition name="chip-num"><span :key="qs.newCount">{{qs.newCount}}</span></transition></button>
@@ -2596,16 +2606,6 @@
             <span class="chip chip-streak" v-if="streak >= 3">🔥 {{streak}}</span>
             <button class="chip chip-daily chip-btn" v-if="dailyStreak >= 2" @click="openDailyWelcome">📅 {{dailyStreak}}{{ui.dayUnit}}</button>
         </div>
-    </div>
-
-    <!-- Deck Selector -->
-    <div class="deck-bar">
-        <button v-for="d in decks" :key="d.id"
-                class="deck-btn"
-                :class="{active: d.id === currentDeck.id}"
-                @click="switchDeck(d)">
-            {{d.icon}} {{d.name}}
-        </button>
     </div>
 
     <!-- Loading -->
