@@ -3747,8 +3747,8 @@ const STRINGS = {
     donePracticeKey:   '键盘 1-4 快速选择',
     audioPlaying: '播放中…', audioPlay: '发音',
     flipHint: '点击翻转 · 按空格键',
-    btnAgain: '忘了', btnHard: '模糊', btnGood: '记住了', btnEasy: '很熟',
-    keyHint: '空格翻转 &nbsp;·&nbsp; 翻转后：← 忘了 &nbsp; ↓ 模糊 &nbsp; → 记住 &nbsp; ↑ 很熟',
+    btnAgain: '忘了', btnHard: '模糊', btnGood: '记住了', btnEasy: '早就会',
+    keyHint: '空格翻转 &nbsp;·&nbsp; 翻转后：← 忘了 &nbsp; ↓ 模糊 &nbsp; → 记住 &nbsp; ↑ 早就会',
     ftPoints: '积分', ftStreak: '连击', ftMastered: '掌握',
     ftTotalReviewed: '总复习', ftMaxLevel: '👑 满级', remaining: '剩余',
     sessionDoneOf: '已完成', sessionTask: '今日任务',
@@ -3949,8 +3949,8 @@ const STRINGS = {
     donePracticeKey:   'Keys 1–4 to pick answers fast',
     audioPlaying: 'Playing…', audioPlay: 'Pronounce',
     flipHint: 'Tap to flip · Space',
-    btnAgain: 'Again', btnHard: 'Hard', btnGood: 'Good', btnEasy: 'Easy',
-    keyHint: 'Space: flip &nbsp;·&nbsp; After flip: ← Again &nbsp; ↓ Hard &nbsp; → Good &nbsp; ↑ Easy',
+    btnAgain: 'Again', btnHard: 'Hard', btnGood: 'Good', btnEasy: 'Known',
+    keyHint: 'Space: flip &nbsp;·&nbsp; After flip: ← Again &nbsp; ↓ Hard &nbsp; → Good &nbsp; ↑ Known',
     ftPoints: 'Points', ftStreak: 'Streak', ftMastered: 'Mastered',
     ftTotalReviewed: 'Reviews', ftMaxLevel: '👑 Max level', remaining: 'left',
     sessionDoneOf: 'done', sessionTask: 'Today\'s task',
@@ -5599,12 +5599,11 @@ new Vue({
                         reinsert = nextMs <= SESSION_MINS * 60000;
                         this.points += 5; this.sessionCorrect++;
                     }
-                } else { // easy — confident; skip remaining steps, graduate to young (4-day interval)
-                    s.ef       = Math.min(3.0, (s.ef || 2.5) + 0.15);
-                    s.stage    = 'young';
-                    s.interval = EASY_INT;   // 4 days
+                } else { // easy — word was already known before; archive immediately to mastered
+                    s.stage    = 'mastered';
+                    s.interval = 9999;
                     s.reps     = 1;
-                    nextMs     = EASY_INT * 86400000;
+                    nextMs     = 9999 * 86400000;
                     this.points += 20; this.sessionCorrect++;
                     newGraduated = true;
                 }
