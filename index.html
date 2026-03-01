@@ -2055,8 +2055,18 @@
             flex-shrink: 0; min-width: 0; letter-spacing: -0.01em;
         }
         .rd-popup-word.rd-popup-vocab { color: var(--blue); }
+        .rd-popup-body {
+            flex: 1; min-width: 0;
+            display: flex; flex-direction: column; gap: 3px;
+        }
+        .rd-popup-pos {
+            font-size: 0.68rem; font-weight: 700; letter-spacing: 0.04em;
+            color: var(--blue); background: color-mix(in srgb, var(--blue) 10%, transparent);
+            border-radius: 4px; padding: 1px 6px;
+            display: inline-block; align-self: flex-start; line-height: 1.7;
+        }
         .rd-popup-meaning {
-            flex: 1; font-size: 0.88rem; color: var(--muted);
+            font-size: 0.88rem; color: var(--muted);
             line-height: 1.45; min-width: 0;
         }
         .rd-popup-audio {
@@ -3469,9 +3479,11 @@
                 <div class="rd-popup-word" :class="{'rd-popup-vocab': readingPopup.isVocab}">
                     {{readingPopup.word}}
                 </div>
-                <div class="rd-popup-meaning">{{readingPopup.meaning}}</div>
-                <button v-if="readingPopup.isVocab"
-                        class="rd-popup-audio" @click="playAudio(readingPopup.word)">🔊</button>
+                <div class="rd-popup-body">
+                    <span v-if="readingPopup.pos" class="rd-popup-pos">{{posAbbr(readingPopup.pos)}}</span>
+                    <div class="rd-popup-meaning">{{readingPopup.meaning}}</div>
+                </div>
+                <button class="rd-popup-audio" @click="playAudio(readingPopup.word)">🔊</button>
                 <button class="rd-popup-close" @click="readingPopup = null">✕</button>
             </div>
         </transition>
@@ -4750,6 +4762,20 @@ new Vue({
             return '—';
         },
 
+        posAbbr(pos) {
+            if (!pos) return '';
+            const MAP = {
+                noun: 'n.', verb: 'v.', adjective: 'adj.', adverb: 'adv.',
+                pronoun: 'pron.', preposition: 'prep.', conjunction: 'conj.',
+                interjection: 'interj.', determiner: 'det.', article: 'art.',
+                exclamation: 'excl.', number: 'num.', abbreviation: 'abbr.',
+                phrase: 'phr.', 'phrasal verb': 'phr.v.',
+            };
+            if (pos.includes('/')) {
+                return pos.split('/').map(p => MAP[p.trim().toLowerCase()] || p.trim()).join('/');
+            }
+            return MAP[pos.trim().toLowerCase()] || pos;
+        },
         posZh(pos) {
             if (!pos) return '';
             if (LANG !== 'zh') {
@@ -4960,8 +4986,8 @@ new Vue({
             return cleaned || text;
         },
         // Show the bottom word-reveal panel for a tapped word in the reading article.
-        _showReadingPopup(word, meaning, isVocab) {
-            this.readingPopup = { word, meaning, isVocab };
+        _showReadingPopup(word, meaning, isVocab, pos = '') {
+            this.readingPopup = { word, meaning, isVocab, pos };
         },
         achIcon(id) {
             const a = ACHIEVEMENTS.find(x => x.id === id);
@@ -5387,6 +5413,10 @@ new Vue({
             if (!localStorage.getItem('first_visit_date')) {
                 try { localStorage.setItem('first_visit_date', todayStr); } catch(e) {}
             }
+            // Update streak immediately on new-day open (not just on first card answer)
+            this.updateDailyStreak();
+            this.saveGlobal();
+
             // Show onboarding for first-time users; daily welcome for returning users
             if (!localStorage.getItem('onboarding_seen')) {
                 this.showOnboarding = true;
@@ -6311,11 +6341,28 @@ new Vue({
 
             const lower = word.toLowerCase();
 
+            // Helper: background-fetch dict and patch pos into current popup
+            const enrichPos = () => {
+                const cached = this.dictCache[lower] || this.dictCache[word];
+                if (cached && cached.pos) {
+                    if (this.readingPopup && this.readingPopup.word === word)
+                        this.readingPopup = { ...this.readingPopup, pos: cached.pos };
+                    return;
+                }
+                this.fetchDict(lower).then(() => {
+                    if (this.readingPopup && this.readingPopup.word === word) {
+                        const d = this.dictCache[lower] || this.dictCache[word];
+                        if (d && d.pos) this.readingPopup = { ...this.readingPopup, pos: d.pos };
+                    }
+                }).catch(() => {});
+            };
+
             // 1. Session vocab word (highlighted) → Chinese from vocab JSON + audio
             const vocabObj = this.readingWordObjs.find(w => w.word.toLowerCase() === lower);
             if (vocabObj) {
                 this.playAudio(vocabObj.word);
-                this._showReadingPopup(vocabObj.word, vocabObj.zh, true);
+                this._showReadingPopup(vocabObj.word, vocabObj.zh, true, vocabObj.pos || '');
+                if (!vocabObj.pos) enrichPos();
                 return;
             }
 
@@ -6324,20 +6371,22 @@ new Vue({
                 || this.readingGlosses[word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()];
             if (gloss) {
                 this._showReadingPopup(word, gloss, false);
+                enrichPos();
                 return;
             }
 
             // 3. Any other studied word in current deck → Chinese from allWords
             const deckWord = this.allWords.find(w => w.word.toLowerCase() === lower);
             if (deckWord && deckWord.zh) {
-                this._showReadingPopup(word, deckWord.zh, false);
+                this._showReadingPopup(word, deckWord.zh, false, deckWord.pos || '');
+                if (!deckWord.pos) enrichPos();
                 return;
             }
 
             // 4. Check dictionary cache for English definition
             const dictCached = this.dictCache[lower] || this.dictCache[word];
             if (dictCached && dictCached.definition) {
-                this._showReadingPopup(word, dictCached.definition, false);
+                this._showReadingPopup(word, dictCached.definition, false, dictCached.pos || '');
                 return;
             }
 
@@ -6346,8 +6395,11 @@ new Vue({
             this.fetchDict(lower).then(() => {
                 if (this.readingPopup && this.readingPopup.word === word) {
                     const d = this.dictCache[lower] || this.dictCache[word];
-                    const def = d && (d.definition || '');
-                    this.readingPopup = { ...this.readingPopup, meaning: def || '—' };
+                    this.readingPopup = {
+                        ...this.readingPopup,
+                        meaning: (d && d.definition) || '—',
+                        pos:     (d && d.pos)        || '',
+                    };
                 }
             }).catch(() => {
                 if (this.readingPopup && this.readingPopup.word === word) {
