@@ -3780,8 +3780,8 @@ const STRINGS = {
     donePracticeKey:   '键盘 1-4 快速选择',
     audioPlaying: '播放中…', audioPlay: '发音',
     flipHint: '点击翻转 · 按空格键',
-    btnAgain: '忘了', btnHard: '模糊', btnGood: '记住了', btnEasy: '早就会',
-    keyHint: '空格翻转 &nbsp;·&nbsp; 翻转后：← 忘了 &nbsp; ↓ 模糊 &nbsp; → 记住 &nbsp; ↑ 早就会',
+    btnAgain: '忘了', btnHard: '模糊', btnGood: '记住了', btnEasy: '早就认识',
+    keyHint: '空格翻转 &nbsp;·&nbsp; 翻转后：← 忘了 &nbsp; ↓ 模糊 &nbsp; → 记住 &nbsp; ↑ 早就认识',
     ftPoints: '积分', ftStreak: '连击', ftMastered: '掌握',
     ftTotalReviewed: '总复习', ftMaxLevel: '👑 满级', remaining: '剩余',
     sessionDoneOf: '已完成', sessionTask: '今日任务',
@@ -3983,8 +3983,8 @@ const STRINGS = {
     donePracticeKey:   'Keys 1–4 to pick answers fast',
     audioPlaying: 'Playing…', audioPlay: 'Pronounce',
     flipHint: 'Tap to flip · Space',
-    btnAgain: 'Again', btnHard: 'Hard', btnGood: 'Good', btnEasy: 'Known',
-    keyHint: 'Space: flip &nbsp;·&nbsp; After flip: ← Again &nbsp; ↓ Hard &nbsp; → Good &nbsp; ↑ Known',
+    btnAgain: 'Again', btnHard: 'Hard', btnGood: 'Good', btnEasy: 'Already Knew',
+    keyHint: 'Space: flip &nbsp;·&nbsp; After flip: ← Again &nbsp; ↓ Hard &nbsp; → Good &nbsp; ↑ Already Knew',
     ftPoints: 'Points', ftStreak: 'Streak', ftMastered: 'Mastered',
     ftTotalReviewed: 'Reviews', ftMaxLevel: '👑 Max level', remaining: 'left',
     sessionDoneOf: 'done', sessionTask: 'Today\'s task',
@@ -5689,13 +5689,16 @@ new Vue({
                         reinsert = nextMs <= SESSION_MINS * 60000;
                         this.points += 5; this.sessionCorrect++;
                     }
-                } else { // easy — word was already known before; archive immediately to mastered
+                } else { // easy — already knew this word; instantly master with max ef
+                    const _ef0 = s.ef || 2.5;
+                    s.ef       = 3.0;
                     s.stage    = 'mastered';
                     s.interval = 9999;
                     s.reps     = 1;
                     nextMs     = 9999 * 86400000;
                     this.points += 20; this.sessionCorrect++;
                     newGraduated = true;
+                    this._showEfFeedback(_ef0, 3.0);
                 }
 
             } else if (s.stage === 'relearn') {
@@ -5704,14 +5707,14 @@ new Vue({
                     reinsert = true;
                     this.streak = 0;
                 } else if (level === 'easy') {
-                    // Lapsed but immediately recalled — restore original interval with ef boost
-                    s.ef       = Math.min(3.0, (s.ef || 2.5) + 0.15);
-                    s.interval = Math.min(MAX_INTERVAL, Math.max(1, s.interval));
-                    s.stage    = s.interval >= 21 ? 'mature' : 'young';
-                    nextMs     = s.interval * 86400000;
-                    if (s.interval >= MAX_INTERVAL) {
-                        s.stage = 'mastered'; s.interval = 9999; nextMs = 9999 * 86400000;
-                    }
+                    // Lapsed but user already knew it — instantly master with max ef
+                    const _ef0 = s.ef || 2.5;
+                    s.ef       = 3.0;
+                    s.stage    = 'mastered';
+                    s.interval = 9999;
+                    nextMs     = 9999 * 86400000;
+                    this.points += 20; this.streak += 1; this.sessionCorrect++;
+                    this._showEfFeedback(_ef0, 3.0);
                 } else {
                     s.interval = Math.max(1, Math.round(s.interval * 0.5));
                     s.stage    = s.interval >= 21 ? 'mature' : 'young';
@@ -5730,17 +5733,12 @@ new Vue({
                     this.streak = 0;
                 } else {
                     if (level === 'easy') {
-                        // ef boost + large interval; only mastered once interval exceeds cap
-                        const ef = s.ef || 2.5;
-                        s.ef       = Math.min(3.0, ef + 0.15);
-                        s.interval = Math.min(MAX_INTERVAL, Math.max(1, Math.round(s.interval * s.ef)));
+                        // User already knew this word — instantly master with max ef
+                        s.ef       = 3.0;
+                        s.stage    = 'mastered';
+                        s.interval = 9999;
                         s.reps     = (s.reps || 0) + 1;
-                        if (s.interval >= MAX_INTERVAL) {
-                            s.stage = 'mastered'; s.interval = 9999; nextMs = 9999 * 86400000;
-                        } else {
-                            s.stage = s.interval >= 21 ? 'mature' : 'young';
-                            nextMs  = s.interval * 86400000;
-                        }
+                        nextMs     = 9999 * 86400000;
                         this.points += 30;
                         this.streak += 1;
                         this.sessionCorrect++;
@@ -5750,7 +5748,9 @@ new Vue({
                             s.ef       = Math.max(1.3, ef - 0.15);
                             s.interval = Math.max(1, Math.round(s.interval * 1.2));
                         } else {
-                            s.interval = Math.max(1, Math.round(s.interval * ef));
+                            // good — slight ef reward for consistent recall
+                            s.ef       = Math.min(3.0, ef + 0.08);
+                            s.interval = Math.max(1, Math.round(s.interval * s.ef));
                         }
                         s.reps = (s.reps || 0) + 1;
                         // Cap interval — words known this well are effectively mastered
@@ -5769,7 +5769,7 @@ new Vue({
                         this.sessionCorrect++;
                     }
                 }
-                // Flash mastery-score delta pill (skipped for 'good' which doesn't touch ef)
+                // Flash mastery-score delta pill
                 this._showEfFeedback(_ef0, s.ef || 2.5);
             }
 
@@ -6485,6 +6485,9 @@ new Vue({
 
             const lower = word.toLowerCase();
 
+            // Play audio for ALL words immediately on tap (iOS-safe: synchronous in user gesture)
+            this.playAudio(word);
+
             // Helper: background-fetch dict and patch pos into current popup
             const enrichPos = () => {
                 const cached = this.dictCache[lower] || this.dictCache[word];
@@ -6501,10 +6504,9 @@ new Vue({
                 }).catch(() => {});
             };
 
-            // 1. Session vocab word (highlighted) → Chinese from vocab JSON + audio
+            // 1. Session vocab word (highlighted) → Chinese from vocab JSON
             const vocabObj = this.readingWordObjs.find(w => w.word.toLowerCase() === lower);
             if (vocabObj) {
-                this.playAudio(vocabObj.word);
                 this._showReadingPopup(vocabObj.word, vocabObj.zh, true, vocabObj.pos || '');
                 if (!vocabObj.pos) enrichPos();
                 return;
@@ -6881,6 +6883,13 @@ new Vue({
             speechSynthesis.getVoices();
             speechSynthesis.addEventListener('voiceschanged', () => speechSynthesis.getVoices());
         }
+        // iOS audio unlock: play a silent buffer on first touch so that subsequent async
+        // Audio.play() calls (triggered after await boundaries) are permitted by Safari.
+        const _iosAudioUnlock = () => {
+            const a = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==');
+            a.play().catch(() => {});
+        };
+        document.addEventListener('touchstart', _iosAudioUnlock, { once: true, passive: true });
         // Save when user switches tabs / goes to background on mobile
         this._onVisibility = () => {
             if (document.hidden) {

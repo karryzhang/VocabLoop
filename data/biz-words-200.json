@@ -1,0 +1,1602 @@
+[
+  {
+    "word": "subsidiary",
+    "zh": "子公司",
+    "pos": "n.",
+    "ipa": "/səbˈsɪdiəri/",
+    "ex": "The parent company established a subsidiary in Singapore to manage its Asia-Pacific operations.",
+    "ex2": "The subsidiary reported a profit margin of 12% in the last fiscal quarter."
+  },
+  {
+    "word": "franchise",
+    "zh": "特许经营",
+    "pos": "n.",
+    "ipa": "/ˈfræntʃaɪz/",
+    "ex": "The franchise model allowed the brand to expand rapidly without requiring significant capital investment.",
+    "ex2": "She purchased a franchise and opened her first outlet within six months."
+  },
+  {
+    "word": "IPO",
+    "zh": "首次公开募股",
+    "pos": "n.",
+    "ipa": "/ˌaɪ piː ˈəʊ/",
+    "ex": "The technology firm raised over two billion dollars through its IPO on the stock exchange.",
+    "ex2": "Analysts warned that the IPO was overvalued given the company's limited revenue history."
+  },
+  {
+    "word": "liability",
+    "zh": "负债；责任",
+    "pos": "n.",
+    "ipa": "/ˌlaɪəˈbɪlɪti/",
+    "ex": "The company's total liabilities exceeded its assets, raising concerns about its financial stability.",
+    "ex2": "Limited liability protection is one of the primary advantages of incorporating a business."
+  },
+  {
+    "word": "turnover",
+    "zh": "营业额",
+    "pos": "n.",
+    "ipa": "/ˈtɜːnˌəʊvər/",
+    "ex": "The retailer reported an annual turnover of fifty million pounds despite challenging market conditions.",
+    "ex2": "High staff turnover can significantly increase recruitment and training costs for a business."
+  },
+  {
+    "word": "margin",
+    "zh": "利润率",
+    "pos": "n.",
+    "ipa": "/ˈmɑːdʒɪn/",
+    "ex": "The company's profit margin improved after it renegotiated supplier contracts.",
+    "ex2": "Thin margins in the retail sector make it difficult for smaller businesses to survive economic downturns."
+  },
+  {
+    "word": "asset",
+    "zh": "资产",
+    "pos": "n.",
+    "ipa": "/ˈæset/",
+    "ex": "The firm's most valuable asset is its proprietary software platform.",
+    "ex2": "Tangible assets such as property and equipment were listed on the balance sheet."
+  },
+  {
+    "word": "bankruptcy",
+    "zh": "破产",
+    "pos": "n.",
+    "ipa": "/ˈbæŋkrʌptsi/",
+    "ex": "The airline filed for bankruptcy protection after years of mounting financial losses.",
+    "ex2": "Bankruptcy proceedings allowed the retailer to restructure its debts and continue trading."
+  },
+  {
+    "word": "logistics",
+    "zh": "物流",
+    "pos": "n.",
+    "ipa": "/ləˈdʒɪstɪks/",
+    "ex": "Efficient logistics management is critical for retailers that operate across multiple countries.",
+    "ex2": "The pandemic exposed significant vulnerabilities in global logistics networks."
+  },
+  {
+    "word": "trademark",
+    "zh": "商标",
+    "pos": "n.",
+    "ipa": "/ˈtreɪdmɑːk/",
+    "ex": "The company registered its trademark in over forty countries to protect its brand identity.",
+    "ex2": "Counterfeiting of trademarked goods costs businesses billions of dollars each year."
+  },
+  {
+    "word": "patent",
+    "zh": "专利",
+    "pos": "n.",
+    "ipa": "/ˈpeɪtənt/",
+    "ex": "The pharmaceutical company held a patent on the drug, granting it exclusive marketing rights for twenty years.",
+    "ex2": "Patent disputes between technology firms can delay product launches and increase legal costs."
+  },
+  {
+    "word": "royalty",
+    "zh": "版税；特许权使用费",
+    "pos": "n.",
+    "ipa": "/ˈrɔɪəlti/",
+    "ex": "The author receives a royalty of eight percent on every copy of the book sold.",
+    "ex2": "Mining companies pay royalties to governments in exchange for the right to extract natural resources."
+  },
+  {
+    "word": "quota",
+    "zh": "配额",
+    "pos": "n.",
+    "ipa": "/ˈkwəʊtə/",
+    "ex": "The government imposed import quotas on steel to protect domestic manufacturers.",
+    "ex2": "OPEC member states agreed to reduce their production quotas in order to stabilise oil prices."
+  },
+  {
+    "word": "hedge fund",
+    "zh": "对冲基金",
+    "pos": "n.",
+    "ipa": "/ˈhedʒ fʌnd/",
+    "ex": "The hedge fund generated substantial returns by shorting overvalued technology stocks.",
+    "ex2": "Hedge funds are typically accessible only to institutional investors and high-net-worth individuals."
+  },
+  {
+    "word": "bond",
+    "zh": "债券",
+    "pos": "n.",
+    "ipa": "/bɒnd/",
+    "ex": "The government issued bonds to finance infrastructure development projects.",
+    "ex2": "Corporate bonds typically offer higher yields than government bonds but carry greater risk."
+  },
+  {
+    "word": "portfolio",
+    "zh": "投资组合",
+    "pos": "n.",
+    "ipa": "/pɔːtˈfəʊliəʊ/",
+    "ex": "Diversifying one's investment portfolio across different asset classes reduces overall risk.",
+    "ex2": "The fund manager rebalanced the portfolio in response to changing market conditions."
+  },
+  {
+    "word": "brokerage",
+    "zh": "经纪业务",
+    "pos": "n.",
+    "ipa": "/ˈbrəʊkərɪdʒ/",
+    "ex": "Online brokerage platforms have made stock trading accessible to retail investors.",
+    "ex2": "The brokerage firm charged a commission of one percent on each transaction."
+  },
+  {
+    "word": "monetary",
+    "zh": "货币的",
+    "pos": "adj.",
+    "ipa": "/ˈmʌnɪtəri/",
+    "ex": "The central bank adjusted its monetary policy to control rising inflation.",
+    "ex2": "Monetary stimulus measures were implemented to support economic recovery."
+  },
+  {
+    "word": "GDP",
+    "zh": "国内生产总值",
+    "pos": "n.",
+    "ipa": "/ˌdʒiː diː ˈpiː/",
+    "ex": "The country's GDP grew by 3.5 percent in the second quarter, exceeding analysts' forecasts.",
+    "ex2": "Per capita GDP is commonly used as an indicator of a nation's standard of living."
+  },
+  {
+    "word": "trade deficit",
+    "zh": "贸易逆差",
+    "pos": "n.",
+    "ipa": "/ˈtreɪd ˈdefɪsɪt/",
+    "ex": "A widening trade deficit prompted the government to review its import policies.",
+    "ex2": "The trade deficit reflected the nation's growing dependence on imported manufactured goods."
+  },
+  {
+    "word": "balance of payments",
+    "zh": "国际收支",
+    "pos": "n.",
+    "ipa": "/ˈbæləns əv ˈpeɪmənts/",
+    "ex": "A persistent balance of payments deficit can put downward pressure on a country's currency.",
+    "ex2": "The IMF recommended structural reforms to correct the country's balance of payments imbalance."
+  },
+  {
+    "word": "devaluation",
+    "zh": "货币贬值",
+    "pos": "n.",
+    "ipa": "/ˌdiːvæljuˈeɪʃən/",
+    "ex": "The government's decision to devalue the currency made exports more competitive internationally.",
+    "ex2": "Currency devaluation can trigger inflation if the country relies heavily on imported goods."
+  },
+  {
+    "word": "microfinance",
+    "zh": "小额信贷",
+    "pos": "n.",
+    "ipa": "/ˈmaɪkrəʊˌfaɪnæns/",
+    "ex": "Microfinance institutions have provided small loans to entrepreneurs in developing economies.",
+    "ex2": "Critics argue that microfinance alone is insufficient to address structural poverty."
+  },
+  {
+    "word": "creditworthiness",
+    "zh": "信用度",
+    "pos": "n.",
+    "ipa": "/ˈkredɪtˌwɜːðɪnəs/",
+    "ex": "Lenders assess a borrower's creditworthiness before approving a loan application.",
+    "ex2": "A nation's creditworthiness affects the interest rate at which it can borrow on international markets."
+  },
+  {
+    "word": "amortize",
+    "zh": "分期偿还",
+    "pos": "v.",
+    "ipa": "/ˈæmətaɪz/",
+    "ex": "The company chose to amortize its intangible assets over a fifteen-year period.",
+    "ex2": "Borrowers amortize their mortgage by making regular monthly repayments of principal and interest."
+  },
+  {
+    "word": "divestment",
+    "zh": "资产剥离",
+    "pos": "n.",
+    "ipa": "/daɪˈvestmənt/",
+    "ex": "The conglomerate announced the divestment of its loss-making media division.",
+    "ex2": "Activist shareholders pressured the board to pursue divestment of non-core businesses."
+  },
+  {
+    "word": "underwriting",
+    "zh": "承销；承保",
+    "pos": "n.",
+    "ipa": "/ˈʌndəˌraɪtɪŋ/",
+    "ex": "Investment banks are responsible for underwriting new share issues on behalf of corporations.",
+    "ex2": "Insurance underwriting involves assessing risk and determining the appropriate premium."
+  },
+  {
+    "word": "securitisation",
+    "zh": "证券化",
+    "pos": "n.",
+    "ipa": "/sɪˌkjʊərɪtaɪˈzeɪʃən/",
+    "ex": "Securitisation of mortgage-backed assets allowed banks to transfer risk off their balance sheets.",
+    "ex2": "The securitisation market grew rapidly in the years preceding the 2008 financial crisis."
+  },
+  {
+    "word": "capitalisation",
+    "zh": "市值；资本化",
+    "pos": "n.",
+    "ipa": "/ˌkæpɪtəlaɪˈzeɪʃən/",
+    "ex": "The firm's market capitalisation exceeded one trillion dollars following its record quarterly earnings.",
+    "ex2": "A company's capitalisation reflects investors' collective assessment of its future earnings potential."
+  },
+  {
+    "word": "valuation",
+    "zh": "估值",
+    "pos": "n.",
+    "ipa": "/ˌvæljuˈeɪʃən/",
+    "ex": "The startup's valuation reached two billion dollars after its latest funding round.",
+    "ex2": "Independent valuation of the property was required before the acquisition could proceed."
+  },
+  {
+    "word": "prospectus",
+    "zh": "招股说明书",
+    "pos": "n.",
+    "ipa": "/prəˈspektəs/",
+    "ex": "Investors were advised to read the prospectus carefully before subscribing to the new share issue.",
+    "ex2": "The prospectus outlined the risks associated with the investment and the intended use of proceeds."
+  },
+  {
+    "word": "shareholder",
+    "zh": "股东",
+    "pos": "n.",
+    "ipa": "/ˈʃeəˌhəʊldər/",
+    "ex": "Shareholders voted in favour of the proposed merger at the annual general meeting.",
+    "ex2": "The company's management team is accountable to its shareholders for financial performance."
+  },
+  {
+    "word": "takeover",
+    "zh": "收购；接管",
+    "pos": "n.",
+    "ipa": "/ˈteɪkˌəʊvər/",
+    "ex": "A hostile takeover bid was launched without the prior knowledge of the target company's board.",
+    "ex2": "The government introduced legislation to restrict foreign takeovers of strategic industries."
+  },
+  {
+    "word": "buyout",
+    "zh": "收购；买断",
+    "pos": "n.",
+    "ipa": "/ˈbaɪaʊt/",
+    "ex": "A management buyout allowed senior executives to acquire the company from its parent group.",
+    "ex2": "Private equity firms often use leveraged buyouts to acquire undervalued businesses."
+  },
+  {
+    "word": "revenue stream",
+    "zh": "收入来源",
+    "pos": "n.",
+    "ipa": "/ˈrevɪnjuː striːm/",
+    "ex": "Subscription services have become an increasingly important revenue stream for media companies.",
+    "ex2": "Diversifying revenue streams reduces a company's dependence on any single market or product."
+  },
+  {
+    "word": "working capital",
+    "zh": "营运资本",
+    "pos": "n.",
+    "ipa": "/ˈwɜːkɪŋ ˈkæpɪtəl/",
+    "ex": "Adequate working capital is essential for a business to meet its day-to-day operational costs.",
+    "ex2": "The firm sought a short-term loan to address a temporary shortfall in working capital."
+  },
+  {
+    "word": "overhead",
+    "zh": "管理费用",
+    "pos": "n.",
+    "ipa": "/ˈəʊvərhed/",
+    "ex": "Reducing overhead costs was central to the company's strategy for improving profitability.",
+    "ex2": "Remote working arrangements can significantly lower office overhead for many businesses."
+  },
+  {
+    "word": "accounts payable",
+    "zh": "应付账款",
+    "pos": "n.",
+    "ipa": "/əˈkaʊnts ˈpeɪəbəl/",
+    "ex": "The finance team monitors accounts payable to ensure suppliers are paid within agreed terms.",
+    "ex2": "An increase in accounts payable may indicate that a company is delaying payments to preserve cash."
+  },
+  {
+    "word": "accounts receivable",
+    "zh": "应收账款",
+    "pos": "n.",
+    "ipa": "/əˈkaʊnts rɪˈsiːvəbəl/",
+    "ex": "The company's accounts receivable balance grew as sales increased in the final quarter.",
+    "ex2": "Efficient management of accounts receivable is crucial for maintaining healthy cash flow."
+  },
+  {
+    "word": "free trade",
+    "zh": "自由贸易",
+    "pos": "n.",
+    "ipa": "/friː treɪd/",
+    "ex": "The bilateral free trade agreement eliminated tariffs on most goods exchanged between the two nations.",
+    "ex2": "Advocates of free trade argue that it raises living standards by promoting specialisation."
+  },
+  {
+    "word": "aggregate demand",
+    "zh": "总需求",
+    "pos": "n.",
+    "ipa": "/ˈæɡrɪɡɪt dɪˈmɑːnd/",
+    "ex": "A fall in aggregate demand during the recession led to widespread business closures.",
+    "ex2": "Government spending can be used to boost aggregate demand when private sector activity declines."
+  },
+  {
+    "word": "aggregate supply",
+    "zh": "总供给",
+    "pos": "n.",
+    "ipa": "/ˈæɡrɪɡɪt səˈplaɪ/",
+    "ex": "Supply chain disruptions reduced aggregate supply and contributed to inflationary pressures.",
+    "ex2": "Improvements in technology can shift the aggregate supply curve to the right."
+  },
+  {
+    "word": "opportunity cost",
+    "zh": "机会成本",
+    "pos": "n.",
+    "ipa": "/ˌɒpəˈtjuːnɪti kɒst/",
+    "ex": "The opportunity cost of investing in government bonds must be weighed against alternative uses of capital.",
+    "ex2": "Students who delay entering the workforce incur an opportunity cost in the form of forgone earnings."
+  },
+  {
+    "word": "economies of scale",
+    "zh": "规模经济",
+    "pos": "n.",
+    "ipa": "/ɪˈkɒnəmiz əv skeɪl/",
+    "ex": "Large manufacturers benefit from economies of scale that allow them to reduce unit costs.",
+    "ex2": "Mergers are often justified by the potential to achieve economies of scale in production."
+  },
+  {
+    "word": "price elasticity",
+    "zh": "价格弹性",
+    "pos": "n.",
+    "ipa": "/praɪs ˌɪlæˈstɪsɪti/",
+    "ex": "The price elasticity of demand for luxury goods is typically high, meaning consumers are sensitive to price changes.",
+    "ex2": "Essential utilities such as water supply tend to have low price elasticity of demand."
+  },
+  {
+    "word": "market failure",
+    "zh": "市场失灵",
+    "pos": "n.",
+    "ipa": "/ˈmɑːkɪt ˈfeɪljər/",
+    "ex": "Pollution is a classic example of market failure caused by negative externalities.",
+    "ex2": "Government intervention is often justified as a response to market failure."
+  },
+  {
+    "word": "externality",
+    "zh": "外部性",
+    "pos": "n.",
+    "ipa": "/ˌekstəˈnælɪti/",
+    "ex": "Carbon emissions represent a negative externality that markets alone cannot adequately address.",
+    "ex2": "Education generates positive externalities that justify public funding beyond what individuals would choose."
+  },
+  {
+    "word": "public good",
+    "zh": "公共物品",
+    "pos": "n.",
+    "ipa": "/ˈpʌblɪk ɡʊd/",
+    "ex": "National defence is a classic public good that is non-excludable and non-rivalrous.",
+    "ex2": "The provision of public goods is typically undertaken by governments due to free-rider problems."
+  },
+  {
+    "word": "moral hazard",
+    "zh": "道德风险",
+    "pos": "n.",
+    "ipa": "/ˈmɒrəl ˈhæzəd/",
+    "ex": "Government bailouts of financial institutions can create moral hazard by reducing incentives for prudent risk management.",
+    "ex2": "Insurance policies are designed to minimise moral hazard through deductibles and co-payments."
+  },
+  {
+    "word": "asymmetric information",
+    "zh": "信息不对称",
+    "pos": "n.",
+    "ipa": "/ˌeɪsɪˈmetrɪk ˌɪnfəˈmeɪʃən/",
+    "ex": "Asymmetric information in the used car market leads to adverse selection and market inefficiency.",
+    "ex2": "Financial regulators require listed companies to disclose material information to reduce asymmetric information."
+  },
+  {
+    "word": "adverse selection",
+    "zh": "逆向选择",
+    "pos": "n.",
+    "ipa": "/ˈædvɜːs sɪˈlekʃən/",
+    "ex": "Adverse selection in health insurance markets arises because high-risk individuals are more likely to seek coverage.",
+    "ex2": "Lenders use credit scoring to reduce the problem of adverse selection when approving loans."
+  },
+  {
+    "word": "principal-agent problem",
+    "zh": "委托代理问题",
+    "pos": "n.",
+    "ipa": "/ˈprɪnsɪpəl ˈeɪdʒənt ˈprɒbləm/",
+    "ex": "The principal-agent problem arises when a manager's interests diverge from those of the shareholders.",
+    "ex2": "Performance-related pay is one mechanism used to mitigate the principal-agent problem."
+  },
+  {
+    "word": "endogenous growth",
+    "zh": "内生增长",
+    "pos": "n.",
+    "ipa": "/enˈdɒdʒɪnəs ɡrəʊθ/",
+    "ex": "Endogenous growth theory emphasises the role of knowledge and human capital in driving long-run economic expansion.",
+    "ex2": "Investment in research and development is central to endogenous growth models."
+  },
+  {
+    "word": "purchasing power parity",
+    "zh": "购买力平价",
+    "pos": "n.",
+    "ipa": "/ˈpɜːtʃɪsɪŋ ˈpaʊər ˈpærɪti/",
+    "ex": "Purchasing power parity adjustments allow more meaningful comparisons of income across countries.",
+    "ex2": "When measured at purchasing power parity, China's economy rivals that of the United States."
+  },
+  {
+    "word": "current account surplus",
+    "zh": "经常账户顺差",
+    "pos": "n.",
+    "ipa": "/ˈkʌrənt əˈkaʊnt ˈsɜːpləs/",
+    "ex": "Germany's persistent current account surplus has been a source of tension with its trading partners.",
+    "ex2": "A current account surplus indicates that a country exports more goods and services than it imports."
+  },
+  {
+    "word": "capital flight",
+    "zh": "资本外逃",
+    "pos": "n.",
+    "ipa": "/ˈkæpɪtəl flaɪt/",
+    "ex": "Political instability triggered capital flight as investors moved assets to safer jurisdictions.",
+    "ex2": "Capital flight can rapidly deplete a country's foreign exchange reserves."
+  },
+  {
+    "word": "sovereign debt",
+    "zh": "主权债务",
+    "pos": "n.",
+    "ipa": "/ˈsɒvrɪn det/",
+    "ex": "The sovereign debt crisis forced several eurozone countries to seek emergency financial assistance.",
+    "ex2": "Credit rating agencies downgraded the country's sovereign debt amid concerns about fiscal sustainability."
+  },
+  {
+    "word": "credit default swap",
+    "zh": "信用违约掉期",
+    "pos": "n.",
+    "ipa": "/ˈkredɪt dɪˈfɔːlt swɒp/",
+    "ex": "Credit default swaps were widely used by investors to hedge against the risk of sovereign default.",
+    "ex2": "The credit default swap market expanded dramatically in the years before the 2008 financial crisis."
+  },
+  {
+    "word": "quantitative tightening",
+    "zh": "量化紧缩",
+    "pos": "n.",
+    "ipa": "/ˈkwɒntɪtətɪv ˈtaɪtənɪŋ/",
+    "ex": "The Federal Reserve began quantitative tightening by allowing bonds to mature without reinvestment.",
+    "ex2": "Quantitative tightening reduces the money supply and can slow economic activity."
+  },
+  {
+    "word": "fiscal multiplier",
+    "zh": "财政乘数",
+    "pos": "n.",
+    "ipa": "/ˈfɪskəl ˈmʌltɪplaɪər/",
+    "ex": "Estimates of the fiscal multiplier vary depending on the state of the economic cycle.",
+    "ex2": "A fiscal multiplier greater than one suggests that government spending boosts output by more than the initial amount."
+  },
+  {
+    "word": "non-performing loan",
+    "zh": "不良贷款",
+    "pos": "n.",
+    "ipa": "/ˌnɒn pəˈfɔːmɪŋ ləʊn/",
+    "ex": "The banking sector's non-performing loan ratio rose sharply during the economic crisis.",
+    "ex2": "High levels of non-performing loans can constrain banks' ability to extend new credit."
+  },
+  {
+    "word": "stress test",
+    "zh": "压力测试",
+    "pos": "n.",
+    "ipa": "/stres test/",
+    "ex": "Regulators require major banks to undergo annual stress tests to assess their resilience.",
+    "ex2": "The stress test simulated a severe recession to determine whether banks held sufficient capital."
+  },
+  {
+    "word": "Basel III",
+    "zh": "巴塞尔协议三",
+    "pos": "n.",
+    "ipa": "/ˈbɑːzəl θriː/",
+    "ex": "Basel III introduced stricter capital adequacy requirements for systemically important banks.",
+    "ex2": "The implementation of Basel III aimed to prevent a repeat of the excessive risk-taking seen before 2008."
+  },
+  {
+    "word": "capital adequacy ratio",
+    "zh": "资本充足率",
+    "pos": "n.",
+    "ipa": "/ˈkæpɪtəl ˈædɪkwəsi ˈreɪʃiəʊ/",
+    "ex": "The capital adequacy ratio measures a bank's financial strength relative to its risk-weighted assets.",
+    "ex2": "Regulators set minimum capital adequacy ratios to ensure banks can absorb unexpected losses."
+  },
+  {
+    "word": "systemic risk",
+    "zh": "系统性风险",
+    "pos": "n.",
+    "ipa": "/sɪˈstemɪk rɪsk/",
+    "ex": "The failure of a large interconnected bank poses systemic risk to the entire financial system.",
+    "ex2": "Macroprudential policy aims to identify and mitigate systemic risk before it materialises."
+  },
+  {
+    "word": "too big to fail",
+    "zh": "大而不倒",
+    "pos": "adj.",
+    "ipa": "/tuː bɪɡ tə feɪl/",
+    "ex": "The notion that certain banks are too big to fail creates implicit government guarantees.",
+    "ex2": "Post-crisis reforms sought to end the too-big-to-fail problem through tighter regulation."
+  },
+  {
+    "word": "quantitative analyst",
+    "zh": "量化分析师",
+    "pos": "n.",
+    "ipa": "/ˈkwɒntɪtətɪv ˈænəlɪst/",
+    "ex": "Quantitative analysts develop mathematical models to price financial instruments.",
+    "ex2": "Demand for quantitative analysts has grown alongside the expansion of algorithmic trading."
+  },
+  {
+    "word": "algorithmic trading",
+    "zh": "算法交易",
+    "pos": "n.",
+    "ipa": "/ˌælɡəˈrɪðmɪk ˈtreɪdɪŋ/",
+    "ex": "Algorithmic trading now accounts for the majority of transactions on major stock exchanges.",
+    "ex2": "Regulators have raised concerns that algorithmic trading can amplify market volatility."
+  },
+  {
+    "word": "private equity",
+    "zh": "私募股权",
+    "pos": "n.",
+    "ipa": "/ˈpraɪvɪt ˈekwɪti/",
+    "ex": "Private equity firms acquire companies, improve their operations, and then sell them for a profit.",
+    "ex2": "The private equity industry has attracted criticism for its focus on short-term financial returns."
+  },
+  {
+    "word": "initial public offering",
+    "zh": "首次公开发行",
+    "pos": "n.",
+    "ipa": "/ɪˈnɪʃəl ˈpʌblɪk ˈɒfərɪŋ/",
+    "ex": "The initial public offering attracted strong demand from institutional and retail investors alike.",
+    "ex2": "Companies typically hire investment banks to underwrite and manage their initial public offering."
+  },
+  {
+    "word": "market capitalisation",
+    "zh": "市值",
+    "pos": "n.",
+    "ipa": "/ˈmɑːkɪt ˌkæpɪtəlaɪˈzeɪʃən/",
+    "ex": "The company's market capitalisation surpassed five hundred billion dollars for the first time.",
+    "ex2": "Market capitalisation is calculated by multiplying the share price by the total number of shares outstanding."
+  },
+  {
+    "word": "retained earnings",
+    "zh": "留存收益",
+    "pos": "n.",
+    "ipa": "/rɪˈteɪnd ˈɜːnɪŋz/",
+    "ex": "The company reinvested its retained earnings to fund expansion rather than paying dividends.",
+    "ex2": "Retained earnings appear as part of shareholders' equity on the balance sheet."
+  },
+  {
+    "word": "balance sheet",
+    "zh": "资产负债表",
+    "pos": "n.",
+    "ipa": "/ˈbæləns ʃiːt/",
+    "ex": "The auditors reviewed the company's balance sheet to verify the accuracy of its reported assets.",
+    "ex2": "A strong balance sheet with low debt provides a company with greater financial flexibility."
+  },
+  {
+    "word": "income statement",
+    "zh": "损益表",
+    "pos": "n.",
+    "ipa": "/ˈɪnkʌm ˈsteɪtmənt/",
+    "ex": "The income statement showed that gross profit had increased by twenty percent year-on-year.",
+    "ex2": "Investors examine the income statement to assess a company's revenue growth and cost management."
+  },
+  {
+    "word": "cash flow statement",
+    "zh": "现金流量表",
+    "pos": "n.",
+    "ipa": "/kæʃ fləʊ ˈsteɪtmənt/",
+    "ex": "The cash flow statement revealed that the company was generating strong free cash flow.",
+    "ex2": "A cash flow statement distinguishes between operating, investing, and financing activities."
+  },
+  {
+    "word": "brand equity",
+    "zh": "品牌价值",
+    "pos": "n.",
+    "ipa": "/brænd ˈekwɪti/",
+    "ex": "Companies with strong brand equity can command premium prices in competitive markets.",
+    "ex2": "Negative publicity can rapidly erode brand equity that has taken decades to build."
+  },
+  {
+    "word": "pricing strategy",
+    "zh": "定价策略",
+    "pos": "n.",
+    "ipa": "/ˈpraɪsɪŋ ˈstrætɪdʒi/",
+    "ex": "The company adopted a penetration pricing strategy to rapidly gain market share.",
+    "ex2": "A premium pricing strategy signals quality and helps differentiate a product from competitors."
+  },
+  {
+    "word": "loss leader",
+    "zh": "亏本销售品",
+    "pos": "n.",
+    "ipa": "/lɒs ˈliːdər/",
+    "ex": "Supermarkets use loss leaders to attract customers who then purchase more profitable items.",
+    "ex2": "Offering a loss leader can be an effective strategy for entering a new market segment."
+  },
+  {
+    "word": "market penetration",
+    "zh": "市场渗透",
+    "pos": "n.",
+    "ipa": "/ˈmɑːkɪt ˌpenɪˈtreɪʃən/",
+    "ex": "The smartphone manufacturer achieved rapid market penetration by pricing aggressively.",
+    "ex2": "Market penetration rates in emerging economies offer significant growth opportunities."
+  },
+  {
+    "word": "market saturation",
+    "zh": "市场饱和",
+    "pos": "n.",
+    "ipa": "/ˈmɑːkɪt ˌsætʃəˈreɪʃən/",
+    "ex": "Market saturation in developed economies is prompting companies to seek growth in emerging markets.",
+    "ex2": "When market saturation occurs, companies must innovate to maintain their revenue levels."
+  },
+  {
+    "word": "product differentiation",
+    "zh": "产品差异化",
+    "pos": "n.",
+    "ipa": "/ˈprɒdʌkt ˌdɪfərənʃiˈeɪʃən/",
+    "ex": "Effective product differentiation allows a company to avoid direct price competition.",
+    "ex2": "Design and customer experience are key tools for product differentiation in the technology sector."
+  },
+  {
+    "word": "first-mover advantage",
+    "zh": "先发优势",
+    "pos": "n.",
+    "ipa": "/ˈfɜːst ˈmuːvər ˈædvɑːntɪdʒ/",
+    "ex": "Amazon's first-mover advantage in e-commerce allowed it to build dominant market positions.",
+    "ex2": "The first-mover advantage is not always sustainable if later entrants learn from early mistakes."
+  },
+  {
+    "word": "economies of scope",
+    "zh": "范围经济",
+    "pos": "n.",
+    "ipa": "/ɪˈkɒnəmiz əv skəʊp/",
+    "ex": "Economies of scope arise when producing multiple products together is cheaper than producing each separately.",
+    "ex2": "Diversified firms often cite economies of scope to justify operating across multiple sectors."
+  },
+  {
+    "word": "vertical integration",
+    "zh": "垂直整合",
+    "pos": "n.",
+    "ipa": "/ˈvɜːtɪkəl ˌɪntɪˈɡreɪʃən/",
+    "ex": "Vertical integration allowed the manufacturer to control both production and distribution.",
+    "ex2": "Some technology firms pursue vertical integration by designing their own chips and hardware."
+  },
+  {
+    "word": "horizontal integration",
+    "zh": "横向整合",
+    "pos": "n.",
+    "ipa": "/ˌhɒrɪˈzɒntəl ˌɪntɪˈɡreɪʃən/",
+    "ex": "The acquisition of a rival firm represented a strategy of horizontal integration.",
+    "ex2": "Horizontal integration can increase market power but may attract regulatory scrutiny."
+  },
+  {
+    "word": "core competency",
+    "zh": "核心竞争力",
+    "pos": "n.",
+    "ipa": "/kɔː ˈkɒmpɪtənsi/",
+    "ex": "The company focused on its core competency in software development and outsourced manufacturing.",
+    "ex2": "Identifying and building on core competencies is central to sustainable competitive advantage."
+  },
+  {
+    "word": "competitive advantage",
+    "zh": "竞争优势",
+    "pos": "n.",
+    "ipa": "/kəmˈpetɪtɪv ˈædvɑːntɪdʒ/",
+    "ex": "The firm's proprietary technology provides a durable competitive advantage in the marketplace.",
+    "ex2": "Porter's model identifies cost leadership and differentiation as key sources of competitive advantage."
+  },
+  {
+    "word": "value chain",
+    "zh": "价值链",
+    "pos": "n.",
+    "ipa": "/ˈvæljuː tʃeɪn/",
+    "ex": "The company analysed its value chain to identify activities that could be improved or outsourced.",
+    "ex2": "Global value chains allow firms to source inputs and labour from the most cost-effective locations."
+  },
+  {
+    "word": "balanced scorecard",
+    "zh": "平衡计分卡",
+    "pos": "n.",
+    "ipa": "/ˈbælənsɪd ˈskɔːkɑːd/",
+    "ex": "The management team adopted a balanced scorecard to track performance across financial and non-financial dimensions.",
+    "ex2": "A balanced scorecard links organisational strategy to measurable key performance indicators."
+  },
+  {
+    "word": "key performance indicator",
+    "zh": "关键绩效指标",
+    "pos": "n.",
+    "ipa": "/kiː pəˈfɔːməns ˈɪndɪkeɪtər/",
+    "ex": "Sales conversion rate is a key performance indicator for assessing the effectiveness of a marketing campaign.",
+    "ex2": "The quarterly review assessed progress against each key performance indicator set at the start of the year."
+  },
+  {
+    "word": "return on investment",
+    "zh": "投资回报率",
+    "pos": "n.",
+    "ipa": "/rɪˈtɜːn ɒn ɪnˈvestmənt/",
+    "ex": "The project delivered a return on investment of fifteen percent within two years.",
+    "ex2": "Companies must evaluate the expected return on investment before committing to capital expenditure."
+  },
+  {
+    "word": "break-even point",
+    "zh": "盈亏平衡点",
+    "pos": "n.",
+    "ipa": "/ˈbreɪk ˈiːvən pɔɪnt/",
+    "ex": "The business plan identified a break-even point of five hundred units per month.",
+    "ex2": "Reaching the break-even point is a critical milestone for any new commercial venture."
+  },
+  {
+    "word": "cost-benefit analysis",
+    "zh": "成本效益分析",
+    "pos": "n.",
+    "ipa": "/kɒst ˈbenɪfɪt əˈnæləsɪs/",
+    "ex": "A cost-benefit analysis was carried out to assess the viability of the proposed infrastructure project.",
+    "ex2": "Cost-benefit analysis helps policymakers allocate public resources to initiatives with the highest social return."
+  },
+  {
+    "word": "total cost of ownership",
+    "zh": "总拥有成本",
+    "pos": "n.",
+    "ipa": "/ˈtəʊtəl kɒst əv ˈəʊnəʃɪp/",
+    "ex": "When comparing suppliers, procurement teams should calculate the total cost of ownership, not just the purchase price.",
+    "ex2": "Electric vehicles have a lower total cost of ownership than petrol cars when fuel savings are factored in."
+  },
+  {
+    "word": "fixed cost",
+    "zh": "固定成本",
+    "pos": "n.",
+    "ipa": "/fɪkst kɒst/",
+    "ex": "Rent and salaries represent fixed costs that a company must pay regardless of output levels.",
+    "ex2": "Businesses with high fixed costs are particularly vulnerable during periods of falling demand."
+  },
+  {
+    "word": "variable cost",
+    "zh": "可变成本",
+    "pos": "n.",
+    "ipa": "/ˈveəriəbəl kɒst/",
+    "ex": "Raw materials are a variable cost that rises in proportion to the volume of goods produced.",
+    "ex2": "Managers can reduce variable costs by renegotiating supplier contracts or improving production efficiency."
+  },
+  {
+    "word": "marginal cost",
+    "zh": "边际成本",
+    "pos": "n.",
+    "ipa": "/ˈmɑːdʒɪnəl kɒst/",
+    "ex": "Firms maximise profits by producing at the point where marginal cost equals marginal revenue.",
+    "ex2": "Digital goods have near-zero marginal cost once the content has been created."
+  },
+  {
+    "word": "marginal revenue",
+    "zh": "边际收益",
+    "pos": "n.",
+    "ipa": "/ˈmɑːdʒɪnəl ˈrevɪnjuː/",
+    "ex": "Marginal revenue declines as a monopolist increases output beyond the optimal level.",
+    "ex2": "Understanding the relationship between marginal revenue and marginal cost is fundamental to pricing decisions."
+  },
+  {
+    "word": "price discrimination",
+    "zh": "价格歧视",
+    "pos": "n.",
+    "ipa": "/praɪs ˌdɪskrɪmɪˈneɪʃən/",
+    "ex": "Airlines practice price discrimination by charging different fares to different passenger segments.",
+    "ex2": "Third-degree price discrimination involves charging different prices to distinct consumer groups."
+  },
+  {
+    "word": "predatory pricing",
+    "zh": "掠夺性定价",
+    "pos": "n.",
+    "ipa": "/ˈpredətri ˈpraɪsɪŋ/",
+    "ex": "The dominant firm was accused of predatory pricing intended to drive competitors out of the market.",
+    "ex2": "Predatory pricing is prohibited under competition law in most jurisdictions."
+  },
+  {
+    "word": "price ceiling",
+    "zh": "价格上限",
+    "pos": "n.",
+    "ipa": "/praɪs ˈsiːlɪŋ/",
+    "ex": "The government imposed a price ceiling on rents to protect tenants in high-demand areas.",
+    "ex2": "Price ceilings set below the equilibrium price typically lead to shortages."
+  },
+  {
+    "word": "price floor",
+    "zh": "价格下限",
+    "pos": "n.",
+    "ipa": "/praɪs flɔː/",
+    "ex": "Minimum wage legislation acts as a price floor in the labour market.",
+    "ex2": "Agricultural subsidies often include price floors to guarantee farmers a minimum income."
+  },
+  {
+    "word": "deadweight loss",
+    "zh": "无谓损失",
+    "pos": "n.",
+    "ipa": "/ˈdedweɪt lɒs/",
+    "ex": "Tariffs create a deadweight loss by reducing the volume of trade below its efficient level.",
+    "ex2": "Monopoly pricing generates deadweight loss as output is restricted below the competitive equilibrium."
+  },
+  {
+    "word": "producer surplus",
+    "zh": "生产者剩余",
+    "pos": "n.",
+    "ipa": "/prəˈdjuːsər ˈsɜːpləs/",
+    "ex": "A rise in market prices increases producer surplus by allowing sellers to earn more than their minimum acceptable price.",
+    "ex2": "Trade liberalisation can transfer producer surplus from domestic firms to foreign competitors."
+  },
+  {
+    "word": "consumer surplus",
+    "zh": "消费者剩余",
+    "pos": "n.",
+    "ipa": "/kənˈsjuːmər ˈsɜːpləs/",
+    "ex": "A reduction in prices increases consumer surplus by allowing buyers to pay less than their maximum willingness.",
+    "ex2": "The introduction of generic drugs greatly increased consumer surplus in the pharmaceutical market."
+  },
+  {
+    "word": "Pareto efficiency",
+    "zh": "帕累托效率",
+    "pos": "n.",
+    "ipa": "/pəˈreɪtəʊ ɪˈfɪʃənsi/",
+    "ex": "An allocation is Pareto efficient when no one can be made better off without making someone else worse off.",
+    "ex2": "Competitive markets tend to produce Pareto efficient outcomes under idealised conditions."
+  },
+  {
+    "word": "Nash equilibrium",
+    "zh": "纳什均衡",
+    "pos": "n.",
+    "ipa": "/næʃ ˌiːkwɪˈlɪbriəm/",
+    "ex": "In a Nash equilibrium, no player can improve their outcome by unilaterally changing their strategy.",
+    "ex2": "Game theory uses the Nash equilibrium to predict the behaviour of firms in oligopolistic markets."
+  },
+  {
+    "word": "game theory",
+    "zh": "博弈论",
+    "pos": "n.",
+    "ipa": "/ɡeɪm ˈθɪəri/",
+    "ex": "Game theory provides tools for analysing strategic interactions between firms in competitive markets.",
+    "ex2": "The prisoner's dilemma is a foundational example in game theory with applications to business competition."
+  },
+  {
+    "word": "behavioural economics",
+    "zh": "行为经济学",
+    "pos": "n.",
+    "ipa": "/bɪˈheɪvjərəl ˌiːkəˈnɒmɪks/",
+    "ex": "Behavioural economics challenges the assumption that individuals always make rational economic decisions.",
+    "ex2": "Nudge theory, a branch of behavioural economics, has influenced public policy in many countries."
+  },
+  {
+    "word": "nudge theory",
+    "zh": "助推理论",
+    "pos": "n.",
+    "ipa": "/nʌdʒ ˈθɪəri/",
+    "ex": "Governments have applied nudge theory to increase pension enrolment through automatic opt-in schemes.",
+    "ex2": "Nudge theory suggests that small changes in how choices are presented can significantly alter behaviour."
+  },
+  {
+    "word": "loss aversion",
+    "zh": "损失厌恶",
+    "pos": "n.",
+    "ipa": "/lɒs əˈvɜːʒən/",
+    "ex": "Loss aversion explains why investors often hold losing stocks too long rather than realising the loss.",
+    "ex2": "Marketing campaigns that highlight potential losses exploit consumers' loss aversion."
+  },
+  {
+    "word": "anchoring bias",
+    "zh": "锚定偏差",
+    "pos": "n.",
+    "ipa": "/ˈæŋkərɪŋ ˈbaɪəs/",
+    "ex": "Anchoring bias causes negotiators to be unduly influenced by the first figure mentioned in a discussion.",
+    "ex2": "Retailers exploit anchoring bias by displaying a high original price alongside a discounted price."
+  },
+  {
+    "word": "sunk cost fallacy",
+    "zh": "沉没成本谬误",
+    "pos": "n.",
+    "ipa": "/sʌŋk kɒst ˈfæləsi/",
+    "ex": "Companies that continue unprofitable projects due to sunk cost fallacy often compound their financial losses.",
+    "ex2": "Rational decision-making requires ignoring sunk costs and focusing only on future costs and benefits."
+  },
+  {
+    "word": "bounded rationality",
+    "zh": "有限理性",
+    "pos": "n.",
+    "ipa": "/ˈbaʊndɪd ˌræʃəˈnælɪti/",
+    "ex": "The concept of bounded rationality acknowledges that decision-makers operate with limited information and cognitive capacity.",
+    "ex2": "Bounded rationality explains why firms often adopt simple rules of thumb rather than optimal strategies."
+  },
+  {
+    "word": "network effect",
+    "zh": "网络效应",
+    "pos": "n.",
+    "ipa": "/ˈnetwɜːk ɪˈfekt/",
+    "ex": "Social media platforms benefit from powerful network effects as each new user increases the platform's value.",
+    "ex2": "The network effect creates a natural barrier to entry for competitors in platform markets."
+  },
+  {
+    "word": "platform economy",
+    "zh": "平台经济",
+    "pos": "n.",
+    "ipa": "/ˈplætfɔːm ɪˈkɒnəmi/",
+    "ex": "The platform economy has disrupted traditional industries by enabling direct transactions between buyers and sellers.",
+    "ex2": "Regulators are developing new frameworks to govern competition and labour rights in the platform economy."
+  },
+  {
+    "word": "sharing economy",
+    "zh": "共享经济",
+    "pos": "n.",
+    "ipa": "/ˈʃeərɪŋ ɪˈkɒnəmi/",
+    "ex": "The sharing economy has disrupted traditional industries such as accommodation and transportation.",
+    "ex2": "Critics argue that sharing economy platforms evade regulatory requirements that apply to established businesses."
+  },
+  {
+    "word": "fintech",
+    "zh": "金融科技",
+    "pos": "n.",
+    "ipa": "/ˈfɪntek/",
+    "ex": "Fintech startups are challenging traditional banks by offering faster and cheaper financial services.",
+    "ex2": "Regulators are developing sandbox frameworks to allow fintech firms to test innovative products safely."
+  },
+  {
+    "word": "cryptocurrency",
+    "zh": "加密货币",
+    "pos": "n.",
+    "ipa": "/krɪpˈtəʊkərənsi/",
+    "ex": "The extreme volatility of cryptocurrency markets has made them unsuitable for use as a reliable store of value.",
+    "ex2": "Several central banks are exploring the issuance of digital currencies as an alternative to cryptocurrency."
+  },
+  {
+    "word": "blockchain",
+    "zh": "区块链",
+    "pos": "n.",
+    "ipa": "/ˈblɒktʃeɪn/",
+    "ex": "Blockchain technology offers a transparent and tamper-resistant record of financial transactions.",
+    "ex2": "Supply chain management is one potential application of blockchain beyond financial services."
+  },
+  {
+    "word": "central bank digital currency",
+    "zh": "央行数字货币",
+    "pos": "n.",
+    "ipa": "/ˈsentrəl bæŋk ˈdɪdʒɪtəl ˈkʌrənsi/",
+    "ex": "China was among the first major economies to pilot a central bank digital currency.",
+    "ex2": "A central bank digital currency could improve financial inclusion by providing access to digital payments."
+  },
+  {
+    "word": "open banking",
+    "zh": "开放银行",
+    "pos": "n.",
+    "ipa": "/ˈəʊpən ˈbæŋkɪŋ/",
+    "ex": "Open banking regulations require traditional banks to share customer data with authorised third-party providers.",
+    "ex2": "Open banking has enabled the development of new financial products tailored to individual spending patterns."
+  },
+  {
+    "word": "embedded finance",
+    "zh": "嵌入式金融",
+    "pos": "n.",
+    "ipa": "/ɪmˈbedɪd ˈfaɪnæns/",
+    "ex": "Embedded finance allows non-financial companies to offer banking services directly within their platforms.",
+    "ex2": "The rise of embedded finance is blurring the boundaries between technology companies and financial institutions."
+  },
+  {
+    "word": "ESG",
+    "zh": "环境、社会与治理",
+    "pos": "n.",
+    "ipa": "/ˌiː es ˈdʒiː/",
+    "ex": "Institutional investors are increasingly incorporating ESG criteria into their investment decisions.",
+    "ex2": "Companies with strong ESG performance tend to attract lower-cost capital from socially conscious investors."
+  },
+  {
+    "word": "green bond",
+    "zh": "绿色债券",
+    "pos": "n.",
+    "ipa": "/ɡriːn bɒnd/",
+    "ex": "The government issued a green bond to finance renewable energy infrastructure projects.",
+    "ex2": "Green bonds have grown rapidly as investors seek opportunities aligned with sustainability objectives."
+  },
+  {
+    "word": "carbon credit",
+    "zh": "碳信用额度",
+    "pos": "n.",
+    "ipa": "/ˈkɑːbən ˈkredɪt/",
+    "ex": "Companies can purchase carbon credits to offset emissions that they are unable to eliminate.",
+    "ex2": "The integrity of carbon credit markets has been questioned due to concerns about double-counting."
+  },
+  {
+    "word": "cap and trade",
+    "zh": "总量控制与交易",
+    "pos": "n.",
+    "ipa": "/kæp ənd treɪd/",
+    "ex": "The European Union's cap and trade system puts a price on carbon emissions from major industries.",
+    "ex2": "Critics argue that cap and trade schemes can be undermined if the emissions cap is set too loosely."
+  },
+  {
+    "word": "carbon tax",
+    "zh": "碳税",
+    "pos": "n.",
+    "ipa": "/ˈkɑːbən tæks/",
+    "ex": "A carbon tax directly charges emitters for each tonne of greenhouse gas they release.",
+    "ex2": "Economists generally favour a carbon tax as the most efficient mechanism for reducing emissions."
+  },
+  {
+    "word": "stranded asset",
+    "zh": "搁浅资产",
+    "pos": "n.",
+    "ipa": "/ˈstrændɪd ˈæset/",
+    "ex": "Coal reserves may become stranded assets as the transition to renewable energy accelerates.",
+    "ex2": "Investors are increasingly concerned about the stranded asset risk associated with fossil fuel investments."
+  },
+  {
+    "word": "greenwashing",
+    "zh": "漂绿",
+    "pos": "n.",
+    "ipa": "/ˈɡriːnwɒʃɪŋ/",
+    "ex": "Regulators introduced stricter disclosure requirements to combat greenwashing by financial products.",
+    "ex2": "Companies accused of greenwashing face reputational damage and potential legal liability."
+  },
+  {
+    "word": "impact investing",
+    "zh": "影响力投资",
+    "pos": "n.",
+    "ipa": "/ˈɪmpækt ɪnˈvestɪŋ/",
+    "ex": "Impact investing seeks to generate measurable social or environmental benefits alongside financial returns.",
+    "ex2": "Philanthropic foundations are directing capital toward impact investing to address development challenges."
+  },
+  {
+    "word": "social impact bond",
+    "zh": "社会影响力债券",
+    "pos": "n.",
+    "ipa": "/ˈsəʊʃəl ˈɪmpækt bɒnd/",
+    "ex": "A social impact bond was used to fund reoffending reduction programmes with payments linked to outcomes.",
+    "ex2": "Social impact bonds attract private investment for public services by tying returns to measurable results."
+  },
+  {
+    "word": "crowdfunding",
+    "zh": "众筹",
+    "pos": "n.",
+    "ipa": "/ˈkraʊdˌfʌndɪŋ/",
+    "ex": "The startup raised seed capital through an equity crowdfunding campaign on an online platform.",
+    "ex2": "Creative projects increasingly rely on crowdfunding to gauge market interest before full production."
+  },
+  {
+    "word": "angel investor",
+    "zh": "天使投资人",
+    "pos": "n.",
+    "ipa": "/ˈeɪndʒəl ɪnˈvestər/",
+    "ex": "An angel investor provided the early-stage funding needed to develop the first prototype.",
+    "ex2": "Angel investors typically bring industry expertise and networks in addition to financial capital."
+  },
+  {
+    "word": "unicorn",
+    "zh": "独角兽企业",
+    "pos": "n.",
+    "ipa": "/ˈjuːnɪkɔːn/",
+    "ex": "The fintech startup achieved unicorn status after its valuation exceeded one billion dollars.",
+    "ex2": "The rapid growth of technology unicorns has transformed the start-up funding landscape."
+  },
+  {
+    "word": "decacorn",
+    "zh": "超级独角兽",
+    "pos": "n.",
+    "ipa": "/ˈdekəkɔːn/",
+    "ex": "The e-commerce platform became a decacorn after its valuation surpassed ten billion dollars.",
+    "ex2": "Decacorns are rare even in mature venture capital markets, reflecting exceptionally high growth trajectories."
+  },
+  {
+    "word": "disruption",
+    "zh": "颠覆性创新",
+    "pos": "n.",
+    "ipa": "/dɪsˈrʌpʃən/",
+    "ex": "Digital disruption has fundamentally altered business models in banking, retail, and media.",
+    "ex2": "Incumbents must innovate continuously to remain competitive in the face of technological disruption."
+  },
+  {
+    "word": "disruptive innovation",
+    "zh": "颠覆性创新",
+    "pos": "n.",
+    "ipa": "/dɪsˈrʌptɪv ˌɪnəˈveɪʃən/",
+    "ex": "Streaming services represent a disruptive innovation that transformed the entertainment industry.",
+    "ex2": "Clayton Christensen's theory of disruptive innovation explains how new entrants can overturn established markets."
+  },
+  {
+    "word": "scalability",
+    "zh": "可扩展性",
+    "pos": "n.",
+    "ipa": "/ˌskeɪləˈbɪlɪti/",
+    "ex": "The business model's scalability was demonstrated by its rapid expansion into twenty new markets.",
+    "ex2": "Cloud-based infrastructure enhances the scalability of digital businesses at relatively low cost."
+  },
+  {
+    "word": "minimum viable product",
+    "zh": "最小可行产品",
+    "pos": "n.",
+    "ipa": "/ˈmɪnɪməm ˈvaɪəbəl ˈprɒdʌkt/",
+    "ex": "The team launched a minimum viable product to test market demand before investing in full development.",
+    "ex2": "A minimum viable product allows startups to gather user feedback and iterate rapidly."
+  },
+  {
+    "word": "churn rate",
+    "zh": "客户流失率",
+    "pos": "n.",
+    "ipa": "/tʃɜːn reɪt/",
+    "ex": "The subscription business reduced its monthly churn rate by improving customer onboarding.",
+    "ex2": "A high churn rate signals that customers are dissatisfied with the product or service."
+  },
+  {
+    "word": "customer lifetime value",
+    "zh": "客户终身价值",
+    "pos": "n.",
+    "ipa": "/ˈkʌstəmər ˈlaɪftaɪm ˈvæljuː/",
+    "ex": "Increasing customer lifetime value is more cost-effective than constantly acquiring new customers.",
+    "ex2": "Data analytics allows businesses to estimate customer lifetime value and tailor retention strategies accordingly."
+  },
+  {
+    "word": "customer acquisition cost",
+    "zh": "获客成本",
+    "pos": "n.",
+    "ipa": "/ˈkʌstəmər ˌækwɪˈzɪʃən kɒst/",
+    "ex": "Investors scrutinise the ratio of customer acquisition cost to lifetime value when assessing startup viability.",
+    "ex2": "Social media advertising can reduce customer acquisition cost compared to traditional marketing channels."
+  },
+  {
+    "word": "burn rate",
+    "zh": "资金消耗率",
+    "pos": "n.",
+    "ipa": "/bɜːn reɪt/",
+    "ex": "At the current burn rate, the startup would exhaust its funding within eight months.",
+    "ex2": "Investors closely monitor a company's burn rate to assess whether it needs additional capital."
+  },
+  {
+    "word": "runway",
+    "zh": "资金可用期",
+    "pos": "n.",
+    "ipa": "/ˈrʌnweɪ/",
+    "ex": "The company had eighteen months of runway remaining after completing its Series B funding round.",
+    "ex2": "Extending the financial runway requires either raising new capital or reducing the monthly burn rate."
+  },
+  {
+    "word": "Series A",
+    "zh": "A轮融资",
+    "pos": "n.",
+    "ipa": "/ˈsɪəriːz eɪ/",
+    "ex": "The startup secured five million dollars in a Series A round to expand its engineering team.",
+    "ex2": "Series A investors typically expect startups to have demonstrated product-market fit."
+  },
+  {
+    "word": "seed funding",
+    "zh": "种子轮融资",
+    "pos": "n.",
+    "ipa": "/siːd ˈfʌndɪŋ/",
+    "ex": "Seed funding allowed the founders to develop a prototype and validate their business concept.",
+    "ex2": "Many accelerators provide seed funding in exchange for a small equity stake in participant startups."
+  },
+  {
+    "word": "term sheet",
+    "zh": "投资条款清单",
+    "pos": "n.",
+    "ipa": "/tɜːm ʃiːt/",
+    "ex": "The venture capital firm issued a term sheet outlining the proposed investment conditions.",
+    "ex2": "Founders should seek legal advice before signing a term sheet, as key terms can be difficult to renegotiate later."
+  },
+  {
+    "word": "vesting schedule",
+    "zh": "股权归属时间表",
+    "pos": "n.",
+    "ipa": "/ˈvestɪŋ ˈʃedjuːl/",
+    "ex": "The founders' shares were subject to a four-year vesting schedule with a one-year cliff.",
+    "ex2": "A vesting schedule ensures that employees earn equity over time, incentivising long-term commitment."
+  },
+  {
+    "word": "cap table",
+    "zh": "股权结构表",
+    "pos": "n.",
+    "ipa": "/kæp ˈteɪbəl/",
+    "ex": "The cap table showed the proportional ownership of each shareholder following the latest funding round.",
+    "ex2": "Investors review the cap table carefully to understand the ownership structure before committing capital."
+  },
+  {
+    "word": "exit strategy",
+    "zh": "退出策略",
+    "pos": "n.",
+    "ipa": "/ˈeksɪt ˈstrætɪdʒi/",
+    "ex": "The venture capital firm's exit strategy involved either a trade sale or a stock market listing.",
+    "ex2": "Investors expect founders to articulate a credible exit strategy as part of their business plan."
+  },
+  {
+    "word": "trade sale",
+    "zh": "商业出售",
+    "pos": "n.",
+    "ipa": "/treɪd seɪl/",
+    "ex": "A trade sale to a strategic acquirer allowed early investors to realise their returns.",
+    "ex2": "A trade sale is often preferred over a public listing when speed and certainty of execution are priorities."
+  },
+  {
+    "word": "SPAC",
+    "zh": "特殊目的收购公司",
+    "pos": "n.",
+    "ipa": "/spæk/",
+    "ex": "The company chose to go public via a merger with a SPAC rather than through a traditional IPO.",
+    "ex2": "SPAC listings surged in popularity during 2020 and 2021 before regulatory scrutiny increased."
+  },
+  {
+    "word": "goodwill",
+    "zh": "商誉",
+    "pos": "n.",
+    "ipa": "/ˈɡʊdwɪl/",
+    "ex": "The premium paid over book value in an acquisition is recorded on the balance sheet as goodwill.",
+    "ex2": "An impairment of goodwill can significantly reduce reported earnings in a given period."
+  },
+  {
+    "word": "intangible asset",
+    "zh": "无形资产",
+    "pos": "n.",
+    "ipa": "/ɪnˈtændʒɪbəl ˈæset/",
+    "ex": "Brands, patents, and proprietary software are classified as intangible assets on the balance sheet.",
+    "ex2": "The growing importance of intangible assets has challenged traditional accounting frameworks."
+  },
+  {
+    "word": "impairment",
+    "zh": "资产减值",
+    "pos": "n.",
+    "ipa": "/ɪmˈpeəmənt/",
+    "ex": "The company recognised an impairment charge after the value of its acquired business fell sharply.",
+    "ex2": "Impairment testing requires firms to assess whether the carrying value of assets exceeds their recoverable amount."
+  },
+  {
+    "word": "earnings per share",
+    "zh": "每股收益",
+    "pos": "n.",
+    "ipa": "/ˈɜːnɪŋz pɜː ʃeər/",
+    "ex": "Earnings per share rose by fifteen percent, driven by both revenue growth and cost reductions.",
+    "ex2": "Share buybacks increase earnings per share by reducing the number of shares in circulation."
+  },
+  {
+    "word": "net present value",
+    "zh": "净现值",
+    "pos": "n.",
+    "ipa": "/net ˈprezənt ˈvæljuː/",
+    "ex": "A positive net present value indicates that a project is expected to generate value for investors.",
+    "ex2": "The choice of discount rate has a significant effect on the calculated net present value of long-term projects."
+  },
+  {
+    "word": "internal rate of return",
+    "zh": "内部收益率",
+    "pos": "n.",
+    "ipa": "/ɪnˈtɜːnəl reɪt əv rɪˈtɜːn/",
+    "ex": "The project's internal rate of return of eighteen percent exceeded the company's cost of capital.",
+    "ex2": "Private equity firms typically target an internal rate of return of at least twenty percent."
+  },
+  {
+    "word": "weighted average cost of capital",
+    "zh": "加权平均资本成本",
+    "pos": "n.",
+    "ipa": "/ˈweɪtɪd ˈævərɪdʒ kɒst əv ˈkæpɪtəl/",
+    "ex": "The weighted average cost of capital is used as the discount rate in many investment appraisal models.",
+    "ex2": "A lower weighted average cost of capital increases the attractiveness of long-term investment projects."
+  },
+  {
+    "word": "free cash flow",
+    "zh": "自由现金流",
+    "pos": "n.",
+    "ipa": "/friː kæʃ fləʊ/",
+    "ex": "Strong free cash flow allows a company to invest in growth, pay dividends, or reduce debt.",
+    "ex2": "Analysts often use free cash flow rather than reported profit as a measure of financial performance."
+  },
+  {
+    "word": "EBITDA",
+    "zh": "息税折旧摊销前利润",
+    "pos": "n.",
+    "ipa": "/ɪˈbɪtdɑː/",
+    "ex": "The company's EBITDA margin improved significantly following the cost restructuring programme.",
+    "ex2": "EBITDA is widely used as a measure of operational profitability, excluding financing and accounting effects."
+  },
+  {
+    "word": "gross profit",
+    "zh": "毛利润",
+    "pos": "n.",
+    "ipa": "/ɡrəʊs ˈprɒfɪt/",
+    "ex": "Gross profit is calculated by subtracting the cost of goods sold from total revenue.",
+    "ex2": "A declining gross profit margin may indicate rising input costs or increasing competitive pressure."
+  },
+  {
+    "word": "operating profit",
+    "zh": "营业利润",
+    "pos": "n.",
+    "ipa": "/ˈɒpəreɪtɪŋ ˈprɒfɪt/",
+    "ex": "Operating profit measures the earnings generated from core business activities before interest and taxes.",
+    "ex2": "The firm's operating profit was boosted by improved efficiency and lower raw material costs."
+  },
+  {
+    "word": "net profit",
+    "zh": "净利润",
+    "pos": "n.",
+    "ipa": "/net ˈprɒfɪt/",
+    "ex": "Net profit represents the earnings remaining after all costs, taxes, and interest have been deducted.",
+    "ex2": "The company's net profit fell despite strong revenue growth due to higher financing costs."
+  },
+  {
+    "word": "profit warning",
+    "zh": "盈利预警",
+    "pos": "n.",
+    "ipa": "/ˈprɒfɪt ˈwɔːnɪŋ/",
+    "ex": "The company issued a profit warning, causing its share price to fall sharply in early trading.",
+    "ex2": "A profit warning signals to investors that reported earnings will be below previous market expectations."
+  },
+  {
+    "word": "earnings guidance",
+    "zh": "盈利指引",
+    "pos": "n.",
+    "ipa": "/ˈɜːnɪŋz ˈɡaɪdəns/",
+    "ex": "The company revised its earnings guidance downward following a decline in consumer demand.",
+    "ex2": "Some analysts question whether earnings guidance encourages excessive short-term focus among investors."
+  },
+  {
+    "word": "shareholder value",
+    "zh": "股东价值",
+    "pos": "n.",
+    "ipa": "/ˈʃeəˌhəʊldər ˈvæljuː/",
+    "ex": "The board adopted a strategy focused on maximising shareholder value over the long term.",
+    "ex2": "Critics argue that an exclusive focus on shareholder value has led to underinvestment in employees and communities."
+  },
+  {
+    "word": "corporate governance",
+    "zh": "公司治理",
+    "pos": "n.",
+    "ipa": "/ˈkɔːpərɪt ˈɡʌvənəns/",
+    "ex": "Strong corporate governance structures help prevent conflicts of interest and protect investors.",
+    "ex2": "The company's poor corporate governance practices were cited as a contributing factor in its collapse."
+  },
+  {
+    "word": "board of directors",
+    "zh": "董事会",
+    "pos": "n.",
+    "ipa": "/bɔːd əv dɪˈrektəz/",
+    "ex": "The board of directors is responsible for setting corporate strategy and overseeing management.",
+    "ex2": "Independent non-executive directors provide a check on the power of the executive team."
+  },
+  {
+    "word": "non-executive director",
+    "zh": "非执行董事",
+    "pos": "n.",
+    "ipa": "/nɒn ˌeksɪˈkjuːtɪv dɪˈrektər/",
+    "ex": "A non-executive director brings independent judgement to board deliberations.",
+    "ex2": "Regulators recommend that at least half of board members should be non-executive directors."
+  },
+  {
+    "word": "executive remuneration",
+    "zh": "高管薪酬",
+    "pos": "n.",
+    "ipa": "/ɪɡˈzekjʊtɪv rɪˌmjuːnəˈreɪʃən/",
+    "ex": "Shareholders voted against the proposed executive remuneration package at the annual general meeting.",
+    "ex2": "The gap between executive remuneration and median worker pay has widened in recent decades."
+  },
+  {
+    "word": "transfer pricing",
+    "zh": "转让定价",
+    "pos": "n.",
+    "ipa": "/ˈtrænsˌfɜː ˈpraɪsɪŋ/",
+    "ex": "Multinational companies use transfer pricing to allocate profits between subsidiaries in different tax jurisdictions.",
+    "ex2": "Tax authorities scrutinise transfer pricing arrangements to prevent profit shifting to low-tax territories."
+  },
+  {
+    "word": "tax haven",
+    "zh": "避税天堂",
+    "pos": "n.",
+    "ipa": "/tæks ˈheɪvən/",
+    "ex": "Multinational corporations route profits through tax havens to minimise their global tax liabilities.",
+    "ex2": "International efforts to clamp down on tax havens have produced mixed results."
+  },
+  {
+    "word": "tax avoidance",
+    "zh": "避税",
+    "pos": "n.",
+    "ipa": "/tæks əˈvɔɪdəns/",
+    "ex": "Aggressive tax avoidance by large corporations has prompted calls for international tax reform.",
+    "ex2": "Tax avoidance is technically legal, whereas tax evasion involves deliberate concealment and is a criminal offence."
+  },
+  {
+    "word": "tax evasion",
+    "zh": "逃税",
+    "pos": "n.",
+    "ipa": "/tæks ɪˈveɪʒən/",
+    "ex": "The executive was convicted of tax evasion after hiding offshore income from the authorities.",
+    "ex2": "Penalties for tax evasion can include substantial fines and custodial sentences."
+  },
+  {
+    "word": "value added tax",
+    "zh": "增值税",
+    "pos": "n.",
+    "ipa": "/ˈvæljuː ˈædɪd tæks/",
+    "ex": "Value added tax is collected at each stage of the production chain and passed on to the consumer.",
+    "ex2": "Reduced value added tax rates are applied to essential goods such as food and children's clothing."
+  },
+  {
+    "word": "corporation tax",
+    "zh": "企业所得税",
+    "pos": "n.",
+    "ipa": "/ˌkɔːpəˈreɪʃən tæks/",
+    "ex": "The government raised the rate of corporation tax to fund public investment programmes.",
+    "ex2": "A competitive corporation tax rate is often cited as a factor in attracting foreign direct investment."
+  },
+  {
+    "word": "progressive tax",
+    "zh": "累进税",
+    "pos": "n.",
+    "ipa": "/prəˈɡresɪv tæks/",
+    "ex": "A progressive tax system charges higher earners a proportionally greater share of their income.",
+    "ex2": "Proponents argue that a progressive tax system reduces inequality and funds redistributive social programmes."
+  },
+  {
+    "word": "regressive tax",
+    "zh": "累退税",
+    "pos": "n.",
+    "ipa": "/rɪˈɡresɪv tæks/",
+    "ex": "Critics argue that indirect taxes such as VAT are regressive because they take a larger share of low incomes.",
+    "ex2": "A regressive tax increases the relative tax burden on lower-income households."
+  },
+  {
+    "word": "Keynesian economics",
+    "zh": "凯恩斯经济学",
+    "pos": "n.",
+    "ipa": "/ˈkeɪnziən ˌiːkəˈnɒmɪks/",
+    "ex": "Keynesian economics advocates active government intervention to stabilise the business cycle.",
+    "ex2": "The stimulus packages deployed during the 2008 crisis were rooted in Keynesian economic principles."
+  },
+  {
+    "word": "supply-side economics",
+    "zh": "供给侧经济学",
+    "pos": "n.",
+    "ipa": "/səˈplaɪ saɪd ˌiːkəˈnɒmɪks/",
+    "ex": "Supply-side economics advocates reducing taxes and regulation to stimulate productive investment.",
+    "ex2": "Critics argue that supply-side economics primarily benefits higher-income groups without generating broad growth."
+  },
+  {
+    "word": "public debt",
+    "zh": "公共债务",
+    "pos": "n.",
+    "ipa": "/ˈpʌblɪk det/",
+    "ex": "The country's public debt as a share of GDP exceeded one hundred percent following the pandemic.",
+    "ex2": "Sustainable public debt levels are important for maintaining investor confidence in government finances."
+  },
+  {
+    "word": "debt-to-GDP ratio",
+    "zh": "债务与GDP比率",
+    "pos": "n.",
+    "ipa": "/det tə ˌdʒiː diː ˈpiː ˈreɪʃiəʊ/",
+    "ex": "Japan's debt-to-GDP ratio is among the highest of any developed economy.",
+    "ex2": "A rising debt-to-GDP ratio can undermine investor confidence and increase borrowing costs."
+  },
+  {
+    "word": "Gini coefficient",
+    "zh": "基尼系数",
+    "pos": "n.",
+    "ipa": "/ˈdʒiːni ˌkəʊɪˈfɪʃənt/",
+    "ex": "The Gini coefficient measures income inequality on a scale from zero to one.",
+    "ex2": "Countries with a high Gini coefficient typically exhibit significant disparities in wealth distribution."
+  },
+  {
+    "word": "human development index",
+    "zh": "人类发展指数",
+    "pos": "n.",
+    "ipa": "/ˈhjuːmən dɪˈveləpmənt ˈɪndeks/",
+    "ex": "The human development index combines measures of income, education, and life expectancy.",
+    "ex2": "Norway has consistently ranked at the top of the human development index."
+  },
+  {
+    "word": "foreign direct investment",
+    "zh": "外商直接投资",
+    "pos": "n.",
+    "ipa": "/ˈfɒrɪn dəˈrekt ɪnˈvestmənt/",
+    "ex": "Foreign direct investment flows into the region increased following the signing of the trade agreement.",
+    "ex2": "Host countries typically welcome foreign direct investment for its potential to create jobs and transfer technology."
+  },
+  {
+    "word": "current account deficit",
+    "zh": "经常账户逆差",
+    "pos": "n.",
+    "ipa": "/ˈkʌrənt əˈkaʊnt ˈdefɪsɪt/",
+    "ex": "A large current account deficit may indicate that a country is living beyond its means.",
+    "ex2": "The current account deficit was financed by inflows of foreign direct investment."
+  },
+  {
+    "word": "carry trade",
+    "zh": "套利交易",
+    "pos": "n.",
+    "ipa": "/ˈkæri treɪd/",
+    "ex": "Investors engaged in carry trade by borrowing in low-interest currencies to invest in higher-yielding assets.",
+    "ex2": "An unwinding of carry trade positions can cause sharp currency movements."
+  },
+  {
+    "word": "hot money",
+    "zh": "热钱",
+    "pos": "n.",
+    "ipa": "/hɒt ˈmʌni/",
+    "ex": "Inflows of hot money seeking higher returns can destabilise smaller emerging market economies.",
+    "ex2": "Capital controls were introduced to limit the disruptive impact of hot money flows."
+  },
+  {
+    "word": "speculative attack",
+    "zh": "投机性攻击",
+    "pos": "n.",
+    "ipa": "/ˈspekjʊlətɪv əˈtæk/",
+    "ex": "A speculative attack forced the government to abandon its fixed exchange rate regime.",
+    "ex2": "Countries with overvalued currencies and depleting reserves are vulnerable to speculative attacks."
+  },
+  {
+    "word": "currency peg",
+    "zh": "货币挂钩",
+    "pos": "n.",
+    "ipa": "/ˈkʌrənsi peɡ/",
+    "ex": "The currency peg to the dollar limited the central bank's ability to adjust interest rates independently.",
+    "ex2": "Maintaining a currency peg requires substantial foreign exchange reserves."
+  },
+  {
+    "word": "hyperinflation",
+    "zh": "恶性通货膨胀",
+    "pos": "n.",
+    "ipa": "/ˌhaɪpərɪnˈfleɪʃən/",
+    "ex": "Hyperinflation in Zimbabwe eroded savings and severely disrupted economic activity.",
+    "ex2": "Hyperinflation typically results from excessive money creation combined with a collapse in productive capacity."
+  },
+  {
+    "word": "disinflation",
+    "zh": "通胀下降",
+    "pos": "n.",
+    "ipa": "/ˌdɪsɪnˈfleɪʃən/",
+    "ex": "A period of disinflation occurred as tighter monetary policy reduced price pressures.",
+    "ex2": "Disinflation differs from deflation in that prices continue to rise but at a slower rate."
+  },
+  {
+    "word": "cost-push inflation",
+    "zh": "成本推动型通胀",
+    "pos": "n.",
+    "ipa": "/kɒst pʊʃ ɪnˈfleɪʃən/",
+    "ex": "Rising energy prices contributed to cost-push inflation that spread across the wider economy.",
+    "ex2": "Cost-push inflation is difficult to address through demand management policies alone."
+  },
+  {
+    "word": "demand-pull inflation",
+    "zh": "需求拉动型通胀",
+    "pos": "n.",
+    "ipa": "/dɪˈmɑːnd pʊl ɪnˈfleɪʃən/",
+    "ex": "Strong consumer spending generated demand-pull inflation as demand outpaced productive capacity.",
+    "ex2": "Central banks typically raise interest rates to cool demand-pull inflation."
+  },
+  {
+    "word": "inflation targeting",
+    "zh": "通胀目标制",
+    "pos": "n.",
+    "ipa": "/ɪnˈfleɪʃən ˈtɑːɡɪtɪŋ/",
+    "ex": "Inflation targeting frameworks have been adopted by central banks in many advanced and emerging economies.",
+    "ex2": "A credible inflation targeting regime anchors expectations and reduces the volatility of prices."
+  },
+  {
+    "word": "yield curve",
+    "zh": "收益率曲线",
+    "pos": "n.",
+    "ipa": "/jiːld kɜːv/",
+    "ex": "An inverted yield curve, where short-term rates exceed long-term rates, is often seen as a recession indicator.",
+    "ex2": "Central bank policy decisions have a significant influence on the shape of the yield curve."
+  },
+  {
+    "word": "open market operations",
+    "zh": "公开市场操作",
+    "pos": "n.",
+    "ipa": "/ˈəʊpən ˈmɑːkɪt ˌɒpəˈreɪʃənz/",
+    "ex": "The Federal Reserve conducts open market operations by buying and selling government securities.",
+    "ex2": "Open market operations are the primary instrument used by central banks to influence short-term interest rates."
+  },
+  {
+    "word": "reserve requirement",
+    "zh": "存款准备金要求",
+    "pos": "n.",
+    "ipa": "/rɪˈzɜːv rɪˈkwaɪəmənt/",
+    "ex": "The central bank lowered the reserve requirement to encourage banks to extend more credit.",
+    "ex2": "Reserve requirements specify the minimum fraction of deposits that banks must hold as reserves."
+  }
+]
