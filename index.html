@@ -5475,6 +5475,7 @@ new Vue({
 
             const reviews       = [];
             const learning      = [];
+            const hardDrills    = [];  // difficult words not yet due — reinforced in extra rounds
             const consolidation = [];  // today's learning words not yet due — pulled in for extra rounds
             const newCards      = [];
 
@@ -5487,13 +5488,22 @@ new Vue({
                 } else if (s.stage === 'learning' || s.stage === 'relearn') {
                     if ((s.next || 0) <= ts()) {
                         learning.push(w);
-                    } else if (extraNew > 0 && s.firstSeen === tdy) {
-                        // In extra rounds bring back today's not-yet-due learning words so
-                        // the user consolidates them before moving on to fresh content.
-                        consolidation.push(w);
+                    } else if (extraNew > 0) {
+                        if (s.stage === 'relearn') {
+                            // Lapsed words (failed after graduation) — always drill in extra rounds
+                            hardDrills.push(w);
+                        } else if (s.firstSeen === tdy) {
+                            // Today's learning words not yet due — consolidate before new content
+                            consolidation.push(w);
+                        }
                     }
                 } else if (s.stage === 'young' || s.stage === 'mature') {
-                    if ((s.next || 0) <= ts()) reviews.push(w);
+                    if ((s.next || 0) <= ts()) {
+                        reviews.push(w);
+                    } else if (extraNew > 0 && (s.againCount || 0) >= 2) {
+                        // Words the user has repeatedly struggled with — reinforce in extra rounds
+                        hardDrills.push(w);
+                    }
                 }
             }
 
@@ -5507,8 +5517,8 @@ new Vue({
                 for (let i = 0; i < 4 && ri < shuffledRev.length; i++) interleaved.push(shuffledRev[ri++]);
                 if (ni < shuffledNew.length) interleaved.push(shuffledNew[ni++]);
             }
-            // Order: due-learning → consolidation (today's ungraduated) → reviews + new
-            const q = [...learning, ...shuffle(consolidation), ...interleaved];
+            // Order: due-learning → hard drills (lapsed / repeatedly missed) → consolidation → reviews + new
+            const q = [...learning, ...shuffle(hardDrills), ...shuffle(consolidation), ...interleaved];
             this.queue        = q;
             this.sessionTotal = q.length || 1;
             // Maintain sessionQueue: reset on fresh build (extraNew=0), extend on loadMore
