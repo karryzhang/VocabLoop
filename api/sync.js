@@ -45,11 +45,29 @@ function mergeWordStates(local, cloud) {
 function mergeGlobal(local, cloud) {
   if (!local) return cloud || {};
   if (!cloud) return local;
+
+  // Merge todayRounds: same day → take max; different days → take the later date's value
+  const lDate = local.lastRoundDate || '';
+  const cDate = cloud.lastRoundDate || '';
+  let todayRounds, lastRoundDate;
+  if (lDate === cDate) {
+    todayRounds  = Math.max(local.todayRounds || 1, cloud.todayRounds || 1);
+    lastRoundDate = lDate;
+  } else if (lDate > cDate) {
+    todayRounds  = local.todayRounds || 1;
+    lastRoundDate = lDate;
+  } else {
+    todayRounds  = cloud.todayRounds || 1;
+    lastRoundDate = cDate;
+  }
+
   return {
     dailyStreak:   Math.max(local.dailyStreak || 0, cloud.dailyStreak || 0),
     lastStudyDate: (local.lastStudyDate || '') >= (cloud.lastStudyDate || '') ? local.lastStudyDate : cloud.lastStudyDate,
     totalReviewed: Math.max(local.totalReviewed || 0, cloud.totalReviewed || 0),
     achievements:  [...new Set([...(local.achievements || []), ...(cloud.achievements || [])])],
+    todayRounds,
+    lastRoundDate,
   };
 }
 

@@ -4132,6 +4132,7 @@ const DECKS = [
 const DECK_PREF_KEY = 'preferred_deck';
 const DICT_KEY      = 'shared_dict_v1';
 const MAX_NEW_DAY   = 20;
+const MAX_EXTRA_NEW = 5;           // new-word quota added per "Study More" round
 const LEARN_STEPS   = [1, 5, 10];  // minutes — 3 steps for better initial retention
 const GRAD_INT      = 1;         // days
 const EASY_INT      = 4;         // days
@@ -4231,9 +4232,19 @@ function playFeedbackSound(type) {
 // ── Practice Mode utilities ───────────────────────────────────────────────────
 const MAX_PRACTICE = 40;
 
-/** Return up to n random words from pool that are not target */
-function getDistractors(target, pool, n) {
-    return shuffle(pool.filter(w => w.word !== target.word)).slice(0, n);
+/**
+ * Return up to n distractor words from pool (excluding target).
+ * When state is provided, prefer words that have been seen (have SRS state)
+ * so distractors feel familiar — especially useful for matching questions.
+ */
+function getDistractors(target, pool, n, state) {
+    const others = pool.filter(w => w.word !== target.word);
+    if (state) {
+        const learned = shuffle(others.filter(w => state[w.word]));
+        const unseen  = shuffle(others.filter(w => !state[w.word]));
+        return [...learned, ...unseen].slice(0, n);
+    }
+    return shuffle(others).slice(0, n);
 }
 
 /**
@@ -4366,8 +4377,8 @@ const Q_GENERATORS = {
         };
     },
 
-    'matching': function(word, pool) {
-        const dist = getDistractors(word, pool, 5);
+    'matching': function(word, pool, cache, state) {
+        const dist = getDistractors(word, pool, 5, state);
         if (dist.length < 5) return null;
         const pairs = shuffle([word, ...dist]);
         return {
@@ -5458,11 +5469,14 @@ new Vue({
                 const s = state[w.word];
                 if (s && s.firstSeen === tdy && s.stage !== 'mastered') newToday++;
             }
+            // Extra rounds add a small new-word bonus (MAX_EXTRA_NEW) instead of a full
+            // daily batch, so the focus stays on consolidating already-learned words.
             const slots = Math.max(0, MAX_NEW_DAY - newToday + extraNew);
 
-            const reviews  = [];
-            const learning = [];
-            const newCards = [];
+            const reviews       = [];
+            const learning      = [];
+            const consolidation = [];  // today's learning words not yet due — pulled in for extra rounds
+            const newCards      = [];
 
             for (const w of this.allWords) {
                 const s = state[w.word];
@@ -5471,7 +5485,13 @@ new Vue({
                 } else if (s.stage === 'mastered') {
                     /* never queue mastered words */
                 } else if (s.stage === 'learning' || s.stage === 'relearn') {
-                    if ((s.next || 0) <= ts()) learning.push(w);
+                    if ((s.next || 0) <= ts()) {
+                        learning.push(w);
+                    } else if (extraNew > 0 && s.firstSeen === tdy) {
+                        // In extra rounds bring back today's not-yet-due learning words so
+                        // the user consolidates them before moving on to fresh content.
+                        consolidation.push(w);
+                    }
                 } else if (s.stage === 'young' || s.stage === 'mature') {
                     if ((s.next || 0) <= ts()) reviews.push(w);
                 }
@@ -5487,7 +5507,8 @@ new Vue({
                 for (let i = 0; i < 4 && ri < shuffledRev.length; i++) interleaved.push(shuffledRev[ri++]);
                 if (ni < shuffledNew.length) interleaved.push(shuffledNew[ni++]);
             }
-            const q = [...learning, ...interleaved];
+            // Order: due-learning → consolidation (today's ungraduated) → reviews + new
+            const q = [...learning, ...shuffle(consolidation), ...interleaved];
             this.queue        = q;
             this.sessionTotal = q.length || 1;
             // Maintain sessionQueue: reset on fresh build (extraNew=0), extend on loadMore
@@ -5933,7 +5954,9 @@ new Vue({
         loadMore() {
             this.todayRounds++;
             this.saveGlobal();
-            this.extraNewAllowed += MAX_NEW_DAY;
+            // Each extra round unlocks a small batch of new words (MAX_EXTRA_NEW) rather than
+            // a full daily quota, keeping the emphasis on consolidating today's learning words.
+            this.extraNewAllowed += MAX_EXTRA_NEW;
             this.sessionCorrect   = 0;
             this.buildQueue(this.extraNewAllowed);
             this.showToast(this.ui.lpRound(this.todayRounds) + (LANG === 'zh' ? ' 开始！' : ' starts!'), 'good');
@@ -5972,7 +5995,10 @@ new Vue({
                     this.lastStudyDate = d.lastStudyDate  || '';
                     this.totalReviewed = d.totalReviewed  || 0;
                     this.achievements  = d.achievements   || [];
-                    this.todayRounds   = (d.lastRoundDate === today()) ? (d.todayRounds || 1) : 1;
+                    // Use Math.max so a sync that returns stale round data never
+                    // decreases the counter already held in memory.
+                    const loadedRounds = (d.lastRoundDate === today()) ? (d.todayRounds || 1) : 1;
+                    this.todayRounds   = Math.max(this.todayRounds || 1, loadedRounds);
                 }
             } catch (e) { /* ignore */ }
         },
@@ -7106,8 +7132,15 @@ new Vue({
       var vm = app.__vue__;
       vm.loadSaved();
       vm.loadGlobal();
-      // Don't rebuild the study queue while the user is mid-practice session
-      if(!vm.practiceMode) vm.buildQueue();
+      // Don't rebuild the study queue while:
+      //   1. in practice mode (existing guard)
+      //   2. still loading allWords (buildQueue would fire on empty allWords)
+      //   3. user has already answered ≥1 card this session (mid-session or session-done):
+      //      - mid-session: would reset sessionSeenMap/sessionTotal → wrong counter
+      //      - session-done: would repopulate queue with learning cards that just
+      //        became due, making sessionDone→false and hiding the results screen
+      var seenCount = Object.keys(vm.sessionSeenMap || {}).length;
+      if(!vm.loading && !vm.practiceMode && seenCount === 0) vm.buildQueue();
     }
   }
 
