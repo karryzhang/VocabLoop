@@ -10822,5 +10822,541 @@
     "ipa": "",
     "ex": "When she saw the missed calls and messages, she put two and two together.",
     "ex2": "He put two and two together and realised the system failure was connected to the earlier update."
+  },
+  {
+    "word": "report card",
+    "zh": "成绩单",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The teacher handed out report cards at the end of the semester.",
+    "ex2": "His report card showed improvement in math but a drop in English."
+  },
+  {
+    "word": "academic performance",
+    "zh": "学业表现",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "We scheduled this conference specifically to discuss your daughter's academic performance.",
+    "ex2": "Her academic performance has been consistently strong across all subjects this term."
+  },
+  {
+    "word": "learning progress",
+    "zh": "学习进展",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "I'd like to walk you through your son's learning progress over the past few months.",
+    "ex2": "The learning progress report shows he has advanced two reading levels since September."
+  },
+  {
+    "word": "fall behind",
+    "zh": "落后；跟不上",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "We noticed he started to fall behind in algebra after the mid-term break.",
+    "ex2": "If students fall behind during this unit, it becomes very hard to catch up later."
+  },
+  {
+    "word": "homework assignment",
+    "zh": "家庭作业",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "He turns in homework assignments late more often than we'd like to see.",
+    "ex2": "Each homework assignment is designed to reinforce what was covered in class that day."
+  },
+  {
+    "word": "attention span",
+    "zh": "注意力持续时间",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She has a short attention span and often loses focus after about ten minutes.",
+    "ex2": "We use hands-on activities to match students with a limited attention span."
+  },
+  {
+    "word": "classroom participation",
+    "zh": "课堂参与度",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Classroom participation counts for fifteen percent of his overall grade.",
+    "ex2": "Her classroom participation has really blossomed — she raises her hand much more now."
+  },
+  {
+    "word": "extracurricular activities",
+    "zh": "课外活动",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Joining extracurricular activities like the drama club has boosted her confidence.",
+    "ex2": "We encourage a balance between extracurricular activities and academic study."
+  },
+  {
+    "word": "peer pressure",
+    "zh": "同伴压力",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Some of the behavioral changes we're seeing may be linked to peer pressure.",
+    "ex2": "Teaching kids to handle peer pressure is an important part of social development."
+  },
+  {
+    "word": "school counselor",
+    "zh": "学校辅导员",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "I'd recommend speaking with our school counselor if you notice anxiety at home.",
+    "ex2": "The school counselor meets with him once a week to help him manage stress."
+  },
+  {
+    "word": "tutoring",
+    "zh": "补习；辅导",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Private tutoring twice a week has made a noticeable difference in her writing.",
+    "ex2": "The school offers free tutoring on Tuesdays and Thursdays for struggling students."
+  },
+  {
+    "word": "behavioral issue",
+    "zh": "行为问题",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "I want to address a behavioral issue we observed during group activities.",
+    "ex2": "We document any behavioral issues so we can track patterns over time."
+  },
+  {
+    "word": "learning style",
+    "zh": "学习风格",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Understanding your child's learning style helps us tailor our teaching approach.",
+    "ex2": "He seems to be a visual learner, so his learning style works well with charts and diagrams."
+  },
+  {
+    "word": "remedial support",
+    "zh": "补救性辅导",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "We're recommending remedial support in reading to help close the gap.",
+    "ex2": "Remedial support classes are kept small so teachers can give individual attention."
+  },
+  {
+    "word": "gifted program",
+    "zh": "优等生培育项目",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Based on her test results, she qualifies for our gifted program in science.",
+    "ex2": "The gifted program offers advanced coursework and enrichment projects beyond the standard curriculum."
+  },
+  {
+    "word": "study habits",
+    "zh": "学习习惯",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Good study habits formed now will benefit him throughout his entire school career.",
+    "ex2": "We recommend setting a consistent homework time at home to reinforce healthy study habits."
+  },
+  {
+    "word": "raise a concern",
+    "zh": "提出顾虑",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "I wanted to raise a concern about the amount of homework assigned each night.",
+    "ex2": "Please feel free to raise a concern at any time — you don't have to wait for conferences."
+  },
+  {
+    "word": "make strides",
+    "zh": "取得显著进步",
+    "pos": "idiom",
+    "ipa": "",
+    "ex": "I'm happy to report that your son has made real strides in reading this quarter.",
+    "ex2": "She has made strides socially and now has a solid group of friends in class."
+  },
+  {
+    "word": "social skills",
+    "zh": "社交能力",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "His social skills have grown a lot — he collaborates much better in group projects.",
+    "ex2": "We use cooperative learning activities specifically to build students' social skills."
+  },
+  {
+    "word": "teacher's feedback",
+    "zh": "老师的反馈",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Please review the teacher's feedback written in the margins of the essays.",
+    "ex2": "She takes teacher's feedback seriously and always revises her work afterward."
+  },
+  {
+    "word": "school policy",
+    "zh": "学校规定",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "School policy requires that absences be reported by nine o'clock in the morning.",
+    "ex2": "Our school policy on mobile phones is strict — devices must be stored away during lessons."
+  },
+  {
+    "word": "parent-teacher conference",
+    "zh": "家长会",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Thank you for coming in today — parent-teacher conferences are so important for partnership.",
+    "ex2": "We hold a parent-teacher conference at the end of each semester to review progress."
+  },
+  {
+    "word": "learning difficulty",
+    "zh": "学习障碍",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "We suspect she may have a learning difficulty and would like to arrange a formal assessment.",
+    "ex2": "Students with a diagnosed learning difficulty receive extra time on tests and exams."
+  },
+  {
+    "word": "board of directors",
+    "zh": "董事会",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The board of directors approved the new expansion strategy unanimously.",
+    "ex2": "She was elected to the board of directors after twenty years in the industry."
+  },
+  {
+    "word": "shareholder",
+    "zh": "股东",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The board must act in the best interests of all shareholders, not just majority stakeholders.",
+    "ex2": "Shareholders will receive a full briefing on the proposed merger at next month's general assembly."
+  },
+  {
+    "word": "quarterly earnings",
+    "zh": "季度盈利",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The CFO presented quarterly earnings that exceeded analyst expectations by twelve percent.",
+    "ex2": "Weak quarterly earnings in Q3 prompted the board to revisit its cost-reduction targets."
+  },
+  {
+    "word": "profit margin",
+    "zh": "利润率",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Rising raw material costs have compressed our profit margin from 22 percent down to 16 percent.",
+    "ex2": "The board set a target to restore profit margin to pre-pandemic levels within two fiscal years."
+  },
+  {
+    "word": "strategic plan",
+    "zh": "战略计划",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The CEO presented a five-year strategic plan centered on digital transformation and geographic expansion.",
+    "ex2": "The board reviewed the strategic plan and requested clearer milestones for each growth phase."
+  },
+  {
+    "word": "merger and acquisition",
+    "zh": "并购",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The board formed a special committee to evaluate all merger and acquisition opportunities in the sector.",
+    "ex2": "Our merger and acquisition strategy prioritizes targets with strong intellectual property portfolios."
+  },
+  {
+    "word": "return on investment",
+    "zh": "投资回报率",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The board demanded a projected return on investment of at least fifteen percent before approving the capital expenditure.",
+    "ex2": "Management demonstrated that the new logistics platform delivered a return on investment within eighteen months."
+  },
+  {
+    "word": "restructuring",
+    "zh": "重组",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The board approved a comprehensive restructuring plan that will consolidate three divisions into one.",
+    "ex2": "Restructuring charges of $80 million will be recognized in this quarter's financial statements."
+  },
+  {
+    "word": "dividend",
+    "zh": "股息",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The board voted to maintain the quarterly dividend at $0.45 per share despite the earnings shortfall.",
+    "ex2": "Increasing the dividend was rejected in favor of retaining capital for the planned factory investment."
+  },
+  {
+    "word": "earnings per share",
+    "zh": "每股收益",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Earnings per share rose to $3.12 this quarter, surpassing the guidance range provided in January.",
+    "ex2": "The board's executive compensation plan ties bonuses directly to earnings per share growth targets."
+  },
+  {
+    "word": "overhead costs",
+    "zh": "间接成本",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The board instructed management to reduce overhead costs by ten percent through consolidation of back-office functions.",
+    "ex2": "Overhead costs have grown faster than revenue, which is placing pressure on operating margins."
+  },
+  {
+    "word": "burn rate",
+    "zh": "资金消耗率",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "At the current burn rate, the board estimates the company has fourteen months of runway before needing additional funding.",
+    "ex2": "The audit committee flagged that the burn rate in the R&D division had doubled since the previous fiscal year."
+  },
+  {
+    "word": "break-even point",
+    "zh": "盈亏平衡点",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The new product line is projected to reach its break-even point within the first eighteen months of launch.",
+    "ex2": "The board asked management to model three scenarios for reaching the break-even point under different pricing assumptions."
+  },
+  {
+    "word": "competitive landscape",
+    "zh": "竞争格局",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The strategy presentation opened with a thorough analysis of the competitive landscape and emerging disruptors.",
+    "ex2": "Shifting regulatory environments have significantly altered the competitive landscape in our core markets."
+  },
+  {
+    "word": "risk assessment",
+    "zh": "风险评估",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The risk committee presented a risk assessment covering geopolitical, financial, and operational exposures.",
+    "ex2": "A formal risk assessment must accompany every capital project proposal submitted to the board."
+  },
+  {
+    "word": "motion",
+    "zh": "动议",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The chairperson called for a motion to approve the proposed share buyback program.",
+    "ex2": "A motion was tabled to defer the dividend decision until the Q4 results are published."
+  },
+  {
+    "word": "agenda item",
+    "zh": "议程事项",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The CEO requested that executive succession planning be added as a standing agenda item at every quarterly meeting.",
+    "ex2": "The first agenda item was a review of action points carried forward from the previous board meeting."
+  },
+  {
+    "word": "unanimous decision",
+    "zh": "全票通过",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "In a unanimous decision, the board approved the appointment of the new Chief Financial Officer.",
+    "ex2": "The unanimous decision to divest the underperforming subsidiary signaled strong board alignment on the new strategy."
+  },
+  {
+    "word": "veto",
+    "zh": "否决权",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The founding shareholder exercised his veto to block the proposed dilutive equity offering.",
+    "ex2": "No single board member holds an unconditional veto; all decisions ultimately require a majority vote."
+  },
+  {
+    "word": "fender bender",
+    "zh": "小事故 / 轻微碰撞",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "It was just a fender bender at the traffic light, but we still exchanged insurance info.",
+    "ex2": "Even a minor fender bender can result in hundreds of dollars of repair costs."
+  },
+  {
+    "word": "traffic collision",
+    "zh": "交通碰撞事故",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The traffic collision on Highway 5 involved three vehicles and blocked two lanes.",
+    "ex2": "You must call 911 and report a traffic collision if anyone is injured."
+  },
+  {
+    "word": "at fault",
+    "zh": "有过失的 / 责任方",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "The driver who ran the red light was determined to be at fault for the accident.",
+    "ex2": "If you are at fault, your liability coverage will pay for the other driver's damages."
+  },
+  {
+    "word": "insurance claim",
+    "zh": "保险理赔申请",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "She filed an insurance claim the same afternoon as the accident.",
+    "ex2": "Your insurance claim may take several weeks to process if the damage is extensive."
+  },
+  {
+    "word": "deductible",
+    "zh": "免赔额",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "My deductible is $500, so I'll pay that amount before insurance covers the rest.",
+    "ex2": "Choosing a higher deductible lowers your monthly premium but costs more after an accident."
+  },
+  {
+    "word": "liability",
+    "zh": "法律责任 / 赔偿责任",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The court ruled that the truck driver bore full liability for the crash.",
+    "ex2": "Admitting fault at the scene could affect your liability in the insurance investigation."
+  },
+  {
+    "word": "third-party insurance",
+    "zh": "第三方保险",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Third-party insurance covers damage you cause to other people's vehicles or property.",
+    "ex2": "In many countries, third-party insurance is the minimum legal requirement for drivers."
+  },
+  {
+    "word": "witness statement",
+    "zh": "目击者证词",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The officer collected a witness statement from the pedestrian who saw the crash.",
+    "ex2": "A witness statement from an independent bystander can strongly support your insurance claim."
+  },
+  {
+    "word": "hit-and-run",
+    "zh": "肇事逃逸",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The other driver sped away — my lawyer called it a clear hit-and-run.",
+    "ex2": "Hit-and-run is a criminal offense that can result in license suspension and fines."
+  },
+  {
+    "word": "tow truck",
+    "zh": "拖车",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The officer called a tow truck because my car could not be driven after the collision.",
+    "ex2": "We waited over an hour on the shoulder for the tow truck to arrive."
+  },
+  {
+    "word": "roadside assistance",
+    "zh": "道路救援服务",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "I called my insurer's roadside assistance hotline right after the accident.",
+    "ex2": "Roadside assistance can arrange a tow, a rental car, and emergency fuel delivery."
+  },
+  {
+    "word": "breathalyzer test",
+    "zh": "酒精呼气测试",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The officer asked both drivers to take a breathalyzer test at the accident scene.",
+    "ex2": "Failing a breathalyzer test after a collision can result in a DUI charge."
+  },
+  {
+    "word": "traffic violation",
+    "zh": "交通违规",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Running the stop sign was the traffic violation that caused the accident.",
+    "ex2": "A traffic violation on your record can raise your insurance premiums significantly."
+  },
+  {
+    "word": "insurance adjuster",
+    "zh": "保险理算员",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The insurance adjuster inspected the damage and estimated the repair cost.",
+    "ex2": "Be honest when speaking with the insurance adjuster; they will verify your account."
+  },
+  {
+    "word": "bodily injury",
+    "zh": "人身伤害",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "The passenger suffered bodily injury and was taken to hospital by ambulance.",
+    "ex2": "Bodily injury liability coverage pays for medical expenses of people you injure in an accident."
+  },
+  {
+    "word": "property damage",
+    "zh": "财产损失",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Besides the two cars, there was significant property damage to a roadside fence.",
+    "ex2": "Your liability policy will cover property damage you cause to another driver's vehicle."
+  },
+  {
+    "word": "police report",
+    "zh": "警方事故报告",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Always obtain a copy of the police report before contacting your insurance company.",
+    "ex2": "The police report documented the exact location, time, and parties involved in the crash."
+  },
+  {
+    "word": "emergency services",
+    "zh": "紧急救援服务",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Dial 911 immediately to reach emergency services if anyone is injured at the scene.",
+    "ex2": "Emergency services arrived within five minutes and set up a safety perimeter around the wreck."
+  },
+  {
+    "word": "totaled",
+    "zh": "全损报废",
+    "pos": "adj.",
+    "ipa": "",
+    "ex": "The mechanic confirmed the car was totaled — repair costs exceeded its market value.",
+    "ex2": "When a car is totaled, the insurance company pays you its actual cash value."
+  },
+  {
+    "word": "collision coverage",
+    "zh": "碰撞险",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Without collision coverage, you pay for your own car's repairs even if you didn't cause the accident.",
+    "ex2": "Collision coverage kicks in regardless of who is at fault in the accident."
+  },
+  {
+    "word": "file a claim",
+    "zh": "提出索赔",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "You should file a claim with your insurer within 24 hours of the accident.",
+    "ex2": "To file a claim, you'll need the police report number, photos, and the other driver's info."
+  },
+  {
+    "word": "exchange information",
+    "zh": "互换信息",
+    "pos": "phrase",
+    "ipa": "",
+    "ex": "After both cars stopped safely, the drivers stepped out to exchange information.",
+    "ex2": "Be sure to exchange information including name, phone number, license plate, and insurance details."
+  },
+  {
+    "word": "accident scene",
+    "zh": "事故现场",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "Take photos of the accident scene before any vehicles are moved.",
+    "ex2": "Never leave the accident scene until the police give you permission to go."
+  },
+  {
+    "word": "no-fault insurance",
+    "zh": "无过失保险",
+    "pos": "n.",
+    "ipa": "",
+    "ex": "In a no-fault insurance state, your own insurer pays your medical bills regardless of who caused the crash.",
+    "ex2": "No-fault insurance is designed to speed up claims and reduce the need for lawsuits."
+  },
+  {
+    "word": "pull over",
+    "zh": "靠边停车",
+    "pos": "v.",
+    "ipa": "",
+    "ex": "After the collision, both drivers pulled over to the right shoulder to clear the lane.",
+    "ex2": "If a police officer signals you after an accident, pull over immediately and stay calm."
   }
 ]
